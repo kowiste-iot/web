@@ -1,5 +1,8 @@
 <template>
-<h1 class="bg-warning">Kowiste</h1>
+  <div><logo style="height: 20px" /><h1 class="bg-warning">Kowiste</h1>
+  </div>
+ 
+
 <h1>{{ $t('message.hello') }}</h1>
 <select @change="changeLanguage" v-model="currentLocale">
       <option value="en">English</option>
@@ -14,6 +17,7 @@
 <script setup lang="ts">
 import { onMounted ,ref} from 'vue';
 import { useI18n } from "vue-i18n"
+import logo from './components/icons/logo.vue';
 const currentLocale=ref('en')
 const {locale} = useI18n();
 let isDark= false
