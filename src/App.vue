@@ -1,5 +1,5 @@
 <template>
-  <div><logo style="height: 20px" /><h1 class="bg-warning">Kowiste</h1>
+  <div class="body-bg"><logo style="height: 20px" /><h1 class="bg-success">Kowiste</h1>
   </div>
  
 
@@ -10,7 +10,7 @@
       <option value="th">Thai</option>
     </select>
   <div >
-    <button class="btn btn-warning" @click="toggleTheme">Change Theme</button>
+    <button class="btn btn-danger " @click="toggleTheme">Change Theme</button>
   </div>
 </template>
 

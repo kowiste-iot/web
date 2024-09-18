@@ -1,7 +1,11 @@
 body.light-theme {
   @import './ligth.scss';
+  background-color: $body-bg; 
+    color: $body-color; 
 }
 
 body.dark-theme {
   @import './dark.scss';
+  background-color: $body-bg; 
+  color: $body-color;  
 }
