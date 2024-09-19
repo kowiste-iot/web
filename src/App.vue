@@ -1,9 +1,15 @@
 <template>
   <div class="body-bg"><logo style="height: 20px" /><h1 class="bg-success">Kowiste</h1>
   </div>
+ <Alert icon="smile" :color="EColor.Success" title="press me" ></Alert>
+<div>
+  asf
+  <i class="far " :class="EIcon.User"></i>npm
+  afs
+   <h1>{{ $t('message.hello') }}</h1>
+</div>
  
 
-<h1>{{ $t('message.hello') }}</h1>
 <select @change="changeLanguage" v-model="currentLocale">
       <option value="en">English</option>
       <option value="es">Spanish</option>
@@ -17,7 +23,10 @@
 <script setup lang="ts">
 import { onMounted ,ref} from 'vue';
 import { useI18n } from "vue-i18n"
-import logo from './components/icons/logo.vue';
+import logo from '@/components/icons/logo.vue';
+import Alert from '@/components/alert/alert.vue';
+import { EIcon } from '@/enums/EIcon';
+import { EColor } from '@/enums/EColor';
 const currentLocale=ref('en')
 const {locale} = useI18n();
 let isDark= false
