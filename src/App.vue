@@ -3,12 +3,10 @@
     <logo style="height: 20px" />
     <h1 class="bg-success">Kowiste</h1>
   </div>
-  <Alert :icon="EIcon.User" :color="EColor.Primary">gpwr'bowjr[buhw[rhbw[o'jvipdhwrfg[q9peuj4g]0pjwr[oghe[gjw]]]]]]]]]] </Alert>
+  <Alert :icon="EIcon.Check" :color="EColor.Success">i'm alert </Alert>
+  <Alert :icon="EIcon.Xmark" :color="EColor.Danger">i'm alert </Alert>
+  
   <div>
-    <div
-      class="alert-left"
-      :style="{ backgroundColor: '#000', width: '60px', height: '60px' }"
-    ></div>
     <h1>{{ $t("message.hello") }}</h1>
   </div>
 
@@ -20,6 +18,10 @@
   <div>
     <button class="btn btn-danger" @click="toggleTheme">Change Theme</button>
   </div>
+
+  <Button :color="EColor.Success"
+    >i'm a button and i can be as big as i can</Button
+  >
 </template>
 
 <script setup lang="ts">
@@ -29,6 +31,7 @@ import logo from "@/components/icons/logo.vue";
 import Alert from "@/components/alert/alert.vue";
 import { EIcon } from "@/enums/EIcon";
 import { EColor } from "@/enums/EColor";
+import Button from "./components/buttons/button.vue";
 const currentLocale = ref("en");
 const { locale } = useI18n();
 let isDark = false;
@@ -54,16 +57,4 @@ onMounted(() => {
 });
 </script>
 
-<style>
-.alert-left {
-  width: 60px; /* Left part of the alert is 60px */
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: aqua;
-}
-.alert {
-  min-height: 50px; /* Set a minimum height if needed */
-}
-</style>
+<style></style>
