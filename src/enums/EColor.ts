@@ -1,4 +1,3 @@
-import { colors } from "@/plugins/theme/colors"
 
 
 // Define a string enum for the colors

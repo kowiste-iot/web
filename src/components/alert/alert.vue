@@ -7,8 +7,9 @@
         v-if="color"
       >
         <i
-          class="bg-white far rounded-circle p-1"
+          class="bg-white far rounded-circle p-1 "
           :class="[icon, color ? `text-${color}` : '']"
+          style="height: 1rem;width: 1rem;"
           v-if="icon"
         ></i>
       </div>
@@ -20,12 +21,6 @@
 </template>
 
 <script setup lang="ts">
-// imports
-// stores import
-// components import
-// model imports
-// other imports
-// props
 const props = defineProps({
   icon: {
     type: String,
@@ -36,12 +31,7 @@ const props = defineProps({
     default: "",
   },
 });
-// data
-// storage calls
-// computed
-// methods
-// lifeCycle
-// watch
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
