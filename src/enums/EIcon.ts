@@ -4,5 +4,5 @@ export enum EIcon{
     CheckCircle='fa-check-circle',
     Xmark='fas fa-xmark',
     Smile='fas fa-smile',
-    Waring= 'fas fa-triangle-exclamation'
+    Warning= 'fas fa-triangle-exclamation'
 }

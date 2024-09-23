@@ -5,7 +5,7 @@
   </div>
   <Alert :icon="EIcon.Check" :color="EColor.Success">i'm alert </Alert>
   <Alert :icon="EIcon.Xmark" :color="EColor.Danger">i'm alert </Alert>
-  
+
   <div>
     <h1>{{ $t("message.hello") }}</h1>
   </div>
