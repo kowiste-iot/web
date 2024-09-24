@@ -1,13 +1,16 @@
+const prev = 'fas '
 export enum EIcon {
   User = 'fa-user',
 
   //Action
-  Cancel = 'fas fa-xmark',
-  Success = 'fas fa-check',
+  Cancel = prev + 'fa-xmark',
+  Success = prev + 'fa-check',
+  Property = prev + 'fa-ellipsis-vertical',
+  Edit = prev + 'fa-edit',
+  Delete = prev + 'fa-trash',
 
-  
   //
-  Warning = 'fas fa-triangle-exclamation',
-  Info = 'fas fa-info',
-  Death = 'fas fa-skull',
+  Warning = prev + 'fa-triangle-exclamation',
+  Info = prev + 'fa-info',
+  Death = prev + 'fa-skull',
 }

@@ -12,8 +12,25 @@
   </select>
 
   <Button :color="EColor.Success" :outline="true">i'm a button</Button>
-  <InputCard
-    >hello
+  <InputCard headerText="Test Card" :icon="EIcon.Death">
+    hello
+
+    <template #footer>
+      <Button :color="EColor.Success">Save</Button>
+      <Button :color="EColor.Danger" :outline="true">Cancel</Button>
+    </template>
+  </InputCard>
+
+  <InputCard>
+    <template #header>
+      <div>Test Card</div>
+      <PropertyDot
+        :data="test"
+        :onClick="(id:number)=>console.log('press',id)"
+      />
+    </template>
+    I have properties
+
     <template #footer>
       <Button :color="EColor.Success">Save</Button>
       <Button :color="EColor.Danger" :outline="true">Cancel</Button>
@@ -22,17 +39,40 @@
 </template>
 
 <script setup lang="ts">
+// imports
 import { onMounted, ref } from 'vue'
+// stores import
 import { useI18n } from 'vue-i18n'
-import logo from '@/components/icons/logo.vue'
+// components import
 import Alert from '@/components/alert/Alert.vue'
-import { EIcon } from '@/enums/EIcon'
-import { EColor } from '@/enums/EColor'
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
+import logo from '@/components/icons/logo.vue'
+import PropertyDot from '@/components/property/Property.vue'
+// model imports
+import { EIcon } from '@/enums/EIcon'
+import { EColor } from '@/enums/EColor'
+import { Property } from '@/model/property'
+// other imports
+// props
+// data
 const currentLocale = ref('en')
-const { locale } = useI18n()
+const test = new Array<Property>()
+test.push({
+  id: 1,
+  icon: EIcon.Edit,
+  name: 'Edit',
+})
+test.push({
+  id: 2,
+  icon: EIcon.Delete,
+  name: 'Delete',
+})
 let isDark = false
+// storage calls
+const { locale } = useI18n()
+// computed
+// methods
 function toggleTheme() {
   isDark = !isDark
   if (isDark) {
@@ -47,9 +87,11 @@ function toggleTheme() {
 function changeLanguage() {
   locale.value = currentLocale.value
 }
+// lifeCycle
 onMounted(() => {
   document.body.classList.add('light-theme')
 })
+// watch
 </script>
 
 <style></style>

@@ -34,7 +34,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-
 })
 // data
 // storage calls

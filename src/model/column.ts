@@ -1,4 +1,4 @@
-import ETableLocation from '@/enums/enum'
+import {ETableLocation} from '@/enums/ETableLocation'
 
 export class Columns {
   public title: string
