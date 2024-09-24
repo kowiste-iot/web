@@ -14,7 +14,6 @@
   <Button :color="EColor.Success" :outline="true">i'm a button</Button>
   <InputCard headerText="Test Card" :icon="EIcon.Death">
     hello
-
     <template #footer>
       <Button :color="EColor.Success">Save</Button>
       <Button :color="EColor.Danger" :outline="true">Cancel</Button>
@@ -67,6 +66,11 @@ test.push({
   id: 2,
   icon: EIcon.Delete,
   name: 'Delete',
+})
+test.push({
+  id: 3,
+  icon: EIcon.Info,
+  name: 'Info',
 })
 let isDark = false
 // storage calls

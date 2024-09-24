@@ -1,4 +1,5 @@
-``<template>
+``
+<template>
   <div class="position-relative">
     <Button
       :color="EColor.Ligth"
@@ -10,13 +11,17 @@
       class="position-absolute top-0 start-100 card"
       @mouseleave="toggleVisibility"
     >
-      <div v-for="element in data" class="d-flex">
-        <Button
-          :icon="element.icon"
-          :color="EColor.Ligth"
+      <div v-for="element in data" class="">
+        <div
+          class="btn d-flex"
+          :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
           @click="onClick(element.id)"
-          >{{ element.name }}</Button
+          @mouseover="isHover[element.id] = true"
+          @mouseleave="isHover[element.id] = false"
         >
+          <i :class="element.icon"></i>
+          <div class="ms-4">{{ element.name }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +54,7 @@ const props = defineProps({
 })
 // data
 const isVisible = ref(false)
-
+const isHover = ref({} as { [key: number]: boolean })
 // storage calls
 // computed
 // methods
