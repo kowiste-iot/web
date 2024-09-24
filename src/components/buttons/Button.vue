@@ -1,15 +1,27 @@
 <template>
-  <button type="button" class="btn d-flex" :class="`btn-${color}`">
-    <i class="bg-white far rounded-circle p-2" :class="[icon, color ? `text-${color}` : '']" v-if="icon"></i>
+  <button
+    type="button"
+    class="btn d-flex"
+    :class="(outline ? `btn-outline-${color}` : `btn-${color} `)"
+
+  >
+    <i
+      v-if="icon"
+      class="bg-white far rounded-circle p-2"
+      :class="[icon, color ? `text-${color}` : '']"
+    ></i>
     <div class="d-flex align-items-center"><slot /></div>
   </button>
 </template>
 
 <script setup lang="ts">
+
 // imports
 // stores import
 // components import
 // model imports
+import { EColor } from "@/enums/EColor";
+
 // other imports
 // props
 const props = defineProps({
@@ -19,7 +31,11 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: "",
+    default: EColor.Primary,
+  },
+  outline: {
+    type: Boolean,
+    default: false,
   },
 });
 // data
