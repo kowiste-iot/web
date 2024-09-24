@@ -1,9 +1,7 @@
 <template>
   <button
-    type="button"
     class="btn d-flex"
-    :class="(outline ? `btn-outline-${color}` : `btn-${color} `)"
-
+    :class="outline ? `btn-outline-${color}` : `btn-${color} `"
   >
     <i
       v-if="icon"
@@ -15,19 +13,18 @@
 </template>
 
 <script setup lang="ts">
-
 // imports
 // stores import
 // components import
 // model imports
-import { EColor } from "@/enums/EColor";
+import { EColor } from '@/enums/EColor'
 
 // other imports
 // props
 const props = defineProps({
   icon: {
     type: String,
-    default: "",
+    default: '',
   },
   color: {
     type: String,
@@ -37,7 +34,8 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+
+})
 // data
 // storage calls
 // computed
