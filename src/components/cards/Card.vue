@@ -1,6 +1,6 @@
 <template>
-  <div class="card col-md-6">
-    <div class="card-header bg-transparent d-flex justify-content-between">
+  <div class="card bg-ligth col-md-6">
+    <div class="card-header d-flex justify-content-between">
       <div v-if="headerText">{{ headerText }}</div>
       <i v-if="headerText && icon" :class="icon"></i>
       <slot v-else name="header" />
@@ -8,7 +8,7 @@
     <div class="card-body text-success">
       <slot />
     </div>
-    <div class="card-footer bg-transparent d-flex justify-content-between">
+    <div class="card-footer d-flex justify-content-between">
       <slot name="footer"></slot>
     </div>
   </div>

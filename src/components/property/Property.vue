@@ -1,11 +1,9 @@
 ``
 <template>
   <div class="position-relative">
-    <Button
-      :color="EColor.Ligth"
-      :icon="EIcon.Property"
-      @click="toggleVisibility"
-    />
+    <div class="px-2" role="button" @click="toggleVisibility">
+      <i :class="EIcon.Property"></i>
+    </div>
     <div
       v-if="isVisible"
       class="position-absolute top-0 start-100 card"
