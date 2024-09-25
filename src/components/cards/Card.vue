@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-ligth col-md-6">
+  <div class="card col-md-6 bg-light">
     <div class="card-header d-flex justify-content-between">
       <div v-if="headerText">{{ headerText }}</div>
       <i v-if="headerText && icon" :class="icon"></i>
@@ -19,6 +19,8 @@
 // stores import
 // components import
 // model imports
+import { EColor } from '@/enums/EColor'
+
 // other imports
 // props
 const props = defineProps({

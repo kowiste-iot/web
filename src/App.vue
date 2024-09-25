@@ -31,7 +31,7 @@
     I have properties
 
     <template #footer>
-      <Button :color="EColor.Ligth">Save</Button>
+      <Button :color="EColor.Light">Save</Button>
       <Button :color="EColor.Dark" :outline="true">Cancel</Button>
     </template>
   </InputCard>

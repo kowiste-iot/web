@@ -4,8 +4,8 @@ export enum EColor {
   Secondary = 'secondary',
   Success = 'success',
   Danger = 'danger',
-  Waring = 'warning',
+  Warning = 'warning',
   Info = 'info',
   Dark = 'dark',
-  Ligth = 'ligth',
+  Light = 'light',
 }
