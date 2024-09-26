@@ -1,28 +1,45 @@
-
 ``
 <template>
-  <div class="position-relative">
-    <div class="px-2" role="button" @click="toggleVisibility">
-      <i :class="EIcon.Property"></i>
-    </div>
+  <div class=" position-relative">
     <div
-      v-if="isVisible"
-      class="position-absolute top-0 start-100 card"
-      @mouseleave="toggleVisibility"
+      class="bg-light border rounded p-1 d-flex"
+      role="button"
+      @click="toggleVisibility"
     >
-      <div v-for="element in data" class="">
-        <div
-          class="btn d-flex"
-          :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
-          @click="onClick(element.id)"
-          @mouseover="isHover[element.id] = true"
-          @mouseleave="isHover[element.id] = false"
-        >
-          <i :class="element.icon"></i>
-          <div class="ms-4">{{ element.name }}</div>
-        </div>
+      <i v-if="icon" class="pe-2 pt-1" :class="icon"></i>
+      <div v-if="model">
+        {{ model[dataValue] }}
+      </div>
+      <div v-else>
+        <div v-if="caption">{{ caption }}</div>
+        <div v-else>Select an option</div>
       </div>
     </div>
+    <ul
+      v-if="isVisible"
+      class="position-absolute top-1 list-group w-100"
+      @mouseleave="toggleVisibility"
+    >
+      <li
+        v-for="element in data"
+        :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
+        @mouseover="isHover[element.id] = true"
+        @mouseleave="isHover[element.id] = false"
+        class="list-group-item"
+        role="button"
+        @click="() => change(element)"
+      >
+        <div class="d-flex">
+          <i
+            v-if="model == element"
+            class="pt-1 me-2"
+            :class="EIcon.Success"
+          ></i>
+          <i v-else class="me-4"></i>
+          <slot name="option" :data="element" />
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -32,26 +49,34 @@ import { ref } from 'vue'
 
 // stores import
 // components import
-import Button from '@/components/buttons/Button.vue'
 
 // model imports
 import { EIcon } from '@/enums/EIcon'
-import { EColor } from '@/enums/EColor'
-import { Property } from '@/model/property'
 
 // other imports
 // props
 const props = defineProps({
   data: {
-    type: Array<Property>,
+    type: Array<any>,
     default: [],
   },
-  onClick: {
+  dataValue: {
+    type: String,
+    default: 'id',
+  },
+  caption: {
+    type: String,
+  },
+  icon: {
+    type: String,
+  },
+  onChange: {
     type: Function,
     default: function () {},
   },
 })
 // data
+const model = defineModel({} as { [key: string]: any })
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
 // storage calls
@@ -59,6 +84,11 @@ const isHover = ref({} as { [key: number]: boolean })
 // methods
 function toggleVisibility() {
   isVisible.value = !isVisible.value
+}
+function change(data: any) {
+  model.value = data
+  toggleVisibility()
+  props.onChange(data)
 }
 // lifeCycle
 // watch

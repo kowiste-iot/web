@@ -12,7 +12,7 @@
   </select>
 
   <Button :color="EColor.Success" :outline="true">i'm a button</Button>
-  <InputCard headerText="Test Card" :icon="EIcon.Death">
+  <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
     hello
     <template #footer>
       <Button :color="EColor.Success">Save</Button>
@@ -20,7 +20,7 @@
     </template>
   </InputCard>
 
-  <InputCard>
+  <InputCard class="col-md-6">
     <template #header>
       <div>Test Card</div>
       <PropertyDot
@@ -28,7 +28,23 @@
         :onClick="(id:number)=>console.log('press',id)"
       />
     </template>
-    I have properties
+    <div class="row">
+      <label class="col-md-2">Agent</label>
+      <DropDown
+        class="col-md-10"
+        :icon="EIcon.Death"
+        dataValue="name"
+        caption="select a city"
+        :data="[
+          { id: 2, name: 'Chanya' },
+          { id: 3, name: 'Pablo' },
+        ]"
+      >
+        <template #option="{ data }">
+          {{ data.name }}
+        </template>
+      </DropDown>
+    </div>
 
     <template #footer>
       <Button :color="EColor.Light">Save</Button>
@@ -36,27 +52,7 @@
     </template>
   </InputCard>
 
- <Input label="test" placeholder="test" type="file"/>
- 
- <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button"  data-bs-toggle="dropdown" >
-    Dropdown button
-  </button>
-  <ul class="dropdown-menu" >
-    <li><a class="dropdown-item" href="#">Action</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
-    <li><a class="dropdown-item" href="#">Something else here</a></li>
-  </ul> 
-</div>
-
-<select class="form-select" aria-label="Default select example">
-  <option selected>Open this select menu</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
-</select>
-
-
+  <Input label="test" placeholder="test" type="file" />
 </template>
 
 <script setup lang="ts">
@@ -70,7 +66,8 @@ import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import logo from '@/components/icons/logo.vue'
 import PropertyDot from '@/components/property/Property.vue'
-import Input from './components/Form/Input.vue'
+import Input from '@/components/form/Input.vue'
+import DropDown from '@/components/form/DropDown.vue'
 // model imports
 import { EIcon } from '@/enums/EIcon'
 import { EColor } from '@/enums/EColor'

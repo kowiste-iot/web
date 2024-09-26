@@ -1,11 +1,11 @@
 <template>
-  <div class="card col-md-6 bg-light">
+  <div class="card bg-light">
     <div class="card-header d-flex justify-content-between">
       <div v-if="headerText">{{ headerText }}</div>
       <i v-if="headerText && icon" :class="icon"></i>
       <slot v-else name="header" />
     </div>
-    <div class="card-body text-success">
+    <div class="card-body">
       <slot />
     </div>
     <div class="card-footer d-flex justify-content-between">
