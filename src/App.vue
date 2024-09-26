@@ -33,9 +33,9 @@
       <DropDown
         class="col-md-10"
         :icon="EIcon.Death"
-        dataValue="name"
-        caption="select a city"
-        :data="[
+        optionValue="name"
+        placeholder="select a city"
+        :option="[
           { id: 2, name: 'Chanya' },
           { id: 3, name: 'Pablo' },
         ]"

@@ -11,7 +11,7 @@
         {{ model[dataValue] }}
       </div>
       <div v-else>
-        <div v-if="caption">{{ caption }}</div>
+        <div v-if="placeholder">{{ placeholder }}</div>
         <div v-else>Select an option</div>
       </div>
     </div>
@@ -21,7 +21,7 @@
       @mouseleave="toggleVisibility"
     >
       <li
-        v-for="element in data"
+        v-for="element in options"
         :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
         @mouseover="isHover[element.id] = true"
         @mouseleave="isHover[element.id] = false"
@@ -56,15 +56,15 @@ import { EIcon } from '@/enums/EIcon'
 // other imports
 // props
 const props = defineProps({
-  data: {
+  options: {
     type: Array<any>,
     default: [],
   },
-  dataValue: {
+  optionValue: {
     type: String,
     default: 'id',
   },
-  caption: {
+  placeholder: {
     type: String,
   },
   icon: {
