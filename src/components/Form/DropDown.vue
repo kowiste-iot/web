@@ -30,7 +30,7 @@
         />
       </li>
       <li
-        v-for="element in options"
+        v-for="element in optionsFilter"
         :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
         @mouseover="isHover[element.id] = true"
         @mouseleave="isHover[element.id] = false"
@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 // stores import
 // components import
@@ -103,6 +103,7 @@ let filterText = ''
 // methods
 function toggleVisibility() {
   isVisible.value = !isVisible.value
+  if (props.filter) changeFilter()
 }
 function change(data: any) {
   model.value = data
@@ -110,22 +111,13 @@ function change(data: any) {
   props.onChange(data)
 }
 function changeFilter() {
-  console.log('httt');
-  
   if (!props.optionLabel) return
   optionsFilter.value = props.options.filter((option) => {
-    return option[props.optionLabel].contains(filterText)
+    return option[props.optionLabel].includes(filterText)
   })
 }
 // lifeCycle
 // watch
-watch(
-  () => props.options,
-  () => {
-    optionsFilter.value = props.options
-    if (props.filter) changeFilter()
-  }
-)
 </script>
 
 <style scoped></style>

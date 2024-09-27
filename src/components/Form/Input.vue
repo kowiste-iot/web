@@ -7,11 +7,9 @@
       :type="type"
       :placeholder="placeholder"
       :disabled="disabled"
-      @change="
+      @keyup="
         () => {
-          console.log('change');
-          
-          onChange
+          onChange()
         }
       "
       v-model="model"
