@@ -35,10 +35,11 @@
         :icon="EIcon.Death"
         optionValue="name"
         placeholder="select a city"
-        :option="[
+        :options="[
           { id: 2, name: 'Chanya' },
           { id: 3, name: 'Pablo' },
         ]"
+        v-model="drop"
       >
         <template #option="{ data }">
           {{ data.name }}
@@ -53,6 +54,7 @@
   </InputCard>
 
   <Input label="test" placeholder="test" type="file" />
+  <div>Selected drop {{ drop }}</div>
 </template>
 
 <script setup lang="ts">
@@ -76,6 +78,7 @@ import { Property } from '@/model/property'
 // props
 // data
 const currentLocale = ref('en')
+const drop = ref()
 const test = new Array<Property>()
 test.push({
   id: 1,
