@@ -1,7 +1,21 @@
 <template>
-  <div>
+  <div class="d-flex p-1">
     <label v-if="label" class="p-2">{{ label }}</label>
-    <input :type="type" :placeholder="placeholder" :disabled="disabled"/>
+    <i v-if="icon" class="px-2 pt-2" :class="icon"></i>
+    <input
+      class="flex-fill form-control"
+      :type="type"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      @change="
+        () => {
+          console.log('change');
+          
+          onChange
+        }
+      "
+      v-model="model"
+    />
   </div>
 </template>
 
@@ -15,21 +29,31 @@
 const props = defineProps({
   label: {
     type: String,
-    default: "",
+    default: '',
+  },
+  icon: {
+    type: String,
   },
   type: {
     type: String,
-    default: "text",
+    default: 'text',
   },
   placeholder: {
     type: String,
-    default: "placeholder",
+    default: 'placeholder',
   },
   disabled: {
     type: Boolean,
     default: false,
   },
-});
+  onChange: {
+    type: Function,
+    default: function () {},
+  },
+})
+
+const model = defineModel()
+
 // data
 // storage calls
 // computed

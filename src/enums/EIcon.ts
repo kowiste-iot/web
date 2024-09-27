@@ -1,7 +1,7 @@
 const prev = 'fas '
 export enum EIcon {
-  User = 'fa-user',
-
+  User = prev + 'fa-user',
+  MagnifyGlass = prev + 'fa-magnifying-glass',
   //Action
   Cancel = prev + 'fa-xmark',
   Success = prev + 'fa-check',

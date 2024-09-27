@@ -1,7 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faCheckCircle,
-  
   faSmile,
   faUser,
 } from '@fortawesome/free-regular-svg-icons' // regular icon
@@ -10,6 +9,7 @@ import {
   faEdit,
   faEllipsisVertical,
   faInfo,
+  faMagnifyingGlass,
   faSkull,
   faTrash,
   faTriangleExclamation,
@@ -26,7 +26,8 @@ library.add(
   faInfo,
   faSkull,
   faEllipsisVertical,
-  faEdit ,
-  faTrash
+  faEdit,
+  faTrash,
+  faMagnifyingGlass
 )
 //check,x dont work

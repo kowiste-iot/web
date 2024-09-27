@@ -1,6 +1,6 @@
 ``
 <template>
-  <div class=" position-relative">
+  <div class="position-relative">
     <div
       class="bg-light border rounded p-1 d-flex"
       role="button"
@@ -20,6 +20,15 @@
       class="position-absolute top-1 list-group w-100"
       @mouseleave="toggleVisibility"
     >
+      <li v-if="filter" class="bg-ligth list-group-item w-100 p-1">
+        <Input
+          :icon="EIcon.MagnifyGlass"
+          class="w-100"
+          placeholder="filter"
+          :onChange="changeFilter"
+          v-model="filterText"
+        />
+      </li>
       <li
         v-for="element in options"
         :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
@@ -45,10 +54,11 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 // stores import
 // components import
+import Input from '@/components/form/Input.vue'
 
 // model imports
 import { EIcon } from '@/enums/EIcon'
@@ -64,11 +74,18 @@ const props = defineProps({
     type: String,
     default: 'id',
   },
+  optionLabel: {
+    type: String,
+    default: '',
+  },
   placeholder: {
     type: String,
   },
   icon: {
     type: String,
+  },
+  filter: {
+    type: Boolean,
   },
   onChange: {
     type: Function,
@@ -79,6 +96,8 @@ const props = defineProps({
 const model = defineModel({} as { [key: string]: any })
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
+const optionsFilter = ref(new Array<any>())
+let filterText = ''
 // storage calls
 // computed
 // methods
@@ -90,8 +109,23 @@ function change(data: any) {
   toggleVisibility()
   props.onChange(data)
 }
+function changeFilter() {
+  console.log('httt');
+  
+  if (!props.optionLabel) return
+  optionsFilter.value = props.options.filter((option) => {
+    return option[props.optionLabel].contains(filterText)
+  })
+}
 // lifeCycle
 // watch
+watch(
+  () => props.options,
+  () => {
+    optionsFilter.value = props.options
+    if (props.filter) changeFilter()
+  }
+)
 </script>
 
 <style scoped></style>

@@ -20,7 +20,7 @@
     </template>
   </InputCard>
 
-  <InputCard class="col-md-6">
+  <InputCard class="col-md-6 my-4">
     <template #header>
       <div>Test Card</div>
       <PropertyDot
@@ -34,15 +34,17 @@
         class="col-md-10"
         :icon="EIcon.Death"
         optionValue="name"
+        filter
+        optionLabel="name"
         placeholder="select a city"
         :options="[
-          { id: 2, name: 'Chanya' },
-          { id: 3, name: 'Pablo' },
+          { id: 2, name: 'Chanya', icon: EIcon.Cancel },
+          { id: 3, name: 'Pablo', icon: EIcon.User },
         ]"
         v-model="drop"
       >
         <template #option="{ data }">
-          {{ data.name }}
+          <i :class="data.icon" class="me-2"></i> {{ data.name }}
         </template>
       </DropDown>
     </div>
