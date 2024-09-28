@@ -19,7 +19,9 @@
       <Button :color="EColor.Danger" :outline="true">Cancel</Button>
     </template>
   </InputCard>
-
+<div class="d-flex p-5">
+  <Spinner/>
+</div>
   <InputCard class="col-md-6 my-4">
     <template #header>
       <div>Test Card</div>
@@ -72,6 +74,7 @@ import logo from '@/components/icons/logo.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
+import Spinner from '@/components/loading/Spinner.vue'
 // model imports
 import { EIcon } from '@/enums/EIcon'
 import { EColor } from '@/enums/EColor'

@@ -8,4 +8,5 @@ export enum EColor {
   Info = 'info',
   Dark = 'dark',
   Light = 'light',
+  Transparent = 'transparent',
 }
