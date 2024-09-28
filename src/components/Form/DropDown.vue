@@ -113,7 +113,9 @@ function change(data: any) {
 function changeFilter() {
   if (!props.optionLabel) return
   optionsFilter.value = props.options.filter((option) => {
-    return option[props.optionLabel].includes(filterText)
+    return option[props.optionLabel]
+      .toLowerCase()
+      .includes(filterText.toLowerCase())
   })
 }
 // lifeCycle
