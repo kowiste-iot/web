@@ -18,6 +18,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@popperjs/core": "^2.11.8",
+    "axios": "^1.7.7",
+    "keycloak-js": "^25.0.6",
     "pinia": "^2.1.7",
     "primevue": "^4.0.5",
     "vue": "^3.4.29",

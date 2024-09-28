@@ -1,64 +1,66 @@
 <template>
-  <Alert :icon="EIcon.Success" :color="EColor.Success">i'm alert </Alert>
+  <div class="container-md">
+    <Alert :icon="EIcon.Success" :color="EColor.Success">i'm alert </Alert>
 
-  <div>
-    <h1>{{ $t('message.hello') }}</h1>
-  </div>
-  <Button @click="toggleTheme"> Change Theme</Button>
-  <select @change="changeLanguage" v-model="currentLocale">
-    <option value="en">English</option>
-    <option value="es">Spanish</option>
-    <option value="th">Thai</option>
-  </select>
-
-  <Button :color="EColor.Success" :outline="true">i'm a button</Button>
-  <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
-    hello
-    <template #footer>
-      <Button :color="EColor.Success">Save</Button>
-      <Button :color="EColor.Danger" :outline="true">Cancel</Button>
-    </template>
-  </InputCard>
-<div class="d-flex p-5">
-  <Spinner/>
-</div>
-  <InputCard class="col-md-6 my-4">
-    <template #header>
-      <div>Test Card</div>
-      <PropertyDot
-        :data="test"
-        :onClick="(id:number)=>console.log('press',id)"
-      />
-    </template>
-    <div class="row">
-      <label class="col-md-2">Agent</label>
-      <DropDown
-        class="col-md-10"
-        :icon="EIcon.Death"
-        optionValue="name"
-        filter
-        optionLabel="name"
-        placeholder="select a city"
-        :options="[
-          { id: 2, name: 'Chanya', icon: EIcon.Cancel },
-          { id: 3, name: 'Pablo', icon: EIcon.User },
-        ]"
-        v-model="drop"
-      >
-        <template #option="{ data }">
-          <i :class="data.icon" class="me-2"></i> {{ data.name }}
-        </template>
-      </DropDown>
+    <div>
+      <h1>{{ $t('message.hello') }}</h1>
     </div>
+    <Button @click="toggleTheme"> Change Theme</Button>
+    <select @change="changeLanguage" v-model="currentLocale">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="th">Thai</option>
+    </select>
 
-    <template #footer>
-      <Button :color="EColor.Light">Save</Button>
-      <Button :color="EColor.Dark" :outline="true">Cancel</Button>
-    </template>
-  </InputCard>
+    <Button :color="EColor.Success" :outline="true">i'm a button</Button>
+    <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
+      hello
+      <template #footer>
+        <Button :color="EColor.Success">Save</Button>
+        <Button :color="EColor.Danger" :outline="true">Cancel</Button>
+      </template>
+    </InputCard>
+    <div class="d-flex p-5">
+      <Spinner />
+    </div>
+    <InputCard class="col-md-6 my-4">
+      <template #header>
+        <div>Test Card</div>
+        <PropertyDot
+          :data="test"
+          :onClick="(id:number)=>console.log('press',id)"
+        />
+      </template>
+      <div class="row">
+        <label class="col-md-2">Agent</label>
+        <DropDown
+          class="col-md-10"
+          :icon="EIcon.Death"
+          optionValue="name"
+          filter
+          optionLabel="name"
+          placeholder="select a city"
+          :options="[
+            { id: 2, name: 'Chanya', icon: EIcon.Cancel },
+            { id: 3, name: 'Pablo', icon: EIcon.User },
+          ]"
+          v-model="drop"
+        >
+          <template #option="{ data }">
+            <i :class="data.icon" class="me-2"></i> {{ data.name }}
+          </template>
+        </DropDown>
+      </div>
 
-  <Input label="test" placeholder="test" type="file" />
-  <div>Selected drop {{ drop }}</div>
+      <template #footer>
+        <Button :color="EColor.Light">Save</Button>
+        <Button :color="EColor.Dark" :outline="true">Cancel</Button>
+      </template>
+    </InputCard>
+
+    <Input label="test" placeholder="test" type="file" />
+    <div>Selected drop {{ drop }}</div>
+  </div>
 </template>
 
 <script setup lang="ts">

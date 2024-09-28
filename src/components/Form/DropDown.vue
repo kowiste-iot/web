@@ -8,7 +8,7 @@
     >
       <i v-if="icon" class="pe-2 pt-1" :class="icon"></i>
       <div v-if="model">
-        {{ model[optionValue] }}
+        {{ (model as any)[optionValue] }}
       </div>
       <div v-else>
         <div v-if="placeholder">{{ placeholder }}</div>
