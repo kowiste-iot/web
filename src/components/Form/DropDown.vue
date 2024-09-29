@@ -29,26 +29,35 @@
           v-model="filterText"
         />
       </li>
-
-      <li
-        v-for="element in optionsFiltered"
-        :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
-        @mouseover="isHover[element.id] = true"
-        @mouseleave="isHover[element.id] = false"
-        class="list-group-item"
-        role="button"
-        @click="change(element)"
-      >
-        <div class="d-flex">
-          <i
-            v-if="model == element"
-            class="pt-1 me-2"
-            :class="EIcon.Success"
-          ></i>
-          <i v-else class="me-4"></i>
-          <slot name="option" :data="element" />
+      <div v-for="(group, key) in optionsFiltered">
+        <div
+          v-if="key != ''"
+          class="bg-ligth list-group-item w-100 p-1 text-center"
+        >
+          <slot name="group" :data="key">
+            {{ key }}
+          </slot>
         </div>
-      </li>
+        <li
+          v-for="element in group"
+          :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
+          @mouseover="isHover[element.id] = true"
+          @mouseleave="isHover[element.id] = false"
+          class="list-group-item"
+          role="button"
+          @click="change(element)"
+        >
+          <div class="d-flex">
+            <i
+              v-if="model == element"
+              class="pt-1 me-2"
+              :class="EIcon.Success"
+            ></i>
+            <i v-else class="me-4"></i>
+            <slot name="option" :data="element" />
+          </div>
+        </li>
+      </div>
     </ul>
   </div>
 </template>
@@ -81,6 +90,7 @@ const props = defineProps({
   },
   groupLabel: {
     type: String,
+    default: '',
   },
   placeholder: {
     type: String,
@@ -100,7 +110,7 @@ const props = defineProps({
 const model = defineModel({} as { [key: string]: any })
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
-const optionsFiltered = ref(new Array<any>())
+const optionsFiltered = ref({} as { [group: string]: Array<any> })
 let filterText = ''
 // storage calls
 // computed
@@ -116,11 +126,31 @@ function change(data: any) {
 }
 function changeFilter() {
   if (!props.optionLabel) return
-  const filteredOption = props.options.filter((option) => {
+  const filtered = props.options.filter((option) => {
     return option[props.optionLabel]
       .toLowerCase()
       .includes(filterText.toLowerCase())
   })
+  optionsFiltered.value = {}
+  if (props.groupLabel && props.groupLabel != '') {
+    const groupValues = [
+      ...new Set(filtered.map((obj) => obj[props.groupLabel])),
+    ]
+    groupValues.forEach((group) => {
+      filtered.forEach((option) => {
+        //loop over options filtered
+        if (option[props.groupLabel] == group) {
+          if (!optionsFiltered.value[group]) {
+            optionsFiltered.value[group] = []
+          }
+          optionsFiltered.value[group].push(option)
+        }
+      })
+    })
+  } else {
+    optionsFiltered.value[''] = filtered
+  }
+
   // optionsFiltered.value
 }
 // lifeCycle

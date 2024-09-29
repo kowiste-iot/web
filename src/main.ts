@@ -38,6 +38,6 @@ app.use(router)
 //plugins
 app
   .use(ThemeBsPlugin, themeOption)
-  .use(WebsocketPlugin, wsOptions)
-  .use(KeycloakPlugin, kcOptions)
+  // .use(WebsocketPlugin, wsOptions)
+  // .use(KeycloakPlugin, kcOptions)
 app.mount('#app')

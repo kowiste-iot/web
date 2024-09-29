@@ -39,13 +39,41 @@
           optionValue="name"
           filter
           optionLabel="name"
+          groupLabel="brand"
           placeholder="select a city"
           :options="[
-            { id: 2, name: 'Chanya', icon: EIcon.Cancel },
-            { id: 3, name: 'Pablo', icon: EIcon.User },
+            {
+              id: 2,
+              name: 'Chanya',
+              icon: EIcon.Cancel,
+              country: 'thailand',
+              brand: 'bmw',
+            },
+            {
+              id: 3,
+              name: 'Pablo',
+              icon: EIcon.User,
+              country: 'spain',
+              brand: 'ferrari',
+            },
+            {
+              id: 4,
+              name: 'Namkhing',
+              icon: EIcon.User,
+              country: 'thailand',
+              brand: 'tesla',
+            },
+            {
+              id: 5,
+              name: 'Pelayo',
+              icon: EIcon.User,
+              country: 'spain',
+              brand: 'renault',
+            },
           ]"
           v-model="drop"
         >
+          <template #group="{ data }"> Your car brand is : {{ data }} awesome </template>
           <template #option="{ data }">
             <i :class="data.icon" class="me-2"></i> {{ data.name }}
           </template>
