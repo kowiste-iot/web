@@ -9,6 +9,12 @@
   // model imports
   // other imports
   // props
+  const props = defineProps({
+  data: {
+    type: String,
+    default: "",
+  },
+});
   // data
   // storage calls
   // computed

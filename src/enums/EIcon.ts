@@ -1,4 +1,4 @@
-const prev = 'fas '
+const prev = 'fas ';
 export enum EIcon {
   User = prev + 'fa-user',
   MagnifyGlass = prev + 'fa-magnifying-glass',
@@ -13,4 +13,9 @@ export enum EIcon {
   Warning = prev + 'fa-triangle-exclamation',
   Info = prev + 'fa-info',
   Death = prev + 'fa-skull',
+  //
+  MenuOpen = prev + 'fa-chevron-down',
+  MenuClose = prev + 'fa-chevron-up',
+  MenuRight = prev + 'fa-chevron-right',
+  MenuLeft = prev + 'fa-chevron-left',
 }

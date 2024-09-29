@@ -6,6 +6,10 @@ import {
 } from '@fortawesome/free-regular-svg-icons' // regular icon
 import {
   faCheck,
+  faChevronDown,
+  faChevronLeft,
+  faChevronRight,
+  faChevronUp,
   faEdit,
   faEllipsisVertical,
   faInfo,
@@ -28,6 +32,10 @@ library.add(
   faEllipsisVertical,
   faEdit,
   faTrash,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faChevronLeft,
+  faChevronRight,
+  faChevronUp,
+  faChevronDown
 )
 //check,x dont work
