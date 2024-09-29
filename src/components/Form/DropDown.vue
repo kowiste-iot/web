@@ -29,14 +29,15 @@
           v-model="filterText"
         />
       </li>
+
       <li
-        v-for="element in optionsFilter"
+        v-for="element in optionsFiltered"
         :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
         @mouseover="isHover[element.id] = true"
         @mouseleave="isHover[element.id] = false"
         class="list-group-item"
         role="button"
-        @click="() => change(element)"
+        @click="change(element)"
       >
         <div class="d-flex">
           <i
@@ -78,6 +79,9 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  groupLabel: {
+    type: String,
+  },
   placeholder: {
     type: String,
   },
@@ -96,7 +100,7 @@ const props = defineProps({
 const model = defineModel({} as { [key: string]: any })
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
-const optionsFilter = ref(new Array<any>())
+const optionsFiltered = ref(new Array<any>())
 let filterText = ''
 // storage calls
 // computed
@@ -112,11 +116,12 @@ function change(data: any) {
 }
 function changeFilter() {
   if (!props.optionLabel) return
-  optionsFilter.value = props.options.filter((option) => {
+  const filteredOption = props.options.filter((option) => {
     return option[props.optionLabel]
       .toLowerCase()
       .includes(filterText.toLowerCase())
   })
+  // optionsFiltered.value
 }
 // lifeCycle
 // watch

@@ -2,17 +2,17 @@
   <div
     class="position-relative rounded"
     :class="`bg-${backgroundColor}`"
-    style="height: 3rem; width: 3rem"
+    style="height: 2.5rem; width: 2.5rem"
   >
     <div
       class="position-absolute rounded-circle circle"
-      :class="`bg-${EColor.Primary}`"
-      style="height: 0.8rem; width: 0.8rem"
+      :class="`bg-${ballColorLeft}`"
+      style="height: 0.5rem; width: 0.5rem"
     />
     <div
       class="position-absolute rounded-circle circleinv"
-      :class="`bg-${EColor.Danger}`"
-      style="height: 0.8rem; width: 0.8rem"
+      :class="`bg-${ballColorRight}`"
+      style="height: 0.5rem; width: 0.5rem"
     />
   </div>
 </template>
@@ -31,6 +31,14 @@ const props = defineProps({
     type: String,
     default: EColor.Dark,
   },
+  ballColorLeft: {
+    type: String,
+    default: EColor.Primary,
+  },
+  ballColorRight: {
+    type: String,
+    default: EColor.Danger,
+  },
 })
 // data
 // storage calls
@@ -43,7 +51,6 @@ const props = defineProps({
 <style scoped>
 .circle {
   animation: move 2s infinite;
-
 }
 .circleinv {
   animation: moveinv 2s infinite;
@@ -60,11 +67,11 @@ const props = defineProps({
   }
   50% {
     top: 1rem;
-    left: 1.8rem;
+    left: 1.5rem;
   }
   75% {
     top: 1rem;
-    left:  0.5rem;
+    left: 0.5rem;
   }
   100% {
     top: 1rem;
@@ -82,11 +89,11 @@ const props = defineProps({
   }
   50% {
     top: 1rem;
-    right: 1.8rem;
+    right: 1.5rem;
   }
   75% {
     top: 1rem;
-    right:  0.5rem;
+    right: 0.5rem;
   }
   100% {
     top: 1rem;
