@@ -2,7 +2,7 @@
 <template>
   <div class="position-relative">
     <div class="px-2" role="button" @click="toggleVisibility">
-      <i :class="EIcon.Property"></i>
+      <FIcon :icon="EIcon.Property" />
     </div>
     <div
       v-if="isVisible"
@@ -17,7 +17,7 @@
           @mouseover="isHover[element.id] = true"
           @mouseleave="isHover[element.id] = false"
         >
-          <i :class="element.icon"></i>
+          <FIcon :icon="element.icon" />
           <div class="ms-4">{{ element.name }}</div>
         </div>
       </div>

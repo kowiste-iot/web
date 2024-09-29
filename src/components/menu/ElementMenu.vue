@@ -4,18 +4,17 @@
     :class="data.isParent ? 'py-2 bg-dark' : 'py-0 bg-secondary'"
   >
     <div class="d-flex" role="button">
-      <i class="me-3 pt-1" :class="data.icon"></i>
+      <FIcon class="me-3 pt-1" :icon="data.icon" />
       <div v-if="isOpen" class=" ">{{ data.label }}</div>
     </div>
     <div v-if="isOpen">
-      <i
+      <FIcon
         v-if="data.subMenu?.length > 0"
         class="ms-3 pt-1"
-        :class="open ? EIcon.MenuClose : EIcon.MenuOpen"
+        :icon="open ? EIcon.MenuClose : EIcon.MenuOpen"
         role="button"
         @click="openMenu"
-      ></i>
-
+      />
       <div v-else class="ms-3 pt-1" />
     </div>
   </div>
@@ -52,7 +51,6 @@ const open = ref(true)
 // computed
 // methods
 function openMenu() {
-  console.log('df', open)
   open.value = !open.value
 }
 // lifeCycle

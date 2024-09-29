@@ -2,7 +2,7 @@
   <div class="card bg-light">
     <div class="card-header d-flex justify-content-between">
       <div v-if="headerText">{{ headerText }}</div>
-      <i v-if="headerText && icon" :class="icon"></i>
+      <FIcon v-if="headerText && icon" :icon="icon" />
       <slot v-else name="header" />
     </div>
     <div class="card-body">

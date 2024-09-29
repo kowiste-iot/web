@@ -5,11 +5,11 @@
       class="position-absolute start-100 translate-middle"
       @click="switchMenu"
     >
-      <i
+      <FIcon
         class="bg-success rounded-circle p-1"
-        :class="EIcon.MenuLeft"
+        :icon="isOpen ? EIcon.MenuLeft : EIcon.MenuRight"
         style="height: 1rem; width: 1rem"
-      ></i>
+      />
     </div>
     <div class="mb-3"></div>
     <div class="d-flex flex-column">
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 // imports
-import {ref} from 'vue'
+import { ref } from 'vue'
 // stores import
 // components import
 import Logo from '@/components/icons/Logo.vue'
@@ -49,8 +49,8 @@ const isOpen = ref(true)
 // storage calls
 // computed
 // methods
-function switchMenu(){
-isOpen.value=!isOpen.value
+function switchMenu() {
+  isOpen.value = !isOpen.value
 }
 // lifeCycle
 // watch

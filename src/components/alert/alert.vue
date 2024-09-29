@@ -6,12 +6,15 @@
         :class="`bg-${color}`"
         v-if="color"
       >
-        <i
-          class="bg-white far rounded-circle p-1 "
-          :class="[icon, color ? `text-${color}` : '']"
-          style="height: 1rem;width: 1rem;"
+        <FIcon
           v-if="icon"
-        ></i>
+          class="bg-white far rounded-circle p-1"
+          :class="color ? `text-${color}` : ''"
+          :icon="icon"
+          style="height: 1rem; width: 1rem"
+        />
+
+
       </div>
       <div class="d-flex align-items-center p-2 flex-grow-1 text-break">
         <slot />
@@ -24,14 +27,13 @@
 const props = defineProps({
   icon: {
     type: String,
-    default: "",
+    default: '',
   },
   color: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

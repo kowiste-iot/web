@@ -1,4 +1,4 @@
-const prev = 'fas ';
+const prev = 'fa-solid '
 export enum EIcon {
   User = prev + 'fa-user',
   MagnifyGlass = prev + 'fa-magnifying-glass',

@@ -6,7 +6,7 @@
       role="button"
       @click="toggleVisibility"
     >
-      <i v-if="icon" class="pe-2 pt-1" :class="icon"></i>
+      <FIcon v-if="icon" class="pe-2 pt-1" :icon="icon" />
       <div v-if="model">
         {{ (model as any)[optionValue] }}
       </div>
@@ -48,12 +48,14 @@
           @click="change(element)"
         >
           <div class="d-flex">
-            <i
+
+            <FIcon
               v-if="model == element"
-              class="pt-1 me-2"
-              :class="EIcon.Success"
-            ></i>
-            <i v-else class="me-4"></i>
+              class="me-2 pt-1"
+              :icon="EIcon.Success"
+            />
+
+            <div v-else class="me-4"></div>
             <slot name="option" :data="element" />
           </div>
         </li>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-stretch">  
+  <div class="d-flex align-items-stretch">
     <SideMenu />
     <div class="flex-fill container-md">
       <Alert :icon="EIcon.Success" :color="EColor.Success">i'm alert </Alert>
@@ -79,7 +79,8 @@
               Your car brand is : {{ data }} awesome
             </template>
             <template #option="{ data }">
-              <i :class="data.icon" class="me-2"></i> {{ data.name }}
+              <FIcon :icon="data.icon" class="me-2" />
+              {{ data.name }}
             </template>
           </DropDown>
         </div>
@@ -94,72 +95,71 @@
       <div>Selected drop {{ drop }}</div>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
 // imports
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue'
 // stores import
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 // components import
-import Alert from '@/components/alert/Alert.vue';
-import Button from '@/components/buttons/Button.vue';
-import InputCard from '@/components/cards/Card.vue';
-import PropertyDot from '@/components/property/Property.vue';
-import Input from '@/components/form/Input.vue';
-import DropDown from '@/components/form/DropDown.vue';
-import Spinner from '@/components/loading/Spinner.vue';
-import MenuCard from './components/menu/SideMenu.vue';
+import Alert from '@/components/alert/Alert.vue'
+import Button from '@/components/buttons/Button.vue'
+import InputCard from '@/components/cards/Card.vue'
+import PropertyDot from '@/components/property/Property.vue'
+import Input from '@/components/form/Input.vue'
+import DropDown from '@/components/form/DropDown.vue'
+import Spinner from '@/components/loading/Spinner.vue'
+import MenuCard from './components/menu/SideMenu.vue'
 // model imports
-import { EIcon } from '@/enums/EIcon';
-import { EColor } from '@/enums/EColor';
-import { Property } from '@/model/property';
-import SideMenu from './components/menu/SideMenu.vue';
+import { EIcon } from '@/enums/EIcon'
+import { EColor } from '@/enums/EColor'
+import { Property } from '@/model/property'
+import SideMenu from './components/menu/SideMenu.vue'
 // other imports
 // props
 // data
-const currentLocale = ref('en');
-const drop = ref();
-const test = new Array<Property>();
+const currentLocale = ref('en')
+const drop = ref()
+const test = new Array<Property>()
 test.push({
   id: 1,
   icon: EIcon.Edit,
   name: 'Edit',
-});
+})
 test.push({
   id: 2,
   icon: EIcon.Delete,
   name: 'Delete',
-});
+})
 test.push({
   id: 3,
   icon: EIcon.Info,
   name: 'Info',
-});
-let isDark = false;
+})
+let isDark = false
 // storage calls
-const { locale } = useI18n();
+const { locale } = useI18n()
 // computed
 // methods
 function toggleTheme() {
-  isDark = !isDark;
+  isDark = !isDark
   if (isDark) {
-    document.body.classList.add('dark-theme');
-    document.body.classList.remove('light-theme');
+    document.body.classList.add('dark-theme')
+    document.body.classList.remove('light-theme')
   } else {
-    document.body.classList.add('light-theme');
-    document.body.classList.remove('dark-theme');
+    document.body.classList.add('light-theme')
+    document.body.classList.remove('dark-theme')
   }
 }
 
 function changeLanguage() {
-  locale.value = currentLocale.value;
+  locale.value = currentLocale.value
 }
 // lifeCycle
 onMounted(() => {
-  document.body.classList.add('light-theme');
-});
+  document.body.classList.add('light-theme')
+})
 // watch
 </script>
 

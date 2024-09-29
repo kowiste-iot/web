@@ -3,11 +3,12 @@
     class="btn d-flex"
     :class="outline ? `btn-outline-${color}` : `btn-${color} `"
   >
-    <i
+    <FIcon
       v-if="icon"
       class="bg-white far rounded-circle p-2"
-      :class="[icon, color ? `text-${color}` : '']"
-    ></i>
+      :class="color ? `text-${color}` : ''"
+      :icon="icon"
+    />
     <div class="d-flex align-items-center"><slot /></div>
   </button>
 </template>

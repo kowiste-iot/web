@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex p-1">
     <label v-if="label" class="p-2">{{ label }}</label>
-    <i v-if="icon" class="px-2 pt-2" :class="icon"></i>
+    <FIcon v-if="icon" class="px-2 pt-2" :icon="icon" />
     <input
       class="flex-fill form-control"
       :type="type"
