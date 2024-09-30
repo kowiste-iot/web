@@ -11,14 +11,14 @@
       <FIcon
         v-if="data.subMenu?.length > 0"
         class="ms-3 pt-1"
-        :icon="open ? EIcon.MenuClose : EIcon.MenuOpen"
+        :icon="isExpanded ? EIcon.MenuClose : EIcon.MenuOpen"
         role="button"
-        @click="openMenu"
+        @click="expandMenu"
       />
       <div v-else class="ms-3 pt-1" />
     </div>
   </div>
-  <div v-if="isOpen">
+  <div v-if="isExpanded">
     <ElementMenu v-for="menu in data.subMenu" :data="menu" :isOpen="isOpen" />
   </div>
 </template>
@@ -46,12 +46,12 @@ const props = defineProps({
   },
 })
 // data
-const open = ref(true)
+const isExpanded = ref(false)
 // storage calls
 // computed
 // methods
-function openMenu() {
-  open.value = !open.value
+function expandMenu() {
+  isExpanded.value = !isExpanded.value
 }
 // lifeCycle
 // watch
