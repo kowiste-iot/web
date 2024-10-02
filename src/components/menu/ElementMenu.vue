@@ -3,10 +3,14 @@
     class="d-flex justify-content-between px-3"
     :class="data.isParent ? 'py-2 bg-dark' : 'py-0 bg-secondary'"
   >
-    <div class="d-flex" role="button">
+    <div
+      class="d-flex"
+      role="button"
+      @click="goToPath(data.path)"
+    >
       <FIcon class="me-3 pt-1" :icon="data.icon" />
       <div v-if="isOpen" class=" ">{{ data.label }}</div>
-    </div>
+    </div >
     <div v-if="isOpen">
       <FIcon
         v-if="data.subMenu?.length > 0"
@@ -27,10 +31,12 @@
 // imports
 import { ref } from 'vue'
 // stores import
+import { useRouter } from 'vue-router'
+
 // components import
 // model imports
-import { EIcon } from '@/enums/EIcon'
-import { type IMenu } from '@/model/navigation/menu'
+import { EIcon } from '@/enums/gui/EIcon'
+import { type IMenu } from '@/model/gui/menu'
 import type { PropType } from 'vue'
 // other imports
 
@@ -48,13 +54,19 @@ const props = defineProps({
 // data
 const isExpanded = ref(false)
 // storage calls
+const router = useRouter()
+
 // computed
 // methods
 function expandMenu() {
   isExpanded.value = !isExpanded.value
+}
+function goToPath(data: string) {
+  router.push(data)
 }
 // lifeCycle
 // watch
 </script>
 
 <style scoped></style>
+@/model/gui/menu

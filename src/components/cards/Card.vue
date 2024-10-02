@@ -19,7 +19,7 @@
 // stores import
 // components import
 // model imports
-import { EColor } from '@/enums/EColor'
+import { EColor } from '@/enums/gui/EColor'
 
 // other imports
 // props

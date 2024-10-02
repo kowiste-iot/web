@@ -48,7 +48,6 @@
           @click="change(element)"
         >
           <div class="d-flex">
-
             <FIcon
               v-if="model == element"
               class="me-2 pt-1"
@@ -73,7 +72,7 @@ import { ref } from 'vue'
 import Input from '@/components/form/Input.vue'
 
 // model imports
-import { EIcon } from '@/enums/EIcon'
+import { EIcon } from '@/enums/gui/EIcon'
 
 // other imports
 // props

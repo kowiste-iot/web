@@ -34,8 +34,8 @@ import { ref } from 'vue'
 import Button from '@/components/buttons/Button.vue'
 
 // model imports
-import { EIcon } from '@/enums/EIcon'
-import { EColor } from '@/enums/EColor'
+import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/enums/gui/EColor'
 import { Property } from '@/model/property'
 
 // other imports

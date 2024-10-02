@@ -5,6 +5,7 @@ import {
   faUser,
 } from '@fortawesome/free-regular-svg-icons' // regular icon
 import {
+  faBuilding,
   faCheck,
   faChevronDown,
   faChevronLeft,
@@ -12,8 +13,12 @@ import {
   faChevronUp,
   faEdit,
   faEllipsisVertical,
+  faGear,
+  faHome,
   faInfo,
   faMagnifyingGlass,
+  faMobileScreen,
+  faRuler,
   faSkull,
   faTrash,
   faTriangleExclamation,
@@ -36,6 +41,11 @@ library.add(
   faChevronLeft,
   faChevronRight,
   faChevronUp,
-  faChevronDown
+  faChevronDown,
+  faBuilding,
+  faRuler,
+  faMobileScreen,
+  faGear,
+  faHome
 )
 //check,x dont work

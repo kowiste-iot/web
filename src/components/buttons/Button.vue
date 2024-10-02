@@ -3,12 +3,7 @@
     class="btn d-flex"
     :class="outline ? `btn-outline-${color}` : `btn-${color} `"
   >
-    <FIcon
-      v-if="icon"
-      class="bg-white far rounded-circle p-2"
-      :class="color ? `text-${color}` : ''"
-      :icon="icon"
-    />
+    <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
     <div class="d-flex align-items-center"><slot /></div>
   </button>
 </template>
@@ -18,7 +13,7 @@
 // stores import
 // components import
 // model imports
-import { EColor } from '@/enums/EColor'
+import { EColor } from '@/enums/gui/EColor'
 
 // other imports
 // props
