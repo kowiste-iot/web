@@ -44,9 +44,9 @@ import { EIcon } from '@/enums/gui/EIcon'
 const menu = [
   {
     label: 'Dashboard',
-    icon: EIcon.Cancel,
+    icon: EIcon.Dashboard,
     isParent: true,
-    path: '/dahsboard',
+    path: '/dashboard',
   },
   {
     label: 'Asset',
@@ -57,7 +57,7 @@ const menu = [
   },
   { label: 'Measure', icon: EIcon.Measure, isParent: true, path: '/measure' },
   { label: 'Device', icon: EIcon.Device, isParent: true, path: '/device' },
-  { label: 'Process', icon: EIcon.Cancel, isParent: true, path: '/process' },
+  { label: 'Process', icon: EIcon.Process, isParent: true, path: '/process' },
   { label: 'Admin', icon: EIcon.Admin, isParent: true, path: '/admin' },
 ] as IMenu[]
 const isOpen = ref(true)

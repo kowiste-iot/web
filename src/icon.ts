@@ -2,17 +2,21 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faCheckCircle,
   faSmile,
-  faUser,
 } from '@fortawesome/free-regular-svg-icons' // regular icon
 import {
+  faBell,
   faBuilding,
+  faChartLine,
   faCheck,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
   faChevronUp,
+  faDiagramPredecessor,
   faEdit,
   faEllipsisVertical,
+  faExclamation,
+  faExpand,
   faGear,
   faHome,
   faInfo,
@@ -22,6 +26,8 @@ import {
   faSkull,
   faTrash,
   faTriangleExclamation,
+  faUser,
+  faUserCircle,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -46,6 +52,12 @@ library.add(
   faRuler,
   faMobileScreen,
   faGear,
-  faHome
+  faHome,
+  faChartLine,
+  faExpand,
+  faBell,
+  faExclamation,
+  faUserCircle,
+  faDiagramPredecessor
 )
 //check,x dont work

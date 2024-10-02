@@ -1,42 +1,52 @@
 <template>
   <div
-    class="d-flex align-items-stretch position-relative h-100"
+    class="d-flex align-items-stretch position-relative h-100 w-100"
     :data-bs-theme="'light'"
   >
     <SideMenu />
     <Alert
-      v-if="false"
-      class="position-absolute start-50 translate-middle-x"
-      :icon="EIcon.Success"
-      :color="EColor.Success"
-      style="width: 50%"
-      >i'm alert
+      v-if="showAlert"
+      class="position-absolute start-50 translate-middle-x col-md-6"
+      :icon="alertData.icon"
+      :color="alertData.color"
+      style="top: -10rem"
+      >{{ alertData.text }}
     </Alert>
-    <div class="flex-fill  overflow-scroll">
-      <RouterView  class="container-md"/>
+    <div class="d-flex flex-column w-100">
+      <Header />
+      <div class="flex-fill overflow-scroll">
+        <div class="container-md">
+          <RouterView />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
+import { computed } from 'vue'
 // stores import
-
+import { useAlert } from '@/stores/gui/alert'
 // components import
 import Alert from '@/components/alert/Alert.vue'
 import { RouterView } from 'vue-router'
-
+import Header from '@/components/menu/Header.vue'
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
 import SideMenu from './components/menu/SideMenu.vue'
 // other imports
 // props
 // data
 
 // storage calls
-
+const alertStore = useAlert()
 // computed
+const showAlert = computed(() => {
+  return alertStore.have
+})
+const alertData = computed(() => {
+  return alertStore.alert
+})
 // methods
 
 // lifeCycle
@@ -44,6 +54,4 @@ import SideMenu from './components/menu/SideMenu.vue'
 // watch
 </script>
 
-<style scope>
-
-</style>
+<style scope></style>

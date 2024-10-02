@@ -18,6 +18,7 @@
 // imports
 // stores import
 import { useRouter } from 'vue-router'
+import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
@@ -36,7 +37,8 @@ const props = defineProps({
 // data
 // storage calls
 const router = useRouter()
-
+const storeCrumb = useBreadCrumb()
+storeCrumb.reset()
 // computed
 // methods
 function goToHome() {
@@ -48,6 +50,6 @@ function goToHome() {
 
 <style scoped>
 .alt {
-  font-size: 20rem;
+  font-size: 15rem;
 }
 </style>

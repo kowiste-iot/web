@@ -21,5 +21,11 @@ export enum EIcon {
   Measure = 'fa-ruler',
   Device = 'fa-mobile-screen',
   Admin = 'fa-gear',
-  Home = 'fa-home'
+  Home = 'fa-home',
+  Dashboard='fa-chart-line',
+  Expand='fa-expand',
+  Notification='fa-bell',
+  Alert='fa-exclamation',
+  Profile='fa-user-circle',
+  Process='fa-diagram-predecessor'
 }

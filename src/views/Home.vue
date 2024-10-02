@@ -100,10 +100,13 @@
 
 <script setup lang="ts">
 // imports
-import {onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 // stores import
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useAlert } from '@/stores/gui/alert'
+import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
@@ -145,6 +148,9 @@ test.push({
 // storage calls
 const { locale } = useI18n()
 const router = useRouter()
+const alertStore = useAlert()
+const storeCrumb = useBreadCrumb()
+storeCrumb.reset()
 // computed
 // methods
 function toggleTheme() {
@@ -162,7 +168,7 @@ function changeLanguage() {
   locale.value = currentLocale.value
 }
 function goToAsset() {
-  router.push('/asset')
+  alertStore.setError('this is an error')
 }
 // lifeCycle
 onMounted(() => {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="slide">
     <div class="alert alert-light d-flex align-items-stretch p-0 flex-wrap">
       <div
         class="rounded-start icon-box d-flex align-items-center justify-content-center px-2"
@@ -13,8 +13,6 @@
           :icon="icon"
           style="height: 1rem; width: 1rem"
         />
-
-
       </div>
       <div class="d-flex align-items-center p-2 flex-grow-1 text-break">
         <slot />
@@ -36,4 +34,24 @@ const props = defineProps({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.slide {
+  animation: move 5s ;
+}
+@keyframes move {
+  0% {
+    top: -20rem;
+
+  }
+  25% {
+    top: 1rem;
+  }
+
+  75% {
+    top: 1rem;
+  }
+  100% {
+    top: -20rem;
+  }
+}
+</style>

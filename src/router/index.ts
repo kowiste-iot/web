@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+import HomeView from '@/views/Home.vue'
 import ErrorPage from '@/views/Error.vue'
 import { useRequest } from '@/plugins/request/store'
 import assetRoutes from './asset'
+import dashboardRoutes from './dashboard'
+import measureRoutes from './measure'
+import deviceRoutes from './device'
+import adminRoutes from './admin'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +16,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    ...dashboardRoutes,
     ...assetRoutes,
+    ...measureRoutes,
+    ...deviceRoutes,
+    ...adminRoutes,
     {
       path: '/error',
       name: 'Error',
@@ -24,13 +32,7 @@ const router = createRouter({
     },
   ],
 })
-router.beforeEach((from, to, next) => {
+router.beforeEach((from, to) => {
   useRequest().cancelAll()
-  next()
-})
-router.afterEach((to, from, failure) => {
-  if (failure) {
-    console.error('Navigation failed:', failure)
-  }
 })
 export default router
