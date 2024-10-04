@@ -1,12 +1,17 @@
 export enum EIcon {
   User = 'fa-user',
   MagnifyGlass = 'fa-magnifying-glass',
+  ConfirmationSucess = 'fa-circle-check',
+  ConfirmationCancel = 'fa-circle-xmark',
+  ConfirmationWarning = 'fa-circle-exclamation',
+  ConfirmationInfo = 'fa-circle-info',
   //Action
   Cancel = 'fa-xmark',
   Success = 'fa-check',
   Property = 'fa-ellipsis-vertical',
   Edit = 'fa-edit',
   Delete = 'fa-trash',
+  Add='fa-circle-plus',
 
   //
   Warning = 'fa-triangle-exclamation',
@@ -22,10 +27,10 @@ export enum EIcon {
   Device = 'fa-mobile-screen',
   Admin = 'fa-gear',
   Home = 'fa-home',
-  Dashboard='fa-chart-line',
-  Expand='fa-expand',
-  Notification='fa-bell',
-  Alert='fa-exclamation',
-  Profile='fa-user-circle',
-  Process='fa-diagram-predecessor'
+  Dashboard = 'fa-chart-line',
+  Expand = 'fa-expand',
+  Notification = 'fa-bell',
+  Alert = 'fa-exclamation',
+  Profile = 'fa-user-circle',
+  Process = 'fa-diagram-predecessor',
 }

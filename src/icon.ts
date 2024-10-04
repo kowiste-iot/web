@@ -12,6 +12,11 @@ import {
   faChevronLeft,
   faChevronRight,
   faChevronUp,
+  faCircleCheck,
+  faCircleExclamation,
+  faCircleInfo,
+  faCirclePlus,
+  faCircleXmark,
   faDiagramPredecessor,
   faEdit,
   faEllipsisVertical,
@@ -58,6 +63,11 @@ library.add(
   faBell,
   faExclamation,
   faUserCircle,
-  faDiagramPredecessor
+  faDiagramPredecessor,
+  faCircleCheck,
+  faCircleXmark,
+  faCircleExclamation,
+  faCircleInfo,
+  faCirclePlus
 )
 //check,x dont work

@@ -6,6 +6,8 @@
 <script setup lang="ts">
 // imports
 // stores import
+import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+
 // components import
 import { Bar } from 'vue-chartjs'
 import {
@@ -31,6 +33,8 @@ const chartOptions = {
   responsive: true,
 }
 // storage calls
+useBreadCrumb().set('assets')
+
 // computed
 // methods
 // lifeCycle

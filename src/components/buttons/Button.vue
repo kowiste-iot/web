@@ -4,7 +4,7 @@
     :class="outline ? `btn-outline-${color}` : `btn-${color} `"
   >
     <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
-    <div class="d-flex align-items-center"><slot /></div>
+   <slot />
   </button>
 </template>
 

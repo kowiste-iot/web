@@ -8,13 +8,7 @@
         style="height: 1.2rem; width: 1.2rem"
       />
     </div>
-    <div role="button">
-      <FIcon
-        class="pe-3"
-        :icon="EIcon.Alert"
-        style="height: 1.2rem; width: 1.2rem"
-      />
-    </div>
+    <AlertNotification />
     <div role="button">
       <FIcon
         class="pe-3"
@@ -40,6 +34,7 @@ import Breadcrumb from '@/components/menu/BreadCrumb.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
+import AlertNotification from '@/components/alert/AlertNotification.vue'
 // other imports
 // props
 const props = defineProps({

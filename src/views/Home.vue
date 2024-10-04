@@ -17,6 +17,7 @@
       @click="goToAsset"
       >i'm a button</Button
     >
+
     <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
       hello
       <template #footer>
