@@ -1,16 +1,15 @@
 <template>
   <div class="d-flex justify-content-end">
-    <ul class="nav nav-pills">
+    <ul class="nav">
       <li class="mx-1" v-for="tab in tabs">
-        <a
-          class="rounded p-2 ml-1"
-          :class="
-            tab.selected ? 'bg-' + colorSelected : 'bg-' + colorNoSelected
-          "
+        <div
+          class="p-2 ml-1"
+          :class="tab.selected ? `border-bottom border-${colorSelected} border-2` : ''"
+          role="button"
           @click="change(tab.id)"
         >
           <slot :data="tab"></slot>
-        </a>
+        </div>
       </li>
     </ul>
   </div>
@@ -32,10 +31,6 @@ const props = defineProps({
   colorSelected: {
     type: String,
     default: EColor.Primary,
-  },
-  colorNoSelected: {
-    type: String,
-    default: EColor.Light,
   },
   change: {
     type: Function,

@@ -5,13 +5,22 @@ export enum EIcon {
   ConfirmationCancel = 'fa-circle-xmark',
   ConfirmationWarning = 'fa-circle-exclamation',
   ConfirmationInfo = 'fa-circle-info',
+  //Widgets
+  WidgetBool = 'fa-toggle-off',
+  WidgetNumeric = 'fa-1',
+  WidgetLineGraph = 'fa-chart-line',
+  WidgetBarGraph = 'fa-chart-simple',
+  WidgetPieChart = 'fa-chart-pie',
+  WidgetText = 'fa-font',
+  WidgetGauge = 'fa-gauge-simple',
+  WidgetTable = 'fa-table',
   //Action
   Cancel = 'fa-xmark',
   Success = 'fa-check',
   Property = 'fa-ellipsis-vertical',
   Edit = 'fa-edit',
   Delete = 'fa-trash',
-  Add='fa-circle-plus',
+  Add = 'fa-circle-plus',
 
   //
   Warning = 'fa-triangle-exclamation',
