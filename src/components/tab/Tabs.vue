@@ -4,7 +4,7 @@
       <li class="mx-1" v-for="tab in tabs">
         <div
           class="p-2 ml-1"
-          :class="tab.selected ? `border-bottom border-${colorSelected} border-2` : ''"
+          :class="tab.selected ? `border-bottom border-${color} border-2` : ''"
           role="button"
           @click="change(tab.id)"
         >
@@ -28,7 +28,7 @@ const props = defineProps({
     require: true,
     default: [],
   },
-  colorSelected: {
+  color: {
     type: String,
     default: EColor.Primary,
   },
@@ -36,10 +36,6 @@ const props = defineProps({
     type: Function,
     require: true,
     default: function (id: number) {},
-  },
-  selectData: {
-    type: Array<any>,
-    default: [],
   },
 })
 // data

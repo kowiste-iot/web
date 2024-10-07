@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 // imports
+import { type InputTypeHTMLAttribute, type PropType } from 'vue';
 // stores import
 // components import
 // model imports
@@ -33,7 +34,7 @@ const props = defineProps({
     type: String,
   },
   type: {
-    type: String,
+    type: String as PropType<InputTypeHTMLAttribute> ,
     default: 'text',
   },
   placeholder: {

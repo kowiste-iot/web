@@ -115,7 +115,6 @@ import PropertyDot from '@/components/property/Property.vue'
 import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Spinner from '@/components/loading/Spinner.vue'
-import MenuCard from '@/components/menu/SideMenu.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'

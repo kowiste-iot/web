@@ -10,6 +10,7 @@ import { type IWebsocketOption } from '@/plugins/websocket/model'
 import { KeycloakPlugin } from '@/plugins/security/init'
 import { type ISecurityOption } from '@/plugins/security/model'
 import PrimeVue from 'primevue/config'
+import { GridLayout, GridItem } from 'grid-layout-plus'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -40,7 +41,7 @@ app.use(createPinia())
 app.use(router)
 //plugins
 app.use(ThemeBsPlugin, themeOption)
-
+app.component('GridLayout', GridLayout).component('GridItem', GridItem)
 app.component('FIcon', FontAwesomeIcon)
 app.use(PrimeVue)
 // .use(WebsocketPlugin, wsOptions)

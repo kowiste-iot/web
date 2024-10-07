@@ -1,23 +1,16 @@
 <template>
   <InputCard class="h-100">
     <template #header
-      >Select a Widget
+      >{{ page.title }}
 
-      <Tabs
-        :tabs="[
-          new Tab(1, 'test', true),
-          new Tab(2, 'other', false),
-          new Tab(3, 'more', false),
-        ]"
-        :change="() => {}"
-      >
+      <Tabs :tabs="page.tabs" :change="(id:number)=>page.changeTab(id)">
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
     </template>
     <div class="h-100 w-100 container">
-      <div class="row overflow-auto">
+      <div v-if="page.selected == 1" class="row overflow-auto">
         <div v-for="widget in widgets" class="col-lg-3 col-md-4 col-xs-6">
-          <div class="">
+          <div role="button" @click="selectWidget(widget)">
             <div
               class="border border-2 rounded box p-3 m-3 d-flex flex-column justify-content-center"
             >
@@ -26,7 +19,6 @@
                 :class="`text-${EColor.Secondary}`"
                 :icon="widget.icon"
                 style="height: 5rem"
-                role="button"
               />
               <div class="">
                 <div class="text-start fw-bold" style="font-size: 1.2rem">
@@ -38,26 +30,48 @@
           </div>
         </div>
       </div>
+      <div v-else>
+        <div v-if="selectedWidget.id == 0">Select a widget first</div>
+        <div v-else>
+          Selected widget: {{ selectedWidget.name }}
+
+          <div class="form-group row justify-content-center">
+            <label class="col-md-2 col-form-label"> Name </label>
+            <Input
+              class="col-md-8 col-form-label"
+              placeholder="Your user name"
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
     </div>
 
     <template #footer>
-      <Button :color="EColor.Success">Save</Button>
-      <Button :color="EColor.Secondary" outline @click="close()"> Cancel </Button>
+      <Button v-if="page.selected > 1" :color="EColor.Success">Save</Button>
+      <div v-else></div>
+      <Button :color="EColor.Secondary" outline @click="close()">
+        Cancel
+      </Button>
     </template>
   </InputCard>
 </template>
 
 <script setup lang="ts">
 // imports
+import { ref } from 'vue'
 // stores import
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
+import Input from '@/components/form/Input.vue'
+
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
-import { Tab } from '@/model/gui/tab'
+import { WidgetFormPage } from '@/model/dashboard/page/pageWidgetForm'
+import { type IWidget } from '@/model/model/widget'
 // other imports
 // props
 const props = defineProps({
@@ -71,6 +85,8 @@ const props = defineProps({
   },
 })
 // data
+const page = ref(new WidgetFormPage())
+let selectedWidget = ref({ id: 0 } as IWidget)
 const widgets = [
   {
     id: 1,
@@ -120,10 +136,14 @@ const widgets = [
     description: 'table widget',
     icon: EIcon.WidgetTable,
   },
-]
+] as IWidget[]
 // storage calls
 // computed
 // methods
+function selectWidget(data: IWidget) {
+  page.value.changeTab(2)
+  selectedWidget.value = data
+}
 // lifeCycle
 // watch
 </script>
