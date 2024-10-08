@@ -21,6 +21,9 @@ export enum EIcon {
   Edit = 'fa-edit',
   Delete = 'fa-trash',
   Add = 'fa-circle-plus',
+  UnLock = 'fa-unlock',
+  Lock = 'fa-lock',
+  LogOut='fa-sign-out',
 
   //
   Warning = 'fa-triangle-exclamation',

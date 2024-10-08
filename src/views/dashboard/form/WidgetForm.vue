@@ -1,5 +1,5 @@
 <template>
-  <InputCard class="h-100">
+  <InputCard class="h-100 forms">
     <template #header
       >{{ page.title }}
 

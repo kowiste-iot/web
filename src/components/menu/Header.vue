@@ -9,20 +9,8 @@
       />
     </div>
     <AlertNotification />
-    <div role="button">
-      <FIcon
-        class="pe-3"
-        :icon="EIcon.Notification"
-        style="height: 1.2rem; width: 1.2rem"
-      />
-    </div>
-    <div role="button">
-      <FIcon
-        class="pe-3"
-        :icon="EIcon.Profile"
-        style="height: 1.2rem; width: 1.2rem"
-      />
-    </div>
+    <Notification />
+    <User />
   </div>
 </template>
 
@@ -31,10 +19,13 @@
 // stores import
 // components import
 import Breadcrumb from '@/components/menu/BreadCrumb.vue'
+import AlertNotification from '@/components/alert/AlertNotification.vue'
+import Notification from '@/components/notification/Notification.vue'
+import User from '@/components/user/User.vue'
+
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
-import AlertNotification from '@/components/alert/AlertNotification.vue'
 // other imports
 // props
 const props = defineProps({

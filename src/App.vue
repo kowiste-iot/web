@@ -12,7 +12,7 @@
       style="top: -10rem"
       >{{ alertData.text }}
     </Alert>
-    <div class="d-flex flex-column w-100">
+    <div class="d-flex flex-column w-100 bg-light ">
       <Header />
       <div class="flex-fill overflow-scroll">
         <div class="container-md pt-4 h-100">

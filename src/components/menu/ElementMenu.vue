@@ -3,14 +3,10 @@
     class="d-flex justify-content-between px-3"
     :class="data.isParent ? 'py-2 bg-dark' : 'py-0 bg-secondary'"
   >
-    <div
-      class="d-flex"
-      role="button"
-      @click="goToPath(data.path)"
-    >
-      <FIcon class="me-3 pt-1" :icon="data.icon" />
-      <div v-if="isOpen" class=" ">{{ data.label }}</div>
-    </div >
+    <div class="d-flex" role="button" @click="goToPath(data.path)">
+      <FIcon class="pt-1" :icon="data.icon" />
+      <div v-if="isOpen" class="ms-3">{{ data.label }}</div>
+    </div>
     <div v-if="isOpen">
       <FIcon
         v-if="data.subMenu?.length > 0"

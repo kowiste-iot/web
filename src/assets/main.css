@@ -3,3 +3,9 @@ body,
 #app {
   height: 100%;
 }
+.forms {
+  z-index: 3000;
+}
+.over {
+  z-index: 50;
+}

@@ -26,15 +26,18 @@ import {
   faGear,
   faHome,
   faInfo,
+  faLock,
   faMagnifyingGlass,
   faMobileScreen,
   faPieChart,
   faRuler,
+  faSignOut,
   faSkull,
   faTable,
   faToggleOff,
   faTrash,
   faTriangleExclamation,
+  faUnlock,
   faUser,
   faUserCircle,
   faXmark,
@@ -79,6 +82,9 @@ library.add(
   faFont,
   faTable,
   faGaugeSimple,
-  fa1
+  fa1,
+  faUnlock,
+  faLock,
+  faSignOut
 )
 //check,x dont work
