@@ -14,6 +14,16 @@
       style="min-width: 10rem; width: 20rem"
       @mouseleave="toggleVisibility"
     >
+      <div class="d-flex">
+        <div
+          class="bg-success rounded-circle opacity-50 mt-2 me-2"
+          style="height: 2rem; width: 2rem"
+        ></div>
+        <div class="flex-fill">
+          <div class="fs-5">Pablo Garcia Vivo</div>
+          <div>Role: Admin</div>
+        </div>
+      </div>
       <div class="ms-3 mt-3">
         <div class="btn d-flex">
           <FIcon class="pt-1" :icon="EIcon.User" />
@@ -45,7 +55,6 @@ import { useAlert } from '@/stores/gui/alert'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { Property } from '@/model/property'
-
 
 // other imports
 // props
