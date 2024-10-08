@@ -1,15 +1,9 @@
 <template>
   <div class="bg-light border-secondary border rounded">
-    <div class="d-flex justify-content-end p-3">
-      <FIcon
-        :class="`text-${EColor.Success}`"
-        :icon="EIcon.Add"
-        style="height: 1.5rem"
-        role="button"
-        @click="onAdd"
-      />
+    <div class="d-flex justify-content-between">
+      <slot name="header" />
     </div>
-    <div class="mb-5 ">
+    <div class="mb-5">
       <slot />
     </div>
   </div>
@@ -43,6 +37,4 @@ const props = defineProps({
 // watch
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

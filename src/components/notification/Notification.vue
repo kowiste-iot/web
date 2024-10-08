@@ -55,7 +55,7 @@ import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
 import { ENotificationSeverity } from '@/enums/notification/ENotificationSeverity'
 import { Property } from '@/model/property'
-import { Notification } from '@/model/model copy/notification'
+import { Notification } from '@/model/notification/notification'
 
 // other imports
 // props

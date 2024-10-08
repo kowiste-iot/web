@@ -44,11 +44,7 @@ import { useAlert } from '@/stores/gui/alert'
 
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
-import { ENotificationSeverity } from '@/enums/notification/ENotificationSeverity'
 import { Property } from '@/model/property'
-import { Notification } from '@/model/model copy/notification'
-import Input from '@/components/form/Input.vue'
 
 
 // other imports

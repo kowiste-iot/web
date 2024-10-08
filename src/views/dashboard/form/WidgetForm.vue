@@ -71,7 +71,7 @@ import Input from '@/components/form/Input.vue'
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import { WidgetFormPage } from '@/model/dashboard/page/pageWidgetForm'
-import { type IWidget } from '@/model/model/widget'
+import { type IWidget } from '@/model/widget/widget'
 // other imports
 // props
 const props = defineProps({
