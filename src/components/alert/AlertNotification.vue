@@ -1,6 +1,6 @@
 ``
 <template>
-  <div class="position-relative">
+  <div class="position-relative over">
     <div class="px-2" role="button" @click="toggleVisibility">
       <FIcon
         class="pe-3"
@@ -10,19 +10,23 @@
     </div>
     <div
       v-if="isVisible"
-      class="position-absolute top-100 end-50 card py-2"
+      class="position-absolute top-100 end-50 border rounded bg-white py-2 px-3"
+      style="min-width: 10rem; width: 20rem"
       @mouseleave="toggleVisibility"
     >
-      <div v-for="(element,index) in alerts" class="">
-        <div
-          class="btn d-flex"
-          :class="isHover[index] ? 'bg-secondary' : 'btn-ligth'"
-          @click="onClick(index)"
-          @mouseover="isHover[index] = true"
-          @mouseleave="isHover[index] = false"
-        >
-          <FIcon :icon="element.icon" />
-          <div class="ms-4 w-auto">{{ element.text }}</div>
+      <div v-if="alerts.length < 1">No Notifications</div>
+      <div v-else>
+        <div v-for="(element, index) in alerts" class="">
+          <div
+            class="btn d-flex"
+            :class="isHover[index] ? 'bg-secondary' : 'btn-ligth'"
+            @click="onClick(index)"
+            @mouseover="isHover[index] = true"
+            @mouseleave="isHover[index] = false"
+          >
+            <FIcon class="pt-1" :icon="element.icon" />
+            <div class="ms-4 w-auto">{{ element.text }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -67,8 +71,8 @@ const alerts = computed(() => {
 })
 // methods
 function toggleVisibility() {
-  console.log('sf');
-  
+  console.log('sf')
+
   isVisible.value = !isVisible.value
 }
 // lifeCycle
