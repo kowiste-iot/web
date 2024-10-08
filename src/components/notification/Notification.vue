@@ -19,14 +19,21 @@
         <div v-for="(element, index) in notifications" class="">
           <div
             class="btn d-flex"
-            :class="isHover[index] ? 'bg-secondary text-black opacity-50' : 'btn-ligth'"
+            :class="
+              isHover[index]
+                ? 'bg-secondary text-black opacity-50'
+                : 'btn-ligth'
+            "
             @click="onClick(index)"
             @mouseover="isHover[index] = true"
             @mouseleave="isHover[index] = false"
           >
-            <div :class="`bg-${element.severityColor()} rounded-start rounded-top p-1 me-2`"/>
-            <FIcon :icon="element.icon" />
-            <div class="ms-4 w-auto">{{ element.msg }}</div>
+            <div
+              :class="`bg-${element.severityColor()} rounded-start rounded-top p-1 me-2`"
+            />
+            <FIcon class="pt-1" :icon="element.icon" />
+            <div class="ms-4 flex-fill">{{ element.msg }}</div>
+            <FIcon class="pt-1 text-secondary" :icon="EIcon.Mail" />
           </div>
         </div>
       </div>

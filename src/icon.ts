@@ -19,6 +19,7 @@ import {
   faDiagramPredecessor,
   faEdit,
   faEllipsisVertical,
+  faEnvelope,
   faExclamation,
   faExpand,
   faFont,
@@ -85,6 +86,7 @@ library.add(
   fa1,
   faUnlock,
   faLock,
-  faSignOut
+  faSignOut,
+  faEnvelope
 )
 //check,x dont work

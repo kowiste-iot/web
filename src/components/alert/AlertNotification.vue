@@ -14,7 +14,7 @@
       style="min-width: 10rem; width: 20rem"
       @mouseleave="toggleVisibility"
     >
-      <div v-if="alerts.length < 1">No Notifications</div>
+      <div v-if="alerts.length < 1">No Alerts</div>
       <div v-else>
         <div v-for="(element, index) in alerts" class="">
           <div
@@ -25,7 +25,8 @@
             @mouseleave="isHover[index] = false"
           >
             <FIcon class="pt-1" :icon="element.icon" />
-            <div class="ms-4 w-auto">{{ element.text }}</div>
+            <div class="ms-4 flex-fill">{{ element.text }}</div>
+            <FIcon class="pt-1 text-secondary" :icon="EIcon.Mail" />
           </div>
         </div>
       </div>

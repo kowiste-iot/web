@@ -23,12 +23,13 @@ export enum EIcon {
   Add = 'fa-circle-plus',
   UnLock = 'fa-unlock',
   Lock = 'fa-lock',
-  LogOut='fa-sign-out',
+  LogOut = 'fa-sign-out',
 
   //
   Warning = 'fa-triangle-exclamation',
   Info = 'fa-info',
   Death = 'fa-skull',
+  Mail = 'fa-envelope',
   //Menu
   MenuOpen = 'fa-chevron-down',
   MenuClose = 'fa-chevron-up',
