@@ -16,11 +16,16 @@
     >
       <div class="d-flex">
         <div
-          class="bg-success rounded-circle opacity-50 mt-2 me-2"
-          style="height: 2rem; width: 2rem"
-        ></div>
-        <div class="flex-fill">
-          <div class="fs-5">Pablo Garcia Vivo</div>
+          class="bg-success rounded-circle mt-2 me-2 p-2 text-white d-flex justify-content-center align-items-center"
+          style="height: 2.5rem; width: 2.5rem"
+        >
+          {{
+            user.charAt(0)?.toUpperCase() +
+            user.split(' ')[1]?.charAt(0)?.toUpperCase()
+          }}
+        </div>
+        <div class="flex-fill ps-2">
+          <div class="fs-5">{{ user }}</div>
           <div>Role: Admin</div>
         </div>
       </div>
@@ -36,8 +41,13 @@
       </div>
 
       <div class="btn d-flex border-top mt-4">
-        <FIcon class="pt-1" :icon="EIcon.LogOut" />
-        <div class="ms-4 w-auto">Log out</div>
+        <div class="pt-1">
+          Kowiste &copy {{ timeToFormat(today(), 'yyyy') }}
+        </div>
+        <div class="d-flex flex-row-reverse flex-fill">
+          <div class="ms-4">Log out</div>
+          <FIcon class="pt-1" :icon="EIcon.LogOut" />
+        </div>
       </div>
     </div>
   </div>
@@ -45,16 +55,16 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 // stores import
-import { useAlert } from '@/stores/gui/alert'
-
 // components import
 
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { Property } from '@/model/property'
+import { today } from '@/utils/time/time'
+import { timeToFormat } from '@/utils/time/conversion'
 
 // other imports
 // props
@@ -71,30 +81,11 @@ const props = defineProps({
 // data
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
+
 // storage calls
 
 // computed
-let userMenu = new Array<Property>()
-
-userMenu.push({
-  id: 1,
-  icon: EIcon.User,
-  name: 'Profile',
-  option: { tabulation: true },
-})
-userMenu.push({
-  id: 2,
-  icon: EIcon.Admin,
-  name: 'Settings',
-  option: { tabulation: true },
-})
-userMenu.push({
-  id: 3,
-  icon: EIcon.Death,
-  name: 'Log out',
-  option: { line: true },
-})
-
+const user = 'Pablo Garcia Vivo'
 // methods
 function toggleVisibility() {
   console.log('sf')
