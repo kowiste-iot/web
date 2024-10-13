@@ -1,4 +1,3 @@
-
 import type { Path } from '@/model/path'
 import { defineStore } from 'pinia'
 
@@ -19,12 +18,13 @@ export const useBreadCrumb = defineStore('breadCrumbStore', {
   },
   actions: {
     set(page: string, path?: Path[]) {
+      this._path = []
       this._page = page
       if (path) this._path = path
     },
-    reset(){
-      this._page=''
-      this._path=[]
-    }
+    reset() {
+      this._page = ''
+      this._path = []
+    },
   },
 })

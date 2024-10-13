@@ -3,7 +3,7 @@
     <div>
       <h1>{{ $t('message.hello') }}</h1>
     </div>
-    <Button @click="toggleTheme"> Change Theme</Button>
+    <Button @click="userStore.changeTheme()" color="royal"> Change Theme</Button>
     <select @change="changeLanguage" v-model="currentLocale">
       <option value="en">English</option>
       <option value="es">Spanish</option>
@@ -107,6 +107,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAlert } from '@/stores/gui/alert'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+import { useUser } from '@/stores/gui/user'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
@@ -150,19 +151,11 @@ const { locale } = useI18n()
 const router = useRouter()
 const alertStore = useAlert()
 const storeCrumb = useBreadCrumb()
+const userStore = useUser()
+
 storeCrumb.reset()
 // computed
 // methods
-function toggleTheme() {
-  isDark = !isDark
-  if (isDark) {
-    document.body.classList.add('dark-theme')
-    document.body.classList.remove('light-theme')
-  } else {
-    document.body.classList.add('light-theme')
-    document.body.classList.remove('dark-theme')
-  }
-}
 
 function changeLanguage() {
   locale.value = currentLocale.value

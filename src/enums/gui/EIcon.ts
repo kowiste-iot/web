@@ -24,6 +24,7 @@ export enum EIcon {
   UnLock = 'fa-unlock',
   Lock = 'fa-lock',
   LogOut = 'fa-sign-out',
+  Close = 'fa-rectangle-xmark',
 
   //
   Warning = 'fa-triangle-exclamation',

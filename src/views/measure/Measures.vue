@@ -1,15 +1,15 @@
 <template>
-  <div class="mt-5">
-    <TabletCard>
+  <div>
+    <TabletCard class="mt-5">
       <DataTable
         :value="[{ name: 'ter' }, { name: 'fgsf' }]"
         paginator
         :rows="10"
         :pt="{
-          table: 'table table-striped ',
+          table: 'table table-striped',
         }"
       >
-        <Column field="name" header="test"></Column>
+        <Column class="p-1" field="name" header="test"></Column>
         <Column field="other" header="other"></Column>
       </DataTable>
     </TabletCard>
@@ -80,4 +80,6 @@ function onChange() {
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

@@ -26,7 +26,7 @@
           >
             <FIcon class="pt-1" :icon="element.icon" />
             <div class="ms-4 flex-fill">{{ element.text }}</div>
-            <FIcon class="pt-1 text-secondary" :icon="EIcon.Mail" />
+            <FIcon class="pt-1 text-danger" :icon="EIcon.Close" />
           </div>
         </div>
       </div>

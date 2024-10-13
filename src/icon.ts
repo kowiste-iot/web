@@ -31,6 +31,7 @@ import {
   faMagnifyingGlass,
   faMobileScreen,
   faPieChart,
+  faRectangleXmark,
   faRuler,
   faSignOut,
   faSkull,
@@ -87,6 +88,7 @@ library.add(
   faUnlock,
   faLock,
   faSignOut,
-  faEnvelope
+  faEnvelope,
+  faRectangleXmark
 )
 //check,x dont work

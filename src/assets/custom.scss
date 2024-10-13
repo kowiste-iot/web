@@ -1,0 +1,10 @@
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
+
+$primary: rgb(117, 0, 128);
+$dark: blue;
+$custom-color: (
+  "royal": #ffe600,
+);
+$theme-colors: map-merge($theme-colors, $custom-color);
+@import '../../node_modules/bootstrap/scss/bootstrap';

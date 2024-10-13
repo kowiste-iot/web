@@ -10,7 +10,7 @@
     <div v-if="isOpen">
       <FIcon
         v-if="data.subMenu?.length > 0"
-        class="ms-3 pt-1"
+        class="ms-3"
         :icon="isExpanded ? EIcon.MenuClose : EIcon.MenuOpen"
         role="button"
         @click="expandMenu"

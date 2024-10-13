@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-flex align-items-stretch position-relative h-100 w-100"
-    :data-bs-theme="'light'"
+    :data-bs-theme="darkTheme ? 'dark' : 'light'"
   >
     <SideMenu />
     <Alert
@@ -12,7 +12,7 @@
       style="top: -10rem"
       >{{ alertData.text }}
     </Alert>
-    <div class="d-flex flex-column w-100 bg-light ">
+    <div class="d-flex flex-column w-100 bg-light">
       <Header />
       <div class="flex-fill overflow-scroll">
         <div class="container-md pt-4 h-100">
@@ -28,6 +28,7 @@
 import { computed } from 'vue'
 // stores import
 import { useAlert } from '@/stores/gui/alert'
+import { useUser } from '@/stores/gui/user'
 // components import
 import Alert from '@/components/alert/Alert.vue'
 import { RouterView } from 'vue-router'
@@ -40,12 +41,16 @@ import SideMenu from './components/menu/SideMenu.vue'
 
 // storage calls
 const alertStore = useAlert()
+const userStore = useUser()
 // computed
 const showAlert = computed(() => {
   return alertStore.have
 })
 const alertData = computed(() => {
   return alertStore.alert
+})
+const darkTheme = computed(() => {
+  return userStore.darkTheme
 })
 // methods
 

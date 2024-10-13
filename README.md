@@ -31,3 +31,8 @@ npm run dev
 ```sh
 npm run build
 ```
+# Customize sass color
+change the color you want in assets/custom.scss and compile it with
+```
+sass --watch .\src\assets\custom.scss .\src\assets\custom.css
+```
