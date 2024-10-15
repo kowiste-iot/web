@@ -1,10 +1,25 @@
 @import '../../node_modules/bootstrap/scss/functions';
 @import '../../node_modules/bootstrap/scss/variables';
 
-$primary: rgb(117, 0, 128);
-$dark: blue;
 $custom-color: (
-  "royal": #ffe600,
+  'accent1': #9ba0bc,
+  'accent2': #d2d2ff,
+  'accent3': #cbeef3,
+  'accent4': #a8d096,
+  'accent5': #ffffd2,
+  'accent6': #f2b06b,
+  'menu': #305679,
+  'menu-bg': #274867,
 );
 $theme-colors: map-merge($theme-colors, $custom-color);
+
+$primary: #0d6efd;
+$secondary: #828282;
+$success: #31a373;
+$danger: #e94646;
+$warning: #e8b109;
+$info: #56ccf2;
+$light: #ececec;
+
+
 @import '../../node_modules/bootstrap/scss/bootstrap';

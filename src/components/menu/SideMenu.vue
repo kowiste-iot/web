@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary text-white position-relative">
+  <div class="text-white position-relative" :class="`bg-${EColor.Menu}`">
     <Logo
       class="mb-4 m-3"
       style="height: 1rem; width: 1rem"
@@ -30,6 +30,8 @@
 import { ref } from 'vue'
 // stores import
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
 // components import
 import Logo from '@/components/icons/Logo.vue'
 import ElementMenu from '@/components/menu/ElementMenu.vue'
@@ -37,29 +39,59 @@ import ElementMenu from '@/components/menu/ElementMenu.vue'
 // model imports
 import { type IMenu } from '@/model/gui/menu'
 import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/enums/gui/EColor'
 
 // other imports
 // props
 // data
-const menu = [
+const { t } = useI18n()
+
+const menu = ref([
   {
-    label: 'Dashboard',
+    label: t('menu.dashboard'),
     icon: EIcon.Dashboard,
     isParent: true,
     path: '/dashboard',
   },
   {
-    label: 'Asset',
+    label: t('menu.asset'),
     icon: EIcon.Asset,
     isParent: true,
     path: '/asset',
     subMenu: [{ label: 'Build 1' }],
   },
-  { label: 'Measure', icon: EIcon.Measure, isParent: true, path: '/measure' },
-  { label: 'Device', icon: EIcon.Device, isParent: true, path: '/device' },
-  { label: 'Process', icon: EIcon.Process, isParent: true, path: '/process' },
-  { label: 'Admin', icon: EIcon.Admin, isParent: true, path: '/admin' },
-] as IMenu[]
+  {
+    label: t('menu.measure'),
+    icon: EIcon.Measure,
+    isParent: true,
+    path: '/measure',
+  },
+  {
+    label: t('menu.device'),
+    icon: EIcon.Device,
+    isParent: true,
+    path: '/device',
+  },
+  {
+    label: t('menu.process.parent'),
+    icon: EIcon.Process,
+    isParent: true,
+    path: '/process',
+    subMenu: [
+      {
+        label: t('menu.process.alert'),
+        icon: EIcon.Alert,
+        path: '/process/alert',
+      },
+      {
+        label: t('menu.process.action'),
+        icon: EIcon.Action,
+        path: '/process/action',
+      },
+    ],
+  },
+  { label: t('menu.admin'), icon: EIcon.Admin, isParent: true, path: '/admin' },
+] as IMenu[])
 const isOpen = ref(true)
 // storage calls
 const router = useRouter()

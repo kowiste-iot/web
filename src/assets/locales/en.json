@@ -1,5 +1,27 @@
- {
-    "message": {
-      "hello": "hello world"
-    }
+{
+  "message": {
+    "hello": "hello world"
+  },
+  "menu": {
+    "dashboard": "Dashboards",
+    "asset": "Assets",
+    "measure": "Measures",
+    "device": "Devices",
+    "process": {
+      "parent": "Process",
+      "alert": "Alert",
+      "action": "Action"
+    },
+    "admin": "Admin"
+  },
+  "dashboard": {},
+  "asset": {},
+  "measure": {},
+  "process": {},
+  "admin": {},
+  "profile": {},
+  "setting": {
+    "theme": "Light/Dark theme",
+    "language": "Language"
   }
+}

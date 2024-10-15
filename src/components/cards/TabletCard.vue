@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light border-secondary p-1 border-0 border rounded">
+  <div class="bg-light border-secondary p-1 border rounded">
     <div class="d-flex justify-content-between">
       <slot name="header" />
     </div>

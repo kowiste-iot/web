@@ -29,7 +29,7 @@ import { EColor } from '@/enums/gui/EColor'
 const props = defineProps({
   backgroundColor: {
     type: String,
-    default: EColor.Dark,
+    default: EColor.Menu,
   },
   ballColorLeft: {
     type: String,

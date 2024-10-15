@@ -1,5 +1,27 @@
 {
-    "message": {
-      "hello": "hola mundo"
-    }
+  "message": {
+    "hello": "hola mundo"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "asset": "Activos",
+    "measure": "Medidas",
+    "device": "Dispositivos",
+    "process": {
+      "parent": "Procesos",
+      "alert": "Alertas",
+      "action": "Acciones"
+    },
+    "admin": "Administracion"
+  },
+  "dashboard": {},
+  "asset": {},
+  "measure": {},
+  "process": {},
+  "admin": {},
+  "profile": {},
+  "setting": {
+    "theme": "Tema claro/oscuro",
+    "language": "Idioma"
   }
+}

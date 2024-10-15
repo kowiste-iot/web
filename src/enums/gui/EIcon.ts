@@ -44,7 +44,8 @@ export enum EIcon {
   Dashboard = 'fa-chart-line',
   Expand = 'fa-expand',
   Notification = 'fa-bell',
-  Alert = 'fa-exclamation',
+  Alert = 'fa-triangle-exclamation',
+  Action = 'fa-person-running',
   Profile = 'fa-user-circle',
   Process = 'fa-diagram-predecessor',
 }

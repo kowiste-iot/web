@@ -10,7 +10,7 @@
     </div>
     <div
       v-if="isVisible"
-      class="position-absolute top-100 end-0 border rounded bg-white py-2 px-3"
+      class="position-absolute top-100 end-0 border rounded bg-light py-2 px-3"
       style="min-width: 10rem; width: 20rem"
       @mouseleave="toggleVisibility"
     >
@@ -34,7 +34,7 @@
           <FIcon class="pt-1" :icon="EIcon.User" />
           <div class="ms-4 w-auto">Profile</div>
         </div>
-        <div class="btn d-flex">
+        <div class="btn d-flex" @click="router.push('/settings')">
           <FIcon class="pt-1" :icon="EIcon.Admin" />
           <div class="ms-4 w-auto">Settings</div>
         </div>
@@ -58,6 +58,8 @@
 import { ref } from 'vue'
 
 // stores import
+import { useRouter } from 'vue-router'
+
 // components import
 
 // model imports
@@ -83,6 +85,7 @@ const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
 
 // storage calls
+const router = useRouter()
 
 // computed
 const user = 'Pablo Garcia Vivo'

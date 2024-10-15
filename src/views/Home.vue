@@ -1,14 +1,8 @@
 <template>
   <div>
-    <div>
-      <h1>{{ $t('message.hello') }}</h1>
-    </div>
-    <Button @click="userStore.changeTheme()" color="royal"> Change Theme</Button>
-    <select @change="changeLanguage" v-model="currentLocale">
-      <option value="en">English</option>
-      <option value="es">Spanish</option>
-      <option value="th">Thai</option>
-    </select>
+
+
+   
 
     <Button
       class="my-4"
@@ -104,10 +98,8 @@
 import { onMounted, ref } from 'vue'
 // stores import
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useAlert } from '@/stores/gui/alert'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useUser } from '@/stores/gui/user'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
@@ -125,7 +117,6 @@ import { Property } from '@/model/property'
 // props
 
 // data
-const currentLocale = ref('en')
 const drop = ref()
 let isDark = false
 
@@ -147,19 +138,12 @@ test.push({
   name: 'Info',
 })
 // storage calls
-const { locale } = useI18n()
-const router = useRouter()
 const alertStore = useAlert()
 const storeCrumb = useBreadCrumb()
-const userStore = useUser()
 
 storeCrumb.reset()
 // computed
 // methods
-
-function changeLanguage() {
-  locale.value = currentLocale.value
-}
 function goToAsset() {
   alertStore.setError('this is an error')
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-light">
+  <div class="card">
     <div class="card-header d-flex justify-content-between">
       <div v-if="headerText">{{ headerText }}</div>
       <FIcon v-if="headerText && icon" :icon="icon" />

@@ -1,7 +1,9 @@
 <template>
   <div
     class="d-flex justify-content-between px-3"
-    :class="data.isParent ? 'py-2 bg-dark' : 'py-0 bg-secondary'"
+    :class="
+      data.isParent ? `py-2 bg-${EColor.Menu}` : `py-0 bg-${EColor.MenuBg}`
+    "
   >
     <div class="d-flex" role="button" @click="goToPath(data.path)">
       <FIcon class="pt-1" :icon="data.icon" />
@@ -34,6 +36,7 @@ import { useRouter } from 'vue-router'
 import { EIcon } from '@/enums/gui/EIcon'
 import { type IMenu } from '@/model/gui/menu'
 import type { PropType } from 'vue'
+import { EColor } from '@/enums/gui/EColor'
 // other imports
 
 // props
