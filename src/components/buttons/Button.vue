@@ -1,10 +1,13 @@
 <template>
   <button
     class="btn d-flex"
-    :class="outline ? `btn-outline-${color}` : `btn-${color} `"
+    :class="
+      (outline ? `btn-outline-${color}` : `btn-${color} `) +
+      (small ? ' btn-sm' : '')
+    "
   >
     <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
-   <slot />
+    <slot />
   </button>
 </template>
 
@@ -27,6 +30,10 @@ const props = defineProps({
     default: EColor.Primary,
   },
   outline: {
+    type: Boolean,
+    default: false,
+  },
+  small: {
     type: Boolean,
     default: false,
   },

@@ -9,5 +9,17 @@
     "device": "อุปกรณ์",
     "process": "กระบวนการ",
     "admin": "ผู้ดูแลระบบ"
+  },
+  "dashboard": {
+    "goto": "ไป"
+  },
+  "asset": {},
+  "measure": {},
+  "process": {},
+  "admin": {},
+  "profile": {},
+  "setting": {
+    "theme": "ธีม สว่าง/มืด",
+    "language": "ภาษา"
   }
 }

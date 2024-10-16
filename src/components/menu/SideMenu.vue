@@ -107,5 +107,7 @@ function goToHome() {
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
 @/model/gui/menu

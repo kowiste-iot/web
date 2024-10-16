@@ -2,8 +2,8 @@
   <TabletCard class="mt-5">
     <DataTable
       :value="[
-        { name: 'ter', art: 'gtht' },
-        { name: 'fgsf', art: 'ggg' },
+        { id: 'sdff231', name: 'ter', art: 'gtht' },
+        { id: 'sfgf231', name: 'fgsf', art: 'ggg' },
       ]"
       :tableStyle="{ 'min-width': '5rem' }"
       size="small"
@@ -14,6 +14,19 @@
         pcPaginator: 'btn bg-danger border border-danger',
       }"
     >
+      <Column :class="'text-center'" field="id" sortable>
+        <template #header>
+          <span class="container-fluid text-center">{{ 'hello' }}</span>
+        </template>
+        <template #body>
+          <Button
+            :color="EColor.Primary"
+            small
+            @click="router.push('/dashboard/21')"
+            >{{ $t('dashboard.goto') }}</Button
+          >
+        </template>
+      </Column>
       <Column :class="'text-center'" field="name" sortable>
         <template #header>
           <span class="container-fluid text-center">{{ 'hello' }}</span>
@@ -26,7 +39,6 @@
       </Column>
     </DataTable>
   </TabletCard>
-  <div class="bg-danger">zdfsv</div>
   <div
     class="d-flex flex-column"
     style="position: fixed; top: 4rem; right: 1rem"
@@ -49,9 +61,12 @@ import { ref } from 'vue'
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import Button from '@/components/buttons/Button.vue'
+
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
+import router from '@/router'
 // other imports
 // props
 // data

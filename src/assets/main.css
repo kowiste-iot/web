@@ -9,3 +9,18 @@ body,
 .over {
   z-index: 50;
 }
+
+/* Animations */
+.slide-in {
+  z-index: 1050;
+  animation: slide-in 1s forwards;
+}
+
+@keyframes slide-in {
+  from {
+    right: -100%;
+  }
+  to {
+    right: 0;
+  }
+}

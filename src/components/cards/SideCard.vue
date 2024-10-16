@@ -34,19 +34,6 @@ const props = defineProps({
 // lifeCycle
 // watch
 </script>
-<style scoped>
+<style >
 
-.slide-in {
-  z-index: 1050;
-  animation: slide-in 1s forwards;
-}
-
-@keyframes slide-in {
-  from {
-    right: -100%;
-  }
-  to {
-    right: 0;
-  }
-}
 </style>

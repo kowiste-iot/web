@@ -2,7 +2,7 @@
 <template>
   <div class="position-relative">
     <div
-      class="bg-light border rounded p-1 d-flex"
+      class="border rounded p-1 d-flex"
       role="button"
       @click="toggleVisibility"
     >
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 
 // stores import
 // components import
@@ -156,6 +156,9 @@ function changeFilter() {
 }
 // lifeCycle
 // watch
+onMounted(() => {
+  changeFilter()
+})
 </script>
 
 <style scoped></style>

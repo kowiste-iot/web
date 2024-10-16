@@ -83,7 +83,6 @@ import PropertyDot from '@/components/property/Property.vue'
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
-import { Property } from '@/model/property'
 import { DashboardPage } from '@/model/dashboard/page/pageDashboard'
 
 // other imports
