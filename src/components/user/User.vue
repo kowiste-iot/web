@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="ms-3 mt-3">
-        <div class="btn d-flex">
+        <div class="btn d-flex" @click="router.push('/profile')">
           <FIcon class="pt-1" :icon="EIcon.User" />
           <div class="ms-4 w-auto">Profile</div>
         </div>

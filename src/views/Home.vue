@@ -1,9 +1,5 @@
 <template>
   <div>
-
-
-   
-
     <Button
       class="my-4"
       :color="EColor.Success"
@@ -25,10 +21,6 @@
     <InputCard class="col-md-6 my-4">
       <template #header>
         <div>Test Card</div>
-        <PropertyDot
-          :data="test"
-          :onClick="(id:number)=>console.log('press',id)"
-        />
       </template>
       <div class="row">
         <label class="col-md-2">Agent</label>
@@ -97,21 +89,18 @@
 // imports
 import { onMounted, ref } from 'vue'
 // stores import
-import { useRouter } from 'vue-router'
 import { useAlert } from '@/stores/gui/alert'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
-import PropertyDot from '@/components/property/Property.vue'
 import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Spinner from '@/components/loading/Spinner.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
-import { Property } from '@/model/property'
 
 // other imports
 // props
@@ -120,23 +109,7 @@ import { Property } from '@/model/property'
 const drop = ref()
 let isDark = false
 
-const test = new Array<Property>()
 
-test.push({
-  id: 1,
-  icon: EIcon.Edit,
-  name: 'Edit',
-})
-test.push({
-  id: 2,
-  icon: EIcon.Delete,
-  name: 'Delete',
-})
-test.push({
-  id: 3,
-  icon: EIcon.Info,
-  name: 'Info',
-})
 // storage calls
 const alertStore = useAlert()
 const storeCrumb = useBreadCrumb()

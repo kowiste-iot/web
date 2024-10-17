@@ -6,7 +6,7 @@ export class Columns {
   public filter: boolean
   public sort: boolean
   public location: ETableLocation
-  public dbName: string
+
 
   constructor(
     title: string = '',
@@ -16,13 +16,8 @@ export class Columns {
     this.title = title
     this.data = data
     this.location = location
-    this.dbName = ''
     this.filter = false
     this.sort= false
-  }
-  addDBName(name: string): Columns {
-    this.dbName = name
-    return this
   }
   addFilter(): Columns {
     this.filter = true

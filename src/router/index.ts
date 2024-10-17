@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/Home.vue'
 import Settings from '@/views/Settings.vue'
+import Profile from '@/views/Profile.vue'
 import ErrorPage from '@/views/Error.vue'
 import { useRequest } from '@/plugins/request/store'
 import assetRoutes from './asset'
@@ -17,6 +18,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
     },
     {
       path: '/settings',

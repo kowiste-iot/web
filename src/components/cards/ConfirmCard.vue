@@ -27,7 +27,7 @@
             outline
             @click="onCancel()"
           >
-            <div class="w-100 text-center">Cancel</div>
+            <div class="w-100 text-center">{{ $t('action.cancel') }}</div>
           </Button>
         </div>
       </div>

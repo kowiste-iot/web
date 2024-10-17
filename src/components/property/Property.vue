@@ -15,7 +15,7 @@
         <div
           class="btn d-flex"
           :class="isHover[element.id] ? 'bg-secondary' : 'bg-light'"
-          @click="onClick(element.id)"
+          @click="onClick(element)"
           @mouseover="isHover[element.id] = true"
           @mouseleave="isHover[element.id] = false"
         >
@@ -33,11 +33,8 @@ import { ref, watch } from 'vue'
 
 // stores import
 // components import
-import Button from '@/components/buttons/Button.vue'
-
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
 import { Property } from '@/model/property'
 
 // other imports

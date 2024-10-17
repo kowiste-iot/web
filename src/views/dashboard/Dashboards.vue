@@ -14,27 +14,42 @@
         pcPaginator: 'btn bg-danger border border-danger',
       }"
     >
-      <Column :class="'text-center'" field="id" sortable>
-        <template #header>
-          <span class="container-fluid text-center">{{ 'hello' }}</span>
-        </template>
-        <template #body>
+      <Column style="width: 5px">
+        <template #body="{ data }">
           <Button
             :color="EColor.Primary"
             small
-            @click="router.push('/dashboard/21')"
+            @click="router.push('/dashboard/' + data.id)"
             >{{ $t('dashboard.goto') }}</Button
           >
         </template>
       </Column>
-      <Column :class="'text-center'" field="name" sortable>
+      <Column
+        :class="page.table.name.location"
+        :field="page.table.name.data"
+        sortable
+      >
         <template #header>
-          <span class="container-fluid text-center">{{ 'hello' }}</span>
+          <span class="container-fluid">
+            {{ page.table.name.title }}
+          </span>
         </template>
       </Column>
-      <Column :class="'text-center'" field="art">
+      <Column
+        :class="page.table.asset.location"
+        :field="page.table.asset.data"
+        sortable
+      >
         <template #header>
-          <span class="container-fluid text-center">{{ 'other' }}</span>
+          <span class="container-fluid">
+            {{ page.table.asset.title }}
+          </span>
+        </template>
+      </Column>
+
+      <Column>
+        <template #body>
+          <PropertyDot :data="page.properties" :onClick="propertySelected" />
         </template>
       </Column>
     </DataTable>
@@ -48,58 +63,72 @@
       :icon="EIcon.Add"
       role="button"
       style="height: 1.5rem"
-      @click="() => (show = true)"
+      @click="() => (page.showForm = true)"
     />
   </div>
+  <SideCard v-if="page.showForm" class="col-md-6">
+    <DashboardForm :close="() => (page.showForm = false)" />
+  </SideCard>
+  <ConfirmCard
+    v-if="page.showModal"
+    :action="EActionGUI.Danger"
+    :actionText="$t('action.delete')"
+    :onCancel="
+      () => {
+        page.showModal = false
+      }
+    "
+  >
+    <div class="text-center">Are you sure you want to delete</div>
+  </ConfirmCard>
 </template>
 
 <script setup lang="ts">
 // imports
 import { ref } from 'vue'
 // stores import
+import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+
 // components import
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from '@/components/buttons/Button.vue'
+import SideCard from '@/components/cards/SideCard.vue'
+import DashboardForm from '@/views/dashboard/form/DashboardForm.vue'
+import PropertyDot from '@/components/property/Property.vue'
+import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import router from '@/router'
+import type { Property } from '@/model/property'
+import { EActionGUI } from '@/enums/gui/EActionGUI'
+import { DashboardsPage } from '@/model/dashboard/page/pageDashboards'
 // other imports
 // props
 // data
-const show = ref(false)
+const page = ref(new DashboardsPage())
 
 // storage calls
+useBreadCrumb().set(page.value.title)
+
 // computed
 // methods
+function propertySelected(data: Property) {
+  switch (data.id) {
+    case 2:
+      page.value.showModal = true
+      break
+
+    default:
+      break
+  }
+}
 // lifeCycle
 // watch
 </script>
 
 <style scoped>
-.ui-paginator {
-  font-family: verdana;
-  font-weight: bold;
-}
-
-.ui-paginator {
-  text-align: right !important;
-}
-
-.ui-paginator span {
-  text-align: left !important;
-}
-.ui-paginator-pages .ui-paginator-page {
-  background: none;
-  background-color: #cccccc;
-}
-.ui-paginator-pages .ui-state-active {
-  background-color: white;
-}
-.ui-paginator-pages .ui-state-hover {
-  background-color: red;
-}
 </style>

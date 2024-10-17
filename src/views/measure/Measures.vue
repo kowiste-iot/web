@@ -27,21 +27,7 @@
     </div>
   </div>
   <SideCard v-if="show" class="col-md-4">
-    <InputCard class="h-100" headerText="Create measure" :icon="EIcon.Measure">
-      <Input
-        placeholder="measure name"
-        label="Name"
-        :onChange="onChange"
-        v-model="inp"
-      />
-      <template #footer>
-        <Button v-if="changeForm" :color="EColor.Success">Save</Button>
-        <div v-else></div>
-        <Button :color="EColor.Secondary" outline @click="() => (show = false)"
-          >Cancel</Button
-        >
-      </template>
-    </InputCard>
+    <MeasureForm :close="() => (show = false)" />
   </SideCard>
 </template>
 
@@ -55,10 +41,8 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import InputCard from '@/components/cards/Card.vue'
 import SideCard from '@/components/cards/SideCard.vue'
-import Button from '@/components/buttons/Button.vue'
-import Input from '@/components/form/Input.vue'
+import MeasureForm from '@/views/measure/form/MeasureForm.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'
@@ -80,6 +64,4 @@ function onChange() {
 // watch
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

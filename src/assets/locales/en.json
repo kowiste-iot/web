@@ -2,6 +2,11 @@
   "message": {
     "hello": "hello world"
   },
+  "action": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
   "menu": {
     "dashboard": "Dashboards",
     "asset": "Assets",
@@ -15,7 +20,11 @@
     "admin": "Admin"
   },
   "dashboard": {
-    "goto": "Go"
+    "goto": "Go",
+    "table": {
+      "name": "Name",
+      "asset": "Asset"
+    }
   },
   "asset": {},
   "measure": {},

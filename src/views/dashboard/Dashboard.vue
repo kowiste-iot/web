@@ -35,9 +35,10 @@
           <PropertyDot
             v-if="unlock"
             class="position-absolute top-0 end-0"
-            :data="page.widgetProp"
+            :data="page.properties"
             :onClick="(id:number)=>console.log('press',id)"
           />
+          <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
         </div>
       </GridItem>
     </GridLayout>
@@ -76,8 +77,19 @@ import { ref } from 'vue'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 // components import
 import SideCard from '@/components/cards/SideCard.vue'
-import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
 import PropertyDot from '@/components/property/Property.vue'
+import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from 'chart.js'
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 //import GridDrag from '@/components/layout/GridDrag.vue'
 // model imports
@@ -95,6 +107,14 @@ const widgets = ref([
   { x: 2, y: 0, w: 22, h: 4, i: '1' },
   // Add more items as needed
 ])
+//data
+const chartData = {
+  labels: ['January', 'February', 'March'],
+  datasets: [{ data: [40, 20, 12] }],
+}
+const chartOptions = {
+  responsive: true,
+}
 useBreadCrumb().set(page.value.title, page.value.path)
 </script>
 

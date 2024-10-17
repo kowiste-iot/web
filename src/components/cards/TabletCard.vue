@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light border-secondary p-1 border rounded">
+  <div class="card p-1">
     <div class="d-flex justify-content-between">
       <slot name="header" />
     </div>
