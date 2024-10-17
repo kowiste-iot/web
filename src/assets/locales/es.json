@@ -3,6 +3,7 @@
     "hello": "hola mundo"
   },
   "action": {
+    "save": "Guardar",
     "edit": "Editar",
     "delete": "Borrar",
     "cancel": "Cancelar"
@@ -20,10 +21,19 @@
     "admin": "Administracion"
   },
   "dashboard": {
+    "title": "dasboards",
     "goto": "Ir",
     "table": {
       "name": "Nombre",
-      "asset": "Activo"
+      "parent": "Pertenece"
+    },
+    "delete": "Esta seguro que desea borrarlo",
+    "form": {
+      "title": "Crear Dashboard",
+      "name": "Nombre",
+      "nameHolder": "nombre del dashboard",
+      "parent": "Pertenece a",
+      "parentHolder": "dashboard pertenece a activo"
     }
   },
   "asset": {},
@@ -32,6 +42,7 @@
   "admin": {},
   "profile": {},
   "setting": {
+    "title": "Ajustes de usuario",
     "theme": "Tema claro/oscuro",
     "language": "Idioma"
   }

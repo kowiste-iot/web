@@ -3,6 +3,7 @@
     "hello": "hello world"
   },
   "action": {
+    "save": "Save",
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel"
@@ -20,10 +21,19 @@
     "admin": "Admin"
   },
   "dashboard": {
+    "title": "dasboards",
     "goto": "Go",
     "table": {
       "name": "Name",
-      "asset": "Asset"
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "title": "Create Dashboard",
+      "name": "Name",
+      "nameHolder": "dashboard name",
+      "parent": "Belong To",
+      "parentHolder": "dashboard belong to asset"
     }
   },
   "asset": {},
@@ -32,6 +42,7 @@
   "admin": {},
   "profile": {},
   "setting": {
+    "title": "User Settings",
     "theme": "Light/Dark theme",
     "language": "Language"
   }

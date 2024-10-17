@@ -16,7 +16,7 @@ export class DashboardsPage {
 
   constructor() {
     const { t } = useI18n()
-    this.title = 'dashboards'
+    this.title = t('dashboard.title')
     this.properties = [
       {
         id: 1,
@@ -38,8 +38,8 @@ export class DashboardsPage {
     const { t } = useI18n()
     return {
       id: new Columns('ID', 'id'),
-      name: new Columns('Name', t('dashboard.table.name')),
-      asset: new Columns('Asset', t('dashboard.table.asset')),
+      name: new Columns(t('dashboard.table.name'), 'name'),
+      asset: new Columns(t('dashboard.table.parent'), 'parent'),
     }
   }
 }

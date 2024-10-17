@@ -1,6 +1,5 @@
 <template>
-  <div class="modal">
-    <!-- Modal content -->
+  <Modal>
     <div
       class="bg-light m-auto p-3 border-secondary rounded col-lg-3 col-md-4 col-sm-5"
     >
@@ -32,7 +31,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </Modal>
 </template>
 
 <script setup lang="ts">
@@ -42,7 +41,7 @@ import { type PropType, ref } from 'vue'
 // stores import
 // components import
 import Button from '@/components/buttons/Button.vue'
-
+import Modal from '@/components/cards/Modal.vue'
 // model imports
 import { EActionGUI } from '@/enums/gui/EActionGUI'
 import { EColor } from '@/enums/gui/EColor'
@@ -105,19 +104,4 @@ function getIcon(data: EActionGUI): IAction {
 // watch
 </script>
 
-<style scoped>
-/* The Modal (background) */
-.modal {
-  display: block; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 5rem; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
-}
-</style>
+<style scoped></style>

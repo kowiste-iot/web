@@ -2,7 +2,7 @@
   <TabletCard class="mt-5">
     <DataTable
       :value="[
-        { id: 'sdff231', name: 'ter', art: 'gtht' },
+        { id: 'sdff231', name: 'ter', asset: 'gtht' },
         { id: 'sfgf231', name: 'fgsf', art: 'ggg' },
       ]"
       :tableStyle="{ 'min-width': '5rem' }"
@@ -66,9 +66,12 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <SideCard v-if="page.showForm" class="col-md-6">
-    <DashboardForm :close="() => (page.showForm = false)" />
-  </SideCard>
+  <Modal v-if="page.showForm">
+    <SideCard class="col-12 col-sm-10 col-md-6 col-lg-4">
+      <DashboardForm :close="() => (page.showForm = false)" />
+    </SideCard>
+  </Modal>
+
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
@@ -79,7 +82,7 @@
       }
     "
   >
-    <div class="text-center">Are you sure you want to delete</div>
+    <div class="text-center">{{ $t('dashboard.delete') }}</div>
   </ConfirmCard>
 </template>
 
@@ -106,6 +109,7 @@ import router from '@/router'
 import type { Property } from '@/model/property'
 import { EActionGUI } from '@/enums/gui/EActionGUI'
 import { DashboardsPage } from '@/model/dashboard/page/pageDashboards'
+import Modal from '@/components/cards/Modal.vue'
 // other imports
 // props
 // data
@@ -130,5 +134,4 @@ function propertySelected(data: Property) {
 // watch
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

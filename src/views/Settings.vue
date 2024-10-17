@@ -1,6 +1,6 @@
 <template>
   <div>
-    <InputCard class="col-md-12" headerText="User Settings">
+    <InputCard class="col-md-12" :headerText="$t('setting.title')">
       <div class="row mb-3">
         <label class="col-md-4"> {{ $t('setting.theme') }} </label>
 
