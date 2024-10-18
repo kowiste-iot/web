@@ -1,22 +1,23 @@
 import { z } from 'zod'
-import { Asset, type IAsset } from '../asset'
 import Validation from '@/model/validation'
 import { EValidation } from '@/enums/EValidation'
+import type { IAsset } from '@/model/asset/asset'
+import type { IDevice } from '../device'
 
-export class FormAsset {
+export class FormDevice {
   id: string = ''
   name: string = ''
   parent: string = ''
-  parentSelected?: IAsset
+  parentSelected?: IDevice
   error: Record<string, z.ZodIssue[]> | null
-  constructor(data?: IAsset) {
+  constructor(data?: IDevice) {
     this.error = null
     if (!data) return
     this.id = data.id
     this.name = data.name
     this.parent = data.parent
   }
-  load(data: IAsset[]) {
+  loadAsset(data: IAsset[]) {
     if (!data) return
     this.parentSelected = data.find((asset) => asset.id == this.parent)
   }

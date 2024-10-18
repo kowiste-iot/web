@@ -2,12 +2,12 @@ import { EIcon } from '@/enums/gui/EIcon'
 import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
-import type { IAsset } from '../asset'
+import type { IDevice } from '../device'
 
-export class AssetsPage {
+export class DevicePage {
   title: string
   properties: Property[]
-  selected?: IAsset
+  selected?: IDevice
   showForm: boolean
   editForm: boolean
   showModal: boolean
@@ -19,7 +19,7 @@ export class AssetsPage {
 
   constructor() {
     const { t } = useI18n()
-    this.title = t('asset.title')
+    this.title = t('device.title')
     this.properties = [
       {
         id: 1,
@@ -43,8 +43,8 @@ export class AssetsPage {
 
     return {
       id: new Columns('ID', 'id'),
-      name: new Columns(t('asset.table.name'), 'name'),
-      asset: new Columns(t('asset.table.parent'), 'parent'),
+      name: new Columns(t('device.table.name'), 'name'),
+      asset: new Columns(t('device.table.parent'), 'parent'),
     }
   }
 }

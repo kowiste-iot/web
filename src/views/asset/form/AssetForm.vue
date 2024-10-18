@@ -2,26 +2,26 @@
   <InputCard
     class="h-100"
     :headerText="
-      $t(edit ? 'measure.form.titleUpdate' : 'measure.form.titleCreate')
+      $t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')
     "
     :icon="edit ? EIcon.Edit : EIcon.Add"
   >
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('measure.form.name') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
       <Input
         class="col-md-8"
-        :placeholder="$t('measure.form.nameHolder')"
+        :placeholder="$t('asset.form.nameHolder')"
         type="text"
         v-model="form.name"
       />
     </div>
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('measure.form.parent') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
       <DropDown
         class="col-md-8"
         optionValue="name"
         optionLabel="name"
-        :placeholder="$t('measure.form.parentHolder')"
+        :placeholder="$t('asset.form.parentHolder')"
         :options="assets"
         :onChange="() => form.change()"
         v-model="form.parentSelected"
@@ -51,7 +51,7 @@ import { ref, computed, onMounted, type PropType } from 'vue'
 
 // stores import
 import { useAsset } from '@/stores/asset/asset'
-import { useMeasure } from '@/stores/measure/measure'
+
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
@@ -62,7 +62,7 @@ import DropDown from '@/components/form/DropDown.vue'
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import type { IAsset } from '@/model/asset/asset'
-import { FormMeasure } from '@/model/measure/form/form'
+import { FormAsset } from '@/model/asset/form/form'
 // other imports
 // props
 const props = defineProps({
@@ -80,10 +80,9 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormMeasure())
+const form = ref(new FormAsset())
 // storage calls
 const assetStore = useAsset()
-const measureStore = useMeasure()
 // computed
 const assets = computed(() => {
   return assetStore.assets
@@ -91,17 +90,17 @@ const assets = computed(() => {
 // methods
 function save() {
   if (props.edit) {
-    measureStore.update(form.value)
+    assetStore.update(form.value)
   } else {
-    measureStore.create(form.value)
+    assetStore.create(form.value)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
   if (props.data && props.edit) {
-    form.value = new FormMeasure(props.data)
-    form.value.loadAsset(assets.value)
+    form.value = new FormAsset(props.data)
+    form.value.load(assets.value)
   }
 })
 // watch

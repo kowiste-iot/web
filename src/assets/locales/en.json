@@ -44,7 +44,31 @@
       "name": "Name",
       "parent": "Belong to"
     },
-    "delete": "Are you sure you want to delete it"
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Asset",
+      "titleUpdate": "Update Asset",
+      "name": "Name",
+      "nameHolder": "asset name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
+  "device": {
+    "title": "device",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Device",
+      "titleUpdate": "Update Device",
+      "name": "Name",
+      "nameHolder": "device name",
+      "parent": "Belong To",
+      "parentHolder": "device belong to asset"
+    }
   },
   "measure": {
     "title": "measure",
@@ -52,7 +76,15 @@
       "name": "Name",
       "parent": "Belong to"
     },
-    "delete": "Are you sure you want to delete it"
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Measure",
+      "titleUpdate": "Update Measure",
+      "name": "Name",
+      "nameHolder": "measure name",
+      "parent": "Belong To",
+      "parentHolder": "measure belong to asset"
+    }
   },
   "process": {},
   "admin": {},

@@ -1,23 +1,23 @@
-export interface IAsset {
+export interface IMeasure {
   id: string
   name: string
   parent: string
   description?: string
 }
 
-export class Asset implements IAsset {
+export class Measure implements IMeasure {
   id: string = ''
   name: string = ''
   parent: string = ''
   description?: string | undefined;
-  constructor(data?: IAsset) {
+  constructor(data?: IMeasure) {
     if (data) {
       this.id = data.id
       this.name = data.name
       this.parent = data.name
     }
   }
-  get(): IAsset {
+  get(): IMeasure {
     return this
   }
 }

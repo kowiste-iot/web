@@ -1,5 +1,5 @@
 import { type ZodTypeAny, z } from 'zod'
-// import { groupBy } from 'lodash'
+import { groupBy } from 'lodash'
 import { ref, toValue } from 'vue'
 export default class Validation<T extends ZodTypeAny> {
   private schema: T
@@ -19,7 +19,7 @@ export default class Validation<T extends ZodTypeAny> {
     const result = this.schema.safeParse(toValue(this.data))
     this.isValid.value = result.success
     if (!result.success) {
-    //   this.errors = groupBy(result.error.issues, 'path')
+    this.errors = groupBy(result.error.issues, 'path')
     }
     return this.errors
   }

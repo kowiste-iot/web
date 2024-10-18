@@ -35,8 +35,11 @@
       </Column>
 
       <Column>
-        <template #body>
-          <PropertyDot :data="page.properties" :onClick="propertySelected" />
+        <template #body="{ data }">
+          <PropertyDot
+            :data="page.properties"
+            :onClick="(prop:Property)=>propertySelected(prop,data)"
+          />
         </template>
       </Column>
     </DataTable>
@@ -54,12 +57,17 @@
     />
   </div>
   <SideCard v-if="page.showForm" class="col-md-6">
-    <DashboardForm :close="() => (page.showForm = false)" />
+    <AssetForm
+      :data="page.selected"
+      :edit="page.editForm"
+      :close="() => (page.showForm = false)"
+    />
   </SideCard>
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    actionText="Delete"
+    :actionText="$t('action.delete')"
+    :onAction="deleteAsset"
     :onCancel="
       () => {
         page.showModal = false
@@ -87,10 +95,11 @@ import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
-import DashboardForm from '@/views/dashboard/form/DashboardForm.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
+import type { IAsset } from '@/model/asset/asset'
+import AssetForm from '@/views/asset/form/AssetForm.vue'
 // other imports
 // props
 
@@ -104,15 +113,23 @@ const assets = computed(() => {
   return assetStore.assets
 })
 // methods
-function propertySelected(data: Property) {
-  switch (data.id) {
+function propertySelected(prop: Property, data: IAsset) {
+  page.value.selected = data
+  switch (prop.id) {
+    case 1:
+      page.value.showForm = true
+      page.value.editForm = true
+      break
     case 2:
       page.value.showModal = true
-      break
 
-    default:
       break
   }
+}
+function deleteAsset() {
+  assetStore.delete(page.value.selected!)
+  page.value.selected = undefined
+  page.value.showModal = false
 }
 // lifeCycle
 // watch

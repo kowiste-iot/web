@@ -8,23 +8,7 @@ interface State {
 
 export const useAsset = defineStore('assetStore', {
   state: (): State => ({
-    _assets: [
-      {
-        id: 'kfnwef34kf34',
-        name: 'Barcelona',
-        parent: '-',
-      },
-      {
-        id: 'qf343469',
-        name: 'Office Barcelona',
-        parent: 'kfnwef34kf34',
-      },
-      {
-        id: 'kw45tij5gn',
-        name: 'Warehouse Barcelona',
-        parent: 'kfnwef34kf34',
-      },
-    ],
+    _assets: [],
   }),
   getters: {
     assets(): IAsset[] {
@@ -37,6 +21,16 @@ export const useAsset = defineStore('assetStore', {
         id: String(this._assets.length),
         name: data.name,
         parent: data.parent,
+      })
+    },
+    update(data: FormAsset) {
+      const indexAsset = this._assets.findIndex((asset) => asset.id == data.id)
+      if (indexAsset < 0) return
+      this._assets[indexAsset] = data
+    },
+    delete(data: IAsset) {
+      this._assets = this._assets.filter((asset) => {
+        return asset.id != data.id
       })
     },
   },

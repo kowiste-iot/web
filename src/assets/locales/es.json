@@ -44,7 +44,15 @@
       "name": "Nombre",
       "parent": "Pertenece a"
     },
-    "delete": "Esta seguro que desea borrarlo"
+    "delete": "Esta seguro que desea borrarlo",
+    "form": {
+      "titleCreate": "Crear Asset",
+      "titleUpdate": "Actualizar Asset",
+      "name": "Nombre",
+      "nameHolder": "nombre del asset",
+      "parent": "Pertenece a",
+      "parentHolder": "asset pertenece a activo"
+    }
   },
   "measure": {
     "title": "medidas",
@@ -52,7 +60,15 @@
       "name": "Nombre",
       "parent": "Pertenece a"
     },
-    "delete": "Esta seguro que desea borrarlo"
+    "delete": "Esta seguro que desea borrarlo",
+    "form": {
+      "titleCreate": "Crear Medida",
+      "titleUpdate": "Actualizar Medida",
+      "name": "Nombre",
+      "nameHolder": "nombre de la medida",
+      "parent": "Pertenece a",
+      "parentHolder": "medida pertenece a activo"
+    }
   },
   "process": {},
   "admin": {},
