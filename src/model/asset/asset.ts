@@ -1,21 +1,21 @@
-export interface IDashboard {
+export interface IAsset {
   id: string
   name: string
   parent: string
 }
 
-export class Dashboard implements IDashboard {
+export class Asset implements IAsset {
   id: string = ''
   name: string = ''
   parent: string = ''
-  constructor(data?: IDashboard) {
+  constructor(data?: IAsset) {
     if (data) {
-      this.id=data.id
+      this.id = data.id
       this.name = data.name
       this.parent = data.name
     }
   }
-  get(): IDashboard {
+  get(): IAsset {
     return this
   }
 }

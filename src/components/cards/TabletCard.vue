@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between">
       <slot name="header" />
     </div>
-    <div class="mb-5">
+    <div class="mb-3">
       <slot />
     </div>
   </div>

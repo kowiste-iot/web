@@ -48,49 +48,49 @@ const { t } = useI18n()
 
 const menu = ref([
   {
-    label: t('menu.dashboard'),
+    label: 'menu.dashboard',
     icon: EIcon.Dashboard,
     isParent: true,
     path: '/dashboard',
   },
   {
-    label: t('menu.asset'),
+    label: 'menu.asset',
     icon: EIcon.Asset,
     isParent: true,
     path: '/asset',
     subMenu: [{ label: 'Build 1' }],
   },
   {
-    label: t('menu.measure'),
+    label: 'menu.measure',
     icon: EIcon.Measure,
     isParent: true,
     path: '/measure',
   },
   {
-    label: t('menu.device'),
+    label: 'menu.device',
     icon: EIcon.Device,
     isParent: true,
     path: '/device',
   },
   {
-    label: t('menu.process.parent'),
+    label: 'menu.process.parent',
     icon: EIcon.Process,
     isParent: true,
     path: '/process',
     subMenu: [
       {
-        label: t('menu.process.alert'),
+        label: 'menu.process.alert',
         icon: EIcon.Alert,
         path: '/process/alert',
       },
       {
-        label: t('menu.process.action'),
+        label: 'menu.process.action',
         icon: EIcon.Action,
         path: '/process/action',
       },
     ],
   },
-  { label: t('menu.admin'), icon: EIcon.Admin, isParent: true, path: '/admin' },
+  { label: 'menu.admin', icon: EIcon.Admin, isParent: true, path: '/admin' },
 ] as IMenu[])
 const isOpen = ref(true)
 // storage calls
@@ -107,7 +107,5 @@ function goToHome() {
 // watch
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 @/model/gui/menu

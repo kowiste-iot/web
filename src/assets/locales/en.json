@@ -4,6 +4,7 @@
   },
   "action": {
     "save": "Save",
+    "update": "Update",
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel"
@@ -29,15 +30,30 @@
     },
     "delete": "Are you sure you want to delete it",
     "form": {
-      "title": "Create Dashboard",
+      "titleCreate": "Create Dashboard",
+      "titleUpdate": "Update Dashboard",
       "name": "Name",
       "nameHolder": "dashboard name",
       "parent": "Belong To",
       "parentHolder": "dashboard belong to asset"
     }
   },
-  "asset": {},
-  "measure": {},
+  "asset": {
+    "title": "assets",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it"
+  },
+  "measure": {
+    "title": "measure",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it"
+  },
   "process": {},
   "admin": {},
   "profile": {},

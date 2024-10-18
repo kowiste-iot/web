@@ -1,10 +1,7 @@
 <template>
   <TabletCard class="mt-5">
     <DataTable
-      :value="[
-        { id: 'sdff231', name: 'ter', art: 'gtht' },
-        { id: 'sfgf231', name: 'fgsf', art: 'ggg' },
-      ]"
+      :value="assets"
       :tableStyle="{ 'min-width': '5rem' }"
       size="small"
       paginator
@@ -14,15 +11,6 @@
         pcPaginator: 'btn bg-danger border border-danger',
       }"
     >
-      <Column style="width: 5px">
-        <template #body="{ data }">
-          <Button
-            :color="EColor.Primary"
-            small
-            >{{ $t('dashboard.goto') }}</Button
-          >
-        </template>
-      </Column>
       <Column
         :class="page.table.name.location"
         :field="page.table.name.data"
@@ -62,52 +50,70 @@
       :icon="EIcon.Add"
       role="button"
       style="height: 1.5rem"
-      @click="() => (show = true)"
+      @click="() => (page.showForm = true)"
     />
   </div>
-  <SideCard v-if="show" class="col-md-6">
-    <DashboardForm :close="() => (show = false)" />
+  <SideCard v-if="page.showForm" class="col-md-6">
+    <DashboardForm :close="() => (page.showForm = false)" />
   </SideCard>
   <ConfirmCard
-    v-if="showModal"
+    v-if="page.showModal"
     :action="EActionGUI.Danger"
     actionText="Delete"
     :onCancel="
       () => {
-        showModal = false
+        page.showModal = false
       }
     "
   >
-    <div class="text-center">Are you sure you want to delete</div>
+    <div class="text-center">{{ $t('asset.delete') }}</div>
   </ConfirmCard>
 </template>
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 // stores import
 
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-
+import { useAsset } from '@/stores/asset/asset'
 // components import
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import { EActionGUI } from '@/enums/gui/EActionGUI'
 import { AssetsPage } from '@/model/asset/page/pageAssets'
-
+import TabletCard from '@/components/cards/TabletCard.vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import SideCard from '@/components/cards/SideCard.vue'
+import DashboardForm from '@/views/dashboard/form/DashboardForm.vue'
+import PropertyDot from '@/components/property/Property.vue'
+import ConfirmCard from '@/components/cards/ConfirmCard.vue'
+import type { Property } from '@/model/property'
 // other imports
 // props
 
 // data
 const page = ref(new AssetsPage())
-const show = ref(false)
-const showModal = ref(false)
 // storage calls
 useBreadCrumb().set(page.value.title)
-
+const assetStore = useAsset()
 // computed
+const assets = computed(() => {
+  return assetStore.assets
+})
 // methods
+function propertySelected(data: Property) {
+  switch (data.id) {
+    case 2:
+      page.value.showModal = true
+      break
+
+    default:
+      break
+  }
+}
 // lifeCycle
 // watch
 </script>

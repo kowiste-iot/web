@@ -1,10 +1,7 @@
 <template>
   <TabletCard class="mt-5">
     <DataTable
-      :value="[
-        { id: 'sdff231', name: 'ter', asset: 'gtht' },
-        { id: 'sfgf231', name: 'fgsf', art: 'ggg' },
-      ]"
+      :value="dashboards"
       :tableStyle="{ 'min-width': '5rem' }"
       size="small"
       paginator
@@ -48,8 +45,11 @@
       </Column>
 
       <Column>
-        <template #body>
-          <PropertyDot :data="page.properties" :onClick="propertySelected" />
+        <template #body="{ data }">
+          <PropertyDot
+            :data="page.properties"
+            :onClick="(prop:Property)=>propertySelected(prop,data)"
+          />
         </template>
       </Column>
     </DataTable>
@@ -68,7 +68,11 @@
   </div>
   <Modal v-if="page.showForm">
     <SideCard class="col-12 col-sm-10 col-md-6 col-lg-4">
-      <DashboardForm :close="() => (page.showForm = false)" />
+      <DashboardForm
+        :data="page.selected"
+        :edit="page.editForm"
+        :close="() => page.closeForm()"
+      />
     </SideCard>
   </Modal>
 
@@ -76,6 +80,7 @@
     v-if="page.showModal"
     :action="EActionGUI.Danger"
     :actionText="$t('action.delete')"
+    :onAction="deleteDashboard"
     :onCancel="
       () => {
         page.showModal = false
@@ -88,9 +93,10 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 // stores import
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+import { useDashboard } from '@/stores/dashboard/dashboard'
 
 // components import
 import TabletCard from '@/components/cards/TabletCard.vue'
@@ -110,6 +116,7 @@ import type { Property } from '@/model/property'
 import { EActionGUI } from '@/enums/gui/EActionGUI'
 import { DashboardsPage } from '@/model/dashboard/page/pageDashboards'
 import Modal from '@/components/cards/Modal.vue'
+import type { IDashboard } from '@/model/dashboard/dashboard'
 // other imports
 // props
 // data
@@ -117,18 +124,30 @@ const page = ref(new DashboardsPage())
 
 // storage calls
 useBreadCrumb().set(page.value.title)
+const dashboardStore = useDashboard()
 
 // computed
+const dashboards = computed(() => {
+  return dashboardStore.dashboards
+})
 // methods
-function propertySelected(data: Property) {
-  switch (data.id) {
+function propertySelected(prop: Property, data: IDashboard) {
+  page.value.selected = data
+  switch (prop.id) {
+    case 1:
+      page.value.showForm = true
+      page.value.editForm = true
+      break
     case 2:
       page.value.showModal = true
-      break
 
-    default:
       break
   }
+}
+function deleteDashboard() {
+  dashboardStore.delete(page.value.selected!)
+  page.value.selected = undefined
+  page.value.showModal = false
 }
 // lifeCycle
 // watch

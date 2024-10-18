@@ -2,11 +2,14 @@ import { EIcon } from '@/enums/gui/EIcon'
 import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
+import type { IDashboard } from '../dashboard'
 
 export class DashboardsPage {
   title: string
   properties: Property[]
+  selected?: IDashboard
   showForm: boolean
+  editForm: boolean
   showModal: boolean
   table: {
     id: Columns
@@ -30,6 +33,7 @@ export class DashboardsPage {
       },
     ]
     this.showForm = false
+    this.editForm = false
     this.showModal = false
     this.table = this.createTable()
   }
@@ -41,5 +45,9 @@ export class DashboardsPage {
       name: new Columns(t('dashboard.table.name'), 'name'),
       asset: new Columns(t('dashboard.table.parent'), 'parent'),
     }
+  }
+  closeForm() {
+    this.showForm = false
+    this.editForm = false
   }
 }

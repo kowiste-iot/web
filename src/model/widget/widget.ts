@@ -1,4 +1,4 @@
-import type { EIcon } from '@/enums/gui/EIcon'
+import { EIcon } from '@/enums/gui/EIcon'
 
 export interface IWidget {
   id: number
@@ -8,11 +8,12 @@ export interface IWidget {
 }
 
 export class Widget implements IWidget {
-  id: number
-  name: string
-  description: string
-  icon: EIcon
-  constructor(data: IWidget) {
+  id: number=0
+  name: string=''
+  description: string=''
+  icon: EIcon=EIcon.Cancel
+  constructor(data?: IWidget) {
+    if (!data) return
     this.id = data.id
     this.name = data.name
     this.description = data.description

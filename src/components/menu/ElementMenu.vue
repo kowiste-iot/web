@@ -7,7 +7,7 @@
   >
     <div class="d-flex" role="button" @click="goToPath(data.path)">
       <FIcon class="pt-1" :icon="data.icon" />
-      <div v-if="isOpen" class="ms-3">{{ data.label }}</div>
+      <div v-if="isOpen" class="ms-3">{{ $t(data.label) }}</div>
     </div>
     <div v-if="isOpen">
       <FIcon
