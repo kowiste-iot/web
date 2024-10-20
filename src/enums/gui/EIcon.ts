@@ -48,4 +48,8 @@ export enum EIcon {
   Action = 'fa-person-running',
   Profile = 'fa-user-circle',
   Process = 'fa-diagram-predecessor',
+  //Face
+  Smile = 'fa-face-smile',
+  Meh = 'fa-face-meh',
+  Sad = 'fa-face-frown',
 }

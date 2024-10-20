@@ -22,6 +22,9 @@ import {
   faEnvelope,
   faExclamation,
   faExpand,
+  faFaceFrown,
+  faFaceMeh,
+  faFaceSmile,
   faFont,
   faGaugeSimple,
   faGear,
@@ -92,6 +95,9 @@ library.add(
   faEnvelope,
   faRectangleXmark,
   faTriangleExclamation,
-  faPersonRunning
+  faPersonRunning,
+  faFaceSmile,
+  faFaceMeh,
+  faFaceFrown
 )
 //check,x dont work

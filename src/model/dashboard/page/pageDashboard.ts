@@ -7,6 +7,9 @@ export class DashboardPage {
   path: Path[]
   selected: number
   properties: Property[]
+  refresh: boolean
+  show: boolean
+  unlock: boolean
 
   constructor() {
     this.title = 'dashboard'
@@ -24,5 +27,8 @@ export class DashboardPage {
         name: 'Delete',
       },
     ]
+    this.refresh = true
+    this.show = false
+    this.unlock = false
   }
 }

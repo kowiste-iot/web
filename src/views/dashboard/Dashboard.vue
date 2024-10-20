@@ -4,8 +4,8 @@
       :layout="widgets"
       :col-num="24"
       :row-height="30"
-      :is-draggable="unlock"
-      :is-resizable="unlock"
+      :is-draggable="page.unlock"
+      :is-resizable="page.unlock"
       vertical-compact
       :margin="[5, 5]"
       use-css-transforms
@@ -19,7 +19,7 @@
         :i="item.i"
         :key="item.i"
         :minH="3"
-        :minW="2"
+        :minW="6"
         @resized="
           () => {
             console.log('save', item)
@@ -33,12 +33,24 @@
       >
         <div class="border rounded h-100 position-relative bg-white">
           <PropertyDot
-            v-if="unlock"
+            v-if="page.unlock"
             class="position-absolute top-0 end-0"
             :data="page.properties"
             :onClick="(id:number)=>console.log('press',id)"
           />
-          <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+          <BarWidget>
+            <div class="d-flex px-1">
+              <div class="flex-fill">Temperature in the room</div>
+              <FIcon
+                class="pt-1"
+                :class="`text-${EColor.Danger}`"
+                :icon="EIcon.Sad"
+                role="button"
+                style="height: 1rem"
+                @click="() => (page.show = true)"
+              />
+            </div>
+          </BarWidget>
         </div>
       </GridItem>
     </GridLayout>
@@ -53,20 +65,20 @@
       :icon="EIcon.Add"
       role="button"
       style="height: 1.5rem"
-      @click="() => (show = true)"
+      @click="() => (page.show = true)"
     />
     <FIcon
       class="mt-3"
       :class="`text-${EColor.Secondary}`"
-      :icon="unlock ? EIcon.UnLock : EIcon.Lock"
+      :icon="page.unlock ? EIcon.UnLock : EIcon.Lock"
       role="button"
       style="height: 1.5rem"
-      @click="() => (unlock = !unlock)"
+      @click="() => (page.unlock = !page.unlock)"
     />
   </div>
 
-  <SideCard v-if="show" class="col-md-12">
-    <WidgetForm :close="() => (show = false)" />
+  <SideCard v-if="page.show" class="col-md-12">
+    <WidgetForm :close="() => (page.show = false)" />
   </SideCard>
 </template>
 
@@ -79,19 +91,7 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
-import { Bar } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js'
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-
-//import GridDrag from '@/components/layout/GridDrag.vue'
+import BarWidget from '@/views/dashboard/card/Bar.vue'
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
@@ -100,21 +100,12 @@ import { DashboardPage } from '@/model/dashboard/page/pageDashboard'
 // other imports
 // props
 const page = ref(new DashboardPage())
-const show = ref(false)
-const unlock = ref(false)
 const widgets = ref([
-  { x: 0, y: 0, w: 2, h: 2, i: '0' },
+  { x: 0, y: 0, w: 6, h: 3, i: '0' },
   { x: 2, y: 0, w: 22, h: 4, i: '1' },
   // Add more items as needed
 ])
 //data
-const chartData = {
-  labels: ['January', 'February', 'March'],
-  datasets: [{ data: [40, 20, 12] }],
-}
-const chartOptions = {
-  responsive: true,
-}
 useBreadCrumb().set(page.value.title, page.value.path)
 </script>
 
