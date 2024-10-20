@@ -56,13 +56,16 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <SideCard v-if="page.showForm" class="col-md-6">
-    <AssetForm
-      :data="page.selected"
-      :edit="page.editForm"
-      :close="() => (page.showForm = false)"
-    />
-  </SideCard>
+  <Modal v-if="page.showForm">
+    <SideCard class="col-md-6">
+      <AssetForm
+        :data="page.selected"
+        :edit="page.editForm"
+        :close="() => (page.showForm = false)"
+      />
+    </SideCard>
+  </Modal>
+
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
@@ -100,6 +103,7 @@ import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
 import type { IAsset } from '@/model/asset/asset'
 import AssetForm from '@/views/asset/form/AssetForm.vue'
+import Modal from '@/components/cards/Modal.vue'
 // other imports
 // props
 

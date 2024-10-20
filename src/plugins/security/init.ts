@@ -13,17 +13,21 @@ export const KeycloakPlugin: Plugin = {
     }
 
     const kc = useKeycloakStore()
-    const keycloak = new Keycloak('')
+    const keycloak = new Keycloak({
+      url:options.kcURI,
+      clientId: options.clientID,
+      realm: options.realm,
+    })
     keycloak
       .init({
         checkLoginIframe: false,
         redirectUri: options.baseURI,
       })
       .then(() => {
-        kc.set(keycloak,options)
+        kc.set(keycloak, options)
       })
       .catch((err: Error) => {
-        kc.set(new Keycloak(),options)
+        kc.set(new Keycloak(), options)
       })
   },
 }

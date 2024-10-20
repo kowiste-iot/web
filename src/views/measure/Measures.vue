@@ -56,13 +56,16 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <SideCard v-if="page.showForm" class="col-md-6">
-    <MeasureForm
-      :data="page.selected"
-      :edit="page.editForm"
-      :close="() => (page.showForm = false)"
-    />
-  </SideCard>
+  <Modal v-if="page.showForm">
+    <SideCard class="col-md-6">
+      <MeasureForm
+        :data="page.selected"
+        :edit="page.editForm"
+        :close="() => (page.showForm = false)"
+      />
+    </SideCard>
+  </Modal>
+
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
@@ -87,16 +90,17 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import { useMeasure } from '@/stores/measure/measure'
 // components import
 import MeasureForm from '@/views/measure/form/MeasureForm.vue'
-// model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import { EActionGUI } from '@/enums/gui/EActionGUI'
+import Modal from '@/components/cards/Modal.vue'
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
+// model imports
+import { EColor } from '@/enums/gui/EColor'
+import { EIcon } from '@/enums/gui/EIcon'
+import { EActionGUI } from '@/enums/gui/EActionGUI'
 import type { Property } from '@/model/property'
 import { MeasuresPage } from '@/model/measure/page/pageMeasure'
 import type { IMeasure } from '@/model/measure/measure'

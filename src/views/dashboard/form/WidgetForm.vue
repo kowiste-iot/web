@@ -72,6 +72,7 @@ import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import { WidgetFormPage } from '@/model/dashboard/page/pageWidgetForm'
 import { type IWidget } from '@/model/widget/widget'
+import type { IWidgetType } from '@/model/widget/widgetType'
 // other imports
 // props
 const props = defineProps({
@@ -86,7 +87,7 @@ const props = defineProps({
 })
 // data
 const page = ref(new WidgetFormPage())
-let selectedWidget = ref({ id: 0 } as IWidget)
+let selectedWidget = ref({ id: 0 } as IWidgetType)
 const widgets = [
   {
     id: 1,
@@ -136,11 +137,11 @@ const widgets = [
     description: 'table widget',
     icon: EIcon.WidgetTable,
   },
-] as IWidget[]
+] as IWidgetType[]
 // storage calls
 // computed
 // methods
-function selectWidget(data: IWidget) {
+function selectWidget(data: IWidgetType) {
   page.value.changeTab(2)
   selectedWidget.value = data
 }

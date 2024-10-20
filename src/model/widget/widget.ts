@@ -1,23 +1,40 @@
-import { EIcon } from '@/enums/gui/EIcon'
-
 export interface IWidget {
-  id: number
+  id: string
   name: string
+  dashboardID: string
   description: string
-  icon: EIcon
+  type: number
+  i: number
+  x: number
+  y: number
+  w: number
+  h: number
 }
 
 export class Widget implements IWidget {
-  id: number=0
-  name: string=''
-  description: string=''
-  icon: EIcon=EIcon.Cancel
+  id: string = ''
+  name: string = ''
+  dashboardID: string = ''
+  description: string = ''
+  type: number = 0
+  i: number = 0
+  x: number = 0
+  y: number = 0
+  w: number = 0
+  h: number = 0
   constructor(data?: IWidget) {
     if (!data) return
-    this.id = data.id
-    this.name = data.name
-    this.description = data.description
-    this.icon = data.icon
+      this.id = data.id
+      this.name = data.name
+      this.dashboardID = data.dashboardID
+      this.description = data.description
+      this.type = data.type
+      this.i = data.i
+      this.x = data.x
+      this.y = data.y
+      this.w = data.w
+      this.h = data.h
+    
   }
   get(): IWidget {
     return this

@@ -10,6 +10,8 @@ import measureRoutes from './measure'
 import deviceRoutes from './device'
 import adminRoutes from './admin'
 import processRoutes from './process'
+import { keycloakGuard } from '@/plugins/security/router'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,4 +51,5 @@ const router = createRouter({
 router.beforeEach((from, to) => {
   useRequest().cancelAll()
 })
+router.beforeEach(keycloakGuard)
 export default router

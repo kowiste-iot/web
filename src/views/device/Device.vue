@@ -56,13 +56,16 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <SideCard v-if="page.showForm" class="col-md-6">
-    <DeviceForm
-      :data="page.selected"
-      :edit="page.editForm"
-      :close="() => (page.showForm = false)"
-    />
-  </SideCard>
+  <Modal v-if="page.showForm">
+    <SideCard class="col-md-6">
+      <DeviceForm
+        :data="page.selected"
+        :edit="page.editForm"
+        :close="() => (page.showForm = false)"
+      />
+    </SideCard>
+  </Modal>
+
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
@@ -93,12 +96,13 @@ import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
+import Modal from '@/components/cards/Modal.vue'
+
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import { EActionGUI } from '@/enums/gui/EActionGUI'
 import type { Property } from '@/model/property'
-import type { IMeasure } from '@/model/measure/measure'
 import { DevicePage } from '@/model/device/page/pageDevice'
 import type { IDevice } from '@/model/device/device'
 // other imports
