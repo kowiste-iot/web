@@ -1,19 +1,8 @@
 <template>
   <div class="row">
     <div class="col-md-6">
-      <div class="form-group row justify-content-center px-5 mb-4">
-        <Boolean class="" :data="t.measure">
-          <div class="d-flex px-1">
-            <div v-if="t.showLabel" class="flex-fill">{{ t.label }}</div>
-            <FIcon
-              v-if="t.emotion"
-              class="pt-1"
-              :class="`text-${EColor.Danger}`"
-              :icon="EIcon.Sad"
-              role="button"
-              style="height: 1rem"
-            /></div
-        ></Boolean>
+      <div class="form-group row justify-content-center px-5 my-4">
+        <Boolean class="" :measure="t.measure" :data="t" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
@@ -31,7 +20,7 @@
     </div>
 
     <div class="col-md-6">
-      <div class="form-group row justify-content-center">
+      <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4 col-form-label">
           {{ $t('widget.form.common.label') }}
         </label>
@@ -42,7 +31,7 @@
           v-model="t.label"
         />
       </div>
-      <div class="form-group row justify-content-center">
+      <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
           {{ $t('widget.form.common.showLabel') }}
         </label>
@@ -55,7 +44,7 @@
           />
         </div>
       </div>
-      <div class="form-group row justify-content-center">
+      <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4"> {{ $t('widget.form.common.emotion') }} </label>
         <div class="col-md-8 form-switch">
           <input
@@ -63,6 +52,54 @@
             type="checkbox"
             role="switch"
             v-model="t.emotion"
+          />
+        </div>
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4">
+          {{ $t('widget.bool.form.trueEmotion') }}
+        </label>
+        <div class="col-md-8 form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            v-model="t.options.trueEmotion"
+          />
+        </div>
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4"> {{ $t('widget.bool.form.showText') }} </label>
+        <div class="col-md-8 form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            v-model="t.options.showText"
+          />
+        </div>
+      </div>
+      <div v-if="t.options.showText">
+        <div class="form-group row justify-content-center mb-1">
+          <label class="col-md-4 col-form-label">
+            {{ $t('widget.bool.form.textTrue') }}
+          </label>
+          <Input
+            class="col-md-8 col-form-label"
+            placeholder=""
+            type="text"
+            v-model="t.options.trueText"
+          />
+        </div>
+        <div class="form-group row justify-content-center mb-3">
+          <label class="col-md-4 col-form-label">
+            {{ $t('widget.bool.form.textFalse') }}
+          </label>
+          <Input
+            class="col-md-8 col-form-label"
+            placeholder=""
+            type="text"
+            v-model="t.options.falseText"
           />
         </div>
       </div>
@@ -93,6 +130,7 @@ const props = defineProps({
 // data
 let t = ref({
   showLabel: true,
+  options: {},
 } as any)
 // storage calls
 // computed

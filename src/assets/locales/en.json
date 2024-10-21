@@ -103,7 +103,12 @@
     "bool": {
       "title": "Boolean",
       "description": "bool widget, true / false",
-      "form": {}
+      "form": {
+        "showText": "Show text",
+        "trueEmotion": "Emotion on true",
+        "textTrue": "True Text",
+        "textFalse": "False Text"
+      }
     },
     "number": {
       "title": "Number",

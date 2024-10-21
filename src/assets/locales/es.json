@@ -87,7 +87,12 @@
     "bool": {
       "title": "Booleano",
       "description": "widget booleano, verdadero / falso",
-      "form": {}
+      "form": {
+        "showText": "Mostrat texto",
+        "trueEmotion": "Emocion para verdadero",
+        "textTrue": "Texto Verdadero",
+        "textFalse": "Texto Falso"
+      }
     },
     "number": {
       "title": "Numerico",
