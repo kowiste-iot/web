@@ -84,9 +84,10 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 // stores import
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+import { useWidget } from '@/stores/widget/widget'
 // components import
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
@@ -100,13 +101,19 @@ import { DashboardPage } from '@/model/dashboard/page/pageDashboard'
 // other imports
 // props
 const page = ref(new DashboardPage())
-const widgets = ref([
-  { x: 0, y: 0, w: 6, h: 3, i: '0' },
-  { x: 2, y: 0, w: 22, h: 4, i: '1' },
-  // Add more items as needed
-])
+
+
 //data
 useBreadCrumb().set(page.value.title, page.value.path)
+// storage calls
+const widgetStore = useWidget()
+// computed
+const widgets = computed(() => {
+  return widgetStore.widgets
+})
+// methods
+// lifeCycle
+// watch
 </script>
 
 <style scoped>

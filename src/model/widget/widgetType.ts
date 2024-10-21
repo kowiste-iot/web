@@ -1,14 +1,15 @@
+import  { EWidget } from '@/enums/dashboard/EWidget'
 import { EIcon } from '@/enums/gui/EIcon'
 
 export interface IWidgetType {
-  id: number
+  id: EWidget
   name: string
   description: string
   icon: EIcon
 }
 
 export class WidgetType implements IWidgetType {
-  id: number = 0
+  id: EWidget = EWidget.Boolean
   name: string = ''
   description: string = ''
   icon: EIcon = EIcon.Cancel
@@ -17,7 +18,7 @@ export class WidgetType implements IWidgetType {
       this.id = data.id
       this.name = data.name
       this.description = data.description
-      this.icon=data.icon
+      this.icon = data.icon
     }
   }
   get(): IWidgetType {

@@ -70,6 +70,61 @@
       "parentHolder": "medida pertenece a activo"
     }
   },
+  "widget": {
+    "form": {
+      "title": "Selecciona un widget",
+      "type": "tipo",
+      "options": "opciones",
+      "selected": "Widget seleccionado:",
+      "common": {
+        "label": "Etiqueta",
+        "labelHolder": "Etiqueta que se muestra en widget",
+        "showLabel": "Mostrar etiqueta",
+        "emotion": "Icono emocion",
+        "measureValue": "Valor de la medida"
+      }
+    },
+    "bool": {
+      "title": "Booleano",
+      "description": "widget booleano, verdadero / falso",
+      "form": {}
+    },
+    "number": {
+      "title": "Numerico",
+      "description": "widget numerico, max 2 decimales",
+      "form": {}
+    },
+    "gauge": {
+      "title": "Inidicador",
+      "description": "widget indicador",
+      "form": {}
+    },
+    "line": {
+      "title": "Grafico lineal",
+      "description": "widget de grafico lineal",
+      "form": {}
+    },
+    "bar": {
+      "title": "Grafico de barras",
+      "description": "widget de grafico de barras",
+      "form": {}
+    },
+    "pie": {
+      "title": "Grafico circular",
+      "description": "widget grafico circular",
+      "form": {}
+    },
+    "text": {
+      "title": "Texto",
+      "description": "widget texto",
+      "form": {}
+    },
+    "table": {
+      "title": "Tabla",
+      "description": "widget tabla",
+      "form": {}
+    }
+  },
   "process": {},
   "admin": {},
   "profile": {},
