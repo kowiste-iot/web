@@ -49,7 +49,7 @@
             :data="item.data"
           />
 
-          <BarWidget v-else>
+          <BarWidget v-if="item.type == EWidget.Bar">
             <div class="d-flex px-1">
               <div class="flex-fill">Temperature in the room</div>
               <FIcon
