@@ -1,13 +1,14 @@
 <template>
   <div class="border rounded h-100 d-flex flex-column">
     <div class="d-flex justify-content-center">
-      <div
-        v-if="!data.options?.showText"
-        class="border rounded m-3 w-50 py-3"
-        :class="`bg-${measure ? EColor.Success : EColor.Danger}`"
-      />
-      <div v-else class="fs-1">
-        {{ measure ? data.options.trueText : data.options.falseText }}
+      <div class="fs-1 position-relative">
+        {{ measure.toFixed(data.options.showDecimal ? 2 : 0) }}
+        <div
+          v-if="data.options.showUnit"
+          class="position-absolute bottom-0 start-100 fs-6 ms-2"
+        >
+          {{ data.options.unit }}
+        </div>
       </div>
     </div>
     <div class="border-top">
@@ -48,14 +49,14 @@
 // components import\
 
 import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon';
+import { EIcon } from '@/enums/gui/EIcon'
 // model imports
 // other imports
 // props
 const props = defineProps({
   measure: {
-    type: Boolean,
-    default: false,
+    type: Number,
+    default: 0,
   },
   data: {
     type: Object,

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Boolean class="" :measure="t.measure" :data="t" />
+        <Boolean class="" :measure="measure" :data="model.data" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
@@ -13,7 +13,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="t.measure"
+            v-model="measure"
           />
         </div>
       </div>
@@ -28,7 +28,7 @@
           class="col-md-8 col-form-label"
           :placeholder="$t('widget.form.common.labelHolder')"
           type="text"
-          v-model="t.label"
+          v-model="model.data.label"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
@@ -40,7 +40,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="t.showLabel"
+            v-model="model.data.showLabel"
           />
         </div>
       </div>
@@ -51,7 +51,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="t.emotion"
+            v-model="model.data.showEmotion"
           />
         </div>
       </div>
@@ -64,7 +64,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="t.options.trueEmotion"
+            v-model="model.data.options.trueEmotion"
           />
         </div>
       </div>
@@ -75,11 +75,11 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="t.options.showText"
+            v-model="model.data.options.showText"
           />
         </div>
       </div>
-      <div v-if="t.options.showText">
+      <div v-if="model.data.options.showText">
         <div class="form-group row justify-content-center mb-1">
           <label class="col-md-4 col-form-label">
             {{ $t('widget.bool.form.textTrue') }}
@@ -88,7 +88,7 @@
             class="col-md-8 col-form-label"
             placeholder=""
             type="text"
-            v-model="t.options.trueText"
+            v-model="model.data.options.trueText"
           />
         </div>
         <div class="form-group row justify-content-center mb-3">
@@ -99,7 +99,7 @@
             class="col-md-8 col-form-label"
             placeholder=""
             type="text"
-            v-model="t.options.falseText"
+            v-model="model.data.options.falseText"
           />
         </div>
       </div>
@@ -115,8 +115,7 @@ import { ref } from 'vue'
 // components import
 import Boolean from './Boolean.vue'
 import Input from '@/components/form/Input.vue'
-import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
+import { FormWidget } from '@/model/widget/form/form'
 
 // model imports
 // other imports
@@ -128,10 +127,8 @@ const props = defineProps({
   },
 })
 // data
-let t = ref({
-  showLabel: true,
-  options: {},
-} as any)
+const model = defineModel({ default: new FormWidget() })
+const measure = ref(false)
 // storage calls
 // computed
 // methods

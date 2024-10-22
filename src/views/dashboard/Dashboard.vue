@@ -38,7 +38,18 @@
             :data="page.properties"
             :onClick="(id:number)=>console.log('press',id)"
           />
-          <BarWidget>
+          <BoolWidget
+            v-if="item.type == EWidget.Boolean"
+            :measure="false"
+            :data="item.data"
+          />
+          <NumberWidget
+            v-if="item.type == EWidget.Number"
+            :measure="5"
+            :data="item.data"
+          />
+
+          <BarWidget v-else>
             <div class="d-flex px-1">
               <div class="flex-fill">Temperature in the room</div>
               <FIcon
@@ -93,15 +104,18 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
 import BarWidget from '@/views/dashboard/card/Bar.vue'
+import BoolWidget from '@/views/dashboard/card/Boolean.vue'
+import NumberWidget from '@/views/dashboard/card/Number.vue'
+
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import { DashboardPage } from '@/model/dashboard/page/pageDashboard'
+import { EWidget } from '@/enums/dashboard/EWidget'
 
 // other imports
 // props
 const page = ref(new DashboardPage())
-
 
 //data
 useBreadCrumb().set(page.value.title, page.value.path)

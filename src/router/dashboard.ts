@@ -9,7 +9,7 @@ const dashboardRoutes = [
     component: Dashboards,
   },
   {
-    path: '/dashboard/:id',
+    path: '/dashboard/:did',
     name: 'dashboard',
     component: Dashboard,
   },

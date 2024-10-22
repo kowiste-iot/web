@@ -88,7 +88,7 @@
       "title": "Booleano",
       "description": "widget booleano, verdadero / falso",
       "form": {
-        "showText": "Mostrat texto",
+        "showText": "Mostrar texto",
         "trueEmotion": "Emocion para verdadero",
         "textTrue": "Texto Verdadero",
         "textFalse": "Texto Falso"
@@ -97,7 +97,11 @@
     "number": {
       "title": "Numerico",
       "description": "widget numerico, max 2 decimales",
-      "form": {}
+      "form": {
+        "showDecimal": "Mostrar decimales",
+        "showUnit": "Mostrar unidades",
+        "unit": "unit"
+      }
     },
     "gauge": {
       "title": "Inidicador",

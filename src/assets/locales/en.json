@@ -113,7 +113,11 @@
     "number": {
       "title": "Number",
       "description": "number widget, max 2 decimal",
-      "form": {}
+      "form": {
+        "showDecimal": "Show decimal",
+        "showUnit": "Show unit",
+        "unit":"Unit"
+      }
     },
     "gauge": {
       "title": "Gauge",

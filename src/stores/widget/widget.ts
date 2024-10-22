@@ -17,11 +17,11 @@ export const useWidget = defineStore('widgetStore', {
   },
   actions: {
     create(data: FormWidget) {
-      data.id = String(this._widgets.length)
+      data.calculate(this._widgets)
       this._widgets.push(data)
     },
     update(data: FormWidget) {
-      const indexWidget= this._widgets.findIndex(
+      const indexWidget = this._widgets.findIndex(
         (widget) => widget.id == data.id
       )
       if (indexWidget < 0) return
