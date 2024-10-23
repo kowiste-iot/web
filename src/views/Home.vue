@@ -7,7 +7,8 @@
       @click="goToAsset"
       >i'm a button</Button
     >
-
+    <Slider class="row m-5" v-model:startValue="t1" v-model:endValue="t2" />
+    {{ 't1: ' + t1 + ' t2: ' + t2 }}
     <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
       hello
       <template #footer>
@@ -98,6 +99,7 @@ import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Spinner from '@/components/loading/Spinner.vue'
+import Slider from '@/components/slider/Slider.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
@@ -107,8 +109,9 @@ import { EColor } from '@/enums/gui/EColor'
 
 // data
 const drop = ref()
+const t1 = ref(-8)
+const t2 = ref(20)
 let isDark = false
-
 
 // storage calls
 const alertStore = useAlert()

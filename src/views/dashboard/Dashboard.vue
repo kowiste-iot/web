@@ -65,7 +65,6 @@
         </div>
       </GridItem>
     </GridLayout>
-    <!-- <GridDrag :items="items" :num-columns="12" /> -->
   </div>
   <div
     class="d-flex flex-column"
