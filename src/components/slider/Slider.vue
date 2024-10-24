@@ -1,128 +1,182 @@
 <template>
-  <div class="wrapper">
-    <div ref="slider" class="position-relative w-100">
-      <div class="track-wrapper">
-        <input
-          type="range"
-          :min="min"
-          :max="max"
-          v-model="startValue"
+  <div ref="sliderRef" class="relative w-full">
+    <svg
+      :width="containerWidth"
+      :height="containerHeight"
+      class="absolute top-0 left-0"
+    >
+      <!-- Base line -->
+      <line
+        :x1="handleRadius"
+        :y1="containerHeight / 2"
+        :x2="containerWidth - handleRadius"
+        :y2="containerHeight / 2"
+        :stroke="lineColor"
+        stroke-width="2"
+      />
+
+      <!-- Handles -->
+      <template v-for="(position, index) in handlePositions" :key="index">
+        <circle
+          :cx="position"
+          :cy="containerHeight / 2"
+          :r="handleRadius"
+          :fill="lineColor"
+          class="cursor-pointer"
+          @mousedown="startDragging(index, $event)"
         />
-        <input
-          type="range"
-          :min="min"
-          :max="max"
-          v-model="endValue"
-        />
-        <div class="track" :class="`bg-${color}`"></div>
-        <div
-          class="range-between"
-          :style="{ left: startPercent + '%', right: 100 - endPercent + '%' }"
-        ></div>
-        <div
-          class="position-absolute"
-          :style="{ left: startPercent + '%' }"
-          style="height: 1rem; width: 1rem"
-        ></div>
-        <div
-          class="position-absolute"
-          :style="{ right: 100 - endPercent + '%' }"
-          style="height: 1rem; width: 1rem"
-        ></div>
-      </div>
-    </div>
+      </template>
+    </svg>
   </div>
 </template>
 
-<script setup>
-import { EColor } from '@/enums/gui/EColor'
-import {  computed, watch, defineProps, defineModel } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 
-const props = defineProps({
-  min: {
-    type: Number,
-    default: -10,
-  },
-  max: {
-    type: Number,
-    default: 200,
-  },
-  color: {
-    type: String,
-    default: EColor.Info,
-  },
+interface Props {
+  handles: number
+  lineColor?: string
+  min?: number
+  max?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  lineColor: '#3498db',
+  min: 0,
+  max: 100,
 })
 
-const startValue = defineModel('start')
-const endValue = defineModel('end')
+const modelValue = defineModel<number[]>({ default: [] })
 
-const startPercent = computed(
-  () => ((startValue.value - props.min) / (props.max - props.min)) * 100
+const sliderRef = ref<HTMLDivElement | null>(null)
+const containerWidth = ref(0)
+const containerHeight = ref(0)
+const isDragging = ref(false)
+const currentHandleIndex = ref(-1)
+const handleRadius = 10
+const handlePositions = ref<number[]>([])
+
+const updateContainerSize = () => {
+  if (sliderRef.value) {
+    containerWidth.value = sliderRef.value.clientWidth
+    containerHeight.value = handleRadius * 4 // Height is relative to handle size
+  }
+}
+
+const initializeHandles = () => {
+  if (modelValue.value.length === props.handles) {
+    handlePositions.value = modelValue.value.map(
+      (value) =>
+        ((value - props.min) / (props.max - props.min)) * containerWidth.value
+    )
+  } else {
+    // Distribute handles evenly if no initial values provided
+    handlePositions.value = Array.from(
+      { length: props.handles },
+      (_, i) => (containerWidth.value / (props.handles + 1)) * (i + 1)
+    )
+    // Update model with initial values
+    modelValue.value = handlePositions.value
+      .map((pos) => {
+        const percentage = pos / containerWidth.value
+        return Math.round(percentage * (props.max - props.min) + props.min)
+      })
+      .sort((a, b) => a - b)
+  }
+}
+
+const startDragging = (index: number, event: MouseEvent) => {
+  isDragging.value = true
+  currentHandleIndex.value = index
+  document.addEventListener('mousemove', handleDrag)
+  document.addEventListener('mouseup', stopDragging)
+}
+
+const handleDrag = (event: MouseEvent) => {
+  if (!isDragging.value || !sliderRef.value) return
+
+  const sliderRect = sliderRef.value.getBoundingClientRect()
+  let newPosition = event.clientX - sliderRect.left
+
+  // Constrain to slider bounds
+  newPosition = Math.max(
+    handleRadius,
+    Math.min(containerWidth.value - handleRadius, newPosition)
+  )
+
+  handlePositions.value[currentHandleIndex.value] = newPosition
+
+  // Update model with new values
+  modelValue.value = handlePositions.value
+    .map((pos) => {
+      const percentage = pos / containerWidth.value
+      return Math.round(percentage * (props.max - props.min) + props.min)
+    })
+    .sort((a, b) => a - b)
+}
+
+const stopDragging = () => {
+  isDragging.value = false
+  currentHandleIndex.value = -1
+  document.removeEventListener('mousemove', handleDrag)
+  document.removeEventListener('mouseup', stopDragging)
+}
+
+// Handle window resize
+const handleResize = () => {
+  updateContainerSize()
+  // Recalculate handle positions based on new width
+  if (modelValue.value.length === props.handles) {
+    handlePositions.value = modelValue.value.map(
+      (value) =>
+        ((value - props.min) / (props.max - props.min)) * containerWidth.value
+    )
+  }
+}
+
+// Watch for external value changes
+watch(
+  () => modelValue.value,
+  (newValues) => {
+    if (newValues.length === props.handles && containerWidth.value > 0) {
+      handlePositions.value = newValues.map(
+        (value) =>
+          ((value - props.min) / (props.max - props.min)) * containerWidth.value
+      )
+    }
+  },
+  { deep: true }
 )
 
-const endPercent = computed(
-  () => ((endValue.value - props.min) / (props.max - props.min)) * 100
-)
+onMounted(() => {
+  updateContainerSize()
+  initializeHandles()
+  window.addEventListener('resize', handleResize)
+})
 
-watch([startValue.value, endValue.value], ([newStart, newEnd]) => {
-  if (newStart > newEnd - 10) {
-    startValue.value = newEnd - 10
-  }
-  if (newEnd < newStart + 10) {
-    endValue.value = newStart + 10
-  }
+// Clean up resize listener
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
-<style lang="scss" scoped>
-
-
-.track-wrapper {
+<style scoped>
+.relative {
   position: relative;
-  height: 10px;
-  display: flex;
-  align-items: center;
 }
-
-.track {
+.absolute {
   position: absolute;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.top-0 {
+  top: 0;
+}
+.left-0 {
   left: 0;
-  right: 0;
-  height: 100%;
-  border-radius: 5px;
 }
-
-.range-between {
-  position: absolute;
-  height: 100%;
-  background-color: var(--green);
-  border-radius: 5px;
-}
-
-input[type='range'] {
-  position: absolute;
+.w-full {
   width: 100%;
-  height: 10px;
-  -webkit-appearance: none;
-  background: transparent;
-  pointer-events: none;
-  z-index: 2;
-  margin: 0;
-  padding: 0;
-}
-
-input[type='range']::-webkit-slider-thumb {
-  pointer-events: all;
-  width: 20px;
-  height: 20px;
-  background-color: var(--green);
-  -webkit-appearance: none;
-}
-
-input[type='range']::-moz-range-thumb {
-  pointer-events: all;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
 }
 </style>

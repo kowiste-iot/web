@@ -7,8 +7,31 @@
       @click="goToAsset"
       >i'm a button</Button
     >
-    <Slider class="row m-5" v-model:startValue="t1" v-model:endValue="t2" />
-    {{ 't1: ' + t1 + ' t2: ' + t2 }}
+    <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
+
+    {{ 't1: ' + t1 }}
+    <div class="d-flex">
+      <Gauge
+        style="height: 10rem; width: 10rem"
+        :startAngle="0"
+        :endAngle="360"
+        :goodLimit="40"
+        :warningLimit="70"
+        :dangerLimit="80"
+        :model-value="t1[0]"
+        :border-color="'red'"
+      />
+      <Gauge
+        style="height: 5rem; width: 5rem"
+        :startAngle="270"
+        :endAngle="90"
+        :goodLimit="4"
+        :warningLimit="50"
+        :dangerLimit="80"
+        :model-value="t1[1]"
+      />
+    </div>
+
     <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
       hello
       <template #footer>
@@ -100,6 +123,7 @@ import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Spinner from '@/components/loading/Spinner.vue'
 import Slider from '@/components/slider/Slider.vue'
+import Gauge from '@/views/dashboard/card/Gauge.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
@@ -109,8 +133,8 @@ import { EColor } from '@/enums/gui/EColor'
 
 // data
 const drop = ref()
-const t1 = ref(-8)
-const t2 = ref(20)
+const t1 = ref([])
+
 let isDark = false
 
 // storage calls
