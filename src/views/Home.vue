@@ -7,6 +7,7 @@
       @click="goToAsset"
       >i'm a button</Button
     >
+    <Switch onText="ON" offText="OFF" style="width:  3rem;"/>
     <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
 
     {{ 't1: ' + t1 }}
@@ -124,6 +125,7 @@ import DropDown from '@/components/form/DropDown.vue'
 import Spinner from '@/components/loading/Spinner.vue'
 import Slider from '@/components/slider/Slider.vue'
 import Gauge from '@/views/dashboard/card/Gauge.vue'
+import Switch from '@/components/switch/Switch.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
