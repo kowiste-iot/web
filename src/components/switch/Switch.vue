@@ -1,3 +1,35 @@
+<template>
+  <button
+    type="button"
+    :class="[
+      'switch-button',
+      { 'switch-checked': modelValue, 'switch-disabled': disabled },
+    ]"
+    :style="[switchStyle, sizeStyles]"
+    @click="handleClick"
+    :aria-checked="modelValue"
+    role="switch"
+  >
+  <div class="switch-container">
+      <span class="switch-handle"></span>
+      <!-- Left icon container -->
+      <span class="icon-container icon-left">
+        <FIcon
+          class="switch-icon"
+          :icon="props.onIcon"
+        />
+      </span>
+      <!-- Right icon container -->
+      <span class="icon-container icon-right">
+        <FIcon
+          class="switch-icon"
+          :icon="props.offIcon"
+        />
+      </span>
+    </div>
+  </button>
+</template>
+
 <script lang="ts" setup>
 import { EIcon } from '@/enums/gui/EIcon';
 import { computed } from 'vue';
@@ -9,8 +41,8 @@ interface Props {
   onColor?: string;
   offColor?: string;
   handleColor?: string;
-  onText?: string;
-  offText?: string;
+  onIcon?: string;
+  offIcon?: string;
   disabled?: boolean;
 }
 
@@ -19,8 +51,8 @@ const props = withDefaults(defineProps<Props>(), {
   onColor: '#4ADE80',
   offColor: '#EF4444',
   handleColor: '#FFFFFF',
-  onText: '',
-  offText: '',
+  onIcon: EIcon.Smile,
+  offIcon: EIcon.Sad,
   disabled: false,
 });
 
@@ -33,37 +65,36 @@ const switchStyle = computed(() => ({
 // Size configurations for different switch sizes
 const sizeConfig = {
   sm: {
-    container: '40px',    // Container height
-    aspect: '2',          // Width will be 80px (40px * 2)
-    handle: '34px',       // Handle size
-    spacing: '2px',       // Space between handle and container edge
-    fontSize: '0.875rem', // Text size
-    iconSize: '1rem'      // Icon size
+    width: '60px',
+    height: '30px',
+    handle: '24px',
+    spacing: '3px',
+    fontSize: '0.875rem',
+    iconSize: '1rem',
   },
   md: {
-    container: '50px',
-    aspect: '2',
-    handle: '44px',
+    width: '80px',
+    height: '40px',
+    handle: '34px',
     spacing: '3px',
     fontSize: '1rem',
-    iconSize: '1.2rem'
+    iconSize: '1.2rem',
   },
   lg: {
-    container: '60px',
-    aspect: '2',
-    handle: '54px',
+    width: '100px',
+    height: '50px',
+    handle: '44px',
     spacing: '3px',
     fontSize: '1.2rem',
-    iconSize: '1.4rem'
-  }
+    iconSize: '1.4rem',
+  },
 };
 
 const sizeStyles = computed(() => ({
-  '--container-height': sizeConfig[props.size].container,
-  '--container-width': `calc(${sizeConfig[props.size].container} * ${sizeConfig[props.size].aspect})`,
+  '--switch-width': sizeConfig[props.size].width,
+  '--switch-height': sizeConfig[props.size].height,
   '--handle-size': sizeConfig[props.size].handle,
   '--handle-spacing': sizeConfig[props.size].spacing,
-  '--font-size': sizeConfig[props.size].fontSize,
   '--icon-size': sizeConfig[props.size].iconSize,
 }));
 
@@ -74,45 +105,11 @@ const handleClick = () => {
 };
 </script>
 
-<template>
-  <button
-    type="button"
-    :class="[
-      'switch-button',
-      { 'switch-checked': modelValue, 'switch-disabled': disabled },
-    ]"
-    :style="[switchStyle, sizeStyles]"
-     @click="handleClick"
-    :aria-checked="modelValue"
-    role="switch"
-  >
-    <div class="switch-container">
-      <span class="switch-handle"></span>
-      <span class="switch-text" :class="{ 'switch-text-checked': modelValue }">
-        <div v-if="modelValue">
-          <FIcon
-            class="pe-3"
-            :icon="EIcon.Alert"
-            style="height: 1.2rem; width: 1.2rem"
-          />
-        </div>
-        <div v-else>
-          <FIcon
-            class="pe-3"
-            :icon="EIcon.Edit"
-            style="height: 1.2rem; width: 1.2rem"
-          />
-        </div>
-      </span>
-    </div>
-  </button>
-</template>
-
 <style scoped>
 .switch-button {
   position: relative;
-  display: block;
-  width: 100%;
+  width: var(--switch-width);
+  height: var(--switch-height);
   padding: 0;
   border: none;
   cursor: pointer;
@@ -122,7 +119,7 @@ const handleClick = () => {
 .switch-container {
   position: relative;
   width: 100%;
-  padding-bottom: 50%; /* This creates a 2:1 aspect ratio */
+  height: 100%;
   background-color: var(--off-color);
   border-radius: 999px;
   transition: all 0.3s;
@@ -134,32 +131,45 @@ const handleClick = () => {
 
 .switch-handle {
   position: absolute;
-  top: 3%;
-  left: 1%;
-  width: 46%;
-  padding-bottom: 46%;
+  top: var(--handle-spacing);
+  left: var(--handle-spacing);
+  width: var(--handle-size);
+  height: var(--handle-size);
   border-radius: 50%;
   background-color: var(--handle-color);
   transition: transform 0.3s;
 }
 
 .switch-checked .switch-handle {
-  transform: translateX(110%);
+  transform: translateX(
+    calc(var(--switch-width) - var(--handle-size) - 2 * var(--handle-spacing))
+  );
 }
 
-.switch-text {
+.icon-container {
   position: absolute;
-  right: 8%;
   top: 50%;
   transform: translateY(-50%);
+  width: var(--handle-size);
+  height: var(--handle-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  font-size: clamp(0.5rem, 3vw, 1.2rem);
-  transition: all 0.3s;
+  transition: opacity 0.3s;
+}
+.icon-left {
+  left: var(--handle-spacing);
 }
 
-.switch-text-checked {
-  left: 8%;
-  right: auto;
+.icon-right {
+  right: var(--handle-spacing);
+}
+
+
+.switch-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
 }
 
 .switch-disabled {
