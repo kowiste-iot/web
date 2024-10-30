@@ -37,7 +37,7 @@ import { computed } from 'vue';
 const modelValue = defineModel<boolean>({ default: false });
 
 interface Props {
-  size?: 'sm' | 'md' | 'lg';
+  width?:string;
   onColor?: string;
   offColor?: string;
   handleColor?: string;
@@ -47,7 +47,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 'md',
+  width: '5rem', // Default width in rem
   onColor: '#4ADE80',
   offColor: '#EF4444',
   handleColor: '#FFFFFF',
@@ -56,46 +56,41 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 });
 
+// Helper function to ensure rem units
+const ensureRem = (value: string) => {
+  // If the value already includes a unit, convert it to rem
+  if (value.includes('px')) {
+    return `${parseFloat(value) / 16}rem`;
+  }
+  if (!value.includes('rem')) {
+    return `${value}rem`;
+  }
+  return value;
+};
+
+// Compute all dimensions based on the provided width
+const dimensions = computed(() => {
+  const widthInRem = ensureRem(props.width);
+  const width = parseFloat(widthInRem);
+  
+  return {
+    width: `${width}rem`,
+  height: `${width * 0.3}rem`, // Increased to 30% of width
+  handleSize: `${width * 0.255}rem`, // Proportionally increased by 20%
+  handleSpacing: `${width * 0.0228}rem`, // Proportionally increased by 20%
+  iconSize: `${width * 0.15}rem`, // Proportionally increased by 20%
+  };
+});
+
 const switchStyle = computed(() => ({
+  '--switch-width': dimensions.value.width,
+  '--switch-height': dimensions.value.height,
+  '--handle-size': dimensions.value.handleSize,
+  '--handle-spacing': dimensions.value.handleSpacing,
+  '--icon-size': dimensions.value.iconSize,
   '--on-color': props.onColor,
   '--off-color': props.offColor,
   '--handle-color': props.handleColor,
-}));
-
-// Size configurations for different switch sizes
-const sizeConfig = {
-  sm: {
-    width: '60px',
-    height: '30px',
-    handle: '24px',
-    spacing: '3px',
-    fontSize: '0.875rem',
-    iconSize: '1rem',
-  },
-  md: {
-    width: '80px',
-    height: '40px',
-    handle: '34px',
-    spacing: '3px',
-    fontSize: '1rem',
-    iconSize: '1.2rem',
-  },
-  lg: {
-    width: '100px',
-    height: '50px',
-    handle: '44px',
-    spacing: '3px',
-    fontSize: '1.2rem',
-    iconSize: '1.4rem',
-  },
-};
-
-const sizeStyles = computed(() => ({
-  '--switch-width': sizeConfig[props.size].width,
-  '--switch-height': sizeConfig[props.size].height,
-  '--handle-size': sizeConfig[props.size].handle,
-  '--handle-spacing': sizeConfig[props.size].spacing,
-  '--icon-size': sizeConfig[props.size].iconSize,
 }));
 
 const handleClick = () => {
