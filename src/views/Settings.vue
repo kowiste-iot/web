@@ -34,7 +34,11 @@
   </div>
   <div>
     k
-    <Switch v-model="t" width='29rem' onColor="#4ADE80" offColor="#EF4444" />
+    <div class="row w-100">
+      <div class="col-md-6">
+        <Switch v-model="t" onColor="#4ADE80" offColor="#EF4444" />
+      </div>
+    </div>
   </div>
 </template>
 

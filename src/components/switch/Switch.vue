@@ -5,26 +5,20 @@
       'switch-button',
       { 'switch-checked': modelValue, 'switch-disabled': disabled },
     ]"
-    :style="[switchStyle, sizeStyles]"
+    :style="switchStyle"
     @click="handleClick"
     :aria-checked="modelValue"
     role="switch"
   >
-  <div class="switch-container">
+    <div class="switch-container">
       <span class="switch-handle"></span>
       <!-- Left icon container -->
       <span class="icon-container icon-left">
-        <FIcon
-          class="switch-icon"
-          :icon="props.onIcon"
-        />
+        <FIcon class="switch-icon" :icon="props.onIcon" />
       </span>
       <!-- Right icon container -->
       <span class="icon-container icon-right">
-        <FIcon
-          class="switch-icon"
-          :icon="props.offIcon"
-        />
+        <FIcon class="switch-icon" :icon="props.offIcon" />
       </span>
     </div>
   </button>
@@ -37,7 +31,7 @@ import { computed } from 'vue';
 const modelValue = defineModel<boolean>({ default: false });
 
 interface Props {
-  width?:string;
+  width?: string;
   onColor?: string;
   offColor?: string;
   handleColor?: string;
@@ -72,13 +66,13 @@ const ensureRem = (value: string) => {
 const dimensions = computed(() => {
   const widthInRem = ensureRem(props.width);
   const width = parseFloat(widthInRem);
-  
+
   return {
     width: `${width}rem`,
-  height: `${width * 0.3}rem`, // Increased to 30% of width
-  handleSize: `${width * 0.255}rem`, // Proportionally increased by 20%
-  handleSpacing: `${width * 0.0228}rem`, // Proportionally increased by 20%
-  iconSize: `${width * 0.15}rem`, // Proportionally increased by 20%
+    height: `${width * 0.4}rem`, // Increased to 40% of width
+    handleSize: `${width * 0.34}rem`, // Proportionally increased by 60%
+    handleSpacing: `${width * 0.0304}rem`, // Proportionally increased by 60%
+    iconSize: `${width * 0.2}rem`, // Proportionally increased by 60%
   };
 });
 
@@ -160,7 +154,6 @@ const handleClick = () => {
 .icon-right {
   right: var(--handle-spacing);
 }
-
 
 .switch-icon {
   width: var(--icon-size);
