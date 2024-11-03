@@ -13,6 +13,9 @@ export const useKeycloakStore = defineStore('keycloak', {
   state: (): State => ({
     Keycloak: undefined,
     Options: {
+      kcURI:'',
+      realm:'',
+      clientID:'',
       baseURI: '',
       log: false,
       redirecURI: '',

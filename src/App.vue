@@ -1,9 +1,8 @@
 <template>
   <div
     class="d-flex align-items-stretch position-relative h-100 w-100"
-    :data-bs-theme="darkTheme ? 'dark' : 'light'"
   >
-    <SideMenu />
+    <SideMenu  />
     <Alert
       v-if="showAlert"
       class="position-absolute start-50 translate-middle-x col-md-6"
@@ -56,9 +55,7 @@ const showAlert = computed(() => {
 const alertData = computed(() => {
   return alertStore.alert
 })
-const darkTheme = computed(() => {
-  return userStore.darkTheme
-})
+
 // methods
 
 // lifeCycle

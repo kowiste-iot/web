@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white position-relative" :class="`bg-${EColor.Menu}`">
+  <div class="text-white position-relative " :class="`bg-${EColor.Dark}`">
     <Logo
       class="mb-4 m-3"
       style="height: 1rem; width: 1rem"

@@ -7,7 +7,7 @@
       @click="goToAsset"
       >i'm a button</Button
     >
-    <Switch onText="ON" offText="OFF" style="width:  3rem;"/>
+    <Switch onText="ON" offText="OFF"  style="width: 5rem;"/>
     <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
 
     {{ 't1: ' + t1 }}

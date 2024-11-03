@@ -9,7 +9,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            @change="userStore.changeTheme()"
+            @change="toggleTheme"
           />
         </div>
       </div>
@@ -44,25 +44,25 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue';
-import { EIcon } from '@/enums/gui/EIcon';
+import { ref } from 'vue'
+import { EIcon } from '@/enums/gui/EIcon'
 
 // stores import
-import { useI18n } from 'vue-i18n';
-import { useBreadCrumb } from '@/stores/gui/breadcrumb';
-import { useUser } from '@/stores/gui/user';
+import { useI18n } from 'vue-i18n'
+import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+import { useTheme } from '@/composable/useTheme'
 
 // components import
-import InputCard from '@/components/cards/Card.vue';
-import DropDown from '@/components/form/DropDown.vue';
-import Switch from '@/components/switch/Switch.vue';
+import InputCard from '@/components/cards/Card.vue'
+import DropDown from '@/components/form/DropDown.vue'
+import Switch from '@/components/switch/Switch.vue'
 // model imports
 
 // other imports
 // props
 
 // data
-let t = ref(false);
+let t = ref(false)
 const languageOpt = [
   {
     id: 1,
@@ -82,20 +82,20 @@ const languageOpt = [
     value: 'th',
     icon: 'fi fi-th',
   },
-];
-const currentLocale = ref(languageOpt[0]);
+]
+const currentLocale = ref(languageOpt[0])
 
 // storage calls
-const { locale } = useI18n();
-const storeCrumb = useBreadCrumb();
-const userStore = useUser();
+const { locale } = useI18n()
+const storeCrumb = useBreadCrumb()
+const { theme, toggleTheme } = useTheme()
 
-storeCrumb.reset();
+storeCrumb.reset()
 // computed
 // methods
 
 function changeLanguage() {
-  locale.value = currentLocale.value.value;
+  locale.value = currentLocale.value.value
 }
 // lifeCycle
 

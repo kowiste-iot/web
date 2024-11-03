@@ -31,7 +31,7 @@
           }
         "
       >
-        <div class="border rounded h-100 position-relative bg-white">
+        <div class="border rounded h-100 position-relative">
           <PropertyDot
             v-if="page.unlock"
             class="position-absolute top-0 end-0"
