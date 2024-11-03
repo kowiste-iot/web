@@ -2,14 +2,6 @@
   <TabletCard class="mt-5">
     <DataTable
       :value="measures"
-      :tableStyle="{ 'min-width': '5rem' }"
-      size="small"
-      paginator
-      :rows="5"
-      :pt="{
-        table: 'table table-striped',
-        pcPaginator: 'btn bg-danger border border-danger',
-      }"
     >
       <Column
         :class="page.table.name.location"

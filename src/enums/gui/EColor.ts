@@ -9,13 +9,13 @@ export enum EColor {
   Dark = 'dark',
   Light = 'light',
   Transparent = 'transparent',
-  //Accent
-  Accent1 = 'accent1',
-  Accent2 = 'accent2',
-  Accent3 = 'accent3',
-  Accent4 = 'accent4',
-  Accent5 = 'accent5',
-  Accent6 = 'accent6',
+  //color
+  Color1 = 'color1',
+  Color2 = 'color2',
+  Color3 = 'color3',
+  Color4 = 'color4',
+  Color5 = 'color5',
+  Color6 = 'color6',
   //Menu
   Menu = 'menu',
   MenuBg = 'menu-bg',

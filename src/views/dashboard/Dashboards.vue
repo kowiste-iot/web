@@ -2,14 +2,6 @@
   <TabletCard class="mt-5">
     <DataTable
       :value="dashboards"
-      :tableStyle="{ 'min-width': '5rem' }"
-      size="small"
-      paginator
-      :rows="5"
-      :pt="{
-        table: 'table table-striped',
-        pcPaginator: 'btn bg-danger border border-danger',
-      }"
     >
       <Column style="width: 5px">
         <template #body="{ data }">
@@ -153,4 +145,5 @@ function deleteDashboard() {
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
