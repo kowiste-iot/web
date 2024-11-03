@@ -25,19 +25,20 @@
 </template>
 
 <script lang="ts" setup>
-import { EIcon } from '@/enums/gui/EIcon';
-import { computed } from 'vue';
+import { EIcon } from '@/enums/gui/EIcon'
+import { computed } from 'vue'
 
-const modelValue = defineModel<boolean>({ default: false });
+const modelValue = defineModel<boolean>({ default: false })
 
 interface Props {
-  width?: string;
-  onColor?: string;
-  offColor?: string;
-  handleColor?: string;
-  onIcon?: string;
-  offIcon?: string;
-  disabled?: boolean;
+  width?: string
+  onColor?: string
+  offColor?: string
+  handleColor?: string
+  onIcon?: string
+  offIcon?: string
+  disabled?: boolean
+  onChange?: Function
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,24 +49,25 @@ const props = withDefaults(defineProps<Props>(), {
   onIcon: EIcon.Smile,
   offIcon: EIcon.Sad,
   disabled: false,
-});
+  onChange: function () {},
+})
 
 // Helper function to ensure rem units
 const ensureRem = (value: string) => {
   // If the value already includes a unit, convert it to rem
   if (value.includes('px')) {
-    return `${parseFloat(value) / 16}rem`;
+    return `${parseFloat(value) / 16}rem`
   }
   if (!value.includes('rem')) {
-    return `${value}rem`;
+    return `${value}rem`
   }
-  return value;
-};
+  return value
+}
 
 // Compute all dimensions based on the provided width
 const dimensions = computed(() => {
-  const widthInRem = ensureRem(props.width);
-  const width = parseFloat(widthInRem);
+  const widthInRem = ensureRem(props.width)
+  const width = parseFloat(widthInRem)
 
   return {
     width: `${width}rem`,
@@ -73,8 +75,8 @@ const dimensions = computed(() => {
     handleSize: `${width * 0.34}rem`, // Proportionally increased by 60%
     handleSpacing: `${width * 0.0304}rem`, // Proportionally increased by 60%
     iconSize: `${width * 0.2}rem`, // Proportionally increased by 60%
-  };
-});
+  }
+})
 
 const switchStyle = computed(() => ({
   '--switch-width': dimensions.value.width,
@@ -85,13 +87,14 @@ const switchStyle = computed(() => ({
   '--on-color': props.onColor,
   '--off-color': props.offColor,
   '--handle-color': props.handleColor,
-}));
+}))
 
 const handleClick = () => {
   if (!props.disabled) {
-    modelValue.value = !modelValue.value;
+    modelValue.value = !modelValue.value
+    props.onChange()
   }
-};
+}
 </script>
 
 <style scoped>

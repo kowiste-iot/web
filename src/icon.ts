@@ -33,12 +33,14 @@ import {
   faLock,
   faMagnifyingGlass,
   faMobileScreen,
+  faMoon,
   faPersonRunning,
   faPieChart,
   faRectangleXmark,
   faRuler,
   faSignOut,
   faSkull,
+  faSun,
   faTable,
   faToggleOff,
   faTrash,
@@ -98,6 +100,8 @@ library.add(
   faPersonRunning,
   faFaceSmile,
   faFaceMeh,
-  faFaceFrown
+  faFaceFrown,
+  faMoon,
+  faSun
 )
 //check,x dont work

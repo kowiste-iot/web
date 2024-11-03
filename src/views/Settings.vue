@@ -5,11 +5,13 @@
         <label class="col-md-4"> {{ $t('setting.theme') }} </label>
 
         <div class="col-md-8 form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            @change="toggleTheme"
+          <Switch
+            v-model="th"
+            onColor="#FFC90E"
+            offColor="#00023D"
+            :onIcon="EIcon.Light"
+            :offIcon="EIcon.Dark"
+            :onChange="toggleTheme"
           />
         </div>
       </div>
@@ -32,19 +34,12 @@
       </div>
     </InputCard>
   </div>
-  <div>
-    k
-    <div class="row w-100">
-      <div class="col-md-6">
-        <Switch v-model="t" onColor="#4ADE80" offColor="#EF4444" />
-      </div>
-    </div>
-  </div>
+
 </template>
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { EIcon } from '@/enums/gui/EIcon'
 
 // stores import
@@ -92,6 +87,9 @@ const { theme, toggleTheme } = useTheme()
 
 storeCrumb.reset()
 // computed
+const th = computed(() => {
+  return theme.value != 'light'
+})
 // methods
 
 function changeLanguage() {

@@ -31,6 +31,9 @@ export enum EIcon {
   Info = 'fa-info',
   Death = 'fa-skull',
   Mail = 'fa-envelope',
+  Light = 'fa-sun',
+  Dark = 'fa-moon',
+
   //Menu
   MenuOpen = 'fa-chevron-down',
   MenuClose = 'fa-chevron-up',
