@@ -3,22 +3,26 @@ github-sync:
   
   before_script:
     - apk update && apk add git openssh
-    # Debug info to verify the variables (optional)
     - echo "Running as ${GITLAB_USER_NAME}"
     
   script:
-    # Using GitLab's predefined variables
+    # Configure git
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     
-    # Use the token securely via environment variable
+    # Be explicit about the remote tracking branch
+    - git fetch origin public:refs/remotes/origin/public
+    
+    # Create and checkout the local branch, tracking the remote
+    - git checkout -B public --track origin/public
+    
+    # Add GitHub remote if it doesn't exist
     - |
       if ! git remote | grep -q "github"; then
         git remote add github https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git
       fi
-    - git fetch origin public
-    - git checkout public
-    - git pull origin public
+    
+    # Push to GitHub with explicit refspec
     - |
       if ! git push -f github public:main; then
         echo "Failed to push to GitHub. Check your token permissions and organization access."
@@ -26,6 +30,6 @@ github-sync:
       fi
   
   rules:
-    - if: '$CI_COMMIT_BRANCH == "public"'  # Only run on public branch
+    - if: '$CI_COMMIT_BRANCH == "public"'
       when: always
-    - when: never  # Skip for all other branches
+    - when: never
