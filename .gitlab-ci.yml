@@ -10,25 +10,34 @@ github-sync:
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     
-    # Be explicit about the remote tracking branch
-    - git fetch origin public:refs/remotes/origin/public
+    # Debug information
+    - echo "Current branch state:"
+    - git branch -av
     
-    # Create and checkout the local branch, tracking the remote
-    - git checkout -B public --track origin/public
+    # Make sure we're working with the current state
+    - git fetch origin
+    - git checkout -f ${CI_COMMIT_SHA}
     
-    # Add GitHub remote if it doesn't exist
+    # Add GitHub remote
     - |
       if ! git remote | grep -q "github"; then
+        echo "Adding GitHub remote..."
         git remote add github https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git
       fi
     
-    # Push to GitHub with explicit refspec
+    # Create local public branch
+    - git checkout -B public
+    
+    # Force push to GitHub main branch
     - |
+      echo "Pushing to GitHub..."
       if ! git push -f github public:main; then
-        echo "Failed to push to GitHub. Check your token permissions and organization access."
+        echo "Push failed. Debug info:"
+        git remote -v
+        git branch -av
         exit 1
       fi
-  
+    
   rules:
     - if: '$CI_COMMIT_BRANCH == "public"'
       when: always
