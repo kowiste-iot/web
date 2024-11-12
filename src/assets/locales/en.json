@@ -1,0 +1,161 @@
+{
+  "message": {
+    "hello": "hello world"
+  },
+  "action": {
+    "save": "Save",
+    "update": "Update",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "menu": {
+    "dashboard": "Dashboards",
+    "asset": "Assets",
+    "measure": "Measures",
+    "device": "Devices",
+    "process": {
+      "parent": "Process",
+      "alert": "Alert",
+      "action": "Action"
+    },
+    "admin": "Admin"
+  },
+  "dashboard": {
+    "title": "dasboards",
+    "goto": "Go",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Dashboard",
+      "titleUpdate": "Update Dashboard",
+      "name": "Name",
+      "nameHolder": "dashboard name",
+      "parent": "Belong To",
+      "parentHolder": "dashboard belong to asset"
+    }
+  },
+  "asset": {
+    "title": "assets",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Asset",
+      "titleUpdate": "Update Asset",
+      "name": "Name",
+      "nameHolder": "asset name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
+  "device": {
+    "title": "device",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Device",
+      "titleUpdate": "Update Device",
+      "name": "Name",
+      "nameHolder": "device name",
+      "parent": "Belong To",
+      "parentHolder": "device belong to asset"
+    }
+  },
+  "measure": {
+    "title": "measure",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Measure",
+      "titleUpdate": "Update Measure",
+      "name": "Name",
+      "nameHolder": "measure name",
+      "parent": "Belong To",
+      "parentHolder": "measure belong to asset"
+    }
+  },
+  "widget": {
+    "form": {
+      "title": "Select a widget",
+      "type": "type",
+      "options": "options",
+      "selected": "Selected widget:",
+      "common": {
+        "label": "Label",
+        "labelHolder": "Label to show in widget",
+        "showLabel": "Show label",
+        "emotion": "Emotion icon",
+        "measureValue": "Value of measure"
+      }
+    },
+    "bool": {
+      "title": "Boolean",
+      "description": "bool widget, true / false",
+      "form": {
+        "showText": "Show text",
+        "trueEmotion": "Emotion on true",
+        "textTrue": "True Text",
+        "textFalse": "False Text"
+      }
+    },
+    "number": {
+      "title": "Number",
+      "description": "number widget, max 2 decimal",
+      "form": {
+        "showDecimal": "Show decimal",
+        "showUnit": "Show unit",
+        "unit":"Unit"
+      }
+    },
+    "gauge": {
+      "title": "Gauge",
+      "description": "gauge widget",
+      "form": {}
+    },
+    "line": {
+      "title": "Line Graph",
+      "description": "line graph widget",
+      "form": {}
+    },
+    "bar": {
+      "title": "Bar Graph",
+      "description": "bar graph widget",
+      "form": {}
+    },
+    "pie": {
+      "title": "Pie Graph",
+      "description": "pie graph widget",
+      "form": {}
+    },
+    "text": {
+      "title": "Text",
+      "description": "text widget",
+      "form": {}
+    },
+    "table": {
+      "title": "Table",
+      "description": "table widget",
+      "form": {}
+    }
+  },
+  "process": {},
+  "admin": {},
+  "profile": {},
+  "setting": {
+    "title": "User Settings",
+    "theme": "Light/Dark theme",
+    "language": "Language"
+  }
+}

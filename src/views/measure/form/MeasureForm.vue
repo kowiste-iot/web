@@ -1,0 +1,110 @@
+<template>
+  <InputCard
+    class="h-100"
+    :headerText="
+      $t(edit ? 'measure.form.titleUpdate' : 'measure.form.titleCreate')
+    "
+    :icon="edit ? EIcon.Edit : EIcon.Add"
+  >
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('measure.form.name') }} </label>
+      <Input
+        class="col-md-8"
+        :placeholder="$t('measure.form.nameHolder')"
+        type="text"
+        v-model="form.name"
+      />
+    </div>
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('measure.form.parent') }} </label>
+      <DropDown
+        class="col-md-8"
+        optionValue="name"
+        optionLabel="name"
+        :placeholder="$t('measure.form.parentHolder')"
+        :options="assets"
+        :onChange="() => form.change()"
+        v-model="form.parentSelected"
+      >
+        <template #option="{ data }">
+          {{ data.name }}
+        </template>
+      </DropDown>
+    </div>
+    <template #footer>
+      <Button
+        v-if="!form.errors()"
+        :color="edit ? EColor.Warning : EColor.Success"
+        @click="save()"
+        >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
+      >
+      <Button :color="EColor.Secondary" outline @click="close()">{{
+        $t('action.cancel')
+      }}</Button>
+    </template>
+  </InputCard>
+</template>
+
+<script setup lang="ts">
+// imports
+import { ref, computed, onMounted, type PropType } from 'vue'
+
+// stores import
+import { useAsset } from '@/stores/asset/asset'
+import { useMeasure } from '@/stores/measure/measure'
+// components import
+import Button from '@/components/buttons/Button.vue'
+import InputCard from '@/components/cards/Card.vue'
+import Input from '@/components/form/Input.vue'
+import DropDown from '@/components/form/DropDown.vue'
+
+// model imports
+import { EColor } from '@/enums/gui/EColor'
+import { EIcon } from '@/enums/gui/EIcon'
+import type { IAsset } from '@/model/asset/asset'
+import { FormMeasure } from '@/model/measure/form/form'
+// other imports
+// props
+const props = defineProps({
+  data: {
+    type: Object as PropType<IAsset>,
+    default: {},
+  },
+  edit: {
+    type: Boolean,
+    default: false,
+  },
+  close: {
+    type: Function,
+    default: function () {},
+  },
+})
+// data
+const form = ref(new FormMeasure())
+// storage calls
+const assetStore = useAsset()
+const measureStore = useMeasure()
+// computed
+const assets = computed(() => {
+  return assetStore.assets
+})
+// methods
+function save() {
+  if (props.edit) {
+    measureStore.update(form.value)
+  } else {
+    measureStore.create(form.value)
+  }
+  props.close()
+}
+// lifeCycle
+onMounted(() => {
+  if (props.data && props.edit) {
+    form.value = new FormMeasure(props.data)
+    form.value.loadAsset(assets.value)
+  }
+})
+// watch
+</script>
+
+<style scoped></style>
