@@ -1,53 +1,28 @@
 github-sync:
   image: alpine:latest
   variables:
-    GIT_DEPTH: "0"  # Full history
-    GIT_STRATEGY: clone  # Fresh clone each time
+    GIT_DEPTH: "0"
+    GIT_STRATEGY: clone
   
   before_script:
     - apk update && apk add git openssh
     
   script:
-    # Show git version and debug info
-    - git --version
-    - echo "Running as ${GITLAB_USER_NAME}"
-    
-    # Basic git configuration
+    # Configure git
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     
-    # Create a fresh local copy of all content
+    # Prepare branch
     - git checkout ${CI_COMMIT_SHA}
-    - git branch -D public || true
     - git checkout -b public
     
-    # Show what we're about to push
-    - echo "Content to be pushed:"
-    - git log -n 3 --oneline
-    - git status
-    
-    # Add GitHub remote
-    - echo "Adding GitHub remote..."
+    # Setup and push to GitHub
     - git remote remove github || true
     - git remote add github "https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git"
-    - git remote -v
-    
-    # Try to push (with debugging if it fails)
     - |
-      echo "Attempting to push to GitHub..."
-      if ! git push -u github public:main --force --verbose; then
-        echo "Push failed. Extended debug info:"
-        echo "Remote URLs:"
-        git remote -v
-        echo "Current branch status:"
-        git status
-        echo "Recent commits:"
-        git log -n 5 --oneline
-        echo "Branch list:"
-        git branch -av
+      if ! git push -u github public:main --force; then
+        echo "Failed to push to GitHub"
         exit 1
-      else
-        echo "Push successful!"
       fi
   
   rules:
