@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <Button
       class="my-4"
       :color="EColor.Success"
@@ -107,7 +108,16 @@
 
     <Input label="test" placeholder="test" type="file" />
     <div>Selected drop {{ drop }}</div>
+<div>   <CalenderHeatmap :data="contributionData"
+
+    :year="2024"
+    :month="3"
+    :day="15" /></div>
+ 
+
   </div>
+  
+  
 </template>
 
 <script setup lang="ts">
@@ -126,6 +136,8 @@ import Spinner from '@/components/loading/Spinner.vue'
 import Slider from '@/components/slider/Slider.vue'
 import Gauge from '@/views/dashboard/card/Gauge.vue'
 import Switch from '@/components/switch/Switch.vue'
+import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue'
+
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
@@ -139,6 +151,23 @@ const t1 = ref([])
 
 let isDark = false
 
+const contributionData = ref([
+  { date: '2024-01-01', count: 5 },
+  { date: '2024-01-02', count: 2 },
+  { date: '2024-01-03', count: 8 },
+  { date: '2024-01-04', count: 3 },
+  { date: '2024-01-05', count: 7 },
+  // Add more dates to see the pattern
+  { date: '2024-02-01', count: 4 },
+  { date: '2024-02-02', count: 6 },
+  { date: '2024-02-03', count: 2 },
+  { date: '2024-03-01', count: 9 },
+  { date: '2024-03-02', count: 3 },
+  { date: '2024-04-01', count: 5 },
+  { date: '2024-05-01', count: 7 },
+  // Add some recent dates
+  { date: new Date().toISOString().split('T')[0], count: 4 }
+])
 // storage calls
 const alertStore = useAlert()
 const storeCrumb = useBreadCrumb()
