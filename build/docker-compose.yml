@@ -1,0 +1,21 @@
+version: "3"
+name: 'platform'
+services:
+  web:
+    build:
+     context: ..
+     dockerfile: Dockerfile
+
+    container_name: web
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - web
+networks:
+  web:
+    external: true
