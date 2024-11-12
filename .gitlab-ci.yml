@@ -1,31 +1,27 @@
 github-sync:
   image: alpine:latest
+  variables:
+    GIT_DEPTH: "0"
+    GIT_STRATEGY: clone
   
   before_script:
     - apk update && apk add git openssh
-    - echo "Running as ${GITLAB_USER_NAME}"
     
   script:
     # Configure git
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     
-    # Be explicit about the remote tracking branch
-    - git fetch origin public:refs/remotes/origin/public
+    # Prepare branch
+    - git checkout ${CI_COMMIT_SHA}
+    - git checkout -b public
     
-    # Create and checkout the local branch, tracking the remote
-    - git checkout -B public --track origin/public
-    
-    # Add GitHub remote if it doesn't exist
+    # Setup and push to GitHub
+    - git remote remove github || true
+    - git remote add github "https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git"
     - |
-      if ! git remote | grep -q "github"; then
-        git remote add github https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git
-      fi
-    
-    # Push to GitHub with explicit refspec
-    - |
-      if ! git push -f github public:main; then
-        echo "Failed to push to GitHub. Check your token permissions and organization access."
+      if ! git push -u github public:main --force; then
+        echo "Failed to push to GitHub"
         exit 1
       fi
   
