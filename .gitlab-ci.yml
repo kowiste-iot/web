@@ -1,43 +1,55 @@
 github-sync:
   image: alpine:latest
+  variables:
+    GIT_DEPTH: "0"  # Full history
+    GIT_STRATEGY: clone  # Fresh clone each time
   
   before_script:
     - apk update && apk add git openssh
-    - echo "Running as ${GITLAB_USER_NAME}"
     
   script:
-    # Configure git
+    # Show git version and debug info
+    - git --version
+    - echo "Running as ${GITLAB_USER_NAME}"
+    
+    # Basic git configuration
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     
-    # Debug information
-    - echo "Current branch state:"
-    - git branch -av
+    # Create a fresh local copy of all content
+    - git checkout ${CI_COMMIT_SHA}
+    - git branch -D public || true
+    - git checkout -b public
     
-    # Make sure we're working with the current state
-    - git fetch origin
-    - git checkout -f ${CI_COMMIT_SHA}
+    # Show what we're about to push
+    - echo "Content to be pushed:"
+    - git log -n 3 --oneline
+    - git status
     
     # Add GitHub remote
-    - |
-      if ! git remote | grep -q "github"; then
-        echo "Adding GitHub remote..."
-        git remote add github https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git
-      fi
+    - echo "Adding GitHub remote..."
+    - git remote remove github || true
+    - git remote add github "https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git"
+    - git remote -v
     
-    # Create local public branch
-    - git checkout -B public
-    
-    # Force push to GitHub main branch
+    # Try to push (with debugging if it fails)
     - |
-      echo "Pushing to GitHub..."
-      if ! git push -f github public:main; then
-        echo "Push failed. Debug info:"
+      echo "Attempting to push to GitHub..."
+      if ! git push -u github public:main --force --verbose; then
+        echo "Push failed. Extended debug info:"
+        echo "Remote URLs:"
         git remote -v
+        echo "Current branch status:"
+        git status
+        echo "Recent commits:"
+        git log -n 5 --oneline
+        echo "Branch list:"
         git branch -av
         exit 1
+      else
+        echo "Push successful!"
       fi
-    
+  
   rules:
     - if: '$CI_COMMIT_BRANCH == "public"'
       when: always
