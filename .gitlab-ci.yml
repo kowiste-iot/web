@@ -1,0 +1,46 @@
+# .gitlab-ci.yml
+github-sync:
+  image: alpine:latest
+  
+  before_script:
+    # Install git and openssh
+    - apk update && apk add git openssh
+    
+    # Debug information (optional, remove in production)
+    - echo "Pushing to organization: kowiste-iot"
+    - echo "Repository: web"
+    
+  script:
+    # Configure git with environment variables
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    
+    # Add GitHub as a remote repository
+    - |
+      if ! git remote | grep -q "github"; then
+        git remote add github https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git
+      fi
+    
+    # Fetch the latest changes
+    - git fetch origin public
+    - git checkout public
+    
+    # Ensure we have the latest changes
+    - git pull origin public
+    
+    # Push to GitHub main branch with error handling
+    - |
+      if ! git push -f github public:main; then
+        echo "Failed to push to GitHub. Check your token permissions and organization access."
+        exit 1
+      fi
+  
+  # Run only on the public branch
+  only:
+    - public
+    
+  # Run this job only when there are changes
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      when: always
+    - when: never
