@@ -1,6 +1,6 @@
 <template>
-  <div class="card">
-    <div class="card-header d-flex justify-content-between">
+  <div class="card bg-light">
+    <div v-if="showHeader" class="card-header d-flex justify-content-between">
       <div v-if="headerText">{{ headerText }}</div>
       <FIcon v-if="headerText && icon" :icon="icon" />
       <slot v-else name="header" />
@@ -8,7 +8,7 @@
     <div class="card-body">
       <slot />
     </div>
-    <div class="card-footer d-flex justify-content-between">
+    <div v-if="showFooter" class="card-footer d-flex justify-content-between">
       <slot name="footer"></slot>
     </div>
   </div>
@@ -19,18 +19,15 @@
 // stores import
 // components import
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-
 // other imports
 // props
-const props = defineProps({
-  headerText: {
-    type: String,
-  },
-  icon: {
-    type: String,
-  },
-})
+interface Props {
+  headerText?: string
+  icon?: string
+  showHeader?: boolean
+  showFooter?: boolean
+}
+const props = defineProps<Props>()
 // data
 // storage calls
 // computed

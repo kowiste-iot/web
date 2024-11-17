@@ -9,7 +9,7 @@ export interface IWidgetType {
 }
 
 export class WidgetType implements IWidgetType {
-  id: EWidget = EWidget.Boolean
+  id: EWidget = EWidget.None
   name: string = ''
   description: string = ''
   icon: EIcon = EIcon.Cancel

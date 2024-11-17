@@ -1,26 +1,27 @@
 // src/components/BaseDataTable.vue
 <script setup lang="ts">
-import DataTable from 'primevue/datatable';
-
-withDefaults(defineProps<{
-  size?: 'small' | 'large' | undefined;  // Fixed: Using the correct union type
-  stripedRows?: boolean;
-  paginator?: boolean;
-  rows?: number;
-  alwaysShowPaginator?: boolean;
-  paginatorTemplate?: string;
-  currentPageReportTemplate?: string;
-  tableStyle?: object;
-}>(), {
+import DataTable from 'primevue/datatable'
+interface Props {
+  size?: 'small' | 'large' | undefined // Fixed: Using the correct union type
+  stripedRows?: boolean
+  paginator?: boolean
+  rows?: number
+  alwaysShowPaginator?: boolean
+  paginatorTemplate?: string
+  currentPageReportTemplate?: string
+  tableStyle?: object
+}
+withDefaults(defineProps<Props>(), {
   size: 'small',
   stripedRows: true,
   paginator: true,
   rows: 5,
   alwaysShowPaginator: false,
-  paginatorTemplate: 'FirstPageLink PrevPageLink CurrentPageReport NextPageLink',
+  paginatorTemplate:
+    'FirstPageLink PrevPageLink CurrentPageReport NextPageLink',
   currentPageReportTemplate: '{first} to {last} of {totalRecords}',
-  tableStyle: () => ({ 'min-width': '5rem' })
-});
+  tableStyle: () => ({ 'min-width': '5rem' }),
+})
 </script>
 
 <template>

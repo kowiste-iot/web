@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-1">
+  <div class="card p-1 bg-light">
     <div class="d-flex justify-content-between">
       <slot name="header" />
     </div>
@@ -16,17 +16,9 @@
 // components import
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  onAdd: {
-    type: Function,
-    default: function () {},
-  },
-})
 // data
 
 // storage calls
@@ -37,5 +29,4 @@ const props = defineProps({
 // watch
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

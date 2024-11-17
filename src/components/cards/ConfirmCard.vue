@@ -49,27 +49,20 @@ import { EIcon } from '@/enums/gui/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  headerText: {
-    type: String,
-  },
-  action: {
-    type: String as PropType<EActionGUI>,
-    default: EActionGUI.Success,
-  },
-  actionText: {
-    type: String,
-    default: 'Save',
-  },
-  onAction: {
-    type: Function,
-    default: function () {},
-  },
-  onCancel: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  headerText?: string
+  action?: EActionGUI
+  actionText?: string
+  onAction?: Function
+  onCancel?: Function
+}
+const props = withDefaults(defineProps<Props>(), {
+  action: EActionGUI.Success,
+  actionText: 'Save',
+  onAction: function () {},
+  onCancel: function () {},
 })
+
 // data
 interface IAction {
   icon: EIcon

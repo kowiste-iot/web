@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { ref, computed, type Prop } from 'vue'
 
 // stores import
 import { useAlert } from '@/stores/gui/alert'
@@ -45,20 +45,17 @@ import { useAlert } from '@/stores/gui/alert'
 
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
-import { Property } from '@/model/property'
+import { Property, type IProperty } from '@/model/property'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Array<Property>,
-    default: [],
-  },
-  onClick: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  data?: Property[]
+  onClick?: Function
+}
+const props = withDefaults(defineProps<Props>(), {
+  data: () => [],
+  onClick: function () {},
 })
 // data
 const isVisible = ref(false)
