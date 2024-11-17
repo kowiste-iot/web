@@ -1,17 +1,26 @@
 import { z } from 'zod'
 import type { IDashboard } from '../dashboard'
 import type { IAsset } from '@/model/asset/asset'
-import Validation from '@/model/validation'
 import { EValidation } from '@/enums/EValidation'
+import { FormBase } from '@/model/base/formBase'
 
-export class FormDashboard implements IDashboard {
+export interface IFormDashboard {
+  id: string
+  name: string
+  parent: string
+  parentSelected?: IAsset
+}
+
+export class FormDashboard
+  extends FormBase<typeof dashboardSchema>
+  implements IFormDashboard
+{
   id: string = ''
   name: string = ''
   parent: string = ''
   parentSelected?: IAsset
-
-  error: Record<string, z.ZodIssue[]> | null
   constructor(data?: IDashboard) {
+    super(dashboardSchema)
     this.error = null
     if (!data) return
     this.id = data.id
@@ -27,22 +36,8 @@ export class FormDashboard implements IDashboard {
     this.parent = this.parentSelected.id
     this.validate()
   }
-  validate() {
-    this.error = new Validation(schema, this.getRecord()).validate()
-  }
-  getError(field: string): string | undefined {
-    if (!this.error) return undefined
-    const errorField = this.error![field] as z.ZodIssue[]
-    return errorField ? errorField[0]?.message : undefined
-  }
-  getRecord(): Record<string, unknown> {
-    return this as Record<string, unknown>
-  }
-  errors(): boolean {
-    return this.error ? true : false
-  }
 }
-const schema = z.object({
+const dashboardSchema = z.object({
   name: z
     .string({
       required_error: 'Name is required',

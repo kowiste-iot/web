@@ -1,5 +1,4 @@
 import { EWidget } from '@/enums/dashboard/EWidget'
-import { string } from 'zod'
 
 export interface IWidget {
   id: string

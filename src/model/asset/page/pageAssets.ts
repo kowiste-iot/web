@@ -3,9 +3,10 @@ import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
 import type { IAsset } from '../asset'
+import { PageBase } from '@/model/base/pageBase'
+import { Path } from '@/model/path'
 
-export class AssetsPage {
-  title: string
+export class AssetsPage extends PageBase {
   properties: Property[]
   selected?: IAsset
   showForm: boolean
@@ -19,7 +20,8 @@ export class AssetsPage {
 
   constructor() {
     const { t } = useI18n()
-    this.title = t('asset.title')
+    super(t('asset.title'), new Array<Path>())
+
     this.properties = [
       {
         id: 1,

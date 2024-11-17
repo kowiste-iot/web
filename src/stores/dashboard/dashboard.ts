@@ -1,5 +1,8 @@
 import type { IDashboard } from '@/model/dashboard/dashboard'
-import type { FormDashboard } from '@/model/dashboard/form/form'
+import type {
+  FormDashboard,
+  IFormDashboard,
+} from '@/model/dashboard/form/formDashboard'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -16,14 +19,14 @@ export const useDashboard = defineStore('dashboardstore', {
     },
   },
   actions: {
-    create(data: FormDashboard) {
+    create(data: IFormDashboard) {
       this._dashboards.push({
         id: String(this._dashboards.length),
         name: data.name,
         parent: data.parent,
       })
     },
-    update(data: FormDashboard) {
+    update(data: IFormDashboard) {
       const indexDashboard = this._dashboards.findIndex(
         (dashboard) => dashboard.id == data.id
       )

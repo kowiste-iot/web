@@ -1,10 +1,9 @@
+import { PageBase } from '@/model/base/pageBase'
 import { Columns } from '@/model/gui/column'
 import { Tab } from '@/model/gui/tab'
 import type { Path } from '@/model/path'
 
-export class ElementPage {
-  title: string
-  path: Path[]
+export class ElementPage extends PageBase {
   selected: number
   tabs: Tab[]
   table: {
@@ -15,8 +14,8 @@ export class ElementPage {
   }
 
   constructor() {
-    this.title = 'Element'
-    this.path = [{ name: 'asset', path: '/asset' }]
+    super('Element', [{ name: 'asset', path: '/asset' }])
+
     this.selected = 1
     this.tabs = [
       new Tab(1, 'type', true),

@@ -92,7 +92,7 @@ import { useDashboard } from '@/stores/dashboard/dashboard'
 
 // components import
 import TabletCard from '@/components/cards/TabletCard.vue'
-import DataTable from 'primevue/datatable'
+import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import Button from '@/components/buttons/Button.vue'
 import SideCard from '@/components/cards/SideCard.vue'
