@@ -1,6 +1,12 @@
 import { EIcon } from '@/enums/gui/EIcon'
 
-export class Property {
+export interface IProperty {
+  id: number
+  icon: EIcon
+  name: string
+  option?: { [key: string]: any }
+}
+export class Property implements IProperty {
   id: number
   icon: EIcon
   name: string
@@ -10,6 +16,6 @@ export class Property {
     this.id = 0
     this.icon = EIcon.Death
     this.name = ''
-    this.option={}
+    this.option = {}
   }
 }

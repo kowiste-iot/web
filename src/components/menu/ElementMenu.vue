@@ -40,16 +40,16 @@ import { EColor } from '@/enums/gui/EColor'
 // other imports
 
 // props
-const props = defineProps({
-  data: {
-    type: Object as PropType<IMenu>,
-    default: '',
-  },
-  isOpen: {
-    type: Boolean,
-    default: true,
-  },
+interface Props {
+  data?: IMenu
+  isOpen?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  data: () => ({} as IMenu),
+  isOpen: true,
 })
+
 // data
 const isExpanded = ref(false)
 // storage calls

@@ -70,16 +70,7 @@ import { timeToFormat } from '@/utils/time/conversion'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Array<Property>,
-    default: [],
-  },
-  onClick: {
-    type: Function,
-    default: function () {},
-  },
-})
+
 // data
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })

@@ -26,19 +26,16 @@ import { EColor } from '@/enums/gui/EColor'
 
 // other imports
 // props
-const props = defineProps({
-  backgroundColor: {
-    type: String,
-    default: EColor.Menu,
-  },
-  ballColorLeft: {
-    type: String,
-    default: EColor.Primary,
-  },
-  ballColorRight: {
-    type: String,
-    default: EColor.Danger,
-  },
+interface Props {
+  backgroundColor?: EColor
+  ballColorLeft?: EColor
+  ballColorRight? : EColor
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  backgroundColor: EColor.Menu,
+  ballColorLeft: EColor.Primary,
+  ballColorRight: EColor.Danger,
 })
 // data
 // storage calls

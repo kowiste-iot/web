@@ -19,36 +19,27 @@
 
 <script setup lang="ts">
 // imports
-import { type InputTypeHTMLAttribute, type PropType } from 'vue';
+import type { EIcon } from '@/enums/gui/EIcon'
+import { type InputTypeHTMLAttribute } from 'vue'
 // stores import
 // components import
 // model imports
 // other imports
 // props
-const props = defineProps({
-  label: {
-    type: String,
-    default: '',
-  },
-  icon: {
-    type: String,
-  },
-  type: {
-    type: String as PropType<InputTypeHTMLAttribute> ,
-    default: 'text',
-  },
-  placeholder: {
-    type: String,
-    default: 'placeholder',
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  onChange: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  label?: string
+  icon?: EIcon
+  type?: InputTypeHTMLAttribute
+  placeholder?: string
+  disabled?: boolean
+  onChange?: Function
+}
+const props = withDefaults(defineProps<Props>(), {
+  label: '',
+  type: 'text',
+  placeholder: 'placeholder',
+  disabled: false,
+  onChange: function () {},
 })
 
 const model = defineModel()

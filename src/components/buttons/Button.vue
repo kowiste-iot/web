@@ -17,26 +17,21 @@
 // components import
 // model imports
 import { EColor } from '@/enums/gui/EColor'
+import { EIcon } from '@/enums/gui/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  icon: {
-    type: String,
-    default: '',
-  },
-  color: {
-    type: String,
-    default: EColor.Primary,
-  },
-  outline: {
-    type: Boolean,
-    default: false,
-  },
-  small: {
-    type: Boolean,
-    default: false,
-  },
+interface Props {
+  icon?: EIcon
+  color?: EColor
+  outline?: boolean
+  small?: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  icon: EIcon.Action,
+  color: EColor.Primary,
+  outline: false,
+  small: false,
 })
 // data
 // storage calls

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <InputCard class="col-md-12" :headerText="$t('setting.title')">
+    <Card class="col-md-12" :headerText="$t('setting.title')" showHeader>
       <div class="row mb-3">
         <label class="col-md-4"> {{ $t('setting.theme') }} </label>
 
@@ -32,9 +32,8 @@
           </template>
         </DropDown>
       </div>
-    </InputCard>
+    </Card>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -48,7 +47,7 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import { useTheme } from '@/composable/useTheme'
 
 // components import
-import InputCard from '@/components/cards/Card.vue'
+import Card from '@/components/cards/Card.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Switch from '@/components/switch/Switch.vue'
 // model imports
