@@ -1,4 +1,7 @@
-import type { FormMeasure } from '@/model/measure/form/form'
+import type {
+  FormMeasure,
+  IFormMeasure,
+} from '@/model/measure/form/formMeasure'
 import type { IMeasure } from '@/model/measure/measure'
 import { defineStore } from 'pinia'
 
@@ -16,14 +19,14 @@ export const useMeasure = defineStore('measureStore', {
     },
   },
   actions: {
-    create(data: FormMeasure) {
+    create(data: IFormMeasure) {
       this._measures.push({
         id: String(this._measures.length),
         name: data.name,
         parent: data.parent,
       })
     },
-    update(data: FormMeasure) {
+    update(data: IFormMeasure) {
       const indexAsset = this._measures.findIndex(
         (measure) => measure.id == data.id
       )

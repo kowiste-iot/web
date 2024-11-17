@@ -33,7 +33,7 @@
     </div>
     <template #footer>
       <Button
-        v-if="!form.errors()"
+        v-if="!form.hasErrors()"
         :color="edit ? EColor.Warning : EColor.Success"
         @click="save()"
         >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
+import { ref,reactive, computed, onMounted, type PropType } from 'vue'
 
 // stores import
 import { useAsset } from '@/stores/asset/asset'
@@ -62,7 +62,7 @@ import DropDown from '@/components/form/DropDown.vue'
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import type { IDevice } from '@/model/device/device'
-import { FormDevice } from '@/model/device/form/form'
+import { FormDevice } from '@/model/device/form/formDevice'
 // other imports
 // props
 const props = defineProps({
@@ -80,7 +80,7 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormDevice())
+let form = reactive(new FormDevice())
 // storage calls
 const assetStore = useAsset()
 const deviceStore = useDevice()
@@ -91,17 +91,17 @@ const assets = computed(() => {
 // methods
 function save() {
   if (props.edit) {
-    deviceStore.update(form.value)
+    deviceStore.update(form)
   } else {
-    deviceStore.create(form.value)
+    deviceStore.create(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
   if (props.data && props.edit) {
-    form.value = new FormDevice(props.data)
-    form.value.loadAsset(assets.value)
+    form = new FormDevice(props.data)
+    form.loadAsset(assets.value)
   }
 })
 // watch

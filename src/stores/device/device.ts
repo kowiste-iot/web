@@ -1,5 +1,5 @@
 import type { IDevice } from '@/model/device/device'
-import type { FormDevice } from '@/model/device/form/form'
+import type { IFormDevice } from '@/model/device/form/formDevice'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -16,14 +16,14 @@ export const useDevice = defineStore('deviceStore', {
     },
   },
   actions: {
-    create(data: FormDevice) {
+    create(data: IFormDevice) {
       this._devices.push({
         id: String(this._devices.length),
         name: data.name,
         parent: data.parent,
       })
     },
-    update(data: FormDevice) {
+    update(data: IFormDevice) {
       const indexDevice = this._devices.findIndex(
         (device) => device.id == data.id
       )

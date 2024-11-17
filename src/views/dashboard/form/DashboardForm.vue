@@ -33,7 +33,7 @@
     </div>
     <template #footer>
       <Button
-        v-if="!form.errors()"
+        v-if="!form.hasErrors()"
         :color="edit ? EColor.Warning : EColor.Success"
         @click="save()"
         >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
+import { ref, reactive, computed, onMounted, type PropType } from 'vue'
 
 // stores import
 import { useAsset } from '@/stores/asset/asset'
@@ -64,7 +64,7 @@ import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 
 import type { IDashboard } from '@/model/dashboard/dashboard'
-import { FormDashboard } from '@/model/dashboard/form/form'
+import { FormDashboard } from '@/model/dashboard/form/formDashboard'
 // other imports
 // props
 const props = defineProps({
@@ -82,7 +82,7 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormDashboard())
+let form = reactive(new FormDashboard())
 // storage calls
 const assetStore = useAsset()
 const dashboardStore = useDashboard()
@@ -93,17 +93,17 @@ const assets = computed(() => {
 // methods
 function save() {
   if (props.edit) {
-    dashboardStore.update(form.value)
+    dashboardStore.update(form)
   } else {
-    dashboardStore.create(form.value)
+    dashboardStore.create(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
   if (props.data && props.edit) {
-    form.value = new FormDashboard(props.data)
-    form.value.loadAsset(assets.value)
+    form = new FormDashboard(props.data)
+    form.loadAsset(assets.value)
   }
 })
 // watch

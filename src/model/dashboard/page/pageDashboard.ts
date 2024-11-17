@@ -1,10 +1,9 @@
 import { EIcon } from '@/enums/gui/EIcon'
+import { PageBase } from '@/model/base/pageBase'
 import type { Path } from '@/model/path'
 import type { Property } from '@/model/property'
 
-export class DashboardPage {
-  title: string
-  path: Path[]
+export class DashboardPage extends PageBase {
   selected: number
   properties: Property[]
   refresh: boolean
@@ -12,8 +11,7 @@ export class DashboardPage {
   unlock: boolean
 
   constructor() {
-    this.title = 'dashboard'
-    this.path = [{ name: 'dashboards', path: 'dashboard' }]
+    super('dashboard', [{ name: 'dashboards', path: 'dashboard' }])
     this.selected = 1
     this.properties = [
       {

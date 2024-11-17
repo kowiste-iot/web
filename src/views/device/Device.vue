@@ -83,7 +83,7 @@ import { useDevice } from '@/stores/device/device'
 // components import
 import DeviceForm from '@/views/device/form/DeviceForm.vue'
 import TabletCard from '@/components/cards/TabletCard.vue'
-import DataTable from 'primevue/datatable'
+import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'

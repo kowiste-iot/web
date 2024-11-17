@@ -3,9 +3,10 @@ import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
 import type { IMeasure } from '../measure'
+import { PageBase } from '@/model/base/pageBase'
+import { Path } from '@/model/path'
 
-export class MeasuresPage {
-  title: string
+export class MeasuresPage extends PageBase {
   properties: Property[]
   selected?: IMeasure
   showForm: boolean
@@ -19,7 +20,7 @@ export class MeasuresPage {
 
   constructor() {
     const { t } = useI18n()
-    this.title = t('measure.title')
+    super(t('measure.title'), new Array<Path>())
     this.properties = [
       {
         id: 1,

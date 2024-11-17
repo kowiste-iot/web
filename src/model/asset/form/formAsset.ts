@@ -1,16 +1,25 @@
 import { z } from 'zod'
-import { Asset, type IAsset } from '../asset'
-import Validation from '@/model/validation'
+import { type IAsset } from '../asset'
 import { EValidation } from '@/enums/EValidation'
+import { FormBase } from '@/model/base/formBase'
 
-export class FormAsset {
+export interface IFormAsset {
+  id: string
+  name: string
+  parent: string
+  parentSelected?: IAsset
+}
+
+export class FormAsset
+  extends FormBase<typeof assetSchema>
+  implements IFormAsset
+{
   id: string = ''
   name: string = ''
   parent: string = ''
   parentSelected?: IAsset
-  error: Record<string, z.ZodIssue[]> | null
   constructor(data?: IAsset) {
-    this.error = null
+    super(assetSchema)
     if (!data) return
     this.id = data.id
     this.name = data.name
@@ -21,27 +30,13 @@ export class FormAsset {
     this.parentSelected = data.find((asset) => asset.id == this.parent)
   }
 
-  getError(field: string): string | undefined {
-    if (!this.error) return undefined
-    const errorField = this.error![field] as z.ZodIssue[]
-    return errorField ? errorField[0]?.message : undefined
-  }
   change() {
     if (!this.parentSelected) return
     this.parent = this.parentSelected.id
     this.validate()
   }
-  validate() {
-    this.error = new Validation(schema, this.getRecord()).validate()
-  }
-  getRecord(): Record<string, unknown> {
-    return this as Record<string, unknown>
-  }
-  errors(): boolean {
-    return this.error ? true : false
-  }
 }
-const schema = z.object({
+const assetSchema = z.object({
   name: z
     .string({
       required_error: 'Name is required',

@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 // stores import
 import { useRoute } from 'vue-router'
 import { useWidget } from '@/stores/widget/widget'
@@ -83,7 +83,7 @@ import { EColor } from '@/enums/gui/EColor'
 import { WidgetFormPage } from '@/model/widget/page/pageWidgetForm'
 import type { IWidgetType } from '@/model/widget/widgetType'
 import { EWidget } from '@/enums/dashboard/EWidget'
-import { FormWidget } from '@/model/widget/form/form'
+import { FormWidget } from '@/model/widget/form/formWidget'
 // other imports
 import { getParam } from '@/utils/routes/routes'
 // props
@@ -99,7 +99,7 @@ const props = defineProps({
 })
 // data
 const page = ref(new WidgetFormPage())
-const form = ref(new FormWidget())
+let form = reactive(new FormWidget())
 // storage calls
 const widgetStore = useWidget()
 const route = useRoute()
@@ -113,8 +113,8 @@ function selectWidget(data: IWidgetType) {
   page.value.selectedWidget = data
 }
 function save() {
-  form.value.set(page.value.selectedWidget, dashboardID)
-  widgetStore.create(form.value)
+  form.set(page.value.selectedWidget, dashboardID)
+  widgetStore.create(form)
   props.close()
 }
 // lifeCycle

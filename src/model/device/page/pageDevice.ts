@@ -3,9 +3,10 @@ import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
 import type { IDevice } from '../device'
+import { PageBase } from '@/model/base/pageBase'
+import { Path } from '@/model/path'
 
-export class DevicePage {
-  title: string
+export class DevicePage extends PageBase {
   properties: Property[]
   selected?: IDevice
   showForm: boolean
@@ -19,7 +20,8 @@ export class DevicePage {
 
   constructor() {
     const { t } = useI18n()
-    this.title = t('device.title')
+    super(t('device.title'), new Array<Path>())
+
     this.properties = [
       {
         id: 1,
