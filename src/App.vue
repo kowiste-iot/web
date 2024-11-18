@@ -29,7 +29,7 @@ import { useUser } from '@/stores/gui/user'
 import { useDashboard } from '@/stores/dashboard/dashboard'
 import { useAsset } from '@/stores/asset/asset'
 // components import
-import Alert from '@/components/alert/Alert2.vue'
+import Alert from '@/components/alert/Alert.vue'
 import { RouterView } from 'vue-router'
 import Header from '@/components/menu/Header.vue'
 // model imports
