@@ -5,6 +5,8 @@
       $t(edit ? 'measure.form.titleUpdate' : 'measure.form.titleCreate')
     "
     :icon="edit ? EIcon.Edit : EIcon.Add"
+        showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('measure.form.name') }} </label>

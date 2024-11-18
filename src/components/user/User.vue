@@ -79,11 +79,9 @@ const isHover = ref({} as { [key: number]: boolean })
 const router = useRouter()
 
 // computed
-const user = 'Pablo Garcia Vivo'
+const user = 'Pablo Garcia'
 // methods
 function toggleVisibility() {
-  console.log('sf')
-
   isVisible.value = !isVisible.value
 }
 // lifeCycle

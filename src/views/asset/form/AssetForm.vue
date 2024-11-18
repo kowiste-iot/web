@@ -3,6 +3,8 @@
     class="h-100"
     :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
+    showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
