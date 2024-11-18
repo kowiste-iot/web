@@ -5,7 +5,7 @@
       <FIcon :icon="EIcon.Property" />
     </div>
     <div
-      v-if="isVisible "
+      v-if="isVisible"
       class="position-absolute top-0 card"
       ref="popupDiv"
       :class="leftAlign ? 'start-100' : 'end-100'"
@@ -39,19 +39,16 @@ import { Property } from '@/model/property'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Array<Property>,
-    default: [],
-  },
-  inverse: {
-    type: Boolean,
-    default: false,
-  },
-  onClick: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  data?: Property[]
+  inverse?: boolean
+  onClick?: Function
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  data: () => [],
+  inverse: false,
+  onClick: function () {},
 })
 // data
 const isVisible = ref(false)

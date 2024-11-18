@@ -1,5 +1,5 @@
-import type { FormWidget } from '@/model/widget/form/form'
-import type { IWidget } from '@/model/widget/widget'
+import { FormWidget, type IFormWidget } from '@/model/widget/form/formWidget'
+import { Widget, type IWidget } from '@/model/widget/widget'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -16,11 +16,12 @@ export const useWidget = defineStore('widgetStore', {
     },
   },
   actions: {
-    create(data: FormWidget) {
-      data.calculate(this._widgets)
+    create(data: IFormWidget) {
+      const w = new FormWidget(data)
+      w.calculate(this._widgets)
       this._widgets.push(data)
     },
-    update(data: FormWidget) {
+    update(data: IFormWidget) {
       const indexWidget = this._widgets.findIndex(
         (widget) => widget.id == data.id
       )

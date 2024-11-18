@@ -3,9 +3,10 @@ import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
 import type { IDashboard } from '../dashboard'
+import { PageBase } from '@/model/base/pageBase'
+import { Path } from '@/model/path'
 
-export class DashboardsPage {
-  title: string
+export class DashboardsPage extends PageBase {
   properties: Property[]
   selected?: IDashboard
   showForm: boolean
@@ -19,7 +20,7 @@ export class DashboardsPage {
 
   constructor() {
     const { t } = useI18n()
-    this.title = t('dashboard.title')
+    super(t('dashboard.title'), new Array<Path>())
     this.properties = [
       {
         id: 1,

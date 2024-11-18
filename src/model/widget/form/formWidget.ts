@@ -1,10 +1,26 @@
 import { z } from 'zod'
-import Validation from '@/model/validation'
 import { EValidation } from '@/enums/EValidation'
 import type { IWidget, IWidgetData } from '../widget'
 import type { IWidgetType } from '../widgetType'
+import { FormBase } from '@/model/base/formBase'
+import type { EWidget } from '@/enums/dashboard/EWidget'
 
-export class FormWidget implements Partial<IWidget> {
+export interface IFormWidget {
+  id: string
+  dashboardID: string
+  type: EWidget
+  i: number
+  x: number
+  y: number
+  w: number
+  h: number
+  data: IWidgetData
+}
+
+export class FormWidget
+  extends FormBase<typeof widgetSchema>
+  implements IFormWidget
+{
   id: string = ''
   dashboardID: string = ''
   type: number = 0
@@ -20,9 +36,8 @@ export class FormWidget implements Partial<IWidget> {
     options: {},
   }
 
-  error: Record<string, z.ZodIssue[]> | null
   constructor(data?: IWidget) {
-    this.error = null
+    super(widgetSchema)
     if (!data) return
     this.id = data.id
     this.dashboardID = data.dashboardID
@@ -46,25 +61,11 @@ export class FormWidget implements Partial<IWidget> {
     this.x = 12
     this.y = 0
   }
-  getError(field: string): string | undefined {
-    if (!this.error) return undefined
-    const errorField = this.error![field] as z.ZodIssue[]
-    return errorField ? errorField[0]?.message : undefined
-  }
   change() {
     this.validate()
   }
-  validate() {
-    this.error = new Validation(schema, this.getRecord()).validate()
-  }
-  getRecord(): Record<string, unknown> {
-    return this as Record<string, unknown>
-  }
-  errors(): boolean {
-    return this.error ? true : false
-  }
 }
-const schema = z.object({
+const widgetSchema = z.object({
   name: z
     .string({
       required_error: 'Name is required',

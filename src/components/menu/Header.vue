@@ -28,12 +28,6 @@ import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
-})
 // data
 // storage calls
 // computed

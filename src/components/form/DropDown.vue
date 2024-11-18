@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // stores import
 // components import
@@ -76,37 +76,26 @@ import { EIcon } from '@/enums/gui/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  options: {
-    type: Array<any>,
-    default: [],
-  },
-  optionValue: {
-    type: String,
-    default: 'id',
-  },
-  optionLabel: {
-    type: String,
-    default: '',
-  },
-  groupLabel: {
-    type: String,
-    default: '',
-  },
-  placeholder: {
-    type: String,
-  },
-  icon: {
-    type: String,
-  },
-  filter: {
-    type: Boolean,
-  },
-  onChange: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  options?: Array<any>
+  optionValue?: string
+  optionLabel?: string
+  groupLabel?: string
+  placeholder?: string
+  icon?: EIcon
+  filter?: boolean
+  onChange?: Function
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  options: () => [],
+  optionValue: 'id',
+  optionLabel: '',
+  groupLabel: '',
+  placeholder: '',
+  onChange: function () {},
 })
+
 // data
 const model = defineModel({} as { [key: string]: any })
 const isVisible = ref(false)

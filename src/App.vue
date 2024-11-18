@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="d-flex align-items-stretch position-relative h-100 w-100"
-  >
-    <SideMenu  />
+  <div class="d-flex align-items-stretch position-relative h-100 w-100">
+    <SideMenu />
     <Alert
       v-if="showAlert"
       class="position-absolute start-50 translate-middle-x col-md-6"
@@ -36,9 +34,9 @@ import { RouterView } from 'vue-router'
 import Header from '@/components/menu/Header.vue'
 // model imports
 import SideMenu from './components/menu/SideMenu.vue'
-import { FormDashboard } from './model/dashboard/form/form'
+import { FormDashboard } from './model/dashboard/form/formDashboard'
 import type { IDashboard } from './model/dashboard/dashboard'
-import type { FormAsset } from './model/asset/form/form'
+import type { FormAsset } from './model/asset/form/formAsset'
 // other imports
 // props
 // data

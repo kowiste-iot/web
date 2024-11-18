@@ -5,6 +5,8 @@
       $t(edit ? 'measure.form.titleUpdate' : 'measure.form.titleCreate')
     "
     :icon="edit ? EIcon.Edit : EIcon.Add"
+        showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('measure.form.name') }} </label>
@@ -33,7 +35,7 @@
     </div>
     <template #footer>
       <Button
-        v-if="!form.errors()"
+        v-if="!form.hasErrors()"
         :color="edit ? EColor.Warning : EColor.Success"
         @click="save()"
         >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
@@ -47,7 +49,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
+import { ref, reactive, computed, onMounted, type PropType } from 'vue'
 
 // stores import
 import { useAsset } from '@/stores/asset/asset'
@@ -62,7 +64,7 @@ import DropDown from '@/components/form/DropDown.vue'
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import type { IAsset } from '@/model/asset/asset'
-import { FormMeasure } from '@/model/measure/form/form'
+import { FormMeasure } from '@/model/measure/form/formMeasure'
 // other imports
 // props
 const props = defineProps({
@@ -80,7 +82,7 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormMeasure())
+let form = reactive(new FormMeasure())
 // storage calls
 const assetStore = useAsset()
 const measureStore = useMeasure()
@@ -91,17 +93,17 @@ const assets = computed(() => {
 // methods
 function save() {
   if (props.edit) {
-    measureStore.update(form.value)
+    measureStore.update(form)
   } else {
-    measureStore.create(form.value)
+    measureStore.create(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
   if (props.data && props.edit) {
-    form.value = new FormMeasure(props.data)
-    form.value.loadAsset(assets.value)
+    form = new FormMeasure(props.data)
+    form.loadAsset(assets.value)
   }
 })
 // watch

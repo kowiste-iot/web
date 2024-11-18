@@ -14,7 +14,6 @@ import th from '@/assets/locales/th.json'
 //components
 import PrimeVue from 'primevue/config'
 import { GridLayout, GridItem } from 'grid-layout-plus'
-import { primevueConfig} from '@/config/primeTable'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
@@ -22,7 +21,6 @@ import { WebsocketPlugin } from '@/plugins/websocket/init'
 import { type IWebsocketOption } from '@/plugins/websocket/model'
 import { KeycloakPlugin } from '@/plugins/security/init'
 import { type ISecurityOption } from '@/plugins/security/model'
-
 /* import font awesome icon component */
 import App from './App.vue'
 import router from './router'
@@ -56,7 +54,8 @@ app.use(router)
 //plugins
 app.component('GridLayout', GridLayout).component('GridItem', GridItem)
 app.component('FIcon', FontAwesomeIcon)
-app.use(PrimeVue,primevueConfig)
+app.use(PrimeVue)
+
 // .use(WebsocketPlugin, wsOptions)
 app.use(KeycloakPlugin, kcOptions)
 app.mount('#app')

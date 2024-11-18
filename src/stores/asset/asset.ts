@@ -1,5 +1,5 @@
 import type { IAsset } from '@/model/asset/asset'
-import type { FormAsset } from '@/model/asset/form/form'
+import type { FormAsset, IFormAsset } from '@/model/asset/form/formAsset'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -16,14 +16,14 @@ export const useAsset = defineStore('assetStore', {
     },
   },
   actions: {
-    create(data: FormAsset) {
+    create(data: IFormAsset) {
       this._assets.push({
         id: String(this._assets.length),
         name: data.name,
         parent: data.parent,
       })
     },
-    update(data: FormAsset) {
+    update(data: IFormAsset) {
       const indexAsset = this._assets.findIndex((asset) => asset.id == data.id)
       if (indexAsset < 0) return
       this._assets[indexAsset] = data

@@ -3,17 +3,17 @@ import { Tab } from '@/model/gui/tab'
 import { useI18n } from 'vue-i18n'
 import { WidgetType, type IWidgetType } from '../widgetType'
 import { EIcon } from '@/enums/gui/EIcon'
+import { PageBase } from '@/model/base/pageBase'
+import { Path } from '@/model/path'
 
-export class WidgetFormPage {
-  title: string
+export class WidgetFormPage extends PageBase {
   selectedTab: number
   selectedWidget: IWidgetType
   tabs: Tab[]
   widgets: IWidgetType[]
   constructor() {
     const { t } = useI18n()
-
-    this.title = t('widget.form.title')
+    super(t('widget.form.title'), new Array<Path>())
     this.selectedTab = 1
     this.selectedWidget = new WidgetType()
     this.tabs = [

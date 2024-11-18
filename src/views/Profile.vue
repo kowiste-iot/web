@@ -1,8 +1,6 @@
 <template>
   <div>
-    <InputCard class="col-md-12" headerText="User Profile">
-
-    </InputCard>
+    <Card class="col-md-12" headerText="User Profile" showHeader> </Card>
   </div>
 </template>
 
@@ -15,7 +13,7 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import { useUser } from '@/stores/gui/user'
 
 // components import
-import InputCard from '@/components/cards/Card.vue'
+import Card from '@/components/cards/Card.vue'
 import DropDown from '@/components/form/DropDown.vue'
 
 // model imports

@@ -1,10 +1,9 @@
+import { PageBase } from '@/model/base/pageBase'
 import { Columns } from '@/model/gui/column'
 import { Tab } from '@/model/gui/tab'
 import type { Path } from '@/model/path'
 
-export class AlertPage {
-  title: string
-  path: Path[]
+export class AlertPage extends PageBase {
   selected: number
   tabs: Tab[]
   table: {
@@ -15,8 +14,8 @@ export class AlertPage {
   }
 
   constructor() {
-    this.title = 'alert'
-    this.path = [{ name: 'process', path: 'process' }]
+    super('alert', [{ name: 'process', path: 'process' }])
+
     this.selected = 1
     this.tabs = [
       new Tab(1, 'type', true),

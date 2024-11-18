@@ -22,26 +22,23 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  icon: {
-    type: String,
-    default: '',
-  },
-  color: {
-    type: String,
-    default: '',
-  },
+interface Props {
+  icon: string
+  color: string
+}
+const props = withDefaults(defineProps<Props>(), {
+  icon: '',
+  color: '',
 })
 </script>
 
 <style scoped>
 .slide {
-  animation: move 5s ;
+  animation: move 5s;
 }
 @keyframes move {
   0% {
     top: -20rem;
-
   }
   25% {
     top: 1rem;

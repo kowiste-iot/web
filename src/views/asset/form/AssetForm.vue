@@ -1,10 +1,10 @@
 <template>
   <InputCard
     class="h-100"
-    :headerText="
-      $t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')
-    "
+    :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
+    showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
@@ -33,7 +33,7 @@
     </div>
     <template #footer>
       <Button
-        v-if="!form.errors()"
+        v-if="!form.hasErrors()"
         :color="edit ? EColor.Warning : EColor.Success"
         @click="save()"
         >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
+import { ref, reactive, computed, onMounted, type PropType } from 'vue'
 
 // stores import
 import { useAsset } from '@/stores/asset/asset'
@@ -62,7 +62,7 @@ import DropDown from '@/components/form/DropDown.vue'
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
 import type { IAsset } from '@/model/asset/asset'
-import { FormAsset } from '@/model/asset/form/form'
+import { FormAsset } from '@/model/asset/form/formAsset'
 // other imports
 // props
 const props = defineProps({
@@ -80,7 +80,7 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormAsset())
+let form = reactive(new FormAsset())
 // storage calls
 const assetStore = useAsset()
 // computed
@@ -90,17 +90,17 @@ const assets = computed(() => {
 // methods
 function save() {
   if (props.edit) {
-    assetStore.update(form.value)
+    assetStore.update(form)
   } else {
-    assetStore.create(form.value)
+    assetStore.create(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
   if (props.data && props.edit) {
-    form.value = new FormAsset(props.data)
-    form.value.load(assets.value)
+    form = new FormAsset(props.data)
+    form.load(assets.value)
   }
 })
 // watch

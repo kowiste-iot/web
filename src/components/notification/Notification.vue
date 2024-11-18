@@ -59,15 +59,14 @@ import { Notification } from '@/model/notification/notification'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Array<Property>,
-    default: [],
-  },
-  onClick: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  data?: Property[]
+  onClick?: Function
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  data: () => [],
+  onClick: function () {},
 })
 // data
 const isVisible = ref(false)
