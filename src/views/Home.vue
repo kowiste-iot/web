@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <Button
       class="my-4"
       :color="EColor.Success"
@@ -8,18 +7,14 @@
       @click="goToAsset"
       >i'm a button</Button
     >
-    <Switch onText="ON" offText="OFF"  style="width: 5rem;"/>
+    <Switch onText="ON" offText="OFF" style="width: 5rem" />
     <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
 
     {{ 't1: ' + t1 }}
     <div class="d-flex">
-      <Gauge
+      <!-- <Gauge
         style="height: 10rem; width: 10rem"
-        :startAngle="0"
-        :endAngle="360"
-        :goodLimit="40"
-        :warningLimit="70"
-        :dangerLimit="80"
+        :data="{}"
         :model-value="t1[0]"
         :border-color="'red'"
       />
@@ -31,7 +26,7 @@
         :warningLimit="50"
         :dangerLimit="80"
         :model-value="t1[1]"
-      />
+      /> -->
     </div>
 
     <InputCard class="col-md-6" headerText="Test Card" :icon="EIcon.Death">
@@ -105,19 +100,19 @@
         <Button :color="EColor.Dark" :outline="true">Cancel</Button>
       </template>
     </InputCard>
+    <ColorPicker v-model="selectedColor" :size="40" />
 
     <Input label="test" placeholder="test" type="file" />
     <div>Selected drop {{ drop }}</div>
-<div>   <CalenderHeatmap :data="contributionData"
-
-    :year="2024"
-    :month="3"
-    :day="15" /></div>
- 
-
+    <div>
+      <CalenderHeatmap
+        :data="contributionData"
+        :year="2024"
+        :month="3"
+        :day="15"
+      />
+    </div>
   </div>
-  
-  
 </template>
 
 <script setup lang="ts">
@@ -133,10 +128,11 @@ import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Spinner from '@/components/loading/Spinner.vue'
-import Slider from '@/components/slider/Slider.vue'
+import Slider from '@/components/slider/MultiSlider.vue'
 import Gauge from '@/views/dashboard/card/Gauge.vue'
 import Switch from '@/components/switch/Switch.vue'
 import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue'
+import ColorPicker from '@/components/color/ColorPicker.vue'
 
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
@@ -150,6 +146,7 @@ const drop = ref()
 const t1 = ref([])
 
 let isDark = false
+const selectedColor = ref('#ff0000')
 
 const contributionData = ref([
   { date: '2024-01-01', count: 5 },
@@ -166,7 +163,7 @@ const contributionData = ref([
   { date: '2024-04-01', count: 5 },
   { date: '2024-05-01', count: 7 },
   // Add some recent dates
-  { date: new Date().toISOString().split('T')[0], count: 4 }
+  { date: new Date().toISOString().split('T')[0], count: 4 },
 ])
 // storage calls
 const alertStore = useAlert()

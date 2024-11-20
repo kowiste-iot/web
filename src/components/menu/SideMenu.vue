@@ -58,7 +58,6 @@ const menu = ref([
     icon: EIcon.Asset,
     isParent: true,
     path: '/asset',
-    subMenu: [{ label: 'Build 1' }],
   },
   {
     label: 'menu.measure',

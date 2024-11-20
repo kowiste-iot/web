@@ -119,19 +119,14 @@ import { ref } from 'vue'
 // components import
 import Number from './Number.vue'
 import Input from '@/components/form/Input.vue'
-import { FormWidget, type IFormWidget } from '@/model/widget/form/formWidget'
+import { type IFormWidget } from '@/model/widget/form/formWidget'
 
 // model imports
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
-})
-// data
 const model = defineModel({ default: {} as IFormWidget })
+
+// data
 const measure = ref(0)
 // storage calls
 // computed

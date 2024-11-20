@@ -46,6 +46,10 @@
             v-if="page.selectedWidget.id == EWidget.Number"
             v-model="form"
           />
+          <GaugeForm
+            v-if="page.selectedWidget.id == EWidget.Gauge"
+            v-model="form"
+          />
         </div>
       </div>
     </div>
@@ -77,6 +81,7 @@ import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
 import BoolForm from '@/views/dashboard/card/BoolForm.vue'
 import NumberForm from '@/views/dashboard/card/NumberForm.vue'
+import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'
