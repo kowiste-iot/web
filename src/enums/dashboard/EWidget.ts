@@ -6,6 +6,6 @@ export enum EWidget {
   Line = 4,
   Bar = 5,
   Pie = 6,
-  Tex = 7,
+  Text = 7,
   Table = 8,
 }
