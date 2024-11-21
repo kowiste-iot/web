@@ -115,7 +115,7 @@ import { ref } from 'vue'
 // components import
 import Boolean from './Boolean.vue'
 import Input from '@/components/form/Input.vue'
-import { FormWidget, type IFormWidget } from '@/model/widget/form/formWidget'
+import {  type IFormWidget } from '@/model/widget/form/formWidget'
 
 // model imports
 // other imports

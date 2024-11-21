@@ -22,6 +22,8 @@ import {
   LineElement,
   CategoryScale,
   LinearScale,
+  PointElement,
+  Filler,
 } from 'chart.js'
 import { computed } from 'vue'
 import WidgetCard from './WidgetCard.vue'
@@ -33,7 +35,9 @@ ChartJS.register(
   Legend,
   LineElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
+  PointElement,
+  Filler
 )
 // model imports
 // other imports
@@ -41,31 +45,46 @@ ChartJS.register(
 interface Props {
   data: IWidgetData
 }
-interface GaugeOptions {
-  min: number
-  max: number
-  startAngle: number
-  endAngle: number
-  goodLimit: number
-  warningLimit: number
-  thickness: number
-  borderColor: string
-  borderWidth: number
+interface LineOptions {
+  showLegend: boolean
+  fill: boolean
+  color: string
 }
 const props = defineProps<Props>()
-const options = computed(() => props.data.options as GaugeOptions)
+const options = computed(() => props.data.options as LineOptions)
 
 const modelValue = defineModel<number>({ default: 0 })
 
 // data
-const chartData = {
-  labels: ['January', 'February', 'March'],
-  datasets: [{ data: [40, 20, 12] }],
-}
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-}
+const chartOptions = computed(() => {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: options.value.showLegend ? true : false,
+        position: 'top' as const,
+      },
+    },
+  }
+})
+
+const chartData = computed(() => {
+  return {
+    labels: ['January', 'February', 'March'],
+    datasets: [
+      {
+        label: 'Monthly Data',
+        data: [40, 20, 12],
+        borderColor: options.value.color,
+        backgroundColor: options.value.color + '33', //add transparency
+        borderWidth: 2,
+        fill: options.value.fill ? true : false,
+        tension: 0.1,
+      },
+    ],
+  }
+})
 // storage calls
 // computed
 // methods
