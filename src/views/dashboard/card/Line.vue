@@ -1,11 +1,6 @@
 <template>
-  <WidgetCard :data="data" :measureCondition="true">
-    <Line
-      class="h-100"
-      id="my-chart-id"
-      :options="chartOptions"
-      :data="chartData"
-    />
+  <WidgetCard :data="data" :measureCondition="calculateMeasureCondition">
+    <Line class="h-100" :options="chartOptions" :data="chartData" />
   </WidgetCard>
 </template>
 
@@ -22,6 +17,8 @@ import {
   LineElement,
   CategoryScale,
   LinearScale,
+  PointElement,
+  Filler,
 } from 'chart.js'
 import { computed } from 'vue'
 import WidgetCard from './WidgetCard.vue'
@@ -33,7 +30,9 @@ ChartJS.register(
   Legend,
   LineElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
+  PointElement,
+  Filler
 )
 // model imports
 // other imports
@@ -41,33 +40,70 @@ ChartJS.register(
 interface Props {
   data: IWidgetData
 }
-interface GaugeOptions {
-  min: number
+interface LineOptions {
+  showLegend: boolean
+  fill: boolean
+  color: string
   max: number
-  startAngle: number
-  endAngle: number
-  goodLimit: number
-  warningLimit: number
-  thickness: number
-  borderColor: string
-  borderWidth: number
+  min: number
 }
 const props = defineProps<Props>()
-const options = computed(() => props.data.options as GaugeOptions)
+const options = computed(() => props.data.options as LineOptions)
 
-const modelValue = defineModel<number>({ default: 0 })
+const modelValue = defineModel<number[]>({ default: [0] })
 
 // data
-const chartData = {
-  labels: ['January', 'February', 'March'],
-  datasets: [{ data: [40, 20, 12] }],
-}
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-}
+
 // storage calls
 // computed
+const chartOptions = computed(() => {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: options.value.showLegend ? true : false,
+        position: 'top' as const,
+      },
+    },
+  }
+})
+
+const chartData = computed(() => {
+  return {
+    labels: ['January', 'February', 'March'],
+    datasets: [
+      {
+        label: 'Monthly Data',
+        data: [40, 20, 12],
+        borderColor: options.value.color,
+        backgroundColor: options.value.color + '33', //add transparency
+        borderWidth: 2,
+        fill: options.value.fill ? true : false,
+        tension: 0.1,
+      },
+    ],
+  }
+})
+const lastValue = computed(() => {
+  return modelValue.value[modelValue.value.length - 1]
+})
+
+const calculateMeasureCondition = computed(() => {
+  const { max, min } = options.value
+  const value = lastValue.value
+
+  if (max !== undefined && min !== undefined) {
+    return value >= min && value <= max
+  }
+  if (max !== undefined) {
+    return value <= max
+  }
+  if (min !== undefined) {
+    return value >= min
+  }
+  return false
+})
 // methods
 // lifeCycle
 // watch

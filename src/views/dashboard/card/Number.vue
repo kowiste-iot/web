@@ -1,7 +1,7 @@
 <template>
-  <WidgetCard  :data="data" :measureCondition="measure > 10">
+  <WidgetCard :data="data" :measureCondition="modelValue > 10">
     <div class="fs-1 position-relative">
-      {{ measure.toFixed(data.options.showDecimal ? 2 : 0) }}
+      {{ modelValue.toFixed(data.options.showDecimal ? 2 : 0) }}
       <div
         v-if="data.options.showUnit"
         class="position-absolute bottom-0 start-100 fs-6 ms-2"
@@ -23,12 +23,11 @@ import type { IWidgetData } from '@/model/widget/widget'
 // other imports
 // props
 interface Props {
-  measure: number
   data: IWidgetData
 }
-const props = withDefaults(defineProps<Props>(), {
-  measure: 0,
-})
+const props = defineProps<Props>()
+const modelValue = defineModel<number>({ default: 0 })
+
 // data
 
 // storage calls

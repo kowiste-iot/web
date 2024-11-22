@@ -1,3 +1,47 @@
+<template>
+  <div class="color-picker-container">
+    <!-- Color preview box -->
+    <div
+      class="color-box"
+      :style="{
+        backgroundColor: color,
+        width: `${size}px`,
+        height: `${size}px`,
+      }"
+      @click.stop="showPicker = !showPicker"
+    ></div>
+
+    <!-- Color picker card -->
+    <Transition name="fade">
+      <div v-if="showPicker" ref="pickerRef" class="picker-card" @click.stop>
+        <div class="picker-content">
+          <!-- Color wheel -->
+          <canvas
+            ref="wheelCanvas"
+            class="color-wheel"
+            @mousedown="handleWheelMouseDown"
+          ></canvas>
+
+          <!-- Brightness slider -->
+          <canvas
+            ref="brightnessCanvas"
+            class="brightness-slider"
+            @mousedown="handleBrightnessMouseDown"
+          ></canvas>
+        </div>
+
+        <!-- Hex input -->
+        <input
+          type="text"
+          v-model="hexInput"
+          class="hex-input"
+          @input="updateFromHexInput"
+          pattern="^#[0-9A-Fa-f]{6}$"
+        />
+      </div>
+    </Transition>
+  </div>
+</template>
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 
@@ -7,7 +51,7 @@ interface ColorPickerProps {
 
 const color = defineModel<string>({ default: '#ff0000' })
 const props = withDefaults(defineProps<ColorPickerProps>(), {
-  size: 40
+  size: 40,
 })
 
 const showPicker = ref(false)
@@ -45,17 +89,17 @@ const handleWheelMove = (event: MouseEvent) => {
   const rect = canvas.getBoundingClientRect()
   const centerX = canvas.width / 2
   const centerY = canvas.height / 2
-  
+
   const x = event.clientX - rect.left - centerX
   const y = event.clientY - rect.top - centerY
-  
-  const angle = Math.atan2(y, x) * 180 / Math.PI
+
+  const angle = (Math.atan2(y, x) * 180) / Math.PI
   hue.value = (angle + 360) % 360
-  
+
   const distance = Math.sqrt(x * x + y * y)
   const maxDistance = canvas.width / 2 - 2
   saturation.value = Math.min(100, Math.max(0, (distance / maxDistance) * 100))
-  
+
   updateColor()
 }
 
@@ -71,10 +115,10 @@ const handleBrightnessMove = (event: MouseEvent) => {
 
   const rect = canvas.getBoundingClientRect()
   const y = event.clientY - rect.top
-  
-  brightness.value = 100 - (y / canvas.height * 100)
+
+  brightness.value = 100 - (y / canvas.height) * 100
   brightness.value = Math.min(100, Math.max(0, brightness.value))
-  
+
   updateColor()
 }
 
@@ -82,7 +126,7 @@ const handleBrightnessMove = (event: MouseEvent) => {
 const drawColorWheel = () => {
   const canvas = wheelCanvas.value
   if (!canvas) return
-  
+
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
@@ -96,18 +140,25 @@ const drawColorWheel = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   for (let angle = 0; angle < 360; angle++) {
-    const startAngle = (angle - 2) * Math.PI / 180
-    const endAngle = (angle + 2) * Math.PI / 180
+    const startAngle = ((angle - 2) * Math.PI) / 180
+    const endAngle = ((angle + 2) * Math.PI) / 180
 
     ctx.beginPath()
     ctx.moveTo(centerX, centerY)
     ctx.arc(centerX, centerY, radius, startAngle, endAngle)
     ctx.closePath()
 
-    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius)
+    const gradient = ctx.createRadialGradient(
+      centerX,
+      centerY,
+      0,
+      centerX,
+      centerY,
+      radius
+    )
     gradient.addColorStop(0, 'white')
     gradient.addColorStop(1, `hsl(${angle}, 100%, 50%)`)
-    
+
     ctx.fillStyle = gradient
     ctx.fill()
   }
@@ -117,7 +168,7 @@ const drawColorWheel = () => {
 const drawBrightnessSlider = () => {
   const canvas = brightnessCanvas.value
   if (!canvas) return
-  
+
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
@@ -143,19 +194,47 @@ const hsvToHex = (h: number, s: number, v: number): string => {
   const q = v * (1 - f * s)
   const t = v * (1 - (1 - f) * s)
 
-  let r = 0, g = 0, b = 0
+  let r = 0,
+    g = 0,
+    b = 0
 
   switch (hi) {
-    case 0: r = v; g = t; b = p; break
-    case 1: r = q; g = v; b = p; break
-    case 2: r = p; g = v; b = t; break
-    case 3: r = p; g = q; b = v; break
-    case 4: r = t; g = p; b = v; break
-    case 5: r = v; g = p; b = q; break
+    case 0:
+      r = v
+      g = t
+      b = p
+      break
+    case 1:
+      r = q
+      g = v
+      b = p
+      break
+    case 2:
+      r = p
+      g = v
+      b = t
+      break
+    case 3:
+      r = p
+      g = q
+      b = v
+      break
+    case 4:
+      r = t
+      g = p
+      b = v
+      break
+    case 5:
+      r = v
+      g = p
+      b = q
+      break
   }
 
   const toHex = (n: number): string => {
-    return Math.round(n * 255).toString(16).padStart(2, '0')
+    return Math.round(n * 255)
+      .toString(16)
+      .padStart(2, '0')
   }
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`
@@ -210,56 +289,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 </script>
-
-<template>
-  <div class="color-picker-container">
-    <!-- Color preview box -->
-    <div
-      class="color-box"
-      :style="{
-        backgroundColor: color,
-        width: `${size}px`,
-        height: `${size}px`
-      }"
-      @click.stop="showPicker = !showPicker"
-    ></div>
-
-    <!-- Color picker card -->
-    <Transition name="fade">
-      <div
-        v-if="showPicker"
-        ref="pickerRef"
-        class="picker-card"
-        @click.stop
-      >
-        <div class="picker-content">
-          <!-- Color wheel -->
-          <canvas
-            ref="wheelCanvas"
-            class="color-wheel"
-            @mousedown="handleWheelMouseDown"
-          ></canvas>
-
-          <!-- Brightness slider -->
-          <canvas
-            ref="brightnessCanvas"
-            class="brightness-slider"
-            @mousedown="handleBrightnessMouseDown"
-          ></canvas>
-        </div>
-
-        <!-- Hex input -->
-        <input
-          type="text"
-          v-model="hexInput"
-          class="hex-input"
-          @input="updateFromHexInput"
-          pattern="^#[0-9A-Fa-f]{6}$"
-        />
-      </div>
-    </Transition>
-  </div>
-</template>
 
 <style scoped>
 .color-picker-container {

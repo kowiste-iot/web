@@ -50,8 +50,16 @@
             v-if="page.selectedWidget.id == EWidget.Gauge"
             v-model="form"
           />
-          <TextForm
-            v-if="page.selectedWidget.id == EWidget.Text"
+          <LineForm
+            v-if="page.selectedWidget.id == EWidget.Line"
+            v-model="form"
+          />
+          <BarForm
+            v-if="page.selectedWidget.id == EWidget.Bar"
+            v-model="form"
+          />
+          <PieForm
+            v-if="page.selectedWidget.id == EWidget.Pie"
             v-model="form"
           />
         </div>
@@ -86,8 +94,9 @@ import Tabs from '@/components/tab/Tabs.vue'
 import BoolForm from '@/views/dashboard/card/BoolForm.vue'
 import NumberForm from '@/views/dashboard/card/NumberForm.vue'
 import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
-import TextForm from '@/views/dashboard/card/TextForm.vue'
-
+import LineForm from '@/views/dashboard/card/LineForm.vue'
+import BarForm from '@/views/dashboard/card/BarForm.vue'
+import PieForm from '@/views/dashboard/card/PieForm.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'
