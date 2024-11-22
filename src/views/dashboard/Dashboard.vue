@@ -63,6 +63,11 @@
             :measure="5"
             :data="item.data"
           />
+          <TextWidget
+            v-if="item.type == EWidget.Text"
+            :measure="5"
+            :data="item.data"
+          />
         </div>
       </GridItem>
     </GridLayout>
@@ -108,6 +113,7 @@ import BoolWidget from '@/views/dashboard/card/Boolean.vue'
 import NumberWidget from '@/views/dashboard/card/Number.vue'
 import LineWidget from '@/views/dashboard/card/Line.vue'
 import PieWidget from '@/views/dashboard/card/Pie.vue'
+import TextWidget from '@/views/dashboard/card/Text.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'

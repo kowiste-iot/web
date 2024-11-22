@@ -1,6 +1,6 @@
 <template>
-  <div class="border rounded h-100 d-flex flex-column">
-    <div class="d-flex justify-content-center">
+  <div class="border rounded h-100  d-flex flex-column">
+    <div class="d-flex w-100 justify-content-center">
       <slot></slot>
     </div>
     <div class="border-top">
