@@ -31,7 +31,7 @@
           }
         "
       >
-        <div class="border rounded h-100 position-relative">
+        <div class="border rounded h-100 position-relative bg-light">
           <PropertyDot
             v-if="page.unlock"
             class="position-absolute top-0 end-0"
@@ -48,20 +48,21 @@
             :measure="5"
             :data="item.data"
           />
-
-          <BarWidget v-if="item.type == EWidget.Bar">
-            <div class="d-flex px-1">
-              <div class="flex-fill">Temperature in the room</div>
-              <FIcon
-                class="pt-1"
-                :class="`text-${EColor.Danger}`"
-                :icon="EIcon.Sad"
-                role="button"
-                style="height: 1rem"
-                @click="() => (page.show = true)"
-              />
-            </div>
-          </BarWidget>
+          <LineWidget
+            v-if="item.type == EWidget.Line"
+            :measure="5"
+            :data="item.data"
+          />
+          <BarWidget
+            v-if="item.type == EWidget.Bar"
+            :measure="5"
+            :data="item.data"
+          />
+          <PieWidget
+            v-if="item.type == EWidget.Pie"
+            :measure="5"
+            :data="item.data"
+          />
         </div>
       </GridItem>
     </GridLayout>
@@ -105,6 +106,8 @@ import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
 import BarWidget from '@/views/dashboard/card/Bar.vue'
 import BoolWidget from '@/views/dashboard/card/Boolean.vue'
 import NumberWidget from '@/views/dashboard/card/Number.vue'
+import LineWidget from '@/views/dashboard/card/Line.vue'
+import PieWidget from '@/views/dashboard/card/Pie.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'

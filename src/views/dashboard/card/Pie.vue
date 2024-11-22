@@ -1,8 +1,7 @@
 <template>
  <WidgetCard :data="data" :measureCondition="true">
-   <Bar
+   <Pie
      class="h-100"
-     id="my-chart-id"
      :options="chartOptions"
      :data="chartData"
    />
@@ -10,15 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import { Bar } from 'vue-chartjs'
+import { Pie } from 'vue-chartjs'
 import {
  Chart as ChartJS,
  Title,
  Tooltip,
  Legend,
- BarElement,
- CategoryScale,
- LinearScale
+ ArcElement,
+ CategoryScale
 } from 'chart.js'
 import type { IWidgetData } from '@/model/widget/widget';
 import WidgetCard from './WidgetCard.vue'
@@ -27,9 +25,8 @@ ChartJS.register(
  Title,
  Tooltip,
  Legend,
- BarElement,
- CategoryScale,
- LinearScale
+ ArcElement,
+ CategoryScale
 )
 
 interface Props {
@@ -39,13 +36,20 @@ interface Props {
 const props = defineProps<Props>()
 
 const chartData = {
- labels: ['January', 'February', 'March'],
+ labels: ['Red', 'Blue', 'Yellow'],
  datasets: [{
-   label: 'Monthly Data',
-   data: [40, 20, 12],
-   backgroundColor: '#36A2EB33',
-   borderColor: '#36A2EB',
-   borderWidth: 1
+   label: 'Dataset',
+   data: [300, 50, 100],
+   backgroundColor: [
+     '#FF6384',
+     '#36A2EB',
+     '#FFCE56'
+   ],
+   hoverBackgroundColor: [
+     '#FF6384CC',
+     '#36A2EBCC',
+     '#FFCE56CC'
+   ]
  }]
 }
 
