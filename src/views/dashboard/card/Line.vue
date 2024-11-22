@@ -1,11 +1,6 @@
 <template>
-  <WidgetCard :data="data" :measureCondition="true">
-    <Line
-      class="h-100"
-      id="my-chart-id"
-      :options="chartOptions"
-      :data="chartData"
-    />
+  <WidgetCard :data="data" :measureCondition="calculateMeasureCondition">
+    <Line class="h-100" :options="chartOptions" :data="chartData" />
   </WidgetCard>
 </template>
 
@@ -49,13 +44,18 @@ interface LineOptions {
   showLegend: boolean
   fill: boolean
   color: string
+  max: number
+  min: number
 }
 const props = defineProps<Props>()
 const options = computed(() => props.data.options as LineOptions)
 
-const modelValue = defineModel<number>({ default: 0 })
+const modelValue = defineModel<number[]>({ default: [0] })
 
 // data
+
+// storage calls
+// computed
 const chartOptions = computed(() => {
   return {
     responsive: true,
@@ -85,8 +85,25 @@ const chartData = computed(() => {
     ],
   }
 })
-// storage calls
-// computed
+const lastValue = computed(() => {
+  return modelValue.value[modelValue.value.length - 1]
+})
+
+const calculateMeasureCondition = computed(() => {
+  const { max, min } = options.value
+  const value = lastValue.value
+
+  if (max !== undefined && min !== undefined) {
+    return value >= min && value <= max
+  }
+  if (max !== undefined) {
+    return value <= max
+  }
+  if (min !== undefined) {
+    return value >= min
+  }
+  return false
+})
 // methods
 // lifeCycle
 // watch

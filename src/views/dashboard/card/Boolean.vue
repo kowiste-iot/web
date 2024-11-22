@@ -1,12 +1,12 @@
 <template>
-  <WidgetCard :data="data" :measureCondition="measure">
+  <WidgetCard :data="data" :measureCondition="modelValue">
     <div
       v-if="!data.options?.showText"
       class="border rounded m-3 w-50 py-3"
-      :class="`bg-${measure ? EColor.Success : EColor.Danger}`"
+      :class="`bg-${modelValue ? EColor.Success : EColor.Danger}`"
     />
     <div v-else class="fs-1">
-      {{ measure ? data.options.trueText : data.options.falseText }}
+      {{ modelValue ? data.options.trueText : data.options.falseText }}
     </div>
   </WidgetCard>
 </template>
@@ -24,10 +24,12 @@ import type { IWidgetData } from '@/model/widget/widget'
 // other imports
 // props
 interface Props {
-  measure: boolean
   data: IWidgetData
 }
 const props = defineProps<Props>()
+
+const modelValue = defineModel<boolean>({ default: false })
+
 // data
 
 // storage calls

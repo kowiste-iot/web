@@ -74,7 +74,7 @@
           class="col-md-8 col-form-label"
           :placeholder="'maximun true emotion'"
           type="number"
-          v-model="model.data.options.maximun"
+          v-model="model.data.options.max"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
@@ -83,7 +83,7 @@
           class="col-md-8 col-form-label"
           :placeholder="'minimun true emotion'"
           type="number"
-          v-model="model.data.options.minimun"
+          v-model="model.data.options.min"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
