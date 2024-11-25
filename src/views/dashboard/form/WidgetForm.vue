@@ -125,7 +125,7 @@ const widgetStore = useWidget()
 const route = useRoute()
 
 const dashboardID = getParam(route.params.did)
-
+form.set(page.value.selectedWidget, dashboardID)
 // computed
 // methods
 function selectWidget(data: IWidgetType) {

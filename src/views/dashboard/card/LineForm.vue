@@ -2,20 +2,59 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Line class="" :measure="measure" :data="model.data" />
+        <Line
+          :data="model.data"
+          :duration="5"
+          horizontalLabels
+          v-model="page.measure"
+        />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
           {{ $t('widget.form.common.measureValue') }}
         </label>
-        <div class="col-md-8 form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            v-model="measure"
+        <Input
+          class="col-md-6 col-form-label"
+          :placeholder="$t('widget.form.common.labelHolder')"
+          type="number"
+          v-model="measure"
+        />
+        <div class="col-md-2 col-form-label">
+          <Button
+            :icon="EIcon.Add"
+            :color="EColor.Primary"
+            @click="addMeasure"
           />
         </div>
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4 col-form-label">
+          {{ 'measure' }}
+        </label>
+        <DropDown
+          v-if="model.data.link.length != 0"
+          class="col-md-8"
+          optionValue="name"
+          optionLabel="name"
+          :placeholder="$t('dashboard.form.parentHolder')"
+          :options="measures"
+          v-model="model.data.link[0].measure"
+        >
+          <template #option="{ data }">
+            {{ data.name }}
+          </template>
+        </DropDown>
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4 col-form-label">
+          {{ 'Tag' }}
+        </label>
+        <Input
+          class="col-md-8 col-form-label"
+          :placeholder="'tag of the measure'"
+          type="text"
+          v-model="model.data.link[0].tags[0]"
+        />
       </div>
     </div>
 
@@ -64,7 +103,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="model.data.options.trueEmotion"
+            v-model="model.data.trueEmotion"
           />
         </div>
       </div>
@@ -117,7 +156,7 @@
           {{ 'Color' }}
         </label>
         <div class="col-md-8">
-          <ColorPicker  v-model="model.data.options.color"/>
+          <ColorPicker v-model="model.data.options.color" />
         </div>
       </div>
     </div>
@@ -126,30 +165,57 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 
 // stores import
+import { useMeasure } from '@/stores/measure/measure'
+
 // components import
 import Line from './Line.vue'
 import Input from '@/components/form/Input.vue'
-import { type IFormWidget } from '@/model/widget/form/formWidget'
+import { FormWidget, type IFormWidget } from '@/model/widget/form/formWidget'
 import ColorPicker from '@/components/color/ColorPicker.vue'
+import Button from '@/components/buttons/Button.vue'
+import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
+import { WidgetLineFormPage } from '@/model/widget/page/pageWidgetLineForm'
+import { DataModel } from '@/model/data/data'
+import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/enums/gui/EColor'
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
+const model = defineModel({
+  default: {
+    data: {
+      link: [{}],
+    },
+  } as IFormWidget,
 })
+
 // data
-const model = defineModel({ default: {} as IFormWidget })
-const measure = ref(false)
+const page = reactive(new WidgetLineFormPage())
+const measure = ref(0)
 // storage calls
+const measureStore = useMeasure()
+
 // computed
+const measures = computed(() => {
+  return measureStore.measures
+})
 // methods
+function addMeasure() {
+  const m = new DataModel({
+    id: '3465-456-464',
+    values: {
+      temperature: measure.value,
+    },
+    ts: new Date(),
+  })
+  page.measure = []
+  page.measure.push(m.get())
+  measure.value = 0
+}
 // lifeCycle
 // watch
 </script>

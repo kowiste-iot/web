@@ -13,11 +13,16 @@ export interface IWidget {
 }
 export interface IWidgetData {
   label: string
-  showLabel: boolean
-  showEmotion: boolean
+  showLabel: boolean //show label
+  showEmotion: boolean //show emotion card
+  trueEmotion: boolean //negative emotion calculation
+  link: IWidgetLinkData[] //data link to this widget
   options: any
 }
-
+export interface IWidgetLinkData {
+  measure: string
+  tags: string[]
+}
 export class Widget implements IWidget {
   id: string = ''
   dashboardID: string = ''
@@ -31,6 +36,8 @@ export class Widget implements IWidget {
     label: '',
     showLabel: true,
     showEmotion: true,
+    trueEmotion: false,
+    link: [],
     options: {},
   }
   constructor(data?: IWidget) {
