@@ -53,10 +53,8 @@ export class FormWidget
       link: new Array<IWidgetLinkData>(),
       options: {},
     } as IWidgetData
-    const t = new Array<string>()
-    t.push('')
     this.data.link.push({
-      tags: t,
+      tag: '',
     } as IWidgetLinkData)
   }
   set(data: IWidgetType, dahsboardID: string) {

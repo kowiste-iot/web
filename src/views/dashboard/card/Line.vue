@@ -85,7 +85,7 @@ const chartOptions = computed(() => ({
         maxRotation: 0,
         minRotation: 0,
         autoSkip: true,
-        maxTicksLimit:  6 ,
+        maxTicksLimit: 6,
         padding: 0,
       },
     },
@@ -149,14 +149,13 @@ function filterOldData() {
 function updateChartData() {
   const filteredData = filterOldData()
   dataPoints.value = filteredData
-
   chartData.value = {
     datasets: [
       {
         label: props.data.link[0]?.legend,
         data: filteredData.map((point) => ({
           x: point.ts.getTime(),
-          y: point.values['temperature'],
+          y: point.values[props.data.link[0]?.tag],
         })),
         borderColor: options.value.color,
         backgroundColor: options.value.color + '33',
@@ -186,7 +185,7 @@ watch(modelValue, (newValue) => {
 })
 
 watch(
-  [options,props.data],
+  [options, props.data],
   () => {
     updateChartData()
   },

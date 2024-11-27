@@ -47,7 +47,11 @@
         </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="!model.data.link[0].measure?'Select measure first':'tag of the measure'"
+          :placeholder="
+            !model.data.link[0].measure
+              ? 'Select measure first'
+              : 'tag of the measure'
+          "
           :disabled="!model.data.link[0].measure"
           type="text"
           v-model="model.data.link[0].tag"
@@ -215,7 +219,7 @@ const measures = computed(() => {
 // methods
 function addMeasure() {
   const m = new DataModel({
-    id: '3465-456-464',
+    id: model.value.data.link[0].measure,
     values: {
       temperature: measure.value,
     },
