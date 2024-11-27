@@ -21,7 +21,8 @@ export interface IWidgetData {
 }
 export interface IWidgetLinkData {
   measure: string
-  tags: string[]
+  tag: string
+  legend: string
 }
 export class Widget implements IWidget {
   id: string = ''

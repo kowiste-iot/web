@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Test :duration="5" :horizontaLabels="true"/>
     <Button
       class="my-4"
       :color="EColor.Success"
@@ -134,7 +133,6 @@ import Gauge from '@/views/dashboard/card/Gauge.vue'
 import Switch from '@/components/switch/Switch.vue'
 import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue'
 import ColorPicker from '@/components/color/ColorPicker.vue'
-import Test from './Test.vue'
 // model imports
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'

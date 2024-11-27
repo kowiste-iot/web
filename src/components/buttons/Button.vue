@@ -3,7 +3,8 @@
     class="btn d-flex"
     :class="
       (outline ? `btn-outline-${color}` : `btn-${color} `) +
-      (small ? ' btn-sm' : '')
+      (small ? ' btn-sm' : '') +
+      (disabled ? ' disabled' : '')
     "
   >
     <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
@@ -24,6 +25,7 @@ import { EIcon } from '@/enums/gui/EIcon'
 interface Props {
   icon?: EIcon
   color?: EColor
+  disabled?: boolean
   outline?: boolean
   small?: boolean
 }

@@ -2,12 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Line
-          :data="model.data"
-          :duration="5"
-          horizontalLabels
-          v-model="page.measure"
-        />
+        <Line :data="model.data" :duration="5" v-model="page.measure" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
@@ -21,6 +16,7 @@
         />
         <div class="col-md-2 col-form-label">
           <Button
+            :disabled="emptyString(model.data.link[0].tag)"
             :icon="EIcon.Add"
             :color="EColor.Primary"
             @click="addMeasure"
@@ -36,7 +32,7 @@
           class="col-md-8"
           optionValue="name"
           optionLabel="name"
-          :placeholder="$t('dashboard.form.parentHolder')"
+          :placeholder="'Select a measure'"
           :options="measures"
           v-model="model.data.link[0].measure"
         >
@@ -51,9 +47,21 @@
         </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="'tag of the measure'"
+          :placeholder="!model.data.link[0].measure?'Select measure first':'tag of the measure'"
+          :disabled="!model.data.link[0].measure"
           type="text"
-          v-model="model.data.link[0].tags[0]"
+          v-model="model.data.link[0].tag"
+        />
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4 col-form-label">
+          {{ 'Legend' }}
+        </label>
+        <Input
+          class="col-md-8 col-form-label"
+          :placeholder="'legend of the measure'"
+          type="text"
+          v-model="model.data.link[0].legend"
         />
       </div>
     </div>
@@ -183,6 +191,7 @@ import { WidgetLineFormPage } from '@/model/widget/page/pageWidgetLineForm'
 import { DataModel } from '@/model/data/data'
 import { EIcon } from '@/enums/gui/EIcon'
 import { EColor } from '@/enums/gui/EColor'
+import { emptyString } from '@/utils/string/string'
 // other imports
 // props
 const model = defineModel({
