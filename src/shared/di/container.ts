@@ -1,6 +1,7 @@
-import { ApiClient } from '@/infra/api/client'
-import { UserRepository } from '@/infra/repositories/UserRepository'
-import { UserService } from '@/domain/services/UserService'
+import { ApiClient } from '@/shared/api/client'
+import { UserService } from '@/features/user/domain/UserService'
+import { UserRepository } from '@/features/user/infra/UserRepository'
+import { DateTimeService } from '@/shared/service/DateTimeService'
 
 export class Container {
   private static instance: Container
@@ -20,10 +21,14 @@ export class Container {
     // Services
     const userService = new UserService(userRepository)
 
+    // Initialize DateTimeService with server timezone
+    const dateTimeService = new DateTimeService('Europe/Madrid')
+
     // Register services
     this.services.set('apiClient', apiClient)
     this.services.set('userRepository', userRepository)
     this.services.set('userService', userService)
+    this.services.set('dateTimeService', dateTimeService)
   }
 
   static getInstance(): Container {
