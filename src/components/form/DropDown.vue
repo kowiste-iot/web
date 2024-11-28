@@ -7,9 +7,12 @@
       @click="toggleVisibility"
     >
       <FIcon v-if="icon" class="pe-2 pt-1" :icon="icon" />
-      <div v-if="model">
-        {{ (model as any)[optionValue] }}
-      </div>
+      <input
+        v-if="model"
+        class="border-0 px-2 input-no-focus"
+        readonly
+        v-model=" (model as any)[optionValue] "
+      />
       <div v-else>
         <div v-if="placeholder">{{ placeholder }}</div>
         <div v-else>Select an option</div>
@@ -150,4 +153,13 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.input-no-focus {
+  outline: none;
+}
+
+.input-no-focus:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
