@@ -30,7 +30,6 @@ interface Props {
   small?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-  icon: EIcon.Action,
   color: EColor.Primary,
   outline: false,
   small: false,

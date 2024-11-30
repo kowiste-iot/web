@@ -32,7 +32,7 @@
           class="col-md-8"
           optionValue="name"
           optionLabel="name"
-          :placeholder="'Select a measure'"
+          :placeholder="$t('widget.line.form.measureHolder')"
           :options="measures"
           v-model="model.data.link[0].measure"
         >
@@ -43,14 +43,14 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4 col-form-label">
-          {{ 'Tag' }}
+          {{ $t('widget.line.form.tag') }}
         </label>
         <Input
           class="col-md-8 col-form-label"
           :placeholder="
             !model.data.link[0].measure
-              ? 'Select measure first'
-              : 'tag of the measure'
+              ? $t('widget.line.form.tagHolderBad')
+              : $t('widget.line.form.tagHolder')
           "
           :disabled="!model.data.link[0].measure"
           type="text"
@@ -59,11 +59,11 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4 col-form-label">
-          {{ 'Legend' }}
+          {{ $t('widget.line.form.legend') }}
         </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="'legend of the measure'"
+          :placeholder="$t('widget.line.form.legendHolder')"
           type="text"
           v-model="model.data.link[0].legend"
         />
@@ -120,26 +120,26 @@
         </div>
       </div>
       <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4"> Maximun </label>
+        <label class="col-md-4"> {{ $t('widget.line.form.max') }} </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="'maximun true emotion'"
+          :placeholder="$t('widget.line.form.maxHolder')"
           type="number"
           v-model="model.data.options.max"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4"> Minimun </label>
+        <label class="col-md-4">{{ $t('widget.line.form.min') }} </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="'minimun true emotion'"
+          :placeholder="$t('widget.line.form.minHolder')"
           type="number"
           v-model="model.data.options.min"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ 'Show Legend' }}
+          {{ $t('widget.line.form.showLegend') }}
         </label>
         <div class="col-md-8 form-switch">
           <input
@@ -152,7 +152,7 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ 'Fill' }}
+          {{ $t('widget.line.form.fill')  }}
         </label>
         <div class="col-md-8 form-switch">
           <input
@@ -165,7 +165,7 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ 'Color' }}
+          {{ $t('widget.line.form.color')  }}
         </label>
         <div class="col-md-8">
           <ColorPicker v-model="model.data.options.color" />
