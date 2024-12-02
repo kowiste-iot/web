@@ -1,15 +1,17 @@
 <template>
+  {{ fontSize}}
   <WidgetCard
     :data="data"
     :measureCondition="modelValue == data.options.conditionText"
+   
   >
-    <div ref="parent" class="h-100 w-100 flex items-center justify-center">
+    <div ref="parent" class=" w-100 h-100 flex items-center justify-center">
       <div
         ref="textRef"
         class="font-bold text-center"
         :style="{ fontSize: `${fontSize}px` }"
       >
-       {{ modelValue }}
+        {{ modelValue }}
       </div>
     </div>
   </WidgetCard>
@@ -37,7 +39,7 @@ const modelValue = defineModel<string>();
 // methods
 // lifeCycle
 // watch
-import { ref, onMounted, nextTick,onUpdated } from 'vue';
+import { ref, onMounted, nextTick, onUpdated } from 'vue';
 
 const textRef = ref<HTMLDivElement | null>(null);
 const parent = ref<HTMLDivElement | null>(null);
@@ -53,15 +55,17 @@ async function adjustTextSize() {
   const container = parent.value;
 
   if (!container) return;
-
-  fontSize.value = 0;
+  fontSize.value = 1;
   // Container dimensions
   const containerWidth = container.clientWidth;
   const containerHeight = container.clientHeight;
+  console.log(parent.value,containerHeight, containerWidth);
 
   if (containerWidth <= 0 || containerHeight <= 0) {
     return;
   }
+  console.log('jhj');
+
   let count = 0;
   while (true) {
     await nextTick();
@@ -71,11 +75,24 @@ async function adjustTextSize() {
       text.clientWidth >= containerWidth ||
       text.clientHeight >= containerHeight
     ) {
-      console.log('there',count,text.clientHeight, containerHeight,fontSize.value)
+      console.log(
+        'there',
+        count,
+        text.clientHeight,
+        containerHeight,
+        fontSize.value
+      );
       break;
     } else {
       fontSize.value++;
-      console.log('here',count,text.clientHeight, containerHeight,fontSize.value);
+      console.log(
+        'here',
+        count,
+        text.clientHeight,
+        containerHeight,
+        fontSize.value
+      );
+      
     }
   }
 }
@@ -84,10 +101,6 @@ onMounted(() => adjustTextSize());
 onUpdated(() => {
   adjustTextSize();
 });
-
-
-
-
 </script>
 
 <style scoped>
