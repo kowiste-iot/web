@@ -62,6 +62,10 @@
             v-if="page.selectedWidget.id == EWidget.Pie"
             v-model="form"
           />
+          <TextForm
+            v-if="page.selectedWidget.id == EWidget.Text"
+            v-model="form"
+          />
         </div>
       </div>
     </div>
@@ -97,6 +101,7 @@ import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
 import LineForm from '@/views/dashboard/card/LineForm.vue'
 import BarForm from '@/views/dashboard/card/BarForm.vue'
 import PieForm from '@/views/dashboard/card/PieForm.vue'
+import TextForm from '@/views/dashboard/card/TextForm.vue'
 
 // model imports
 import { EColor } from '@/enums/gui/EColor'
@@ -125,7 +130,7 @@ const widgetStore = useWidget()
 const route = useRoute()
 
 const dashboardID = getParam(route.params.did)
-
+form.set(page.value.selectedWidget, dashboardID)
 // computed
 // methods
 function selectWidget(data: IWidgetType) {

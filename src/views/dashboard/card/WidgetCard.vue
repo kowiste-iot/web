@@ -1,7 +1,7 @@
 <template>
   <div class="border rounded h-100 d-flex flex-column">
-    <div class="d-flex justify-content-center">
-      <slot></slot>
+    <div class="d-flex w-100 justify-content-center">
+      <slot ></slot>
     </div>
     <div class="border-top">
       <div class="d-flex px-1">
@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import type { IWidgetData } from '@/model/widget/widget'
+import { EColor } from '@/enums/gui/EColor';
+import { EIcon } from '@/enums/gui/EIcon';
+import type { IWidgetData } from '@/model/widget/widget';
 
 // imports
 // stores import
@@ -47,10 +47,10 @@ import type { IWidgetData } from '@/model/widget/widget'
 // other imports
 // props
 interface Props {
-  data: IWidgetData
-  measureCondition: boolean
+  data: IWidgetData;
+  measureCondition: boolean;
 }
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 // data
 // storage calls
 // computed

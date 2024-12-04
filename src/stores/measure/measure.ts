@@ -21,7 +21,7 @@ export const useMeasure = defineStore('measureStore', {
   actions: {
     create(data: IFormMeasure) {
       this._measures.push({
-        id: String(this._measures.length),
+        id: data.id,
         name: data.name,
         parent: data.parent,
       })

@@ -1,12 +1,26 @@
 <template>
+  
   <div>
+    <User />
+
+    <div>
+      <FoldButton :icon="EIcon.Add" :color="EColor.Danger" >
+        <template #button-text> click me </template>
+        <template #expanded-content> put anything you want here </template>
+        
+      </FoldButton>
+    </div>
     <Button
       class="my-4"
       :color="EColor.Success"
       :outline="true"
       @click="goToAsset"
-      >i'm a button</Button
     >
+      i'm a button
+    </Button>
+    <Button class="my-4" :color="EColor.Danger" loading>
+      i'm a button
+    </Button>
     <Switch onText="ON" offText="OFF" style="width: 5rem" />
     <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
 
@@ -113,40 +127,59 @@
       />
     </div>
   </div>
+  <div>
+    <Card showHeader showFooter>
+      <template #header >header</template>
+      jjiujjhklh
+      <FoldButton :icon="EIcon.Add" :color="EColor.Danger" >
+        <template #button-text> click me </template>
+        <template #expanded-content> put anything you want here </template>
+      </FoldButton>
+      <template #footer>
+        <FoldButton :icon="EIcon.Add" :color="EColor.Danger" >
+        <template #button-text> click me </template>
+        <template #expanded-content> put anything you want here </template>
+      </FoldButton>
+      </template>
+    </Card>
+  </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 // stores import
-import { useAlert } from '@/stores/gui/alert'
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+import { useAlert } from '@/stores/gui/alert';
+import { useBreadCrumb } from '@/stores/gui/breadcrumb';
 
 // components import
-import Button from '@/components/buttons/Button.vue'
-import InputCard from '@/components/cards/Card.vue'
-import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
-import Spinner from '@/components/loading/Spinner.vue'
-import Slider from '@/components/slider/MultiSlider.vue'
-import Gauge from '@/views/dashboard/card/Gauge.vue'
-import Switch from '@/components/switch/Switch.vue'
-import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue'
-import ColorPicker from '@/components/color/ColorPicker.vue'
+import Button from '@/components/buttons/Button.vue';
+import InputCard from '@/components/cards/Card.vue';
+import Input from '@/components/form/Input.vue';
+import DropDown from '@/components/form/DropDown.vue';
+import Spinner from '@/components/loading/Spinner.vue';
+import Slider from '@/components/slider/MultiSlider.vue';
+import Gauge from '@/views/dashboard/card/Gauge.vue';
+import Switch from '@/components/switch/Switch.vue';
+import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue';
+import ColorPicker from '@/components/color/ColorPicker.vue';
+import FoldButton from '@/components/buttons/FoldButton.vue';
+import Card from '@/components/cards/Card.vue';
+import User from './User.vue'
 
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
+import { EIcon } from '@/enums/gui/EIcon';
+import { EColor } from '@/enums/gui/EColor';
 
 // other imports
 // props
 
 // data
-const drop = ref()
-const t1 = ref([])
+const drop = ref();
+const t1 = ref([]);
 
-let isDark = false
-const selectedColor = ref('#ff0000')
+let isDark = false;
+const selectedColor = ref('#ff0000');
 
 const contributionData = ref([
   { date: '2024-01-01', count: 5 },
@@ -164,21 +197,21 @@ const contributionData = ref([
   { date: '2024-05-01', count: 7 },
   // Add some recent dates
   { date: new Date().toISOString().split('T')[0], count: 4 },
-])
+]);
 // storage calls
-const alertStore = useAlert()
-const storeCrumb = useBreadCrumb()
+const alertStore = useAlert();
+const storeCrumb = useBreadCrumb();
 
-storeCrumb.reset()
+storeCrumb.reset();
 // computed
 // methods
 function goToAsset() {
-  alertStore.setError('this is an error')
+  alertStore.setError('this is an error');
 }
 // lifeCycle
 onMounted(() => {
-  document.body.classList.add('light-theme')
-})
+  document.body.classList.add('light-theme');
+});
 // watch
 </script>
 

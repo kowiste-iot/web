@@ -21,7 +21,7 @@
           class="col-md-8"
           optionValue="name"
           optionLabel="name"
-          placeholder="select a language"
+          :placeholder="$t('setting.languageHolder')"
           :options="languageOpt"
           :onChange="changeLanguage"
           v-model="currentLocale"
