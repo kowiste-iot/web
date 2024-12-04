@@ -17,7 +17,7 @@ export const useWidget = defineStore('widgetStore', {
   },
   actions: {
     create(data: IFormWidget) {
-      const w = new FormWidget(data)
+      const w = new FormWidget()
       w.calculate(this._widgets)
       this._widgets.push(data)
     },

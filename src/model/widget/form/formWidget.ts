@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { EValidation } from '@/enums/EValidation'
-import type { IWidget, IWidgetData } from '../widget'
+import { type IWidgetLinkData, type IWidget, type IWidgetData } from '../widget'
 import type { IWidgetType } from '../widgetType'
 import { FormBase } from '@/model/base/formBase'
-import type { EWidget } from '@/enums/dashboard/EWidget'
+import { EWidget } from '@/enums/dashboard/EWidget'
 
 export interface IFormWidget {
   id: string
@@ -23,7 +23,7 @@ export class FormWidget
 {
   id: string = ''
   dashboardID: string = ''
-  type: number = 0
+  type: EWidget = EWidget.None
   i: number = 0
   x: number = 0
   y: number = 0
@@ -33,21 +33,29 @@ export class FormWidget
     label: '',
     showLabel: false,
     showEmotion: false,
+    trueEmotion: false,
+    link: new Array<IWidgetLinkData>(),
     options: {},
   }
 
-  constructor(data?: IWidget) {
+  constructor() {
     super(widgetSchema)
-    if (!data) return
-    this.id = data.id
-    this.dashboardID = data.dashboardID
-    this.type = data.type
-    this.i = data.i
-    this.x = data.x
-    this.y = data.y
-    this.w = data.w
-    this.h = data.h
-    this.data = data.data
+
+    this.id = ''
+    this.dashboardID = ''
+    this.type = 0
+    this.i = 0
+    this.x = 0
+    this.y = 0
+    this.w = 5
+    this.h = 4
+    this.data = {
+      link: new Array<IWidgetLinkData>(),
+      options: {},
+    } as IWidgetData
+    this.data.link.push({
+      tag: '',
+    } as IWidgetLinkData)
   }
   set(data: IWidgetType, dahsboardID: string) {
     this.dashboardID = dahsboardID

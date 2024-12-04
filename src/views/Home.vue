@@ -1,6 +1,8 @@
 <template>
   
   <div>
+    <User />
+
     <div>
       <FoldButton :icon="EIcon.Add" :color="EColor.Danger" >
         <template #button-text> click me </template>
@@ -13,8 +15,12 @@
       :color="EColor.Success"
       :outline="true"
       @click="goToAsset"
-      >i'm a button</Button
     >
+      i'm a button
+    </Button>
+    <Button class="my-4" :color="EColor.Danger" loading>
+      i'm a button
+    </Button>
     <Switch onText="ON" offText="OFF" style="width: 5rem" />
     <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
 
@@ -159,6 +165,7 @@ import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue';
 import ColorPicker from '@/components/color/ColorPicker.vue';
 import FoldButton from '@/components/buttons/FoldButton.vue';
 import Card from '@/components/cards/Card.vue';
+import User from './User.vue'
 
 // model imports
 import { EIcon } from '@/enums/gui/EIcon';

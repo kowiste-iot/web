@@ -1,7 +1,4 @@
 {
-  "message": {
-    "hello": "hello world"
-  },
   "action": {
     "save": "Save",
     "update": "Update",
@@ -116,7 +113,7 @@
       "form": {
         "showDecimal": "Show decimal",
         "showUnit": "Show unit",
-        "unit":"Unit"
+        "unit": "Unit"
       }
     },
     "gauge": {
@@ -127,7 +124,21 @@
     "line": {
       "title": "Line Graph",
       "description": "line graph widget",
-      "form": {}
+      "form": {
+        "measureHolder": "select a measure",
+        "tag": "Etiqueta",
+        "tagHolder": "tag in the measure",
+        "tagHolderBad": "select measure first",
+        "legend": "Legend",
+        "legendHolder": "legend for the measure",
+        "max": "Maximun",
+        "maxHolder": "maximun true emotion",
+        "min": "Minimun",
+        "minHolder": "minimun true emotion",
+        "showLegend": "Show Legend",
+        "fill": "Fill",
+        "color": "Color"
+      }
     },
     "bar": {
       "title": "Bar Graph",
@@ -156,6 +167,10 @@
   "setting": {
     "title": "User Settings",
     "theme": "Light/Dark theme",
-    "language": "Language"
+    "language": "Language",
+    "languageHolder": "select a language"
+  },
+  "error": {
+    "page404": "page not found"
   }
 }

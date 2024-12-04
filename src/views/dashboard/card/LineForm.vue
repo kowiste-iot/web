@@ -2,20 +2,71 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Line class="" :measure="measure" :data="model.data" />
+        <Line :data="model.data" :duration="5" v-model="page.measure" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
           {{ $t('widget.form.common.measureValue') }}
         </label>
-        <div class="col-md-8 form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            v-model="measure"
+        <Input
+          class="col-md-6 col-form-label"
+          :placeholder="$t('widget.form.common.labelHolder')"
+          type="number"
+          v-model="measure"
+        />
+        <div class="col-md-2 col-form-label">
+          <Button
+            :disabled="emptyString(model.data.link[0].tag)"
+            :icon="EIcon.Add"
+            :color="EColor.Primary"
+            @click="addMeasure"
           />
         </div>
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4 col-form-label">
+          {{ 'measure' }}
+        </label>
+        <DropDown
+          v-if="model.data.link.length != 0"
+          class="col-md-8"
+          optionValue="name"
+          optionLabel="name"
+          :placeholder="$t('widget.line.form.measureHolder')"
+          :options="measures"
+          v-model="model.data.link[0].measure"
+        >
+          <template #option="{ data }">
+            {{ data.name }}
+          </template>
+        </DropDown>
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4 col-form-label">
+          {{ $t('widget.line.form.tag') }}
+        </label>
+        <Input
+          class="col-md-8 col-form-label"
+          :placeholder="
+            !model.data.link[0].measure
+              ? $t('widget.line.form.tagHolderBad')
+              : $t('widget.line.form.tagHolder')
+          "
+          :disabled="!model.data.link[0].measure"
+          type="text"
+          v-model="model.data.link[0].tag"
+        />
+      </div>
+      <div class="form-group row justify-content-center mb-3">
+        <label class="col-md-4 col-form-label">
+          {{ $t('widget.line.form.legend') }}
+        </label>
+        <Input
+          class="col-md-8 col-form-label"
+          :placeholder="$t('widget.line.form.legendHolder')"
+          type="text"
+          v-model="model.data.link[0].legend"
+        />
       </div>
     </div>
 
@@ -64,31 +115,31 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="model.data.options.trueEmotion"
+            v-model="model.data.trueEmotion"
           />
         </div>
       </div>
       <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4"> Maximun </label>
+        <label class="col-md-4"> {{ $t('widget.line.form.max') }} </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="'maximun true emotion'"
+          :placeholder="$t('widget.line.form.maxHolder')"
           type="number"
           v-model="model.data.options.max"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4"> Minimun </label>
+        <label class="col-md-4">{{ $t('widget.line.form.min') }} </label>
         <Input
           class="col-md-8 col-form-label"
-          :placeholder="'minimun true emotion'"
+          :placeholder="$t('widget.line.form.minHolder')"
           type="number"
           v-model="model.data.options.min"
         />
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ 'Show Legend' }}
+          {{ $t('widget.line.form.showLegend') }}
         </label>
         <div class="col-md-8 form-switch">
           <input
@@ -101,7 +152,7 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ 'Fill' }}
+          {{ $t('widget.line.form.fill')  }}
         </label>
         <div class="col-md-8 form-switch">
           <input
@@ -114,10 +165,10 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ 'Color' }}
+          {{ $t('widget.line.form.color')  }}
         </label>
         <div class="col-md-8">
-          <ColorPicker  v-model="model.data.options.color"/>
+          <ColorPicker v-model="model.data.options.color" />
         </div>
       </div>
     </div>
@@ -126,30 +177,58 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 
 // stores import
+import { useMeasure } from '@/stores/measure/measure'
+
 // components import
 import Line from './Line.vue'
 import Input from '@/components/form/Input.vue'
-import { type IFormWidget } from '@/model/widget/form/formWidget'
+import { FormWidget, type IFormWidget } from '@/model/widget/form/formWidget'
 import ColorPicker from '@/components/color/ColorPicker.vue'
+import Button from '@/components/buttons/Button.vue'
+import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
+import { WidgetLineFormPage } from '@/model/widget/page/pageWidgetLineForm'
+import { DataModel } from '@/model/data/data'
+import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/enums/gui/EColor'
+import { emptyString } from '@/utils/string/string'
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
+const model = defineModel({
+  default: {
+    data: {
+      link: [{}],
+    },
+  } as IFormWidget,
 })
+
 // data
-const model = defineModel({ default: {} as IFormWidget })
-const measure = ref(false)
+const page = reactive(new WidgetLineFormPage())
+const measure = ref(0)
 // storage calls
+const measureStore = useMeasure()
+
 // computed
+const measures = computed(() => {
+  return measureStore.measures
+})
 // methods
+function addMeasure() {
+  const m = new DataModel({
+    id: model.value.data.link[0].measure,
+    values: {
+      temperature: measure.value,
+    },
+    ts: new Date(),
+  })
+  page.measure = []
+  page.measure.push(m.get())
+  measure.value = 0
+}
 // lifeCycle
 // watch
 </script>

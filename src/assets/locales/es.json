@@ -1,7 +1,4 @@
 {
-  "message": {
-    "hello": "hola mundo"
-  },
   "action": {
     "save": "Guardar",
     "update": "Actualizar",
@@ -111,7 +108,21 @@
     "line": {
       "title": "Grafico lineal",
       "description": "widget de grafico lineal",
-      "form": {}
+      "form": {
+        "measureHolder": "selecciona una medida",
+        "tag":"Etiqueta",
+        "tagHolder": "Etiqueta en la medida",
+        "tagHolderBad": "selecciona medidad primero",
+        "legend": "Legenda",
+        "legendHolder": "legenda para la medida",
+        "max": "Maximo",
+        "maxHolder": "maximo true emotion",
+        "min": "Minimo",
+        "minHolder": "minimo true emotion",
+        "showLegend": "Mostrar Legenda",
+        "fill": "Rellenar",
+        "color": "Color"
+      }
     },
     "bar": {
       "title": "Grafico de barras",
@@ -140,6 +151,10 @@
   "setting": {
     "title": "Ajustes de usuario",
     "theme": "Tema claro/oscuro",
-    "language": "Idioma"
+    "language": "Idioma",
+    "languageHolder": "escoge un idioma"
+  },
+  "error": {
+    "page404": "pagina no encontrada"
   }
 }
