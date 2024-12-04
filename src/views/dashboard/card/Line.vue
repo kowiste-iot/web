@@ -29,7 +29,7 @@ import { DateTime } from 'luxon'
 
 interface Props {
   data: IWidgetData
-  duration: number
+  duration?: number
   horizontalLabels?: boolean
 }
 
