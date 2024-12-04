@@ -8,7 +8,8 @@
     "
   >
     <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
-    <slot />
+    <div v-if="loading"><Spinner /></div>
+    <slot/>
   </button>
 </template>
 
@@ -16,6 +17,8 @@
 // imports
 // stores import
 // components import
+import Spinner from '@/components/loading/Spinner.vue'
+
 // model imports
 import { EColor } from '@/enums/gui/EColor'
 import { EIcon } from '@/enums/gui/EIcon'
@@ -25,6 +28,7 @@ import { EIcon } from '@/enums/gui/EIcon'
 interface Props {
   icon?: EIcon
   color?: EColor
+  loading?: boolean
   disabled?: boolean
   outline?: boolean
   small?: boolean

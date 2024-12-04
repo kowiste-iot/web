@@ -65,174 +65,202 @@ const handleDelete = async (userId: number) => {
 </script>
 
 <template>
-  <div class="container mx-auto p-4">
+  <div class="container py-4">
     <!-- Create User Form -->
-    <div class="mb-8 bg-white p-6 rounded-lg shadow">
-      <h2 class="text-2xl font-bold mb-4">Create New User</h2>
-      <form @submit.prevent="handleSubmit" class="space-y-4">
-        <div>
-          <label class="block mb-1">Name</label>
-          <input
-            v-model="userForm.name"
-            type="text"
-            class="w-full p-2 border rounded"
-          />
-          <span class="text-red-500 text-sm">{{ userForm.getError('name') }}</span>
-        </div>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title h4 mb-4">Create New User</h2>
+        <form @submit.prevent="handleSubmit">
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input
+              v-model="userForm.name"
+              type="text"
+              class="form-control"
+            />
+            <div class="form-text text-danger">{{ userForm.getError('name') }}</div>
+          </div>
 
-        <div>
-          <label class="block mb-1">Email</label>
-          <input
-            v-model="userForm.email"
-            type="email"
-            class="w-full p-2 border rounded"
-          />
-          <span class="text-red-500 text-sm">{{ userForm.getError('email') }}</span>
-        </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input
+              v-model="userForm.email"
+              type="email"
+              class="form-control"
+            />
+            <div class="form-text text-danger">{{ userForm.getError('email') }}</div>
+          </div>
 
-        <div>
-          <label class="block mb-1">Role</label>
-          <select v-model="userForm.role" class="w-full p-2 border rounded">
-            <option :value="UserRole.USER">User</option>
-            <option :value="UserRole.ADMIN">Admin</option>
-            <option :value="UserRole.GUEST">Guest</option>
-          </select>
-          <span class="text-red-500 text-sm">{{ userForm.getError('role') }}</span>
-        </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select v-model="userForm.role" class="form-select">
+              <option :value="UserRole.USER">User</option>
+              <option :value="UserRole.ADMIN">Admin</option>
+              <option :value="UserRole.GUEST">Guest</option>
+            </select>
+            <div class="form-text text-danger">{{ userForm.getError('role') }}</div>
+          </div>
 
-        <div class="flex items-center gap-2">
-          <input
-            v-model="userForm.isActive"
-            type="checkbox"
-            id="isActive"
-          />
-          <label for="isActive">Active</label>
-          <span class="text-red-500 text-sm">{{ userForm.getError('isActive') }}</span>
-        </div>
+          <div class="mb-3 form-check">
+            <input
+              v-model="userForm.isActive"
+              type="checkbox"
+              class="form-check-input"
+              id="isActive"
+            />
+            <label class="form-check-label" for="isActive">Active</label>
+            <div class="form-text text-danger">{{ userForm.getError('isActive') }}</div>
+          </div>
 
-        <button
-          type="submit"
-          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          :disabled="userForm.hasErrors()"
-        >
-          Create User
-        </button>
-      </form>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :disabled="userForm.hasErrors()"
+          >
+            Create User
+          </button>
+        </form>
+      </div>
     </div>
 
     <!-- User List -->
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-2xl font-bold mb-4">Users</h2>
-      
-      <div v-if="userStore.loading" class="text-center py-4">
-        Loading...
-      </div>
-      
-      <div v-else-if="userStore.error" class="text-red-500 text-center py-4">
-        {{ userStore.error }}
-      </div>
-      
-      <div v-else>
-        <table class="w-full">
-          <thead>
-            <tr>
-              <th class="text-left py-2">Name</th>
-              <th class="text-left py-2">Email</th>
-              <th class="text-left py-2">Role</th>
-              <th class="text-left py-2">Status</th>
-              <th class="text-left py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="user in userStore.users" :key="user.id">
-              <!-- View Mode -->
-              <template v-if="editingUser?.id !== user.id">
-                <td class="py-2">{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-                <td>
-                  <span
-                    :class="user.isActive ? 'text-green-500' : 'text-red-500'"
-                  >
-                    {{ user.isActive ? 'Active' : 'Inactive' }}
-                  </span>
-                </td>
-                <td class="space-x-2">
-                  <button
-                    @click="startEdit(user)"
-                    class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    @click="handleDelete(user.id)"
-                    class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </template>
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title h4 mb-4">Users</h2>
+        
+        <div v-if="userStore.loading" class="text-center py-4">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        
+        <div v-else-if="userStore.error" class="alert alert-danger text-center" role="alert">
+          {{ userStore.error }}
+        </div>
+        
+        <div v-else class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in userStore.users" :key="user.id">
+                <!-- View Mode -->
+                <template v-if="editingUser?.id !== user.id">
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.role }}</td>
+                  <td>
+                    <span
+                      :class="user.isActive ? 'text-success' : 'text-danger'"
+                    >
+                      {{ user.isActive ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button
+                        @click="startEdit(user)"
+                        class="btn btn-warning"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        @click="handleDelete(user.id)"
+                        class="btn btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </template>
 
-              <!-- Edit Mode -->
-              <template v-else>
-                <td colspan="5">
-                  <form @submit.prevent="handleUpdate" class="space-y-2 py-2">
-                    <div class="flex gap-2">
-                      <input
-                        v-model="updateForm.name"
-                        type="text"
-                        placeholder="Name"
-                        class="flex-1 p-1 border rounded"
-                      />
-                      <input
-                        v-model="updateForm.email"
-                        type="email"
-                        placeholder="Email"
-                        class="flex-1 p-1 border rounded"
-                      />
-                      <select
-                        v-model="updateForm.role"
-                        class="p-1 border rounded"
-                      >
-                        <option :value="UserRole.USER">User</option>
-                        <option :value="UserRole.ADMIN">Admin</option>
-                        <option :value="UserRole.GUEST">Guest</option>
-                      </select>
-                      <div class="flex items-center gap-1">
-                        <input
-                          v-model="updateForm.isActive"
-                          type="checkbox"
-                          id="updateIsActive"
-                        />
-                        <label for="updateIsActive">Active</label>
+                <!-- Edit Mode -->
+                <template v-else>
+                  <td colspan="5">
+                    <form @submit.prevent="handleUpdate" class="py-2">
+                      <div class="row g-2">
+                        <div class="col">
+                          <input
+                            v-model="updateForm.name"
+                            type="text"
+                            placeholder="Name"
+                            class="form-control form-control-sm"
+                          />
+                        </div>
+                        <div class="col">
+                          <input
+                            v-model="updateForm.email"
+                            type="email"
+                            placeholder="Email"
+                            class="form-control form-control-sm"
+                          />
+                        </div>
+                        <div class="col">
+                          <select
+                            v-model="updateForm.role"
+                            class="form-select form-select-sm"
+                          >
+                            <option :value="UserRole.USER">User</option>
+                            <option :value="UserRole.ADMIN">Admin</option>
+                            <option :value="UserRole.GUEST">Guest</option>
+                          </select>
+                        </div>
+                        <div class="col-auto">
+                          <div class="form-check">
+                            <input
+                              v-model="updateForm.isActive"
+                              type="checkbox"
+                              class="form-check-input"
+                              id="updateIsActive"
+                            />
+                            <label class="form-check-label" for="updateIsActive">Active</label>
+                          </div>
+                        </div>
+                        <div class="col-auto">
+                          <div class="btn-group btn-group-sm">
+                            <button
+                              type="submit"
+                              class="btn btn-success"
+                              :disabled="updateForm.hasErrors()"
+                            >
+                              Save
+                            </button>
+                            <button
+                              type="button"
+                              @click="editingUser = null"
+                              class="btn btn-secondary"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      <button
-                        type="submit"
-                        class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                        :disabled="updateForm.hasErrors()"
-                      >
-                        Save
-                      </button>
-                      <button
-                        type="button"
-                        @click="editingUser = null"
-                        class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                    <!-- Validation Errors -->
-                    <div v-if="updateForm.hasErrors()" class="text-red-500 text-sm">
-                      <div v-if="updateForm.getError('name')">{{ updateForm.getError('name') }}</div>
-                      <div v-if="updateForm.getError('email')">{{ updateForm.getError('email') }}</div>
-                      <div v-if="updateForm.getError('role')">{{ updateForm.getError('role') }}</div>
-                    </div>
-                  </form>
-                </td>
-              </template>
-            </tr>
-          </tbody>
-        </table>
+                      <!-- Validation Errors -->
+                      <div v-if="updateForm.hasErrors()" class="mt-2">
+                        <div v-if="updateForm.getError('name')" class="form-text text-danger">
+                          {{ updateForm.getError('name') }}
+                        </div>
+                        <div v-if="updateForm.getError('email')" class="form-text text-danger">
+                          {{ updateForm.getError('email') }}
+                        </div>
+                        <div v-if="updateForm.getError('role')" class="form-text text-danger">
+                          {{ updateForm.getError('role') }}
+                        </div>
+                      </div>
+                    </form>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

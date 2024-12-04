@@ -7,8 +7,12 @@
       :color="EColor.Success"
       :outline="true"
       @click="goToAsset"
-      >i'm a button</Button
     >
+      i'm a button
+    </Button>
+    <Button class="my-4" :color="EColor.Danger" loading>
+      i'm a button
+    </Button>
     <Switch onText="ON" offText="OFF" style="width: 5rem" />
     <Slider class="row my-5" :handles="2" v-model="t1" :max="100" :min="-30" />
 
