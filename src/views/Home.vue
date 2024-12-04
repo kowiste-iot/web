@@ -165,6 +165,7 @@ import CalenderHeatmap from '@/components/heatmap/CalenderHeatmap.vue';
 import ColorPicker from '@/components/color/ColorPicker.vue';
 import FoldButton from '@/components/buttons/FoldButton.vue';
 import Card from '@/components/cards/Card.vue';
+import User from './User.vue'
 
 // model imports
 import { EIcon } from '@/enums/gui/EIcon';
