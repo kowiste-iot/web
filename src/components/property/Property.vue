@@ -1,88 +1,97 @@
-``
 <template>
   <div class="position-relative">
-    <div class="px-2" role="button" @click="toggleVisibility">
+    <div class="px-2" role="button" @click="toggleVisibility" ref="triggerRef">
       <FIcon :icon="EIcon.Property" />
     </div>
-    <div
-      v-if="isVisible "
-      class="position-absolute top-0 card"
-      ref="popupDiv"
-      :class="leftAlign ? 'start-100' : 'end-100'"
-      @mouseleave="toggleVisibility"
-    >
-      <div v-for="element in data" class="">
+    <Teleport to="body">
+      <div v-if="isVisible">
         <div
-          class="btn d-flex"
-          :class="isHover[element.id] ? 'bg-secondary' : 'bg-light'"
-          @click="onClick(element)"
-          @mouseover="isHover[element.id] = true"
-          @mouseleave="isHover[element.id] = false"
+          class="position-fixed card menu"
+          :style="menuStyle"
+          @mouseleave="toggleVisibility"
         >
-          <FIcon :icon="element.icon" />
-          <div class="ms-4">{{ element.name }}</div>
+          <div v-for="element in data" :key="element.id">
+            <div
+              class="btn d-flex"
+              :class="isHover[element.id] ? 'bg-secondary' : 'bg-light'"
+              @click="onClick(element)"
+              @mouseover="isHover[element.id] = true"
+              @mouseleave="isHover[element.id] = false"
+            >
+              <FIcon :icon="element.icon" />
+              <div class="ms-4">{{ element.name }}</div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-// imports
-import { ref, watch } from 'vue'
-
-// stores import
-// components import
-// model imports
-import { EIcon } from '@/enums/gui/EIcon'
+import { ref,  computed, onMounted, onUnmounted } from 'vue'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import { Property } from '@/model/property'
 
-// other imports
-// props
-const props = defineProps({
-  data: {
-    type: Array<Property>,
-    default: [],
-  },
-  inverse: {
-    type: Boolean,
-    default: false,
-  },
-  onClick: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  data?: Property[]
+  inverse?: boolean
+  onClick?: Function
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  data: () => [],
+  inverse: false,
+  onClick: function () {},
 })
-// data
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
-const leftAlign = ref(true)
-const popupDiv = ref<HTMLElement | null>(null)
-// storage calls
-// computed
-// methods
+const triggerRef = ref<HTMLElement | null>(null)
+const menuPosition = ref({ top: 0, left: 0 })
+
+const menuStyle = computed(() => ({
+  top: `${menuPosition.value.top}px`,
+  left: `${menuPosition.value.left}px`,
+}))
+
+function updatePosition() {
+  if (!triggerRef.value) return
+
+  const rect = triggerRef.value.getBoundingClientRect()
+  const spaceRight = window.innerWidth - rect.left
+  menuPosition.value = {
+    top: rect.bottom,
+    left: spaceRight < rect.width ? rect.right - rect.width : rect.left,
+  }
+}
+
 function toggleVisibility() {
   isVisible.value = !isVisible.value
-  leftAlign.value = true
-}
-const adjustPosition = () => {
-  if (popupDiv.value) {
-    const rect = popupDiv.value.getBoundingClientRect()
-    leftAlign.value = rect.right > window.innerWidth ? false : true
+  if (isVisible.value) {
+    updatePosition()
   }
 }
-// lifeCycle
-// watch
-watch(
-  () => popupDiv.value,
-  () => {
-    adjustPosition()
+
+// Update position on scroll or resize
+function handleScroll() {
+  if (isVisible.value) {
+    updatePosition()
   }
-)
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleScroll)
+})
 </script>
 
 <style scoped>
 .menu {
-  z-index: 1000;
+  z-index: 9999;
 }
 </style>

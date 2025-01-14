@@ -1,6 +1,6 @@
 <template>
   <div>
-    <InputCard class="col-md-12" :headerText="$t('setting.title')">
+    <Card class="col-md-12" :headerText="$t('setting.title')" showHeader>
       <div class="row mb-3">
         <label class="col-md-4"> {{ $t('setting.theme') }} </label>
 
@@ -21,7 +21,7 @@
           class="col-md-8"
           optionValue="name"
           optionLabel="name"
-          placeholder="select a language"
+          :placeholder="$t('setting.languageHolder')"
           :options="languageOpt"
           :onChange="changeLanguage"
           v-model="currentLocale"
@@ -32,15 +32,14 @@
           </template>
         </DropDown>
       </div>
-    </InputCard>
+    </Card>
   </div>
-
 </template>
 
 <script setup lang="ts">
 // imports
 import { ref, computed } from 'vue'
-import { EIcon } from '@/enums/gui/EIcon'
+import { EIcon } from '@/features/shared/enum/EIcon'
 
 // stores import
 import { useI18n } from 'vue-i18n'
@@ -48,7 +47,7 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import { useTheme } from '@/composable/useTheme'
 
 // components import
-import InputCard from '@/components/cards/Card.vue'
+import Card from '@/components/cards/Card.vue'
 import DropDown from '@/components/form/DropDown.vue'
 import Switch from '@/components/switch/Switch.vue'
 // model imports

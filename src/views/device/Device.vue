@@ -1,8 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable
-      :value="devices"
-    >
+    <DataTable :value="devices">
       <Column
         :class="page.table.name.location"
         :field="page.table.name.data"
@@ -75,15 +73,13 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { reactive, computed, onMounted } from 'vue'
 // stores import
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useDevice } from '@/stores/device/device'
 
 // components import
 import DeviceForm from '@/views/device/form/DeviceForm.vue'
 import TabletCard from '@/components/cards/TabletCard.vue'
-import DataTable from 'primevue/datatable'
+import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
@@ -91,44 +87,57 @@ import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import Modal from '@/components/cards/Modal.vue'
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import { EActionGUI } from '@/enums/gui/EActionGUI'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import type { Property } from '@/model/property'
-import { DevicePage } from '@/model/device/page/pageDevice'
-import type { IDevice } from '@/model/device/device'
+import { useDeviceStore } from '@/features/device/stores/useDeviceStore'
+import { DeviceService } from '@/features/device/application/deviceService'
+import { DeviceRepository } from '@/features/device/repository/deviceRepository'
+import { useBasePage } from '@/composable/useBasePage'
+import { DevicePage } from '@/features/device/presentation/pages/pageDevice'
+import type { IDevice } from '@/features/device/domain/device'
 // other imports
 // props
 
 // data
-const page = ref(new DevicePage())
-// storage calls
-useBreadCrumb().set(page.value.title)
-const deviceStore = useDevice()
+const page = reactive(new DevicePage())
+
+// service
+// service
+const { notificationService } = useBasePage(page.title)
+const deviceService = new DeviceService(
+  new DeviceRepository(),
+  notificationService
+)
+const deviceStore = useDeviceStore()
+
 // computed
 const devices = computed(() => {
   return deviceStore.devices
 })
 // methods
 function propertySelected(prop: Property, data: IDevice) {
-  page.value.selected = data
+  page.selected = data
   switch (prop.id) {
     case 1:
-      page.value.showForm = true
-      page.value.editForm = true
+      page.showForm = true
+      page.editForm = true
       break
     case 2:
-      page.value.showModal = true
-
+      page.showModal = true
       break
   }
 }
 function deleteDevice() {
-  deviceStore.delete(page.value.selected!)
-  page.value.selected = undefined
-  page.value.showModal = false
+  deviceService.deleteDevice(page.selected!.id)
+  page.selected = undefined
+  page.showModal = false
 }
 // lifeCycle
+onMounted(()=>{
+  deviceStore.fetchDevices()
+})
 // watch
 </script>
 

@@ -23,7 +23,7 @@ import { useRouter } from 'vue-router'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 // components import
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
+import { EIcon } from '@/features/shared/enum/EIcon'
 // other imports
 // props
 

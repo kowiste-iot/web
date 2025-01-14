@@ -5,6 +5,8 @@
       $t(edit ? 'dashboard.form.titleUpdate' : 'dashboard.form.titleCreate')
     "
     :icon="edit ? EIcon.Edit : EIcon.Add"
+    showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('dashboard.form.name') }} </label>
@@ -12,6 +14,7 @@
         class="col-md-8"
         :placeholder="$t('dashboard.form.nameHolder')"
         type="text"
+        :error="errors['name']"
         v-model="form.name"
       />
     </div>
@@ -23,8 +26,8 @@
         optionLabel="name"
         :placeholder="$t('dashboard.form.parentHolder')"
         :options="assets"
-        :onChange="() => form.change()"
-        v-model="form.parentSelected"
+        :error="errors['parent']"
+        v-model="form.parent"
       >
         <template #option="{ data }">
           {{ data.name }}
@@ -33,7 +36,6 @@
     </div>
     <template #footer>
       <Button
-        v-if="!form.errors()"
         :color="edit ? EColor.Warning : EColor.Success"
         @click="save()"
         >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
@@ -47,11 +49,9 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
+import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
 
 // stores import
-import { useAsset } from '@/stores/asset/asset'
-import { useDashboard } from '@/stores/dashboard/dashboard'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
@@ -60,11 +60,16 @@ import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import type { IDashboard } from '@/features/dashboard/domain/dashboard'
+import { useBasePage } from '@/composable/useBasePage'
+import { DashboardService } from '@/features/dashboard/application/dashboardService'
+import { DashboardRepository } from '@/features/dashboard/repository/dashboardRepository'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import Dashboard from '../Dashboard.vue'
 
-import type { IDashboard } from '@/model/dashboard/dashboard'
-import { FormDashboard } from '@/model/dashboard/form/form'
 // other imports
 // props
 const props = defineProps({
@@ -82,28 +87,48 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormDashboard())
-// storage calls
-const assetStore = useAsset()
-const dashboardStore = useDashboard()
+const form = reactive<IDashboard>({
+  ...props.data,
+  name: props.data?.name ?? '',
+  parent: props.data?.parent ?? '',
+  description: props.data?.description ?? '',
+})
+const errors = ref<ValidationError<IDashboard>>({})
+
+// service
+const { notificationService } = useBasePage()
+const dashboardService = new DashboardService(
+  new DashboardRepository(),
+  notificationService
+)
 // computed
 const assets = computed(() => {
-  return assetStore.assets
+  return useAssetStore().assets
 })
+
+// watchers
+watch(
+  () => form,
+  () => {
+    errors.value = Dashboard.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
 // methods
 function save() {
   if (props.edit) {
-    dashboardStore.update(form.value)
+    dashboardService.updateDashboard(form)
   } else {
-    dashboardStore.create(form.value)
+    dashboardService.createDashboard(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
   if (props.data && props.edit) {
-    form.value = new FormDashboard(props.data)
-    form.value.loadAsset(assets.value)
+    useAssetStore().fetchAssets()
   }
 })
 // watch

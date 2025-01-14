@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { EIcon } from '@/enums/gui/EIcon'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import { computed } from 'vue'
 
 const modelValue = defineModel<boolean>({ default: false })

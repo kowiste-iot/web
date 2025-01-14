@@ -1,111 +1,97 @@
 <template>
-  <div class="relative w-full" style="padding-bottom: 100%">
-    <svg
-      class="absolute inset-0 w-full h-full"
-      :viewBox="`0 0 ${viewBoxSize} ${viewBoxSize}`"
-      :style="{
-        border: borderWidth ? `${borderWidth}px solid ${borderColor}` : 'none',
-      }"
-    >
-      <!-- Colored zones -->
-      <path :d="goodPath" class="transition-all duration-300" fill="#22c55e" />
-      <path
-        :d="warningPath"
-        class="transition-all duration-300"
-        fill="#f59e0b"
-      />
-      <path
-        :d="dangerPath"
-        class="transition-all duration-300"
-        fill="#ef4444"
-      />
-
-      <!-- Triangular Needle -->
-      <path
-        :d="needlePath"
-        fill="#1f2937"
-        class="transition-all duration-300 origin-center"
-      />
-
-      <!-- Value circle with dynamic background -->
-      <circle 
-        :cx="center" 
-        :cy="center" 
-        :r="valueCircleRadius" 
-        :fill="currentZoneColor"
-        class="transition-all duration-300"
-      />
-      
-      <!-- Border circle -->
-      <circle 
-        :cx="center" 
-        :cy="center" 
-        :r="valueCircleRadius" 
-        fill="none"
-        :stroke="'#1f2937'"
-        :stroke-width="thickness / 2"
-      />
-
-      <!-- Value text -->
-      <text
-        :x="center"
-        :y="center"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        :font-size="viewBoxSize / 8"
-        font-weight="bold"
-        :fill="textColor"
-        class="transition-all duration-300"
+  <WidgetCard :data="data" :measureCondition="true">
+    {{ data }}
+    <div class="w-full">
+      <svg
+        class="inset-0 w-full h-full"
+        :viewBox="`0 0 ${viewBoxSize} ${viewBoxSize}`"
+        :style="{
+          border: options.borderWidth
+            ? `${options.borderWidth}px solid ${options.borderColor}`
+            : 'none',
+        }"
       >
-        {{ modelValue }}
-      </text>
-    </svg>
-  </div>
+        <!-- Colored zones -->
+        <path
+          :d="goodPath"
+          class="transition-all duration-300"
+          fill="#22c55e"
+        />
+        <path
+          :d="warningPath"
+          class="transition-all duration-300"
+          fill="#f59e0b"
+        />
+        <path
+          :d="dangerPath"
+          class="transition-all duration-300"
+          fill="#ef4444"
+        />
+
+        <!-- Triangular Needle -->
+        <path
+          :d="needlePath"
+          fill="#1f2937"
+          class="transition-all duration-300 origin-center"
+        />
+
+        <!-- Value circle with dynamic background -->
+        <circle
+          :cx="center"
+          :cy="center"
+          :r="valueCircleRadius"
+          :fill="currentZoneColor"
+          class="transition-all duration-300"
+        />
+
+        <!-- Border circle -->
+        <circle
+          :cx="center"
+          :cy="center"
+          :r="valueCircleRadius"
+          fill="none"
+          :stroke="'#1f2937'"
+          :stroke-width="data.options.thickness / 2"
+        />
+
+        <!-- Value text -->
+        <text
+          :x="center"
+          :y="center"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          :font-size="viewBoxSize / 8"
+          font-weight="bold"
+          :fill="textColor"
+          class="transition-all duration-300"
+        >
+          {{ modelValue }}
+        </text>
+      </svg>
+    </div>
+  </WidgetCard>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-
-const props = defineProps({
-  min: {
-    type: Number,
-    default: 0,
-  },
-  max: {
-    type: Number,
-    default: 100,
-  },
-  startAngle: {
-    type: Number,
-    default: 270,
-    validator: (value: number) => value >= 0 && value <= 360,
-  },
-  endAngle: {
-    type: Number,
-    default: 90,
-    validator: (value: number) => value >= 0 && value <= 360,
-  },
-  goodLimit: {
-    type: Number,
-    default: 60,
-  },
-  warningLimit: {
-    type: Number,
-    default: 80,
-  },
-  thickness: {
-    type: Number,
-    default: 3,
-  },
-  borderColor: {
-    type: String,
-    default: 'none',
-  },
-  borderWidth: {
-    type: Number,
-    default: 0,
-  },
-})
+import WidgetCard from './WidgetCard.vue'
+import type { IWidgetData } from '@/features/dashboard/domain/widget';
+interface Props {
+  data: IWidgetData
+}
+interface GaugeOptions {
+  min: number
+  max: number
+  startAngle: number
+  endAngle: number
+  goodLimit: number
+  warningLimit: number
+  thickness: number
+  borderColor: string
+  borderWidth: number
+}
+const props = defineProps<Props>()
+const options = computed(() => props.data.options as GaugeOptions)
 
 const modelValue = defineModel<number>({ default: 0 })
 
@@ -131,28 +117,28 @@ const polarToCartesian = (
 
 // Calculate total angle span
 const angleSpan = computed(() => {
-  let span = props.endAngle - props.startAngle
+  let span = options.value.endAngle - options.value.startAngle
   if (span <= 0) span += 360
   return span
 })
 
 // Convert value to percentage of the arc
 const valuePercentage = computed(() => {
-  const range = props.max - props.min
-  return ((modelValue.value - props.min) / range) * 100
+  const range = options.value.max - options.value.min
+  return ((modelValue.value - options.value.min) / range) * 100
 })
 
 // Calculate current angle based on value
 const currentAngle = computed(() => {
   const angle =
-    props.startAngle + (angleSpan.value * valuePercentage.value) / 100
+    options.value.startAngle + (angleSpan.value * valuePercentage.value) / 100
   return angle >= 360 ? angle - 360 : angle
 })
 
 // Determine current zone color based on value
 const currentZoneColor = computed(() => {
-  if (modelValue.value <= props.goodLimit) return '#22c55e' // Green
-  if (modelValue.value <= props.warningLimit) return '#f59e0b' // Yellow
+  if (modelValue.value <= options.value.goodLimit) return '#22c55e' // Green
+  if (modelValue.value <= options.value.warningLimit) return '#f59e0b' // Yellow
   return '#ef4444' // Red
 })
 
@@ -215,21 +201,21 @@ const generateArc = (
 
 // Calculate angles for zones
 const goodEndAngle = computed(() => {
-  const span = (props.goodLimit / props.max) * angleSpan.value
-  return (props.startAngle + span) % 360
+  const span = (options.value.goodLimit / options.value.max) * angleSpan.value
+  return (options.value.startAngle + span) % 360
 })
 
 const warningEndAngle = computed(() => {
-  const span = (props.warningLimit / props.max) * angleSpan.value
-  return (props.startAngle + span) % 360
+  const span = (options.value.warningLimit / options.value.max) * angleSpan.value
+  return (options.value.startAngle + span) % 360
 })
 
 // Path computations for zones
 const goodPath = computed(() =>
   generateArc(
-    props.startAngle,
+    options.value.startAngle,
     goodEndAngle.value,
-    radius - props.thickness,
+    radius - options.value.thickness,
     radius
   )
 )
@@ -238,7 +224,7 @@ const warningPath = computed(() =>
   generateArc(
     goodEndAngle.value,
     warningEndAngle.value,
-    radius - props.thickness,
+    radius - options.value.thickness,
     radius
   )
 )
@@ -246,16 +232,16 @@ const warningPath = computed(() =>
 const dangerPath = computed(() =>
   generateArc(
     warningEndAngle.value,
-    props.endAngle,
-    radius - props.thickness,
+    options.value.endAngle,
+    radius - options.value.thickness,
     radius
   )
 )
 
 // Calculate triangular needle path
 const needlePath = computed(() => {
-  const needleLength = radius - props.thickness / 2
-  const needleWidth = props.thickness * 0.7 // Width of triangle base
+  const needleLength = radius - options.value.thickness / 2
+  const needleWidth = options.value.thickness * 0.7 // Width of triangle base
 
   const tip = polarToCartesian(center, center, needleLength, currentAngle.value)
   const baseAngle = currentAngle.value + 180

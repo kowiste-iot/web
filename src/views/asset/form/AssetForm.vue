@@ -1,10 +1,10 @@
 <template>
   <InputCard
     class="h-100"
-    :headerText="
-      $t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')
-    "
+    :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
+    showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
@@ -12,32 +12,31 @@
         class="col-md-8"
         :placeholder="$t('asset.form.nameHolder')"
         type="text"
+        :error="errors['name']"
         v-model="form.name"
       />
     </div>
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
-      <DropDown
-        class="col-md-8"
-        optionValue="name"
-        optionLabel="name"
-        :placeholder="$t('asset.form.parentHolder')"
-        :options="assets"
-        :onChange="() => form.change()"
-        v-model="form.parentSelected"
-      >
-        <template #option="{ data }">
-          {{ data.name }}
-        </template>
-      </DropDown>
+      <div class="col-md-8">
+        <DropDown
+          optionValue="name"
+          optionLabel="name"
+          :placeholder="$t('asset.form.parentHolder')"
+          :options="assets"
+          :error="errors['parent']"
+          v-model="selectedParent"
+        >
+          <template #option="{ data }">
+            {{ data.name }}
+          </template>
+        </DropDown>
+      </div>
     </div>
     <template #footer>
-      <Button
-        v-if="!form.errors()"
-        :color="edit ? EColor.Warning : EColor.Success"
-        @click="save()"
-        >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
-      >
+      <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
+        $t(edit ? 'action.update' : 'action.save')
+      }}</Button>
       <Button :color="EColor.Secondary" outline @click="close()">{{
         $t('action.cancel')
       }}</Button>
@@ -47,10 +46,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
-
-// stores import
-import { useAsset } from '@/stores/asset/asset'
+import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
@@ -59,10 +55,15 @@ import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import type { IAsset } from '@/model/asset/asset'
-import { FormAsset } from '@/model/asset/form/form'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { Asset, type IAsset } from '@/features/asset/domain/asset'
+import { useBasePage } from '@/composable/useBasePage'
+import { AssetService } from '@/features/asset/application/assetService'
+import { AssetRepository } from '@/features/asset/repository/assetRepository'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+
 // other imports
 // props
 const props = defineProps({
@@ -80,28 +81,61 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormAsset())
-// storage calls
-const assetStore = useAsset()
+const form = reactive<IAsset>({
+  ...props.data,
+  name: props.data?.name ?? '',
+  parent: props.data?.parent ?? undefined,
+  description: props.data?.description ?? undefined,
+})
+const assetStore = useAssetStore()
+const selectedParent = ref({} as IAsset)
+const errors = ref<ValidationError<IAsset>>({})
+//service
+const { notificationService } = useBasePage()
+const assetService = new AssetService(
+  new AssetRepository(),
+  notificationService
+)
 // computed
 const assets = computed(() => {
   return assetStore.assets
 })
+// watchers for real-time validation
+watch(
+  () => form,
+  () => {
+    errors.value = Asset.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
+watch(
+  () => selectedParent.value,
+  () => {
+    if (selectedParent.value.id) {
+      form.parent = selectedParent.value.id
+    }
+  }
+)
 // methods
 function save() {
   if (props.edit) {
-    assetStore.update(form.value)
+    assetService.updateAsset(form)
   } else {
-    assetStore.create(form.value)
+    assetService.createAsset(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
-  if (props.data && props.edit) {
-    form.value = new FormAsset(props.data)
-    form.value.load(assets.value)
+  if (props.edit && props.data.parent) {
+    const parent = assetStore.getAssetById(props.data.parent)
+    if (parent) {
+      selectedParent.value = parent
+    }
   }
+  assetStore.fetchAssets()
 })
 // watch
 </script>

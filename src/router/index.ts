@@ -1,8 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/Home.vue'
-import Settings from '@/views/Settings.vue'
-import Profile from '@/views/Profile.vue'
-import ErrorPage from '@/views/Error.vue'
 import { useRequest } from '@/plugins/request/store'
 import assetRoutes from './asset'
 import dashboardRoutes from './dashboard'
@@ -10,8 +6,8 @@ import measureRoutes from './measure'
 import deviceRoutes from './device'
 import adminRoutes from './admin'
 import processRoutes from './process'
-import { keycloakGuard } from '@/plugins/security/router'
-
+import { authGuard } from '@/plugins/security/router'
+import { tenantGuard } from '@/features/tenant/router/router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,37 +15,48 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: () => import('@/views/Home.vue'),
+    },
+    {
+      path: '/tenant',
+      name: 'tenant',
+      component: () => import('@/views/TenantSelection.vue'),
+      meta: { requiresAuth: false },
     },
     {
       path: '/profile',
       name: 'profile',
-      component: Profile,
+      component: () => import('@/views/Profile.vue'),
     },
     {
       path: '/settings',
       name: 'settings',
-      component: Settings,
+      component: () => import('@/views/Settings.vue'),
     },
+    {
+      path: '/error',
+      name: 'Error',
+      component: () => import('@/views/Error.vue'),
+      meta: { requiresAuth: false },
+    },
+
     ...dashboardRoutes,
     ...assetRoutes,
     ...measureRoutes,
     ...deviceRoutes,
     ...adminRoutes,
     ...processRoutes,
+
     {
-      path: '/error',
-      name: 'Error',
-      component: ErrorPage,
-    },
-    {
-      path: '/:catchAll(.*)*',
+      path: '/:pathMatch(.*)*',
       redirect: '/error',
     },
   ],
 })
-router.beforeEach((from, to) => {
+
+router.beforeEach((to, from) => {
   useRequest().cancelAll()
 })
-router.beforeEach(keycloakGuard)
+router.beforeEach(tenantGuard)
+router.beforeEach(authGuard)
 export default router

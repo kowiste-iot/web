@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" >
+  <div class="modal">
     <slot></slot>
   </div>
 </template>
@@ -11,11 +11,11 @@
 // model imports
 // other imports
 // props
-const props = defineProps({
-  onCancel: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  onCancel?: Function
+}
+const props = withDefaults(defineProps<Props>(), {
+  onCancel: function () {},
 })
 // data
 // storage calls

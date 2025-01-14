@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Boolean class="" :measure="measure" :data="model.data" />
+        <Boolean class="" :data="model.data" v-model="measure" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
@@ -115,7 +115,7 @@ import { ref } from 'vue'
 // components import
 import Boolean from './Boolean.vue'
 import Input from '@/components/form/Input.vue'
-import { FormWidget } from '@/model/widget/form/form'
+import type { IWidget } from '@/features/dashboard/domain/widget';
 
 // model imports
 // other imports
@@ -127,7 +127,7 @@ const props = defineProps({
   },
 })
 // data
-const model = defineModel({ default: new FormWidget() })
+const model = defineModel({ default: {} as IWidget })
 const measure = ref(false)
 // storage calls
 // computed

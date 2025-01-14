@@ -5,6 +5,8 @@
       $t(edit ? 'measure.form.titleUpdate' : 'measure.form.titleCreate')
     "
     :icon="edit ? EIcon.Edit : EIcon.Add"
+    showHeader
+    showFooter
   >
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('measure.form.name') }} </label>
@@ -12,6 +14,7 @@
         class="col-md-8"
         :placeholder="$t('measure.form.nameHolder')"
         type="text"
+        :error="errors['name']"
         v-model="form.name"
       />
     </div>
@@ -23,8 +26,8 @@
         optionLabel="name"
         :placeholder="$t('measure.form.parentHolder')"
         :options="assets"
-        :onChange="() => form.change()"
-        v-model="form.parentSelected"
+        :error="errors['parent']"
+        v-model="form.parent"
       >
         <template #option="{ data }">
           {{ data.name }}
@@ -33,7 +36,6 @@
     </div>
     <template #footer>
       <Button
-        v-if="!form.errors()"
         :color="edit ? EColor.Warning : EColor.Success"
         @click="save()"
         >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
@@ -47,22 +49,25 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, type PropType } from 'vue'
+import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
 
-// stores import
-import { useAsset } from '@/stores/asset/asset'
-import { useMeasure } from '@/stores/measure/measure'
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
 import DropDown from '@/components/form/DropDown.vue'
 
-// model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import type { IAsset } from '@/model/asset/asset'
-import { FormMeasure } from '@/model/measure/form/form'
+// feauture imports
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import type { IAsset } from '@/features/asset/domain/asset'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { MeasureService } from '@/features/measure/application/measureService'
+import { MeasureRepository } from '@/features/measure/repository/measureRepository'
+import { useBasePage } from '@/composable/useBasePage'
+import { Measure, type IMeasure } from '@/features/measure/domain/measure'
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+
 // other imports
 // props
 const props = defineProps({
@@ -80,29 +85,50 @@ const props = defineProps({
   },
 })
 // data
-const form = ref(new FormMeasure())
+const form = reactive<IMeasure>({
+  ...props.data,
+  name: props.data?.name ?? '',
+  parent: props.data?.parent ?? '',
+  description: props.data?.description ?? '',
+})
+
+const errors = ref<ValidationError<IMeasure>>({})
+
+// service
+const { notificationService } = useBasePage()
+const measureService = new MeasureService(
+  new MeasureRepository(),
+  notificationService
+)
 // storage calls
-const assetStore = useAsset()
-const measureStore = useMeasure()
+const assetStore = useAssetStore()
 // computed
 const assets = computed(() => {
   return assetStore.assets
 })
+// watchers
+watch(
+  () => form,
+  () => {
+    errors.value = Measure.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
+
 // methods
 function save() {
   if (props.edit) {
-    measureStore.update(form.value)
+    measureService.updateMeasure(form)
   } else {
-    measureStore.create(form.value)
+    measureService.createMeasure(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
-  if (props.data && props.edit) {
-    form.value = new FormMeasure(props.data)
-    form.value.loadAsset(assets.value)
-  }
+  useAssetStore().fetchAssets()
 })
 // watch
 </script>

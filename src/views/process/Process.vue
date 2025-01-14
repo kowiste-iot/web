@@ -5,7 +5,7 @@
 <script setup lang="ts">
 // imports
 // stores import
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
+import { useBasePage } from '@/composable/useBasePage'
 
 // components import
 
@@ -14,8 +14,8 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 // props
 
 // data
-// storage calls
-useBreadCrumb().set('process')
+// service
+const { notificationService } = useBasePage('process')
 
 // computed
 // methods

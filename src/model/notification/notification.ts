@@ -1,6 +1,6 @@
-import { EColor } from '@/enums/gui/EColor'
-import type { EIcon } from '@/enums/gui/EIcon'
-import { ENotificationSeverity } from '@/enums/notification/ENotificationSeverity'
+import { EColor } from '@/features/shared/enum/EColor'
+import type { EIcon } from '@/features/shared/enum/EIcon'
+import { ENotificationSeverity } from '@/features/notification/domain/ENotificationSeverity'
 
 export interface INotification {
   id: string

@@ -1,7 +1,4 @@
 {
-  "message": {
-    "hello": "hola mundo"
-  },
   "action": {
     "save": "Guardar",
     "update": "Actualizar",
@@ -19,7 +16,12 @@
       "alert": "Alertas",
       "action": "Acciones"
     },
-    "admin": "Administracion"
+    "admin": {
+      "parent": "Administracion",
+      "user": "Usuarios",
+      "rol": "Roles",
+      "resource": "Recursos"
+    }
   },
   "dashboard": {
     "title": "dasboards",
@@ -52,6 +54,24 @@
       "nameHolder": "nombre del asset",
       "parent": "Pertenece a",
       "parentHolder": "asset pertenece a activo"
+    }
+  },
+  "device": {
+    "title": "dispositivo",
+    "table": {
+      "name": "Nombre",
+      "parent": "Pertenece a"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Creare Dispositivo",
+      "titleUpdate": "Actualizar Dispositivo",
+      "name": "Nombre",
+      "nameHolder": "nombre del dispositivo",
+      "parent": "Pertenece a",
+      "parentHolder": "dispositivo pertenece al activo",
+      "description": "Description",
+      "descriptionHolder": "descripcion del dispositivo"
     }
   },
   "measure": {
@@ -111,7 +131,21 @@
     "line": {
       "title": "Grafico lineal",
       "description": "widget de grafico lineal",
-      "form": {}
+      "form": {
+        "measureHolder": "selecciona una medida",
+        "tag": "Etiqueta",
+        "tagHolder": "Etiqueta en la medida",
+        "tagHolderBad": "selecciona medidad primero",
+        "legend": "Legenda",
+        "legendHolder": "legenda para la medida",
+        "max": "Maximo",
+        "maxHolder": "maximo true emotion",
+        "min": "Minimo",
+        "minHolder": "minimo true emotion",
+        "showLegend": "Mostrar Legenda",
+        "fill": "Rellenar",
+        "color": "Color"
+      }
     },
     "bar": {
       "title": "Grafico de barras",
@@ -140,6 +174,10 @@
   "setting": {
     "title": "Ajustes de usuario",
     "theme": "Tema claro/oscuro",
-    "language": "Idioma"
+    "language": "Idioma",
+    "languageHolder": "escoge un idioma"
+  },
+  "error": {
+    "page404": "pagina no encontrada"
   }
 }

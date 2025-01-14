@@ -11,35 +11,40 @@ import '/node_modules/flag-icons/css/flag-icons.min.css'
 import en from '@/assets/locales/en.json'
 import es from '@/assets/locales/es.json'
 import th from '@/assets/locales/th.json'
+//extension
+import '@/extension/string/string'
 //components
 import PrimeVue from 'primevue/config'
 import { GridLayout, GridItem } from 'grid-layout-plus'
-import { primevueConfig} from '@/config/primeTable'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import { WebsocketPlugin } from '@/plugins/websocket/init'
 import { type IWebsocketOption } from '@/plugins/websocket/model'
 import { KeycloakPlugin } from '@/plugins/security/init'
-import { type ISecurityOption } from '@/plugins/security/model'
-
+import { type KeycloakConfig } from '@/plugins/security/types'
 /* import font awesome icon component */
 import App from './App.vue'
 import router from './router'
+import { extractRealmFromPath } from './plugins/security/utils'
 
 const app = createApp(App)
+app.use(createPinia())
+
 const wsOptions = {} as IWebsocketOption
 const kcOptions = {
-  log: true,
-  kcURI: 'http://localhost:8080/',
-  baseURI: 'http://localhost:5000/',
-  realm: 'elevate-dev',
-  clientID: 'elevate-dev-vue-client',
-  refreshToken: 3000,
-  redirecURI: '',
-  redirectLogoutURI: '',
-  updateToken: 5000,
-} as ISecurityOption
+  url: 'http://localhost:7080/auth',
+  realm: extractRealmFromPath(),
+  clientId: 'vue-client',
+  initOptions: {
+    checkLoginIframe: false,
+    pkceMethod: 'S256',
+    enableLogging: true,
+    onLoad: 'check-sso',
+    flow: 'standard',
+    redirectUri: window.location.origin,
+  },
+} as KeycloakConfig
 
 const i18n = createI18n({
   locale: 'en', // Set the default locale
@@ -51,12 +56,12 @@ const i18n = createI18n({
   },
 })
 app.use(i18n)
-app.use(createPinia())
 app.use(router)
 //plugins
 app.component('GridLayout', GridLayout).component('GridItem', GridItem)
 app.component('FIcon', FontAwesomeIcon)
-app.use(PrimeVue,primevueConfig)
+app.use(PrimeVue)
+
 // .use(WebsocketPlugin, wsOptions)
 app.use(KeycloakPlugin, kcOptions)
 app.mount('#app')

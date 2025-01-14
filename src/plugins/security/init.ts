@@ -1,33 +1,42 @@
-import { createPinia, type Pinia } from 'pinia'
-import { type App, type Plugin } from 'vue'
-import { useKeycloakStore } from './store'
-import Keycloak from 'keycloak-js'
-import { type ISecurityOption } from './model'
+import type { App } from 'vue'
+import type { KeycloakConfig } from './types'
+import { keycloakService } from './KeycloakService'
+import { useRouter } from 'vue-router'
+import { useTenantStore } from '@/features/tenant/stores/tenant'
 
-export const KeycloakPlugin: Plugin = {
-  install(app: App, options: ISecurityOption) {
-    let pinia: Pinia | null = app.config.globalProperties.$pinia
-    if (!pinia) {
-      pinia = createPinia()
-      app.use(pinia)
+export const KeycloakPlugin = {
+  install: async (app: App, options: KeycloakConfig) => {
+    const tenantStore = useTenantStore()
+    tenantStore.loadTenants()
+
+    // Skip Keycloak initialization if no tenant
+    const currentTenant = tenantStore.getCurrentTenant
+    if (!currentTenant) {
+      console.log('No tenant selected, skipping Keycloak initialization')
+      return
     }
 
-    const kc = useKeycloakStore()
-    const keycloak = new Keycloak({
-      url:options.kcURI,
-      clientId: options.clientID,
-      realm: options.realm,
-    })
-    keycloak
-      .init({
-        checkLoginIframe: false,
-        redirectUri: options.baseURI,
-      })
-      .then(() => {
-        kc.set(keycloak, options)
-      })
-      .catch((err: Error) => {
-        kc.set(new Keycloak(), options)
-      })
+    // Initialize with current tenant
+    const keycloakConfig: KeycloakConfig = {
+      ...options,
+      realm: currentTenant.id,
+      initOptions: {
+        ...options.initOptions,
+        checkLoginIframe: false, // Disable iframe checks
+        pkceMethod: 'S256',
+        enableLogging: true,
+        onLoad: 'check-sso',
+        silentCheckSsoFallback: false, // Disable fallback to avoid iframe issues
+      },
+    }
+
+    try {
+      await keycloakService.initialize(keycloakConfig)
+      app.config.globalProperties.$keycloak = keycloakService.getKeycloak()
+    } catch (error) {
+      console.error('Keycloak initialization failed:', error)
+      const router = useRouter()
+      router.push({ name: 'error' })
+    }
   },
 }

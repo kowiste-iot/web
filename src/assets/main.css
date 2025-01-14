@@ -24,3 +24,9 @@ body,
     right: 0;
   }
 }
+
+
+.invalid {
+  border: 1px solid #ff000080;
+  border-radius: 0.6rem;
+}

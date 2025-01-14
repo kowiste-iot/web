@@ -1,5 +1,5 @@
-import  { EWidget } from '@/enums/dashboard/EWidget'
-import { EIcon } from '@/enums/gui/EIcon'
+import { EWidget } from '@/features/dashboard/domain/EWidget'
+import { EIcon } from '@/features/shared/enum/EIcon'
 
 export interface IWidgetType {
   id: EWidget
@@ -9,7 +9,7 @@ export interface IWidgetType {
 }
 
 export class WidgetType implements IWidgetType {
-  id: EWidget = EWidget.Boolean
+  id: EWidget = EWidget.None
   name: string = ''
   description: string = ''
   icon: EIcon = EIcon.Cancel

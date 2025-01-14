@@ -1,8 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable
-      :value="measures"
-    >
+    <DataTable :value="measures">
       <Column
         :class="page.table.name.location"
         :field="page.table.name.data"
@@ -75,35 +73,42 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 // stores import
-
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useMeasure } from '@/stores/measure/measure'
 // components import
 import MeasureForm from '@/views/measure/form/MeasureForm.vue'
 import Modal from '@/components/cards/Modal.vue'
 import TabletCard from '@/components/cards/TabletCard.vue'
-import DataTable from 'primevue/datatable'
+import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import { EActionGUI } from '@/enums/gui/EActionGUI'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import type { Property } from '@/model/property'
-import { MeasuresPage } from '@/model/measure/page/pageMeasure'
-import type { IMeasure } from '@/model/measure/measure'
+import { MeasuresPage } from '@/features/measure/presentation/pages/pageMeasure'
+import type { IMeasure } from '@/features/measure/domain/measure'
+import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
+import { MeasureService } from '@/features/measure/application/measureService'
+import { MeasureRepository } from '@/features/measure/repository/measureRepository'
+import { useBasePage } from '@/composable/useBasePage'
 // other imports
 // props
 
 // data
 const page = ref(new MeasuresPage())
-// storage calls
-useBreadCrumb().set(page.value.title)
-const measureStore = useMeasure()
+
+// service
+// service
+const { notificationService } = useBasePage(page.value.title)
+const measureService = new MeasureService(
+  new MeasureRepository(),
+  notificationService
+)
+const measureStore = useMeasureStore()
 // computed
 const measures = computed(() => {
   return measureStore.measures
@@ -123,11 +128,14 @@ function propertySelected(prop: Property, data: IMeasure) {
   }
 }
 function deleteMeasure() {
-  measureStore.delete(page.value.selected!)
+  measureService.deleteMeasure(page.value.selected!)
   page.value.selected = undefined
   page.value.showModal = false
 }
 // lifeCycle
+onMounted(()=>{
+  measureService.fetchMeasures()
+})
 // watch
 </script>
 

@@ -1,23 +1,19 @@
-// src/router/assetRoutes.js
-import Process from '@/views/process/Process.vue'
-import Alert from '@/views/process/Alert.vue'
-import Action from '@/views/process/Action.vue'
 
 const processRoutes = [
   {
     path: '/process',
     name: 'process',
-    component: Process,
+    component: () => import('@/views/process/Process.vue'),
   },
   {
     path: '/process/alert',
     name: 'alert',
-    component: Alert,
+    component: () => import('@/views/process/Alert.vue'),
   },
   {
     path: '/process/action',
     name: 'action',
-    component: Action,
+    component: () => import('@/views/process/Action.vue'),
   },
 ]
 

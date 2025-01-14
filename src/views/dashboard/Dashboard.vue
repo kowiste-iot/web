@@ -31,7 +31,7 @@
           }
         "
       >
-        <div class="border rounded h-100 position-relative">
+        <div class="border rounded h-100 position-relative bg-light">
           <PropertyDot
             v-if="page.unlock"
             class="position-absolute top-0 end-0"
@@ -48,20 +48,26 @@
             :measure="5"
             :data="item.data"
           />
-
-          <BarWidget v-if="item.type == EWidget.Bar">
-            <div class="d-flex px-1">
-              <div class="flex-fill">Temperature in the room</div>
-              <FIcon
-                class="pt-1"
-                :class="`text-${EColor.Danger}`"
-                :icon="EIcon.Sad"
-                role="button"
-                style="height: 1rem"
-                @click="() => (page.show = true)"
-              />
-            </div>
-          </BarWidget>
+          <LineWidget
+            v-if="item.type == EWidget.Line"
+            :measure="5"
+            :data="item.data"
+          />
+          <BarWidget
+            v-if="item.type == EWidget.Bar"
+            :measure="5"
+            :data="item.data"
+          />
+          <PieWidget
+            v-if="item.type == EWidget.Pie"
+            :measure="5"
+            :data="item.data"
+          />
+          <TextWidget
+            v-if="item.type == EWidget.Text"
+            :measure="5"
+            :data="item.data"
+          />
         </div>
       </GridItem>
     </GridLayout>
@@ -95,9 +101,7 @@
 <script setup lang="ts">
 // imports
 import { ref, computed } from 'vue'
-// stores import
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useWidget } from '@/stores/widget/widget'
+
 // components import
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
@@ -105,24 +109,28 @@ import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
 import BarWidget from '@/views/dashboard/card/Bar.vue'
 import BoolWidget from '@/views/dashboard/card/Boolean.vue'
 import NumberWidget from '@/views/dashboard/card/Number.vue'
+import LineWidget from '@/views/dashboard/card/Line.vue'
+import PieWidget from '@/views/dashboard/card/Pie.vue'
+import TextWidget from '@/views/dashboard/card/Text.vue'
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import { DashboardPage } from '@/model/dashboard/page/pageDashboard'
-import { EWidget } from '@/enums/dashboard/EWidget'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { DashboardPage } from '@/features/dashboard/presentation/pages/pageDashboard'
+import { EWidget } from '@/features/dashboard/domain/EWidget'
+import { useBasePage } from '@/composable/useBasePage'
+import { useWidgetStore } from '@/features/dashboard/stores/useWidgetStore'
 
 // other imports
 // props
 const page = ref(new DashboardPage())
 
-//data
-useBreadCrumb().set(page.value.title, page.value.path)
-// storage calls
-const widgetStore = useWidget()
+// service
+useBasePage(page.value.title, page.value.path)
+
 // computed
 const widgets = computed(() => {
-  return widgetStore.widgets
+  return useWidgetStore().widgets
 })
 // methods
 // lifeCycle

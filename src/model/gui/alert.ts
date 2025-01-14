@@ -1,5 +1,5 @@
-import type { EColor } from '@/enums/gui/EColor'
-import type { EIcon } from '@/enums/gui/EIcon'
+import type { EColor } from '@/features/shared/enum/EColor'
+import type { EIcon } from '@/features/shared/enum/EIcon'
 
 export interface IAlert {
   icon: EIcon

@@ -1,9 +1,9 @@
 <template>
-  <InputCard class="h-100 forms">
+  <InputCard class="h-100 forms" showHeader showFooter>
     <template #header
       >{{ page.title }}
 
-      <Tabs :tabs="page.tabs" :change="(id:number)=>page.changeTab(id)">
+      <Tabs :tabs="page.tabs" :onChange="(id:number)=>page.changeTab(id)">
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
     </template>
@@ -46,6 +46,26 @@
             v-if="page.selectedWidget.id == EWidget.Number"
             v-model="form"
           />
+          <GaugeForm
+            v-if="page.selectedWidget.id == EWidget.Gauge"
+            v-model="form"
+          />
+          <LineForm
+            v-if="page.selectedWidget.id == EWidget.Line"
+            v-model="form"
+          />
+          <BarForm
+            v-if="page.selectedWidget.id == EWidget.Bar"
+            v-model="form"
+          />
+          <PieForm
+            v-if="page.selectedWidget.id == EWidget.Pie"
+            v-model="form"
+          />
+          <TextForm
+            v-if="page.selectedWidget.id == EWidget.Text"
+            v-model="form"
+          />
         </div>
       </div>
     </div>
@@ -67,25 +87,31 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 // stores import
 import { useRoute } from 'vue-router'
-import { useWidget } from '@/stores/widget/widget'
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
 import BoolForm from '@/views/dashboard/card/BoolForm.vue'
 import NumberForm from '@/views/dashboard/card/NumberForm.vue'
+import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
+import LineForm from '@/views/dashboard/card/LineForm.vue'
+import BarForm from '@/views/dashboard/card/BarForm.vue'
+import PieForm from '@/views/dashboard/card/PieForm.vue'
+import TextForm from '@/views/dashboard/card/TextForm.vue'
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { WidgetFormPage } from '@/model/widget/page/pageWidgetForm'
-import type { IWidgetType } from '@/model/widget/widgetType'
-import { EWidget } from '@/enums/dashboard/EWidget'
-import { FormWidget } from '@/model/widget/form/form'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EWidget } from '@/features/dashboard/domain/EWidget'
 // other imports
 import { getParam } from '@/utils/routes/routes'
+import { useBasePage } from '@/composable/useBasePage'
+import { WidgetService } from '@/features/dashboard/application/widgetService'
+import { WidgetRepository } from '@/features/dashboard/repository/widgetRepository'
+import { WidgetFormPage } from '@/features/dashboard/presentation/pages/pageWidgetForm'
+import type { IWidgetType } from '@/model/widget/widgetType'
 // props
 const props = defineProps({
   data: {
@@ -99,13 +125,19 @@ const props = defineProps({
 })
 // data
 const page = ref(new WidgetFormPage())
-const form = ref(new FormWidget())
+let form = reactive(new FormWidget())
+
+// service
+const { notificationService } = useBasePage()
+const widgetService = new WidgetService(
+  new WidgetRepository(),
+  notificationService
+)
 // storage calls
-const widgetStore = useWidget()
 const route = useRoute()
 
 const dashboardID = getParam(route.params.did)
-
+form.set(page.value.selectedWidget, dashboardID)
 // computed
 // methods
 function selectWidget(data: IWidgetType) {
@@ -113,8 +145,8 @@ function selectWidget(data: IWidgetType) {
   page.value.selectedWidget = data
 }
 function save() {
-  form.value.set(page.value.selectedWidget, dashboardID)
-  widgetStore.create(form.value)
+  form.set(page.value.selectedWidget, dashboardID)
+  widgetService.createWidget(form)
   props.close()
 }
 // lifeCycle

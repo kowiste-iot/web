@@ -8,7 +8,8 @@ import {ref} from 'vue'
 
 // stores import
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { AlertPage } from '@/model/alert/page/pageAlert';
+import { AlertPage } from '@/features/alert/presentation/pages/pageAlert';
+import { useBasePage } from '@/composable/useBasePage';
 
 // components import
 
@@ -19,8 +20,9 @@ import { AlertPage } from '@/model/alert/page/pageAlert';
 // data
 const page = ref(new AlertPage())
 
-// storage calls
-useBreadCrumb().set(page.value.title,page.value.path)
+// service
+const { notificationService } = useBasePage(page.value.title, page.value.path)
+
 
 // computed
 // methods

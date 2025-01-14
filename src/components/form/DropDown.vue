@@ -2,18 +2,25 @@
 <template>
   <div class="position-relative">
     <div
-      class="border rounded p-1 d-flex"
+      class="border rounded p-2 d-flex"
+      :class="error ? 'invalid' : ''"
       role="button"
       @click="toggleVisibility"
     >
       <FIcon v-if="icon" class="pe-2 pt-1" :icon="icon" />
-      <div v-if="model">
-        {{ (model as any)[optionValue] }}
-      </div>
+      <input
+        v-if="model"
+        class="border-0 px-2 input-no-focus"
+        readonly
+        v-model=" (model as any)[optionValue] "
+      />
       <div v-else>
         <div v-if="placeholder">{{ placeholder }}</div>
         <div v-else>Select an option</div>
       </div>
+    </div>
+    <div v-if="error" class="mt-0 invalid-feedback d-block">
+      {{ error }}
     </div>
     <ul
       v-if="isVisible"
@@ -65,48 +72,38 @@
 
 <script setup lang="ts">
 // imports
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // stores import
 // components import
 import Input from '@/components/form/Input.vue'
 
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
+import { EIcon } from '@/features/shared/enum/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  options: {
-    type: Array<any>,
-    default: [],
-  },
-  optionValue: {
-    type: String,
-    default: 'id',
-  },
-  optionLabel: {
-    type: String,
-    default: '',
-  },
-  groupLabel: {
-    type: String,
-    default: '',
-  },
-  placeholder: {
-    type: String,
-  },
-  icon: {
-    type: String,
-  },
-  filter: {
-    type: Boolean,
-  },
-  onChange: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  options?: Array<any>
+  optionValue?: string
+  optionLabel?: string
+  groupLabel?: string
+  placeholder?: string
+  icon?: EIcon
+  filter?: boolean
+  onChange?: Function
+  error?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  options: () => [],
+  optionValue: 'id',
+  optionLabel: '',
+  groupLabel: '',
+  placeholder: '',
+  onChange: function () {},
 })
+
 // data
 const model = defineModel({} as { [key: string]: any })
 const isVisible = ref(false)
@@ -161,4 +158,13 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.input-no-focus {
+  outline: none;
+}
+
+.input-no-focus:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>

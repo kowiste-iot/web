@@ -1,8 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable
-      :value="dashboards"
-    >
+    <DataTable :value="dashboards">
       <Column style="width: 5px">
         <template #body="{ data }">
           <Button
@@ -85,14 +83,12 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 // stores import
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useDashboard } from '@/stores/dashboard/dashboard'
 
 // components import
 import TabletCard from '@/components/cards/TabletCard.vue'
-import DataTable from 'primevue/datatable'
+import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import Button from '@/components/buttons/Button.vue'
 import SideCard from '@/components/cards/SideCard.vue'
@@ -101,22 +97,30 @@ import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import router from '@/router'
 import type { Property } from '@/model/property'
-import { EActionGUI } from '@/enums/gui/EActionGUI'
-import { DashboardsPage } from '@/model/dashboard/page/pageDashboards'
+import { EActionGUI } from '@/features/shared/domain/EActionGUI'
+import { DashboardsPage } from '@/features/dashboard/presentation/pages/pageDashboards'
 import Modal from '@/components/cards/Modal.vue'
-import type { IDashboard } from '@/model/dashboard/dashboard'
+import type { IDashboard } from '@/features/dashboard/domain/dashboard'
+import { useDashboardStore } from '@/features/dashboard/stores/useDashboardStore'
+import { DashboardService } from '@/features/dashboard/application/dashboardService'
+import { DashboardRepository } from '@/features/dashboard/repository/dashboardRepository'
+import { useBasePage } from '@/composable/useBasePage'
 // other imports
 // props
 // data
 const page = ref(new DashboardsPage())
 
-// storage calls
-useBreadCrumb().set(page.value.title)
-const dashboardStore = useDashboard()
+// service
+const { notificationService } = useBasePage(page.value.title)
+const dashboardService = new DashboardService(
+  new DashboardRepository(),
+  notificationService
+)
+const dashboardStore = useDashboardStore()
 
 // computed
 const dashboards = computed(() => {
@@ -137,13 +141,15 @@ function propertySelected(prop: Property, data: IDashboard) {
   }
 }
 function deleteDashboard() {
-  dashboardStore.delete(page.value.selected!)
+  dashboardService.deleteDashboard(page.value.selected!)
   page.value.selected = undefined
   page.value.showModal = false
 }
 // lifeCycle
 // watch
+onMounted(() => {
+  dashboardStore.fetchDashboards()
+})
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

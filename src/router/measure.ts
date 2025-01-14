@@ -1,11 +1,10 @@
-// src/router/assetRoutes.js
-import Measure from '@/views/measure/Measures.vue'
+
 
 const measureRoutes = [
   {
     path: '/measure',
     name: 'measure',
-    component: Measure,
+    component: () => import('@/views/measure/Measures.vue'),
   },
 ]
 

@@ -1,5 +1,5 @@
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import type { IAlert } from '@/model/gui/alert'
 import { defineStore } from 'pinia'
 

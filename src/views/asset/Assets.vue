@@ -1,8 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable
-      :value="assets"
-    >
+    <DataTable :value="assets">
       <Column
         :class="page.table.name.location"
         :field="page.table.name.data"
@@ -53,7 +51,7 @@
       <AssetForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="() => (page.showForm = false)"
+        :close="closeForm"
       />
     </SideCard>
   </Modal>
@@ -75,59 +73,73 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 // stores import
 
-import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useAsset } from '@/stores/asset/asset'
 // components import
 // model imports
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
-import { EActionGUI } from '@/enums/gui/EActionGUI'
-import { AssetsPage } from '@/model/asset/page/pageAssets'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { EActionGUI } from '@/features/shared/domain/EActionGUI'
+import { AssetsPage } from '@/features/asset/presentation/pages/pageAssets'
 import TabletCard from '@/components/cards/TabletCard.vue'
-import DataTable from 'primevue/datatable'
+import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
-import type { IAsset } from '@/model/asset/asset'
 import AssetForm from '@/views/asset/form/AssetForm.vue'
 import Modal from '@/components/cards/Modal.vue'
+import type { IAsset } from '@/features/asset/domain/asset'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { useBasePage } from '@/composable/useBasePage'
+import { AssetService } from '@/features/asset/application/assetService'
+import { AssetRepository } from '@/features/asset/repository/assetRepository'
 // other imports
 // props
 
 // data
-const page = ref(new AssetsPage())
-// storage calls
-useBreadCrumb().set(page.value.title)
-const assetStore = useAsset()
+const page = reactive(new AssetsPage())
+
+//service
+const { notificationService } = useBasePage(page.title)
+const assetService = new AssetService(
+  new AssetRepository(),
+  notificationService
+)
+const assetStore = useAssetStore()
+
 // computed
 const assets = computed(() => {
   return assetStore.assets
 })
 // methods
 function propertySelected(prop: Property, data: IAsset) {
-  page.value.selected = data
+  page.selected = data
   switch (prop.id) {
     case 1:
-      page.value.showForm = true
-      page.value.editForm = true
+      page.showForm = true
+      page.editForm = true
       break
     case 2:
-      page.value.showModal = true
-
+      page.showModal = true
       break
   }
 }
 function deleteAsset() {
-  assetStore.delete(page.value.selected!)
-  page.value.selected = undefined
-  page.value.showModal = false
+  assetService.deleteAsset(page.selected!.id!)
+  page.selected = undefined
+  page.showModal = false
+}
+function closeForm() {
+  //assetStore.fetchAssets()
+  page.reset()
 }
 // lifeCycle
+onMounted(() => {
+  assetStore.fetchAssets()
+})
 // watch
 </script>
 

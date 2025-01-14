@@ -12,7 +12,7 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 
 ## Customize configuration
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+See [Vite Configuration Reference](https://vite.dev/config/).
 
 ## Project Setup
 
@@ -30,9 +30,4 @@ npm run dev
 
 ```sh
 npm run build
-```
-# Customize sass color
-change the color you want in assets/custom.scss and compile it with
-```
-sass --watch .\src\assets\custom.scss .\src\assets\custom.css
 ```

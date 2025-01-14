@@ -1,40 +1,37 @@
 <template>
   <div ref="sliderRef" class="relative w-full">
     <svg
-      :width="containerWidth"
-      :height="containerHeight"
+      :width="data.containerWidth"
+      :height="data.containerHeight"
       class="absolute top-0 left-0"
     >
       <!-- Base line -->
       <line
-        :x1="handleRadius"
-        :y1="containerHeight / 2"
-        :x2="containerWidth - handleRadius"
-        :y2="containerHeight / 2"
+        :x1="data.handleRadius"
+        :y1="data.containerHeight / 2"
+        :x2="data.containerWidth - data.handleRadius"
+        :y2="data.containerHeight / 2"
         :stroke="lineColor"
         stroke-width="2"
       />
 
-      <!-- Handles -->
-      <template v-for="(position, index) in handlePositions" :key="index">
-        <circle
-          :cx="position"
-          :cy="containerHeight / 2"
-          :r="handleRadius"
-          :fill="lineColor"
-          class="cursor-pointer"
-          @mousedown="startDragging(index, $event)"
-        />
-      </template>
+      <!-- Single Handle -->
+      <circle
+        :cx="data.handlePosition"
+        :cy="data.containerHeight / 2"
+        :r="data.handleRadius"
+        :fill="lineColor"
+        class="cursor-pointer"
+        @mousedown="startDragging"
+      />
     </svg>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, reactive } from 'vue'
 
 interface Props {
-  handles: number
   lineColor?: string
   min?: number
   max?: number
@@ -46,115 +43,107 @@ const props = withDefaults(defineProps<Props>(), {
   max: 100,
 })
 
-const modelValue = defineModel<number[]>({ default: [] })
+const modelValue = defineModel<number>({ default: 0 })
 
 const sliderRef = ref<HTMLDivElement | null>(null)
-const containerWidth = ref(0)
-const containerHeight = ref(0)
-const isDragging = ref(false)
-const currentHandleIndex = ref(-1)
-const handleRadius = 10
-const handlePositions = ref<number[]>([])
 
-const updateContainerSize = () => {
-  if (sliderRef.value) {
-    containerWidth.value = sliderRef.value.clientWidth
-    containerHeight.value = handleRadius * 4 // Height is relative to handle size
+class Slider {
+  containerWidth: number
+  containerHeight: number
+  handleRadius: number
+  handlePosition: number
+  isDragging: boolean
+  constructor() {
+    this.containerWidth = 0
+    this.containerHeight = 0
+    this.handleRadius = 10
+    this.handlePosition = this.handleRadius
+    this.isDragging = false
+  }
+  // Convert a value to its corresponding position on the slider
+  valueToPosition(value: number): number {
+    const range = props.max - props.min
+    const percentage = (value - props.min) / range
+    const usableWidth = this.containerWidth - this.handleRadius * 2
+    return this.handleRadius + percentage * usableWidth
+  }
+  // Convert a position to its corresponding value
+  positionToValue(position: number): number {
+    const usableWidth = this.containerWidth - this.handleRadius * 2
+    const percentage = (position - this.handleRadius) / usableWidth
+    const range = props.max - props.min
+    const rawValue = percentage * range + props.min
+    return Math.min(Math.max(Math.round(rawValue), props.min), props.max)
+  }
+  updateContainerSize() {
+    if (sliderRef.value) {
+      this.containerWidth = sliderRef.value.clientWidth
+      this.containerHeight = this.handleRadius * 4
+    }
   }
 }
+let data = reactive(new Slider())
 
-const initializeHandles = () => {
-  if (modelValue.value.length === props.handles) {
-    handlePositions.value = modelValue.value.map(
-      (value) =>
-        ((value - props.min) / (props.max - props.min)) * containerWidth.value
-    )
-  } else {
-    // Distribute handles evenly if no initial values provided
-    handlePositions.value = Array.from(
-      { length: props.handles },
-      (_, i) => (containerWidth.value / (props.handles + 1)) * (i + 1)
-    )
-    // Update model with initial values
-    modelValue.value = handlePositions.value
-      .map((pos) => {
-        const percentage = pos / containerWidth.value
-        return Math.round(percentage * (props.max - props.min) + props.min)
-      })
-      .sort((a, b) => a - b)
-  }
+
+
+const initializeHandle = () => {
+  data.handlePosition = data.valueToPosition(modelValue.value)
 }
 
-const startDragging = (index: number, event: MouseEvent) => {
-  isDragging.value = true
-  currentHandleIndex.value = index
+const startDragging = (event: MouseEvent) => {
+  event.preventDefault() // Prevent text selection while dragging
+  data.isDragging = true
   document.addEventListener('mousemove', handleDrag)
   document.addEventListener('mouseup', stopDragging)
 }
 
 const handleDrag = (event: MouseEvent) => {
-  if (!isDragging.value || !sliderRef.value) return
+  if (!data.isDragging || !sliderRef.value) return
 
   const sliderRect = sliderRef.value.getBoundingClientRect()
   let newPosition = event.clientX - sliderRect.left
 
   // Constrain to slider bounds
   newPosition = Math.max(
-    handleRadius,
-    Math.min(containerWidth.value - handleRadius, newPosition)
+    data.handleRadius,
+    Math.min(data.containerWidth - data.handleRadius, newPosition)
   )
 
-  handlePositions.value[currentHandleIndex.value] = newPosition
-
-  // Update model with new values
-  modelValue.value = handlePositions.value
-    .map((pos) => {
-      const percentage = pos / containerWidth.value
-      return Math.round(percentage * (props.max - props.min) + props.min)
-    })
-    .sort((a, b) => a - b)
+  data.handlePosition = newPosition
+  const newValue = data.positionToValue(newPosition)
+  modelValue.value = newValue
 }
 
 const stopDragging = () => {
-  isDragging.value = false
-  currentHandleIndex.value = -1
+  data.isDragging = false
   document.removeEventListener('mousemove', handleDrag)
   document.removeEventListener('mouseup', stopDragging)
 }
 
 // Handle window resize
 const handleResize = () => {
-  updateContainerSize()
-  // Recalculate handle positions based on new width
-  if (modelValue.value.length === props.handles) {
-    handlePositions.value = modelValue.value.map(
-      (value) =>
-        ((value - props.min) / (props.max - props.min)) * containerWidth.value
-    )
-  }
+  data.updateContainerSize()
+  data.handlePosition = data.valueToPosition(modelValue.value)
 }
 
 // Watch for external value changes
 watch(
   () => modelValue.value,
-  (newValues) => {
-    if (newValues.length === props.handles && containerWidth.value > 0) {
-      handlePositions.value = newValues.map(
-        (value) =>
-          ((value - props.min) / (props.max - props.min)) * containerWidth.value
-      )
+  (newValue) => {
+    if (data.containerWidth > 0) {
+      // Ensure the value is within bounds
+      const boundedValue = Math.min(Math.max(newValue, props.min), props.max)
+      data.handlePosition = data.valueToPosition(boundedValue)
     }
-  },
-  { deep: true }
+  }
 )
 
 onMounted(() => {
-  updateContainerSize()
-  initializeHandles()
+  data.updateContainerSize()
+  initializeHandle()
   window.addEventListener('resize', handleResize)
 })
 
-// Clean up resize listener
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
 })

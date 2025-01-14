@@ -38,6 +38,10 @@
           <FIcon class="pt-1" :icon="EIcon.Admin" />
           <div class="ms-4 w-auto">Settings</div>
         </div>
+        <div class="btn d-flex" @click="router.push('/tenant')">
+          <FIcon class="pt-1" :icon="EIcon.Tenant" />
+          <div class="ms-4 w-auto">Tenant</div>
+        </div>
       </div>
 
       <div class="btn d-flex border-top mt-4">
@@ -63,23 +67,13 @@ import { useRouter } from 'vue-router'
 // components import
 
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
-import { Property } from '@/model/property'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import { today } from '@/utils/time/time'
 import { timeToFormat } from '@/utils/time/conversion'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Array<Property>,
-    default: [],
-  },
-  onClick: {
-    type: Function,
-    default: function () {},
-  },
-})
+
 // data
 const isVisible = ref(false)
 const isHover = ref({} as { [key: number]: boolean })
@@ -88,11 +82,9 @@ const isHover = ref({} as { [key: number]: boolean })
 const router = useRouter()
 
 // computed
-const user = 'Pablo Garcia Vivo'
+const user = 'Pablo Garcia'
 // methods
 function toggleVisibility() {
-  console.log('sf')
-
   isVisible.value = !isVisible.value
 }
 // lifeCycle

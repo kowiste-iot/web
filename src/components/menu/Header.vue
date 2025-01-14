@@ -19,21 +19,15 @@
 // stores import
 // components import
 import Breadcrumb from '@/components/menu/BreadCrumb.vue'
-import AlertNotification from '@/components/alert/AlertNotification.vue'
-import Notification from '@/components/notification/Notification.vue'
+import AlertNotification from '@/features/notification/component/AlertNotification.vue'
+import Notification from '@/features/notification/component/Notification.vue'
 import User from '@/components/user/User.vue'
 
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { EColor } from '@/features/shared/enum/EColor'
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
-})
 // data
 // storage calls
 // computed

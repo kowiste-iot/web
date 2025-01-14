@@ -3,11 +3,13 @@
     class="btn d-flex"
     :class="
       (outline ? `btn-outline-${color}` : `btn-${color} `) +
-      (small ? ' btn-sm' : '')
+      (small ? ' btn-sm' : '') +
+      (disabled ? ' disabled' : '')
     "
   >
     <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
-    <slot />
+    <div v-if="loading"><Spinner /></div>
+    <slot/>
   </button>
 </template>
 
@@ -15,28 +17,26 @@
 // imports
 // stores import
 // components import
+import Spinner from '@/components/loading/Spinner.vue'
+
 // model imports
-import { EColor } from '@/enums/gui/EColor'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  icon: {
-    type: String,
-    default: '',
-  },
-  color: {
-    type: String,
-    default: EColor.Primary,
-  },
-  outline: {
-    type: Boolean,
-    default: false,
-  },
-  small: {
-    type: Boolean,
-    default: false,
-  },
+interface Props {
+  icon?: EIcon
+  color?: EColor
+  loading?: boolean
+  disabled?: boolean
+  outline?: boolean
+  small?: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  color: EColor.Primary,
+  outline: false,
+  small: false,
 })
 // data
 // storage calls

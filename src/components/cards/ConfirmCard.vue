@@ -43,33 +43,26 @@ import { type PropType, ref } from 'vue'
 import Button from '@/components/buttons/Button.vue'
 import Modal from '@/components/cards/Modal.vue'
 // model imports
-import { EActionGUI } from '@/enums/gui/EActionGUI'
-import { EColor } from '@/enums/gui/EColor'
-import { EIcon } from '@/enums/gui/EIcon'
+import { EActionGUI } from '@/features/shared/domain/EActionGUI'
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
 
 // other imports
 // props
-const props = defineProps({
-  headerText: {
-    type: String,
-  },
-  action: {
-    type: String as PropType<EActionGUI>,
-    default: EActionGUI.Success,
-  },
-  actionText: {
-    type: String,
-    default: 'Save',
-  },
-  onAction: {
-    type: Function,
-    default: function () {},
-  },
-  onCancel: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  headerText?: string
+  action?: EActionGUI
+  actionText?: string
+  onAction?: Function
+  onCancel?: Function
+}
+const props = withDefaults(defineProps<Props>(), {
+  action: EActionGUI.Success,
+  actionText: 'Save',
+  onAction: function () {},
+  onCancel: function () {},
 })
+
 // data
 interface IAction {
   icon: EIcon

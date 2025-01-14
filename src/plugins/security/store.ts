@@ -1,79 +1,134 @@
-// keycloakStore.js
-
 import { defineStore } from 'pinia'
 import Keycloak from 'keycloak-js'
-import type { ISecurityOption } from './model'
+import type { Role, ResourcePermission } from './types'
 
-interface State {
-  Keycloak: Keycloak | undefined
-  Options: ISecurityOption
+interface AuthState {
+  keycloak?: Keycloak
+  isInitialized: boolean
+  roles: Set<Role>
+  resourcePermissions: Map<string, Set<ResourcePermission>>
 }
 
-export const useKeycloakStore = defineStore('keycloak', {
-  state: (): State => ({
-    Keycloak: undefined,
-    Options: {
-      kcURI:'',
-      realm:'',
-      clientID:'',
-      baseURI: '',
-      log: false,
-      redirecURI: '',
-      refreshToken: 900000, //refresh every 15 min
-      redirectLogoutURI: '',
-      updateToken: 300,
-    },
+export const useAuthStore = defineStore('auth', {
+  state: (): AuthState => ({
+    keycloak: undefined,
+    isInitialized: false,
+    roles: new Set(),
+    resourcePermissions: new Map(),
   }),
+
   getters: {
+    isAuthenticated(): boolean {
+      return this.keycloak?.authenticated ?? false
+    },
+
     token(): string | undefined {
-      return this.Keycloak?.token
+      return this.keycloak?.token
     },
-    authenticated(): boolean {
-      if (!this.Keycloak) return false
-      return this.Keycloak?.authenticated ? this.Keycloak?.authenticated : false
+
+    hasRole(): (role: Role) => boolean {
+      return (role: Role) => this.roles.has(role)
     },
-    init(): Promise<boolean | undefined> {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (!this.Keycloak) reject('Keycloak instance is not set.')
-          else resolve(true)
-        }, 1000)
-      })
+
+    hasAnyRole(): (roles: Role[]) => boolean {
+      return (roles: Role[]) => roles.some((role) => this.roles.has(role))
+    },
+
+    hasAllRoles(): (roles: Role[]) => boolean {
+      return (roles: Role[]) => roles.every((role) => this.roles.has(role))
+    },
+
+    hasResourcePermission(): (
+      resource: string,
+      permission: ResourcePermission
+    ) => boolean {
+      return (resource: string, permission: ResourcePermission) => {
+        const permissions = this.resourcePermissions.get(resource)
+        return permissions?.has(permission) ?? false
+      }
     },
   },
+
   actions: {
-    set(instance: Keycloak, opt: ISecurityOption) {
-      if (this.Keycloak) return //already setted
-      this.Keycloak = instance
-      this.Options = opt
-      setInterval(() => this.update(), this.Options?.refreshToken)
+    setKeycloak(keycloak: Keycloak) {
+      this.keycloak = keycloak
+      this.isInitialized = true
+      this.updateRoles()
+      this.updateResourcePermissions()
     },
-    login(data?: string) {
-      if (this.Keycloak?.authenticated) return
-      this.Keycloak?.login({
-        redirectUri: data ? data : this.Options?.redirecURI,
+
+    updateRoles() {
+      if (!this.keycloak) return
+
+      console.log('roles', this.keycloak.resourceAccess)
+
+      const realmRoles = this.keycloak.realmAccess?.roles ?? []
+      const clientRoles = Object.values(
+        this.keycloak.resourceAccess ?? {}
+      ).flatMap((access) => access.roles)
+
+      const allRoles = [...realmRoles, ...clientRoles]
+
+      this.roles = new Set(
+        allRoles.filter((role): role is Role =>
+          ['admin', 'supervisor', 'agent'].includes(role)
+        )
+      )
+    },
+
+    updateResourcePermissions() {
+      if (!this.keycloak) return
+
+      // Example of parsing resource_access from token
+      const resourceAccess = this.keycloak.tokenParsed?.resource_access ?? {}
+
+      this.resourcePermissions.clear()
+
+      Object.entries(resourceAccess).forEach(
+        ([resource, access]: [string, any]) => {
+          const permissions = new Set<ResourcePermission>(
+            access.roles
+              .filter((role: string) => role.includes('-'))
+              .map((role: string) => role.split('-')[1] as ResourcePermission)
+          )
+
+          if (permissions.size > 0) {
+            this.resourcePermissions.set(resource, permissions)
+          }
+        }
+      )
+    },
+
+    async login(redirectUri?: string): Promise<void> {
+      if (this.isAuthenticated) return
+
+      if (this.keycloak) {
+        try {
+          await this.keycloak.login({
+            redirectUri: redirectUri ?? window.location.origin,
+          })
+        } catch (error) {
+          console.error('Login failed:', error)
+          throw error
+        }
+      }
+    },
+
+    async logout() {
+      if (!this.isAuthenticated) return
+      await this.keycloak?.logout({
+        redirectUri: window.location.origin,
       })
     },
-    update() {
-      if (!this.Keycloak) return
-      this.Keycloak?.updateToken(this.Options.updateToken)
-        .then((refreshed) => {
-          if (refreshed) {
-            if (this.Options.log) console.log('Token refreshed')
-          } else {
-            if (this.Options.log) console.log('Token not refreshed ')
-          }
-        })
-        .catch(() => {
-          if (this.Options.log) console.log('Failed to refresh token')
-        })
-    },
-    logout() {
-      if (!this.Keycloak) return
-      this.Keycloak.logout({ redirectUri: this.Options?.redirectLogoutURI })
-    },
-    setOptions(data: ISecurityOption) {
-      this.Options = data
+
+    async updateToken(minValidity: number = 300): Promise<boolean> {
+      if (!this.keycloak) return false
+      try {
+        return await this.keycloak.updateToken(minValidity)
+      } catch {
+        await this.login()
+        return false
+      }
     },
   },
 })

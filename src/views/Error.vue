@@ -3,7 +3,7 @@
     class="d-flex flex-column justify-content-center align-items-center h-100"
   >
     <h1 class="alt">404</h1>
-    <h1>page not found</h1>
+    <h1>{{ $t('error.page404') }}</h1>
     <Button
       class="my-4"
       :color="EColor.Warning"
@@ -24,8 +24,8 @@ import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 import Button from '@/components/buttons/Button.vue'
 
 // model imports
-import { EIcon } from '@/enums/gui/EIcon'
-import { EColor } from '@/enums/gui/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import { EColor } from '@/features/shared/enum/EColor'
 // other imports
 // props
 const props = defineProps({

@@ -6,7 +6,7 @@
           class="p-2 ml-1"
           :class="tab.selected ? `border-bottom border-${color} border-2` : ''"
           role="button"
-          @click="change(tab.id)"
+          @click="onChange(tab.id)"
         >
           <slot :data="tab"></slot>
         </div>
@@ -18,25 +18,20 @@
 <script setup lang="ts">
 // imports
 import type { Tab } from '@/model/gui/tab'
-import { EColor } from '@/enums/gui/EColor'
+import { EColor } from '@/features/shared/enum/EColor'
 
 // props
 const model = defineModel({ default: '' })
-const props = defineProps({
-  tabs: {
-    type: Array<Tab>,
-    require: true,
-    default: [],
-  },
-  color: {
-    type: String,
-    default: EColor.Primary,
-  },
-  change: {
-    type: Function,
-    require: true,
-    default: function (id: number) {},
-  },
+interface Props {
+  tabs?: Tab[] // No '?' since it's required
+  color?: EColor
+  onChange?: Function
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  color: EColor.Primary,
+  tabs: () => [],
+  onChange: function (id: number) {},
 })
 // data
 // storage calls
