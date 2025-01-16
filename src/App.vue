@@ -1,5 +1,10 @@
-<template>
-  <div class="d-flex align-items-stretch position-relative h-100 w-100">
+Copy<template>
+  <div v-if="isTenantRoute" class="vh-100 w-100">
+    <AlertContainer />
+    <RouterView />
+  </div>
+
+  <div v-else class="d-flex align-items-stretch position-relative h-100 w-100">
     <SideMenu />
     <AlertContainer />
     <div class="d-flex flex-column w-100">
@@ -15,10 +20,10 @@
 
 <script setup lang="ts">
 // imports
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 // stores import
 // components import
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import Header from '@/components/menu/Header.vue'
 import SideMenu from './features/menu/component/SideMenu.vue'
 import AlertContainer from './features/notification/component/AlertContainer.vue'
@@ -29,6 +34,9 @@ import AlertContainer from './features/notification/component/AlertContainer.vue
 // data
 
 // storage calls
+const route = useRoute()
+const isTenantRoute = computed(() => route.name === 'tenant')
+
 // computed
 
 // methods

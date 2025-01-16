@@ -1,7 +1,6 @@
 <template>
   
   <div>
-    <!-- <User /> -->
 
     <div>
       <FoldButton :icon="EIcon.Add" :color="EColor.Danger" >

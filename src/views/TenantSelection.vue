@@ -14,13 +14,6 @@
               >
                 {{ tenant.name }}
               </div>
-              <div>
-                <Button
-                  :color="EColor.Danger"
-                  :icon="EIcon.Delete"
-                  @click="removeTenant(tenant.id)"
-                />
-              </div>
             </div>
           </div>
         </div>
@@ -32,6 +25,7 @@
               <Input
                 :placeholder="$t('tenant.inputName')"
                 type="text"
+                :onEnter="addNewTenant"
                 v-model="newTenantId"
               />
               <Button
@@ -41,8 +35,6 @@
                 @click="addNewTenant"
               />
             </div>
-
-            <Button v-if="newTenantId != ''" @click="addNewTenant" />
           </div>
           <small class="p-error block mt-2" v-if="errorMessage">{{
             errorMessage
@@ -104,13 +96,6 @@ async function selectTenant(tenantId: string) {
     console.error('Failed to initialize tenant:', error)
     errorMessage.value = 'Failed to initialize tenant authentication'
   }
-}
-
-async function removeTenant(tenantDomain: string) {
-  
-  
-  tenantStore.removeTenant(tenantDomain)
-  await keycloakService.logout()
 }
 </script>
 

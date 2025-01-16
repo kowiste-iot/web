@@ -1,4 +1,3 @@
-``
 <template>
   <div class="position-relative over">
     <div class="px-2" role="button" @click="toggleVisibility">
@@ -20,13 +19,14 @@
           style="height: 2.5rem; width: 2.5rem"
         >
           {{
-            user.charAt(0)?.toUpperCase() +
-            user.split(' ')[1]?.charAt(0)?.toUpperCase()
+            userInfo.firstName?.charAt(0)?.toUpperCase() +
+            userInfo.lastName?.charAt(0)?.toUpperCase()
           }}
         </div>
         <div class="flex-fill ps-2">
-          <div class="fs-5">{{ user }}</div>
-          <div>Role: Admin</div>
+          <div class="fs-5">{{ userInfo.fullName }}</div>
+          <div>Role: {{ userInfo.roles.join(', ') }}</div>
+          <div class="text-muted small">Tenant: {{ currentTenant?.name }}</div>
         </div>
       </div>
       <div class="ms-3 mt-3">
@@ -43,12 +43,12 @@
           <div class="ms-4 w-auto">Tenant</div>
         </div>
       </div>
-
+      
       <div class="btn d-flex border-top mt-4">
         <div class="pt-1">
           Kowiste &copy {{ timeToFormat(today(), 'yyyy') }}
         </div>
-        <div class="d-flex flex-row-reverse flex-fill">
+        <div class="d-flex flex-row-reverse flex-fill" @click="logout">
           <div class="ms-4">Log out</div>
           <FIcon class="pt-1" :icon="EIcon.LogOut" />
         </div>
@@ -59,10 +59,11 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 // stores import
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/plugins/security/store'
 
 // components import
 
@@ -70,6 +71,8 @@ import { useRouter } from 'vue-router'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { today } from '@/utils/time/time'
 import { timeToFormat } from '@/utils/time/conversion'
+import { keycloakService } from '@/plugins/security/KeycloakService'
+import { useTenantStore } from '@/features/tenant/stores/tenant'
 
 // other imports
 // props
@@ -80,13 +83,34 @@ const isHover = ref({} as { [key: number]: boolean })
 
 // storage calls
 const router = useRouter()
+const tenantStore = useTenantStore()
+const authStore = useAuthStore()
 
 // computed
-const user = 'Pablo Garcia'
+const userInfo = computed(() => {
+  const keycloak = authStore.keycloak
+  return {
+    firstName: keycloak?.tokenParsed?.given_name || '',
+    lastName: keycloak?.tokenParsed?.family_name || '',
+    fullName: keycloak?.tokenParsed?.name || 'Unknown User',
+    email: keycloak?.tokenParsed?.email || '',
+    roles: Array.from(authStore.roles) || ['No Role']
+  }
+})
+
+const currentTenant = computed(() => tenantStore.getCurrentTenant)
+
 // methods
 function toggleVisibility() {
   isVisible.value = !isVisible.value
 }
+
+async function logout() {
+  if (!tenantStore.currentTenant) return
+  tenantStore.removeTenant(tenantStore.currentTenant.id)
+  await keycloakService.logout()
+}
+
 // lifeCycle
 // watch
 </script>

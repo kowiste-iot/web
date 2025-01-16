@@ -14,8 +14,8 @@ export const useMenuStore = defineStore('menuStore', {
       this.isOpen = !this.isOpen
     },
 
-    initializeMenu(tenant: string) {
-      const menuService = new MenuService(tenant)
+    initializeMenu() {
+      const menuService = new MenuService()
       this.items = menuService.getProcessedMenuItems()
     },
   },

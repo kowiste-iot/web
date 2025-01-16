@@ -1,15 +1,10 @@
-// features/menu/application/menuService.ts
-import { useTenant } from '@/composable/useTenant'
 import type { IMenu } from '../domain/menu'
 import { EIcon } from '@/features/shared/enum/EIcon'
 
 export class MenuService {
-  tenant: string
-  constructor(id: string) {
-    this.tenant = id
-  }
+  constructor() {}
   private getOrgPath(path: string): string {
-    return path === '/' ? path : `/${this.tenant}${path}`
+    return path 
   }
 
   getMenuItems(): IMenu[] {

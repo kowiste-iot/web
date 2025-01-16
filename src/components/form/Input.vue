@@ -8,11 +8,8 @@
         :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
-        @keyup="
-          () => {
-            onChange()
-          }
-        "
+        @keyup="internalChange"
+        @keyup.enter=""
         v-model="model"
       />
     </div>
@@ -38,6 +35,7 @@ interface Props {
   placeholder?: string
   disabled?: boolean
   onChange?: Function
+  onEnter?: Function
   error?: string
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -46,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: 'placeholder',
   disabled: false,
   onChange: function () {},
+  onEnter: function () {},
 })
 
 const model = defineModel()
@@ -54,10 +53,15 @@ const model = defineModel()
 // storage calls
 // computed
 // methods
+function internalChange(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    props.onEnter()
+    return
+  }
+  props.onChange()
+}
 // lifeCycle
 // watch
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

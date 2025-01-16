@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Logo from '@/components/icons/Logo.vue'
@@ -134,17 +134,19 @@ function handleMenuHover(menu: IMenu, index: number, event: MouseEvent) {
 function handleMenuLeave() {
   hoveredMenu.value = ''
 }
-
+onMounted(()=>{
+   menuStore.initializeMenu()
+})
 // watchers
-watch(
-  () => route.params,
-  (newParams) => {
-    const tenant = newParams.tenantId as string
-    if (tenant != undefined) {
-      menuStore.initializeMenu(tenant)
-    }
-  }
-)
+// watch(
+//   () => route.params,
+//   (newParams) => {
+//     const tenant = newParams.tenantId as string
+//     if (tenant != undefined) {
+     
+//     }
+//   }
+// )
 </script>
 
 <style scoped>
