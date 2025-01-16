@@ -6,6 +6,41 @@ import { useAuthStore } from './store'
 export class KeycloakService {
   private keycloak: Keycloak | null = null
 
+  async updateRealm(newRealm: string): Promise<void> {
+    if (!newRealm || newRealm === 'undefined') {
+      throw new Error('Invalid realm configuration')
+    }
+
+    try {
+      // If already initialized, logout first
+      if (this.keycloak?.authenticated) {
+        await this.keycloak.logout({
+          redirectUri: window.location.origin + '/tenant',
+        })
+      }
+
+      const newConfig: KeycloakConfig = {
+        url: 'http://localhost:7080/auth', // Your Keycloak URL
+        realm: newRealm,
+        clientId: 'vue-client',
+        initOptions: {
+          checkLoginIframe: false,
+          pkceMethod: 'S256',
+          enableLogging: true,
+          onLoad: 'login-required', // Force login
+          silentCheckSsoFallback: false,
+          flow: 'standard',
+          redirectUri: window.location.origin,
+        },
+      }
+
+      await this.initialize(newConfig)
+    } catch (error) {
+      console.error('Failed to update realm:', error)
+      throw error
+    }
+  }
+
   async initialize(config: KeycloakConfig): Promise<void> {
     if (!config.realm || config.realm === 'undefined') {
       throw new Error('Invalid realm configuration')
@@ -20,7 +55,7 @@ export class KeycloakService {
     try {
       const authenticated = await this.keycloak.init({
         ...config.initOptions,
-        onLoad: 'check-sso',
+        onLoad: 'login-required',
         silentCheckSsoFallback: false,
         checkLoginIframe: false,
       })
@@ -28,9 +63,9 @@ export class KeycloakService {
       const authStore = useAuthStore()
       authStore.setKeycloak(this.keycloak)
 
-      if (!authenticated && window.location.pathname !== '/tenant') {
+      if (!authenticated) {
         await this.keycloak.login({
-          redirectUri: window.location.origin + window.location.pathname,
+          redirectUri: window.location.origin,
         })
       }
     } catch (error) {
@@ -41,28 +76,6 @@ export class KeycloakService {
 
   getKeycloak(): Keycloak | null {
     return this.keycloak
-  }
-
-  async updateRealm(newRealm: string): Promise<void> {
-    if (this.keycloak) {
-      await this.keycloak.logout() // Logout from current realm
-
-      const newConfig: KeycloakConfig = {
-        url: this.keycloak.authServerUrl!,
-        realm: newRealm,
-        clientId: this.keycloak.clientId!,
-        initOptions: {
-          checkLoginIframe: false,
-          pkceMethod: 'S256',
-          enableLogging: true,
-          onLoad: 'check-sso',
-          silentCheckSsoFallback: false,
-          flow: 'standard',
-        },
-      }
-
-      await this.initialize(newConfig)
-    }
   }
 
   async login(redirectUri?: string): Promise<void> {

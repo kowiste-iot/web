@@ -57,6 +57,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTenantStore } from '@/features/tenant/stores/tenant'
+import { keycloakService } from '@/plugins/security/KeycloakService'
 import Input from '@/components/form/Input.vue'
 import Button from '@/components/buttons/Button.vue'
 import { EColor } from '@/features/shared/enum/EColor'
@@ -77,9 +78,16 @@ async function addNewTenant() {
   if (newTenantId.value) {
     const result = tenantStore.addTenant(newTenantId.value, newTenantId.value)
     if (result.success) {
-      newTenantId.value = ''
-      errorMessage.value = ''
-      await router.push('/')
+      try {
+        // Initialize Keycloak with new tenant
+        await keycloakService.updateRealm(newTenantId.value)
+        newTenantId.value = ''
+        errorMessage.value = ''
+        await router.push('/')
+      } catch (error) {
+        console.error('Failed to initialize Keycloak:', error)
+        errorMessage.value = 'Failed to initialize tenant authentication'
+      }
     } else {
       errorMessage.value = result.error || 'Failed to add tenant'
     }
@@ -87,12 +95,22 @@ async function addNewTenant() {
 }
 
 async function selectTenant(tenantId: string) {
-  tenantStore.setCurrentTenant(tenantId)
-  await router.push('/')
+  try {
+    await tenantStore.setCurrentTenant(tenantId)
+    // Initialize Keycloak with selected tenant
+    await keycloakService.updateRealm(tenantId)
+    await router.push('/')
+  } catch (error) {
+    console.error('Failed to initialize tenant:', error)
+    errorMessage.value = 'Failed to initialize tenant authentication'
+  }
 }
 
-function removeTenant(tenantId: string) {
-  tenantStore.removeTenant(tenantId)
+async function removeTenant(tenantDomain: string) {
+  
+  
+  tenantStore.removeTenant(tenantDomain)
+  await keycloakService.logout()
 }
 </script>
 
