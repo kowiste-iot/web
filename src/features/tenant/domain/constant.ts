@@ -1,1 +1,1 @@
-export const RESERVED_TENANTS = ['master', 'tenant', 'undefined']
+export const RESERVED_TENANTS = ['master', 'main', 'tenant', 'undefined']

@@ -19,22 +19,29 @@
         </div>
 
         <div class="add-tenant">
-          <h3>{{ tenants.length ? 'Add New Tenant' : 'Enter Tenant' }}</h3>
+          <Reveal :delay="200" :duration="1000" :growDirection="EGrow.RIGHT">
+            <h3>
+              {{ tenants.length ? 'Add New Tenant' : 'Enter Tenant' }}
+            </h3></Reveal
+          >
+
           <div class="p-inputgroup">
-            <div class="d-flex gap-3">
-              <Input
-                :placeholder="$t('tenant.inputName')"
-                type="text"
-                :onEnter="addNewTenant"
-                v-model="newTenantId"
-              />
-              <Button
-                class="px-4"
-                :color="EColor.Warning"
-                :icon="EIcon.Next"
-                @click="addNewTenant"
-              />
-            </div>
+            <Reveal :delay="200" :duration="1000">
+              <div class="d-flex gap-3">
+                <Input
+                  :placeholder="$t('tenant.inputName')"
+                  type="text"
+                  :onEnter="addNewTenant"
+                  v-model="newTenantId"
+                />
+                <Button
+                  class="px-4"
+                  :color="EColor.Warning"
+                  :icon="EIcon.Next"
+                  @click="addNewTenant"
+                />
+              </div>
+            </Reveal>
           </div>
           <small class="p-error block mt-2" v-if="errorMessage">{{
             errorMessage
@@ -54,6 +61,8 @@ import Input from '@/components/form/Input.vue'
 import Button from '@/components/buttons/Button.vue'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
+import Reveal from '@/components/animation/reveal/Reveal.vue'
+import { EGrow } from '@/components/animation/reveal/types'
 
 const router = useRouter()
 const tenantStore = useTenantStore()

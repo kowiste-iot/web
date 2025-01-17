@@ -27,6 +27,7 @@
           <div class="fs-5">{{ userInfo.fullName }}</div>
           <div>Role: {{ userInfo.roles.join(', ') }}</div>
           <div class="text-muted small">Tenant: {{ currentTenant?.name }}</div>
+          {{ userInfo.branchs }}
         </div>
       </div>
       <div class="ms-3 mt-3">
@@ -43,7 +44,7 @@
           <div class="ms-4 w-auto">Tenant</div>
         </div>
       </div>
-      
+
       <div class="btn d-flex border-top mt-4">
         <div class="pt-1">
           Kowiste &copy {{ timeToFormat(today(), 'yyyy') }}
@@ -89,12 +90,19 @@ const authStore = useAuthStore()
 // computed
 const userInfo = computed(() => {
   const keycloak = authStore.keycloak
+  const tokenParsed = keycloak?.tokenParsed
+
   return {
-    firstName: keycloak?.tokenParsed?.given_name || '',
-    lastName: keycloak?.tokenParsed?.family_name || '',
-    fullName: keycloak?.tokenParsed?.name || 'Unknown User',
-    email: keycloak?.tokenParsed?.email || '',
-    roles: Array.from(authStore.roles) || ['No Role']
+    firstName: tokenParsed?.given_name ?? '',
+    lastName: tokenParsed?.family_name ?? '',
+    fullName: tokenParsed?.name ?? 'Unknown User',
+    email: tokenParsed?.email ?? '',
+    roles: Array.isArray(authStore.roles)
+      ? Array.from(authStore.roles)
+      : ['No Role'],
+    branchs: Array.isArray(tokenParsed?.branch)
+      ? Array.from(tokenParsed.branch)
+      : ['ND'],
   }
 })
 
