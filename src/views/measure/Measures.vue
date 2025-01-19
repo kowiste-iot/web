@@ -128,7 +128,7 @@ function propertySelected(prop: Property, data: IMeasure) {
   }
 }
 function deleteMeasure() {
-  measureService.deleteMeasure(page.value.selected!)
+  measureService.deleteMeasure(page.value.selected!.id)
   page.value.selected = undefined
   page.value.showModal = false
 }

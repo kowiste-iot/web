@@ -112,6 +112,7 @@ import { WidgetService } from '@/features/dashboard/application/widgetService'
 import { WidgetRepository } from '@/features/dashboard/repository/widgetRepository'
 import { WidgetFormPage } from '@/features/dashboard/presentation/pages/pageWidgetForm'
 import type { IWidgetType } from '@/model/widget/widgetType'
+import type { IWidget } from '@/features/dashboard/domain/widget'
 // props
 const props = defineProps({
   data: {
@@ -125,7 +126,7 @@ const props = defineProps({
 })
 // data
 const page = ref(new WidgetFormPage())
-let form = reactive(new FormWidget())
+let form = reactive({} as IWidget)
 
 // service
 const { notificationService } = useBasePage()
@@ -137,7 +138,7 @@ const widgetService = new WidgetService(
 const route = useRoute()
 
 const dashboardID = getParam(route.params.did)
-form.set(page.value.selectedWidget, dashboardID)
+//form.set(page.value.selectedWidget, dashboardID)
 // computed
 // methods
 function selectWidget(data: IWidgetType) {
@@ -145,7 +146,7 @@ function selectWidget(data: IWidgetType) {
   page.value.selectedWidget = data
 }
 function save() {
-  form.set(page.value.selectedWidget, dashboardID)
+  //form.set(page.value.selectedWidget, dashboardID)
   widgetService.createWidget(form)
   props.close()
 }

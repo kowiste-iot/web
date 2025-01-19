@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Logo from '@/components/icons/Logo.vue'
@@ -106,7 +106,6 @@ function goToHome() {
 }
 
 function handleMenuClick(menu: IMenu) {
-  console.log('hey', menu);
   if (menu.subMenu) {
     if (menuStore.isOpen) {
       const index = expandedMenus.value.indexOf(menu.path)

@@ -2,9 +2,9 @@ import { EIcon } from '@/features/shared/enum/EIcon'
 import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
 import { useI18n } from 'vue-i18n'
-import type { IDevice } from '../device'
 import { PageBase } from '@/features/shared/presentation/pages/pageBase'
 import { Path } from '@/model/path'
+import type { IDevice } from '../../domain/device'
 
 export class DevicePage extends PageBase {
   properties: Property[]

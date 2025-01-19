@@ -16,10 +16,7 @@ const axiosServices = axios.create({
 
 axiosServices.interceptors.request.use(
   async (config) => {
-    console.log('inter')
-
     const token = useAuthStore().token
-    console.log('inter tok', token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

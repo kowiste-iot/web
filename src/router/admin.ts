@@ -2,7 +2,7 @@ const adminRoutes = [
   {
     path: '/admin/rol',
     name: 'rol',
-    component: () => import('@/views/admin/Rol.vue'),
+    component: () => import('@/views/admin/Role.vue'),
   },
   {
     path: '/admin/resource',

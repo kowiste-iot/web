@@ -9,7 +9,7 @@ export class DeviceService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async fetchDevice(id: string): Promise<IDevice | null> {
+  async getDevice(id: string): Promise<IDevice | null> {
     try {
       const device = await this.deviceRepository.findById(id)
       return device
@@ -23,7 +23,7 @@ export class DeviceService {
     }
   }
 
-  async fetchDevices(): Promise<IDevice[]> {
+  async getDevices(): Promise<IDevice[]> {
     try {
       const devices = await this.deviceRepository.findAll()
       return devices
@@ -65,7 +65,7 @@ export class DeviceService {
         return false
       }
 
-      const existingDevice = await this.fetchDevice(data.id)
+      const existingDevice = await this.getDevice(data.id)
       if (!existingDevice) {
         throw new Error('Device not found')
       }

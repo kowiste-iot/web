@@ -2,9 +2,13 @@
 import Keycloak from 'keycloak-js'
 import type { KeycloakConfig } from './types'
 import { useAuthStore } from './store'
+import { useUserStore } from '@/features/user/stores/useUserStore'
 
 export class KeycloakService {
   private keycloak: Keycloak | null = null
+  private refreshTimeout: number | null = null
+  private readonly MIN_VALIDITY = 70 // Minimum token validity in seconds
+  private readonly REFRESH_BUFFER = 30 // Seconds before expiration to refresh
 
   async updateRealm(newRealm: string): Promise<void> {
     if (!newRealm || newRealm === 'undefined') {
@@ -12,22 +16,22 @@ export class KeycloakService {
     }
 
     try {
-      // If already initialized, logout first
       if (this.keycloak?.authenticated) {
+        this.clearRefreshTimeout()
         await this.keycloak.logout({
           redirectUri: window.location.origin + '/tenant',
         })
       }
 
       const newConfig: KeycloakConfig = {
-        url: 'http://localhost:7080/auth', // Your Keycloak URL
+        url: 'http://localhost:7080/auth',
         realm: newRealm,
         clientId: 'vue-client',
         initOptions: {
           checkLoginIframe: false,
           pkceMethod: 'S256',
           enableLogging: true,
-          onLoad: 'login-required', // Force login
+          onLoad: 'login-required',
           silentCheckSsoFallback: false,
           flow: 'standard',
           redirectUri: window.location.origin,
@@ -41,10 +45,81 @@ export class KeycloakService {
     }
   }
 
+  private clearRefreshTimeout(): void {
+    if (this.refreshTimeout) {
+      window.clearTimeout(this.refreshTimeout)
+      this.refreshTimeout = null
+    }
+  }
+
+  private scheduleTokenRefresh(): void {
+    this.clearRefreshTimeout()
+
+    if (!this.keycloak?.tokenParsed?.exp) {
+      console.error('No token expiration found')
+      return
+    }
+
+    const currentTime = Math.floor(Date.now() / 1000)
+    const expiryTime = this.keycloak.tokenParsed.exp
+    const timeUntilExpiry = expiryTime - currentTime
+
+    // Calculate when to refresh (expiry time minus buffer)
+    const refreshTime = (timeUntilExpiry - this.REFRESH_BUFFER) * 1000 // Convert to milliseconds
+
+    console.log(
+      `Token expires in ${timeUntilExpiry} seconds. Scheduling refresh in ${
+        refreshTime / 1000
+      } seconds`
+    )
+
+    if (refreshTime > 0) {
+      this.refreshTimeout = window.setTimeout(async () => {
+        try {
+          console.log('Executing scheduled token refresh')
+          const refreshed = await this.keycloak?.updateToken(this.MIN_VALIDITY)
+
+          if (refreshed) {
+            console.log('Token refreshed successfully')
+            const userStore = useUserStore()
+            userStore.syncWithAuth()
+            // Schedule the next refresh
+            this.scheduleTokenRefresh()
+          }
+        } catch (error) {
+          console.error('Failed to refresh token:', error)
+          await this.login()
+        }
+      }, refreshTime)
+    } else {
+      console.warn(
+        'Token is already expired or close to expiry, refreshing immediately'
+      )
+      this.refreshToken()
+    }
+  }
+
+  private async refreshToken(): Promise<void> {
+    try {
+      const refreshed = await this.keycloak?.updateToken(this.MIN_VALIDITY)
+      if (refreshed) {
+        console.log('Token refreshed successfully')
+        const userStore = useUserStore()
+        userStore.syncWithAuth()
+        this.scheduleTokenRefresh()
+      }
+    } catch (error) {
+      console.error('Failed to refresh token:', error)
+      await this.login()
+    }
+  }
+
   async initialize(config: KeycloakConfig): Promise<void> {
     if (!config.realm || config.realm === 'undefined') {
       throw new Error('Invalid realm configuration')
     }
+
+    this.clearRefreshTimeout()
 
     this.keycloak = new Keycloak({
       url: config.url,
@@ -61,7 +136,19 @@ export class KeycloakService {
       })
 
       const authStore = useAuthStore()
+      const userStore = useUserStore()
+
       authStore.setKeycloak(this.keycloak)
+      userStore.syncWithAuth()
+
+      // Schedule initial token refresh
+      this.scheduleTokenRefresh()
+
+      // Keep onTokenExpired as a backup
+      this.keycloak.onTokenExpired = () => {
+        console.log('Token expired event triggered')
+        this.refreshToken()
+      }
 
       if (!authenticated) {
         await this.keycloak.login({
@@ -88,6 +175,9 @@ export class KeycloakService {
 
   async logout(redirectUri?: string): Promise<void> {
     if (this.keycloak) {
+      this.clearRefreshTimeout()
+      const userStore = useUserStore()
+      userStore.$reset()
       await this.keycloak.logout({
         redirectUri: redirectUri || window.location.origin,
       })

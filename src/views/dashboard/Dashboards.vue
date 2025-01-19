@@ -141,7 +141,7 @@ function propertySelected(prop: Property, data: IDashboard) {
   }
 }
 function deleteDashboard() {
-  dashboardService.deleteDashboard(page.value.selected!)
+  dashboardService.deleteDashboard(page.value.selected?.id!)
   page.value.selected = undefined
   page.value.showModal = false
 }

@@ -2,13 +2,14 @@ import axiosServices from '@/shared/http/axios-client'
 import { Asset, type IAsset, type IAssetRepository } from '../domain/asset'
 import type { AssetDTO } from '../dtos/assetDTO'
 import { AsssetMapper } from '../dtos/assetMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
 
-export class AssetRepository implements IAssetRepository {
-  private baseUrl: string
+export class AssetRepository
+  extends BaseRepository
+  implements IAssetRepository
+{
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/assets`
+    super('assets')
   }
   async findById(id: string): Promise<IAsset | null> {
     try {

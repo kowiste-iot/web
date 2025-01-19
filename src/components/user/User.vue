@@ -18,16 +18,12 @@
           class="bg-success rounded-circle mt-2 me-2 p-2 text-white d-flex justify-content-center align-items-center"
           style="height: 2.5rem; width: 2.5rem"
         >
-          {{
-            userInfo.firstName?.charAt(0)?.toUpperCase() +
-            userInfo.lastName?.charAt(0)?.toUpperCase()
-          }}
+          {{ userStore.getUserInitials }}
         </div>
         <div class="flex-fill ps-2">
-          <div class="fs-5">{{ userInfo.fullName }}</div>
-          <div>Role: {{ userInfo.roles.join(', ') }}</div>
+          <div class="fs-5">{{ userStore.userInfo?.fullName }}</div>
+          <div>Role: {{ userStore.userInfo?.roles.join(', ') }}</div>
           <div class="text-muted small">Tenant: {{ currentTenant?.name }}</div>
-          {{ userInfo.branchs }}
         </div>
       </div>
       <div class="ms-3 mt-3">
@@ -49,7 +45,7 @@
         <div class="pt-1">
           Kowiste &copy {{ timeToFormat(today(), 'yyyy') }}
         </div>
-        <div class="d-flex flex-row-reverse flex-fill" @click="logout">
+        <div class="d-flex flex-row-reverse flex-fill" @click="handleLogout">
           <div class="ms-4">Log out</div>
           <FIcon class="pt-1" :icon="EIcon.LogOut" />
         </div>
@@ -64,48 +60,24 @@ import { ref, computed } from 'vue'
 
 // stores import
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/plugins/security/store'
-
-// components import
+import { useUserStore } from '@/features/user/stores/useUserStore'
+import { useTenantStore } from '@/features/tenant/stores/tenant'
 
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { today } from '@/utils/time/time'
 import { timeToFormat } from '@/utils/time/conversion'
 import { keycloakService } from '@/plugins/security/KeycloakService'
-import { useTenantStore } from '@/features/tenant/stores/tenant'
-
-// other imports
-// props
 
 // data
 const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
 
 // storage calls
 const router = useRouter()
+const userStore = useUserStore()
 const tenantStore = useTenantStore()
-const authStore = useAuthStore()
 
 // computed
-const userInfo = computed(() => {
-  const keycloak = authStore.keycloak
-  const tokenParsed = keycloak?.tokenParsed
-
-  return {
-    firstName: tokenParsed?.given_name ?? '',
-    lastName: tokenParsed?.family_name ?? '',
-    fullName: tokenParsed?.name ?? 'Unknown User',
-    email: tokenParsed?.email ?? '',
-    roles: Array.isArray(authStore.roles)
-      ? Array.from(authStore.roles)
-      : ['No Role'],
-    branchs: Array.isArray(tokenParsed?.branch)
-      ? Array.from(tokenParsed.branch)
-      : ['ND'],
-  }
-})
-
 const currentTenant = computed(() => tenantStore.getCurrentTenant)
 
 // methods
@@ -113,14 +85,11 @@ function toggleVisibility() {
   isVisible.value = !isVisible.value
 }
 
-async function logout() {
+async function handleLogout() {
   if (!tenantStore.currentTenant) return
   tenantStore.removeTenant(tenantStore.currentTenant.id)
   await keycloakService.logout()
 }
-
-// lifeCycle
-// watch
 </script>
 
 <style scoped></style>

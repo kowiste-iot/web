@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 // imports
-import { computed, onMounted, reactive, watch } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 // stores import
 
 // components import
@@ -96,7 +96,6 @@ import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { useBasePage } from '@/composable/useBasePage'
 import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
-import { useUserStore } from '@/features/user/stores/useUserStore'
 // other imports
 // props
 
@@ -110,15 +109,10 @@ const assetService = new AssetService(
   notificationService
 )
 const assetStore = useAssetStore()
-const userStore = useUserStore()
-console.log('ppp',userStore.getCurrentBranch);
 
 // computed
 const assets = computed(() => {
   return assetStore.assets
-})
-const branch = computed(() => {
-  return userStore.getCurrentBranch
 })
 // methods
 function propertySelected(prop: Property, data: IAsset) {
@@ -142,21 +136,11 @@ function closeForm() {
   //assetStore.fetchAssets()
   page.reset()
 }
-async function refreshData(){
-  await assetStore.fetchAssets()
-
-}
 // lifeCycle
 onMounted(() => {
-   refreshData()
+  assetStore.fetchAssets()
 })
 // watch
-watch(
-  () => branch.value,
-  async () => {
-    await refreshData()
-  }
-)
 </script>
 
 <style scoped></style>

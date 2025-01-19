@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import Keycloak from 'keycloak-js'
 import type { Role, ResourcePermission } from './types'
 
+import { type IUser, User } from '@/features/user/domain/user'
+
 interface AuthState {
   keycloak?: Keycloak
   isInitialized: boolean
@@ -46,6 +48,38 @@ export const useAuthStore = defineStore('auth', {
         const permissions = this.resourcePermissions.get(resource)
         return permissions?.has(permission) ?? false
       }
+    },
+    getUserInfo(): IUser {
+      const tokenParsed = this.keycloak?.tokenParsed
+      if (tokenParsed == undefined) {
+        return {} as IUser
+      }
+      
+      const temp = new User({
+        id: tokenParsed.sub!,
+        firstName: tokenParsed.given_name ?? '',
+        lastName: tokenParsed.family_name ?? '',
+        fullName: tokenParsed.name ?? 'Unknown User',
+        email: tokenParsed.email ?? '',
+        roles: Array.from(this.roles),
+        branches: Array.isArray(tokenParsed.branch)
+          ? Array.from(tokenParsed.branch)
+          : ['ND'],
+        preferences: {
+          theme: 'light',
+          language: 'en',
+          notifications: {
+            email: true,
+            push: true,
+          },
+        },
+        settings: {
+          defaultView: 'dashboard',
+          timezone: 'UTC',
+          currentBranch: undefined,
+        },
+      })
+      return temp
     },
   },
 
