@@ -1,6 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable :value="assets">
+    <DataTable :value="roles">
       <Column
         :class="page.table.name.location"
         :field="page.table.name.data"
@@ -13,13 +13,13 @@
         </template>
       </Column>
       <Column
-        :class="page.table.asset.location"
-        :field="page.table.asset.data"
+        :class="page.table.description.location"
+        :field="page.table.description.data"
         sortable
       >
         <template #header>
           <span class="container-fluid">
-            {{ page.table.asset.title }}
+            {{ page.table.description.title }}
           </span>
         </template>
       </Column>
@@ -48,7 +48,7 @@
   </div>
   <Modal v-if="page.showForm">
     <SideCard class="col-md-6">
-      <AssetForm
+      <RoleForm
         :data="page.selected"
         :edit="page.editForm"
         :close="closeForm"
@@ -60,20 +60,20 @@
     v-if="page.showModal"
     :action="EActionGUI.Danger"
     :actionText="$t('action.delete')"
-    :onAction="deleteAsset"
+    :onAction="deleteRole"
     :onCancel="
       () => {
         page.showModal = false
       }
     "
   >
-    <div class="text-center">{{ $t('asset.delete') }}</div>
+    <div class="text-center">{{ $t('role.delete') }}</div>
   </ConfirmCard>
 </template>
 
 <script setup lang="ts">
 // imports
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
 
 // components import
@@ -81,7 +81,6 @@ import { computed, onMounted, reactive } from 'vue'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
-import { AssetsPage } from '@/features/asset/presentation/pages/pageAssets'
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
@@ -89,58 +88,67 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
-import AssetForm from '@/views/asset/form/AssetForm.vue'
 import Modal from '@/components/cards/Modal.vue'
 import type { IAsset } from '@/features/asset/domain/asset'
-import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { useBasePage } from '@/composable/useBasePage'
-import { AssetService } from '@/features/asset/application/assetService'
-import { AssetRepository } from '@/features/asset/repository/assetRepository'
+import { RolesPage } from '@/features/role/presentation/pages/pageRoles'
+import { RoleService } from '@/features/role/application/roleService'
+import { RoleRepository } from '@/features/role/repository/roleRepository'
+import { useRoleStore } from '@/features/role/stores/useRoleStore'
+import { useUserStore } from '@/features/user/stores/useUserStore'
+import RoleForm from './form/RoleForm.vue'
 // other imports
 // props
 
 // data
-const page = reactive(new AssetsPage())
+const page = reactive(new RolesPage())
 
 //service
 const { notificationService } = useBasePage(page.title)
-const assetService = new AssetService(
-  new AssetRepository(),
-  notificationService
-)
-const assetStore = useAssetStore()
+const roleService = new RoleService(new RoleRepository(), notificationService)
+const roleStore = useRoleStore()
+const userStore = useUserStore()
 
 // computed
-const assets = computed(() => {
-  return assetStore.assets
+const roles = computed(() => {
+  return roleStore.roles
+})
+const branch = computed(() => {
+  return userStore.getCurrentBranch
 })
 // methods
 function propertySelected(prop: Property, data: IAsset) {
   page.selected = data
   switch (prop.id) {
     case 1:
-      page.showForm = true
-      page.editForm = true
-      break
-    case 2:
       page.showModal = true
       break
   }
 }
-function deleteAsset() {
-  assetService.deleteAsset(page.selected!.id!)
+async function deleteRole() {
+  await roleService.deleteRole(page.selected!.id!)
   page.selected = undefined
   page.showModal = false
+  refreshData()
 }
 function closeForm() {
-  //assetStore.fetchAssets()
+  refreshData()
   page.reset()
+}
+async function refreshData() {
+  await roleStore.fetchRoles()
 }
 // lifeCycle
 onMounted(() => {
-  assetStore.fetchAssets()
+  refreshData()
 })
 // watch
+watch(
+  () => branch.value,
+  async () => {
+    await refreshData()
+  }
+)
 </script>
 
 <style scoped></style>

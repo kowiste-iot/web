@@ -23,7 +23,7 @@
           optionValue="name"
           optionLabel="name"
           :placeholder="$t('asset.form.parentHolder')"
-          :options="assets"
+          :options="availableParents"
           :error="errors['parent']"
           v-model="selectedParent"
         >
@@ -97,7 +97,12 @@ const assetService = new AssetService(
   notificationService
 )
 // computed
-const assets = computed(() => {
+// Add a new computed property to filter out the current asset
+const availableParents = computed(() => {
+  if (props.edit) {
+    // Filter out the current asset when editing
+    return assetStore.assets.filter(asset => asset.id !== props.data.id)
+  }
   return assetStore.assets
 })
 // watchers for real-time validation
@@ -119,11 +124,11 @@ watch(
   }
 )
 // methods
-function save() {
+async function save() {
   if (props.edit) {
-    assetService.updateAsset(form)
+    await assetService.updateAsset(form)
   } else {
-    assetService.createAsset(form)
+    await assetService.createAsset(form)
   }
   props.close()
 }

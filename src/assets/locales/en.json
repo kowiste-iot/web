@@ -1,6 +1,5 @@
 {
   "tenant": {
-    
     "inputName": "tenant name"
   },
   "action": {
@@ -174,6 +173,20 @@
   },
   "process": {},
   "admin": {},
+  "role": {
+    "title": "roles",
+    "table": {
+      "name": "Name",
+      "description": "Description"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Role",
+      "name": "Name",
+      "nameHolder": "role name",
+      "description": "Description"
+    }
+  },
   "profile": {},
   "setting": {
     "title": "User Settings",

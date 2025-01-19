@@ -111,7 +111,6 @@ const assetService = new AssetService(
 )
 const assetStore = useAssetStore()
 const userStore = useUserStore()
-console.log('ppp',userStore.getCurrentBranch);
 
 // computed
 const assets = computed(() => {
@@ -133,13 +132,14 @@ function propertySelected(prop: Property, data: IAsset) {
       break
   }
 }
-function deleteAsset() {
-  assetService.deleteAsset(page.selected!.id!)
+async function deleteAsset() {
+  await assetService.deleteAsset(page.selected!.id!)
   page.selected = undefined
   page.showModal = false
+  refreshData()
 }
 function closeForm() {
-  //assetStore.fetchAssets()
+  refreshData()
   page.reset()
 }
 async function refreshData(){

@@ -41,7 +41,6 @@ export class AssetService {
   async createAsset(data: IAsset): Promise<boolean> {
     try {
       const errors = Asset.validate(data)
-      console.log('ass err', errors)
 
       if (Object.keys(errors).length > 0) {
         const errorMessages = Object.values(errors).filter(Boolean)
