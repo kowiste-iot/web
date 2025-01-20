@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 import { AxiosError } from 'axios'
-import { EHttpStatus } from '@/features/shared/domain/EHttpStatus'
 import type { InternalAxiosRequestConfig } from 'axios'
 import { useRequest } from '@/plugins/request/store'
 import { useAuthStore } from '@/plugins/security/store'
@@ -18,6 +17,8 @@ axiosServices.interceptors.request.use(
   async (config) => {
     const token = useAuthStore().token
     if (token) {
+      console.log('token axios', token.slice(-5))
+
       config.headers.Authorization = `Bearer ${token}`
     }
     //useLoading().setRequest(true)

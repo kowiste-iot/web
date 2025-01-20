@@ -5,6 +5,7 @@ import { RoleValidator } from './roleValidator'
 export interface IRole {
   id: string
   name: string
+  readonly: boolean
   description?: string
   updatedAt?: Date
 }
@@ -13,12 +14,14 @@ export class Role implements IRole {
   private static validator = new RoleValidator()
   id: string
   name: string
+  readonly: boolean
   description?: string
   updatedAt?: Date
 
   constructor(props: IRole) {
     this.id = props.id
     this.name = props.name
+    this.readonly = props.readonly
     this.description = props.description
     this.updatedAt = props.updatedAt
   }
@@ -38,6 +41,7 @@ export class Role implements IRole {
     return {
       id: this.id,
       name: this.name,
+      readonly: this.readonly,
       description: this.description,
     }
   }

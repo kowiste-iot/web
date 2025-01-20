@@ -27,6 +27,7 @@
       <Column>
         <template #body="{ data }">
           <PropertyDot
+            v-if="!data.readonly"
             :data="page.properties"
             :onClick="(prop:Property)=>propertySelected(prop,data)"
           />
@@ -89,7 +90,6 @@ import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
 import Modal from '@/components/cards/Modal.vue'
-import type { IAsset } from '@/features/asset/domain/asset'
 import { useBasePage } from '@/composable/useBasePage'
 import { RolesPage } from '@/features/role/presentation/pages/pageRoles'
 import { RoleService } from '@/features/role/application/roleService'
@@ -97,6 +97,7 @@ import { RoleRepository } from '@/features/role/repository/roleRepository'
 import { useRoleStore } from '@/features/role/stores/useRoleStore'
 import { useUserStore } from '@/features/user/stores/useUserStore'
 import RoleForm from './form/RoleForm.vue'
+import type { IRole } from '@/features/role/domain/role'
 // other imports
 // props
 
@@ -117,7 +118,7 @@ const branch = computed(() => {
   return userStore.getCurrentBranch
 })
 // methods
-function propertySelected(prop: Property, data: IAsset) {
+function propertySelected(prop: Property, data: IRole) {
   page.selected = data
   switch (prop.id) {
     case 1:

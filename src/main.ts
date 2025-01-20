@@ -1,7 +1,6 @@
 // css
 import '@/assets/main.css'
 import '@/assets/custom.css'
-import './assets/main.css'
 //icon
 import '@fortawesome/fontawesome-free'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

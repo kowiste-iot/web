@@ -8,6 +8,7 @@ export class RoleMapper extends BaseMapper {
     return new Role({
       id: raw.id,
       name: raw.name,
+      readonly: raw.readonly,
       description: raw.description,
       updatedAt: raw.updated_at ? new Date(raw.updated_at) : undefined,
     })
@@ -20,6 +21,7 @@ export class RoleMapper extends BaseMapper {
     return {
       id: json.id,
       name: json.name,
+      readonly: json.readonly,
       description: json.description,
       updated_at: json.updatedAt?.toOrgTimezone(tZ).toISOString(),
     }

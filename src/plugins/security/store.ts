@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 import Keycloak from 'keycloak-js'
 import type { Role, ResourcePermission } from './types'
-
 import { type IUser, User } from '@/features/user/domain/user'
 
 interface AuthState {
   keycloak?: Keycloak
+  token?: string
   isInitialized: boolean
   roles: Set<Role>
   resourcePermissions: Map<string, Set<ResourcePermission>>
@@ -14,6 +14,7 @@ interface AuthState {
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     keycloak: undefined,
+    token: undefined,
     isInitialized: false,
     roles: new Set(),
     resourcePermissions: new Map(),
@@ -22,10 +23,6 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isAuthenticated(): boolean {
       return this.keycloak?.authenticated ?? false
-    },
-
-    token(): string | undefined {
-      return this.keycloak?.token
     },
 
     hasRole(): (role: Role) => boolean {
@@ -49,12 +46,13 @@ export const useAuthStore = defineStore('auth', {
         return permissions?.has(permission) ?? false
       }
     },
+
     getUserInfo(): IUser {
       const tokenParsed = this.keycloak?.tokenParsed
       if (tokenParsed == undefined) {
         return {} as IUser
       }
-      
+
       const temp = new User({
         id: tokenParsed.sub!,
         firstName: tokenParsed.given_name ?? '',
@@ -85,7 +83,9 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     setKeycloak(keycloak: Keycloak) {
+      console.log('update  kc', keycloak.token?.slice(-5))
       this.keycloak = keycloak
+      this.token = keycloak.token
       this.isInitialized = true
       this.updateRoles()
       this.updateResourcePermissions()
@@ -93,9 +93,6 @@ export const useAuthStore = defineStore('auth', {
 
     updateRoles() {
       if (!this.keycloak) return
-
-      console.log('roles', this.keycloak.resourceAccess)
-
       const realmRoles = this.keycloak.realmAccess?.roles ?? []
       const clientRoles = Object.values(
         this.keycloak.resourceAccess ?? {}
@@ -113,7 +110,6 @@ export const useAuthStore = defineStore('auth', {
     updateResourcePermissions() {
       if (!this.keycloak) return
 
-      // Example of parsing resource_access from token
       const resourceAccess = this.keycloak.tokenParsed?.resource_access ?? {}
 
       this.resourcePermissions.clear()
@@ -132,7 +128,7 @@ export const useAuthStore = defineStore('auth', {
         }
       )
     },
-
+    //TODO: maybe remove this and use keycloak service
     async login(redirectUri?: string): Promise<void> {
       if (this.isAuthenticated) return
 
@@ -147,7 +143,7 @@ export const useAuthStore = defineStore('auth', {
         }
       }
     },
-
+    //TODO: maybe remove this and use keycloak service
     async logout() {
       if (!this.isAuthenticated) return
       await this.keycloak?.logout({
@@ -158,7 +154,12 @@ export const useAuthStore = defineStore('auth', {
     async updateToken(minValidity: number = 300): Promise<boolean> {
       if (!this.keycloak) return false
       try {
-        return await this.keycloak.updateToken(minValidity)
+        this.token = undefined // Reset token before refresh
+        const updated = await this.keycloak.updateToken(minValidity)
+        if (updated) {
+          this.token = this.keycloak.token
+        }
+        return updated
       } catch {
         await this.login()
         return false

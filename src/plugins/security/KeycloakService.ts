@@ -63,9 +63,7 @@ export class KeycloakService {
     const currentTime = Math.floor(Date.now() / 1000)
     const expiryTime = this.keycloak.tokenParsed.exp
     const timeUntilExpiry = expiryTime - currentTime
-
-    // Calculate when to refresh (expiry time minus buffer)
-    const refreshTime = (timeUntilExpiry - this.REFRESH_BUFFER) * 1000 // Convert to milliseconds
+    const refreshTime = (timeUntilExpiry - this.REFRESH_BUFFER) * 1000
 
     console.log(
       `Token expires in ${timeUntilExpiry} seconds. Scheduling refresh in ${
@@ -80,10 +78,16 @@ export class KeycloakService {
           const refreshed = await this.keycloak?.updateToken(this.MIN_VALIDITY)
 
           if (refreshed) {
-            console.log('Token refreshed successfully')
+            console.log(
+              'Token refreshed successfully',
+              this.keycloak?.token?.slice(-5)
+            )
             const userStore = useUserStore()
+            const authStore = useAuthStore()
+
+            // Update auth store with the refreshed keycloak instance
+            authStore.setKeycloak(this.keycloak!)
             userStore.syncWithAuth()
-            // Schedule the next refresh
             this.scheduleTokenRefresh()
           }
         } catch (error) {
@@ -105,6 +109,8 @@ export class KeycloakService {
       if (refreshed) {
         console.log('Token refreshed successfully')
         const userStore = useUserStore()
+        const authStore = useAuthStore()
+        authStore.setKeycloak(this.keycloak!)
         userStore.syncWithAuth()
         this.scheduleTokenRefresh()
       }
