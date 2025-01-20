@@ -41,7 +41,7 @@ export class Role implements IRole {
     return {
       id: this.id,
       name: this.name,
-      readonly: this.readonly,
+      readonly:this.readonly,
       description: this.description,
     }
   }

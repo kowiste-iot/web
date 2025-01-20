@@ -127,7 +127,7 @@ function propertySelected(prop: Property, data: IRole) {
   }
 }
 async function deleteRole() {
-  await roleService.deleteRole(page.selected!.id!)
+  await roleService.deleteRole(page.selected!.name!)
   page.selected = undefined
   page.showModal = false
   refreshData()
