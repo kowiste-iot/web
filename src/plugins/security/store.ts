@@ -52,6 +52,7 @@ export const useAuthStore = defineStore('auth', {
       if (tokenParsed == undefined) {
         return {} as IUser
       }
+console.log('token', tokenParsed);
 
       const temp = new User({
         id: tokenParsed.sub!,
