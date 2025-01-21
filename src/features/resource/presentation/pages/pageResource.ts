@@ -31,11 +31,6 @@ export class ResourcesPage extends PageBase {
         icon: EIcon.Edit,
         name: 'Edit',
       },
-      {
-        id: 2,
-        icon: EIcon.Delete,
-        name: 'Delete',
-      },
     ]
     this.showForm = false
     this.editForm = false
@@ -54,7 +49,7 @@ export class ResourcesPage extends PageBase {
     const { t } = useI18n()
 
     return {
-      name: new Columns(t('resource.table.name'), 'name'),
+      name: new Columns(t('resource.table.name'), 'displayName'),
       type: new Columns(t('resource.table.type'), 'type'),
       displayName: new Columns(t('resource.table.displayName'), 'displayName'),
       uris: new Columns(t('resource.table.uris'), 'uris'),

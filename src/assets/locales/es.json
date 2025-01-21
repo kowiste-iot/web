@@ -56,6 +56,20 @@
       "parentHolder": "asset pertenece a activo"
     }
   },
+  "resource": {
+    "title": "recursos",
+    "table": {
+      "name": "Nombre"
+    },
+    "form": {
+      "titleCreate": "Create Asset",
+      "titleUpdate": "Update Asset",
+      "name": "Name",
+      "nameHolder": "asset name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
   "device": {
     "title": "dispositivo",
     "table": {

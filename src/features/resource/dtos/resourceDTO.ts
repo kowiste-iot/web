@@ -1,14 +1,8 @@
-// features/resource/dtos/resourceDTO.ts
 export interface ResourceDTO {
-  id?: string
+  id: string
   name: string
-  type?: string
-  uris?: string[]
-  scopes?: string[]
-  attributes?: Record<string, string[]>
-  display_name?: string
-  icon_uri?: string
+  displayName: string
+  roles: { [key: string]: string[] }
 }
 
-// features/resource/dtos/resourceMapper.ts
 

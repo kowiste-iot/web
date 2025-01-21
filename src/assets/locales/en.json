@@ -171,6 +171,19 @@
       "form": {}
     }
   },
+  "resource": {
+    "title": "resources",
+    "table": {
+      "name": "Name"
+    },
+    "form": {
+      "titleUpdate": "Update Resource",
+      "name": "Name",
+      "nameHolder": "resource name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
   "process": {},
   "admin": {},
   "role": {
