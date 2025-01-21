@@ -6,6 +6,7 @@ github-sync:
   
   before_script:
     - apk update && apk add git openssh
+    - git config --global credential.helper 'store --file ~/.git-credentials'
     
   script:
     # Configure git
@@ -16,9 +17,9 @@ github-sync:
     - git checkout ${CI_COMMIT_SHA}
     - git checkout -b public
     
-    # Setup and push to GitHub
+    # Setup and push to GitHub with explicit credentials in URL
     - git remote remove github || true
-    - git remote add github "https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git"
+    - git remote add github "https://${GITLAB_USER_NAME}:${GITHUB_TOKEN}@github.com/kowiste-iot/web.git"
     - |
       if ! git push -u github public:main --force; then
         echo "Failed to push to GitHub"
