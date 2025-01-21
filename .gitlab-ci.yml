@@ -11,7 +11,7 @@ github-sync:
     # Configure git
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
-    
+     echo "Checking if GITHUB_TOKEN is set (should not be empty): ${GITHUB_TOKEN:+ok}"
     # Prepare branch
     - git checkout ${CI_COMMIT_SHA}
     - git checkout -b public
