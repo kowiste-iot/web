@@ -56,6 +56,11 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   useRequest().cancelAll()
+  const nextURL = to.fullPath.split('#')[0]
+  if (to.fullPath !== nextURL) {
+    to.fullPath = nextURL
+    return to.fullPath
+  }
 })
 router.beforeEach(tenantGuard)
 router.beforeEach(authGuard)

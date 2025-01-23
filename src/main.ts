@@ -41,7 +41,7 @@ const kcOptions = {
     enableLogging: true,
     onLoad: 'check-sso',
     flow: 'standard',
-    redirectUri: window.location.origin,
+    redirectUri: window.location.href,
   },
 } as KeycloakConfig
 

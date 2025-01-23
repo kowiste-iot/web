@@ -21,7 +21,7 @@
       <div class="row mb-3">
         <label class="col-md-2 pt-2">{{ $t('resource.form.role') }} </label>
         <Input
-          class="col-md-4"
+          class="col-md-3"
           type="text"
           :placeholder="String(roleName)"
           disabled
@@ -29,10 +29,29 @@
         />
         <MultiDropdown
           class="col-md-5"
-          :options="roleArray"
+          idField="id"
+          labelField="name"
+          :options="[{id:1,name:'pablo'},{id:2,name:'chanay'}]"
           :chipColor="EColor.Color1"
           v-model="selectedIds"
         />
+        <div class="col-md-2 d-flex justify-content-between">
+          <FIcon
+            :class="`text-${EColor.Danger}`"
+            :icon="EIcon.Sub"
+            role="button"
+            style="height: 1.5rem"
+            @click="() => {}"
+          />
+          <FIcon
+          class="me-4"
+            :class="`text-${EColor.Success}`"
+            :icon="EIcon.Add"
+            role="button"
+            style="height: 1.5rem"
+            @click="() => {}"
+          />
+        </div>
       </div>
       <!-- <DropDown
         class="col-md-8"
@@ -82,13 +101,10 @@ import MultiDropdown from '@/components/form/MultiDropdown.vue'
 
 // other imports
 
-
-
-
 const fruits = [
   { id: 1, name: 'Apple' },
   { id: 2, name: 'Banana' },
-  { id: 3, name: 'Orange' }
+  { id: 3, name: 'Orange' },
 ]
 const selectedIds = ref<number[]>([])
 // props
