@@ -1,12 +1,13 @@
 // features/resource/domain/resource.ts
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { ResourceValidator } from './resourceValidator'
+import type { IScope } from '@/features/scope/domain/scope'
 
 export interface IResource {
   id: string
   name: string
   displayName: string
-  roles: { [key: string]: string[] }
+  roles: { [key: string]: IScope[] }
 }
 
 export class Resource implements IResource {
@@ -14,7 +15,7 @@ export class Resource implements IResource {
   id: string
   name: string
   displayName: string
-  roles: { [key: string]: string[] }
+  roles: { [key: string]: IScope[] }
 
   constructor(props: IResource) {
     this.id = props.id
@@ -39,7 +40,7 @@ export class Resource implements IResource {
       id: this.id,
       name: this.name,
       displayName: this.displayName,
-      roles:this.roles
+      roles: this.roles,
     }
   }
 }

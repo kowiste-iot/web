@@ -1,30 +1,39 @@
 <template>
-  <div class="position-relative">
-    <div 
-      class="border rounded p-2" 
-      :class="error ? 'border-danger' : ''" 
-      role="button" 
+  <div class="position-relative" ref="dropdownRef">
+    <div
+      class="border rounded p-2 h-100"
+      :class="[
+        error ? 'border-danger' : '',
+        disabled ? `bg-${EColor.Secondary} pe-none opacity-25 ` : '',
+      ]"
+      role="button"
       @click="toggleDropdown"
     >
-      <div v-if="model.length > 0" class="d-flex flex-wrap gap-1">
-        <span 
-          v-for="item in model" 
-          :key="getItemId(item)"
-          class="badge"
-          :class="`bg-${chipColor}`"
-        >
-          {{ getItemLabel(item) }}
-          <span 
-            class="ms-1 cursor-pointer" 
-            @click.stop="removeItem(item)"
+      <template v-if="multiple">
+        <div v-if="modelValue.length > 0" class="d-flex flex-wrap gap-1">
+          <span
+            v-for="item in modelValue"
+            :key="getItemId(item)"
+            class="badge"
+            :class="[`bg-${chipColor} `, disabled ? `text-${EColor.Dark}` : '']"
           >
-            ×
+            {{ getItemLabel(item) }}
+            <span
+              v-if="!disabled"
+              class="ms-1 cursor-pointer"
+              @click.stop="removeItem(item)"
+            >
+              ×
+            </span>
           </span>
-        </span>
-      </div>
-      <div v-else>
-        {{ placeholder }}
-      </div>
+        </div>
+        <div v-else>
+          {{ placeholder }}
+        </div>
+      </template>
+      <template v-else>
+        <div>{{ modelValue ? getItemLabel(modelValue) : placeholder }}</div>
+      </template>
     </div>
 
     <div v-if="error" class="text-danger mt-1 small">
@@ -34,7 +43,13 @@
     <ul
       v-if="isOpen"
       class="position-absolute top-100 mt-1 list-group shadow"
-      style="max-height: 200px; overflow-y: auto; z-index: 1000; min-width: 100%; width: max-content;"
+      style="
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        min-width: 100%;
+        width: max-content;
+      "
     >
       <li v-if="searchable" class="list-group-item p-1">
         <input
@@ -43,7 +58,7 @@
           v-model="searchText"
           placeholder="Search..."
           @click.stop
-        >
+        />
       </li>
 
       <li
@@ -52,7 +67,7 @@
         class="list-group-item list-group-item-action"
         :class="{
           [`bg-${chipColor} text-white`]: isSelected(option),
-          'hover-color': !isSelected(option)
+          'hover-color': !isSelected(option),
         }"
         @click.stop="toggleSelection(option)"
       >
@@ -62,33 +77,55 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-
-interface Props {
+<script lang="ts">
+export interface Props {
   options: any[]
   idField?: string
   labelField?: string
   placeholder?: string
   searchable?: boolean
   error?: string
+  disabled?: boolean
   chipColor?: string
+  multiple?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+export const defaultProps = {
   placeholder: 'Select items',
   searchable: false,
   chipColor: 'primary',
   idField: 'id',
-  labelField: 'label'
-})
+  disabled: false,
+  labelField: 'label',
+  multiple: false,
+}
+</script>
 
-const model = defineModel<any[]>({
-  default: () => []
-})
+<script setup lang="ts">
+import { EColor } from '@/features/shared/enum/EColor'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+
+const props = withDefaults(defineProps<Props>(), defaultProps)
+const modelValue = defineModel<any[] | any>()
 
 const isOpen = ref(false)
 const searchText = ref('')
+const dropdownRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+function handleClickOutside(event: MouseEvent) {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
+    isOpen.value = false
+    searchText.value = ''
+  }
+}
 
 function getItemId(item: any): string | number {
   return typeof item === 'object' ? item[props.idField] : item
@@ -100,15 +137,14 @@ function getItemLabel(item: any): string {
 
 const filteredOptions = computed(() => {
   if (!searchText.value) return props.options
-  
-  return props.options.filter(option => 
-    getItemLabel(option)
-      .toLowerCase()
-      .includes(searchText.value.toLowerCase())
+
+  return props.options.filter((option) =>
+    getItemLabel(option).toLowerCase().includes(searchText.value.toLowerCase())
   )
 })
 
 function toggleDropdown() {
+  if (props.disabled) return
   isOpen.value = !isOpen.value
   if (!isOpen.value) {
     searchText.value = ''
@@ -116,24 +152,42 @@ function toggleDropdown() {
 }
 
 function isSelected(option: any): boolean {
-  return model.value.some(item => getItemId(item) === getItemId(option))
+  if (props.multiple) {
+    return (modelValue.value as any[]).some((item) => getItemId(item) === getItemId(option))
+  }
+  return modelValue.value && getItemId(modelValue.value) === getItemId(option)
 }
 
 function toggleSelection(option: any) {
-  const newValue = [...model.value]
-  const index = newValue.findIndex(item => getItemId(item) === getItemId(option))
-  
-  if (index === -1) {
-    newValue.push(option)
+  if (props.multiple) {
+    const newValue = [...(modelValue.value as any[])]
+    const index = newValue.findIndex(
+      (item) => getItemId(item) === getItemId(option)
+    )
+
+    if (index === -1) {
+      newValue.push(option)
+    } else {
+      newValue.splice(index, 1)
+    }
+
+    modelValue.value = newValue
   } else {
-    newValue.splice(index, 1)
+    modelValue.value = modelValue.value && getItemId(modelValue.value) === getItemId(option) 
+      ? null 
+      : option
+    isOpen.value = false
   }
-  
-  model.value = newValue
 }
 
 function removeItem(item: any) {
-  model.value = model.value.filter(i => getItemId(i) !== getItemId(item))
+  if (props.multiple) {
+    modelValue.value = (modelValue.value as any[]).filter(
+      (i) => getItemId(i) !== getItemId(item)
+    )
+  } else {
+    modelValue.value = null
+  }
 }
 </script>
 

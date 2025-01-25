@@ -3,7 +3,7 @@
     v-model="selectedDate"
     selection-color="#2196F3"
     :show-time="false"
-    :range-selection="false"
+    :range-selection="true"
   />
   <div v-if="false">
     <div>

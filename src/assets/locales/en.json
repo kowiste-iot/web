@@ -177,6 +177,7 @@
       "name": "Name"
     },
     "form": {
+      "role":"Roles",
       "titleUpdate": "Update Resource",
       "name": "Name",
       "nameHolder": "resource name",
