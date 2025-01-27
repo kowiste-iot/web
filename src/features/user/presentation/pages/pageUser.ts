@@ -18,7 +18,7 @@ export class UserPage extends PageBase {
   table: {
     id: Columns
     name: Columns
-    asset: Columns
+    email: Columns
   }
   constructor() {
     const { t } = useI18n()
@@ -58,8 +58,8 @@ export class UserPage extends PageBase {
 
     return {
       id: new Columns('ID', 'id'),
-      name: new Columns(t('asset.table.name'), 'name'),
-      asset: new Columns(t('asset.table.parent'), 'parentName'),
+      name: new Columns(t('user.table.name'), 'fullName'),
+      email: new Columns(t('user.table.email'), 'email'),
     }
   }
 }

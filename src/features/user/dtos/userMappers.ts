@@ -7,16 +7,16 @@ export class UserMapper extends BaseMapper {
     const tZ = this.getOrgTimezone()
     return new User({
       id: raw.id,
-      firstName: raw.first_name,
-      lastName: raw.last_name,
-      fullName: raw.full_name,
+      firstName: raw.firstName,
+      lastName: raw.lastName,
+      fullName: raw.lastName + ' ' + raw.firstName,
       email: raw.email,
-      roles: raw.roles,
+      roles: raw.roles ? raw.roles : [],
       branches: raw.branches,
       preferences: raw.preferences,
       settings: {
-        defaultView: raw.settings.default_view,
-        timezone: raw.settings.timezone,
+        defaultView: raw.settings?.default_view,
+        timezone: raw.settings?.timezone,
       },
     })
   }
@@ -27,16 +27,15 @@ export class UserMapper extends BaseMapper {
 
     return {
       id: json.id,
-      first_name: json.firstName,
-      last_name: json.lastName,
-      full_name: json.fullName,
+      firstName: json.firstName,
+      lastName: json.lastName,
       email: json.email,
       roles: json.roles,
       branches: json.branches,
       preferences: json.preferences,
       settings: {
-        default_view: json.settings.defaultView,
-        timezone: json.settings.timezone,
+        default_view: json.settings?.defaultView,
+        timezone: json.settings?.timezone,
       },
     }
   }

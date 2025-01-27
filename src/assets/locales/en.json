@@ -59,6 +59,25 @@
       "parentHolder": "asset belong to asset"
     }
   },
+  "user": {
+    "title": "users",
+    "table": {
+      "name": "Name",
+      "email": "Email"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create User",
+      "titleUpdate": "Update User",
+      "firstName": "First Name",
+      "firstNameHolder": "first Name",
+      "lastName": "Last Name",
+      "lastNameHolder": "last Name",
+      "email": "Email",
+      "emailHolder": "email",
+      "nameHolder": "user name"
+    }
+  },
   "device": {
     "title": "device",
     "table": {
@@ -177,7 +196,7 @@
       "name": "Name"
     },
     "form": {
-      "role":"Roles",
+      "role": "Roles",
       "titleUpdate": "Update Resource",
       "name": "Name",
       "nameHolder": "resource name",

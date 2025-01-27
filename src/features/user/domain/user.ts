@@ -52,14 +52,14 @@ export class User implements IUser {
     this.id = props.id
     this.firstName = props.firstName
     this.lastName = props.lastName
-    this.fullName = props.fullName
+    this.fullName = props.lastName + ' ' + props.firstName
     this.email = props.email
     this.roles = props.roles
     this.branches = props.branches
     this.preferences = props.preferences
     this.settings = props.settings
 
-    this.branches = this.branches.filter(
+    this.branches = this.branches?.filter(
       (branch) => !itemsToRemove.includes(branch)
     )
   }

@@ -13,13 +13,13 @@
         </template>
       </Column>
       <Column
-        :class="page.table.asset.location"
-        :field="page.table.asset.data"
+        :class="page.table.email.location"
+        :field="page.table.email.data"
         sortable
       >
         <template #header>
           <span class="container-fluid">
-            {{ page.table.asset.title }}
+            {{ page.table.email.title }}
           </span>
         </template>
       </Column>
@@ -88,7 +88,6 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
-import AssetForm from '@/views/asset/form/AssetForm.vue'
 import Modal from '@/components/cards/Modal.vue'
 import { useBasePage } from '@/composable/useBasePage'
 import { useUserStore } from '@/features/user/stores/useUserStore'

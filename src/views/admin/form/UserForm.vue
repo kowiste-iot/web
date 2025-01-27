@@ -1,37 +1,52 @@
 <template>
   <InputCard
     class="h-100"
-    :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
+    :headerText="$t(edit ? 'user.form.titleUpdate' : 'user.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
     showHeader
     showFooter
   >
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('user.form.firstName') }} </label>
       <Input
         class="col-md-8"
-        :placeholder="$t('asset.form.nameHolder')"
+        :placeholder="$t('user.form.firstNameHolder')"
         type="text"
-        :error="errors['name']"
-        v-model="form.name"
+        :error="errors['firstName']"
+        v-model="form.firstName"
       />
     </div>
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
-      <div class="col-md-8">
-        <DropDown
-          optionValue="name"
-          optionLabel="name"
-          :placeholder="$t('asset.form.parentHolder')"
-          :options="availableParents"
-          :error="errors['parent']"
-          v-model="selectedParent"
-        >
-          <template #option="{ data }">
-            {{ data.name }}
-          </template>
-        </DropDown>
-      </div>
+      <label class="col-md-4 pt-2">{{ $t('user.form.lastName') }} </label>
+      <Input
+        class="col-md-8"
+        :placeholder="$t('user.form.lastNameHolder')"
+        type="text"
+        :error="errors['lastName']"
+        v-model="form.lastName"
+      />
+    </div>
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('user.form.email') }} </label>
+      <Input
+        class="col-md-8"
+        :placeholder="$t('user.form.emailHolder')"
+        type="email"
+        :error="errors['email']"
+        v-model="form.email"
+      />
+    </div>
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('user.form.email') }} </label>
+      <MultiDropdown
+        class="col-md-8"
+        :options="roles"
+        idField="id"
+        labelField="name"
+        multiple
+        :chipColor="EColor.Color1"
+        v-model="selectedRoles"
+      />
     </div>
     <template #footer>
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
@@ -46,24 +61,24 @@
 
 <script setup lang="ts">
 // imports
-import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
+import { ref, reactive, onMounted, type PropType, watch, computed } from 'vue'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import { Asset, type IAsset } from '@/features/asset/domain/asset'
 import { useBasePage } from '@/composable/useBasePage'
-import { AssetService } from '@/features/asset/application/assetService'
-import { AssetRepository } from '@/features/asset/repository/assetRepository'
-import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
-import type { IUser } from '@/features/user/domain/user'
+import { User, type IUser } from '@/features/user/domain/user'
+import { UserService } from '@/features/user/application/userService'
+import { UserRepository } from '@/features/user/repository/userRepository'
+import { useRoleStore } from '@/features/role/stores/useRoleStore'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import { type IRole } from '@/features/role/domain/role'
 
 // other imports
 // props
@@ -84,66 +99,59 @@ const props = defineProps({
 // data
 const form = reactive<IUser>({
   ...props.data,
-  name: props.data?.name ?? '',
-  parent: props.data?.parent ?? undefined,
-  description: props.data?.description ?? undefined,
+  firstName: props.data?.firstName ?? '',
+  lastName: props.data?.lastName ?? undefined,
+  email: props.data?.email ?? undefined,
 })
-const assetStore = useAssetStore()
-const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IAsset>>({})
+const selectedRoles = ref(new Array<IRole>())
+const roleStore = useRoleStore()
+const errors = ref<ValidationError<IUser>>({})
 //service
 const { notificationService } = useBasePage()
-const assetService = new AssetService(
-  new AssetRepository(),
-  notificationService
-)
+const userService = new UserService(new UserRepository(), notificationService)
 // computed
-// Add a new computed property to filter out the current asset
-const availableParents = computed(() => {
-  if (props.edit) {
-    // Filter out the current asset when editing
-    return assetStore.assets.filter(asset => asset.id !== props.data.id)
-  }
-  return assetStore.assets
+const roles = computed(() => {
+  return roleStore.roles
 })
-// watchers for real-time validation
+
+// methods
+async function save() {
+  if (props.edit) {
+    await userService.updateUser(form)
+  } else {
+    await userService.createUser(form)
+  }
+  props.close()
+}
+async function refreshData() {
+  await roleStore.fetchRoles()
+}
+// lifeCycle
+onMounted(() => {
+  refreshData()
+})
+// watch
 watch(
-  () => form,
+  () => selectedRoles.value,
   () => {
-    errors.value = Asset.validate(form)
+    form.roles = []
+    selectedRoles.value.forEach((role: IRole) => {
+      form.roles.push(role.name)
+    })
   },
   {
     deep: true,
   }
 )
 watch(
-  () => selectedParent.value,
+  () => form,
   () => {
-    if (selectedParent.value.id) {
-      form.parent = selectedParent.value.id
-    }
+    errors.value = User.validate(form)
+  },
+  {
+    deep: true,
   }
 )
-// methods
-async function save() {
-  if (props.edit) {
-    await assetService.updateAsset(form)
-  } else {
-    await assetService.createAsset(form)
-  }
-  props.close()
-}
-// lifeCycle
-onMounted(() => {
-  if (props.edit && props.data.parent) {
-    const parent = assetStore.getAssetById(props.data.parent)
-    if (parent) {
-      selectedParent.value = parent
-    }
-  }
-  assetStore.fetchAssets()
-})
-// watch
 </script>
 
 <style scoped></style>

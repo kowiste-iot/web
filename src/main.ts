@@ -18,7 +18,6 @@ import { GridLayout, GridItem } from 'grid-layout-plus'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
-import { WebsocketPlugin } from '@/plugins/websocket/init'
 import { type IWebsocketOption } from '@/plugins/websocket/model'
 import { KeycloakPlugin } from '@/plugins/security/init'
 import { type KeycloakConfig } from '@/plugins/security/types'
@@ -63,4 +62,5 @@ app.use(PrimeVue)
 
 // .use(WebsocketPlugin, wsOptions)
 app.use(KeycloakPlugin, kcOptions)
+
 app.mount('#app')

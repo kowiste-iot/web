@@ -23,7 +23,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
       const response = await axiosServices.get<UserDTO[]>(this.baseUrl)
       return response.data
         .map((dto: UserDTO) => UserMapper.toDomain(dto))
-        .filter((asset: IUser): asset is IUser => asset !== null)
+        .filter((user: IUser): user is IUser => user !== null)
     } catch (error) {
       throw error
     }

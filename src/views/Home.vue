@@ -5,6 +5,7 @@
     :show-time="false"
     :range-selection="true"
   />
+  <img :src="'http://localhost:9000/assets/kowiste/logo.png'"/>
   <div v-if="false">
     <div>
       <FoldButton :icon="EIcon.Add" :color="EColor.Danger">
