@@ -3,14 +3,11 @@ import axiosServices from '@/shared/http/axios-client'
 import { User, type IUser, type IUserRepository } from '../domain/user'
 import type { UserDTO } from '../dtos/userDTO'
 import { UserMapper } from '../dtos/userMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
 
-export class UserRepository implements IUserRepository {
-  private baseUrl: string
-
+export class UserRepository extends BaseRepository implements IUserRepository {
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/users`
+    super('users')
   }
 
   async findById(id: string): Promise<IUser | null> {
@@ -21,7 +18,41 @@ export class UserRepository implements IUserRepository {
       throw error
     }
   }
+  async findAll(): Promise<IUser[]> {
+    try {
+      const response = await axiosServices.get<UserDTO[]>(this.baseUrl)
+      return response.data
+        .map((dto: UserDTO) => UserMapper.toDomain(dto))
+        .filter((asset: IUser): asset is IUser => asset !== null)
+    } catch (error) {
+      throw error
+    }
+  }
+  async create(data: IUser): Promise<void> {
+    try {
+      const dto = UserMapper.toDTO(new User(data))
+      await axiosServices.post(this.baseUrl, dto)
+    } catch (error) {
+      throw error
+    }
+  }
 
+  async update(data: IUser): Promise<void> {
+    try {
+      const dto = UserMapper.toDTO(new User(data))
+      await axiosServices.put(`${this.baseUrl}/${data.id}`, dto)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await axiosServices.delete(`${this.baseUrl}/${id}`)
+    } catch (error) {
+      throw error
+    }
+  }
   async updatePreferences(
     id: string,
     preferences: IUser['preferences']

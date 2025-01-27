@@ -9,6 +9,8 @@ import { UserRepository } from '../repository/userRepository'
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
+    users: [] as IUser[],
+    currentUser: null as IUser | null,
     userInfo: null as IUser | null,
   }),
 
@@ -35,7 +37,13 @@ export const useUserStore = defineStore('userStore', {
       const authStore = useAuthStore()
       this.userInfo = authStore.getUserInfo
     },
-
+    async fetchUsers() {
+      const userService = new UserService(
+        new UserRepository(),
+        new NotificationService(useNotificationStore())
+      )
+      this.users = await userService.getUsers()
+    },
     async updatePreferences(preferences: Partial<IUser['preferences']>) {
       if (!this.userInfo) return
 
@@ -72,7 +80,7 @@ export const useUserStore = defineStore('userStore', {
       //   ...this.userInfo.settings,
       //   ...settings,
       // })
-      const success=true
+      const success = true
 
       if (success && this.userInfo) {
         this.userInfo = {

@@ -61,7 +61,7 @@ export class User implements IUser {
 
     this.branches = this.branches.filter(
       (branch) => !itemsToRemove.includes(branch)
-    )    
+    )
   }
 
   static validate(data: Partial<IUser>): ValidationError<IUser> {
@@ -92,6 +92,10 @@ export class User implements IUser {
 
 export interface IUserRepository {
   findById(id: string): Promise<IUser | null>
+  findAll(): Promise<IUser[]>
+  create(asset: IUser): Promise<void>
+  update(asset: IUser): Promise<void>
+  delete(id: string): Promise<void>
   updatePreferences(
     id: string,
     preferences: IUser['preferences']
