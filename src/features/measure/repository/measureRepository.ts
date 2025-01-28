@@ -1,4 +1,4 @@
-import axiosServices from '@/shared/http/axios-client'
+import axiosServices, { axiosClient } from '@/shared/http/axios-client'
 import {
   Measure,
   type IMeasure,
@@ -16,7 +16,7 @@ export class MeasureRepository implements IMeasureRepository {
   }
   async findById(id: string): Promise<IMeasure | null> {
     try {
-      const response = await axiosServices.get<MeasureDTO>(
+      const response = await axiosClient().get<MeasureDTO>(
         `${this.baseUrl}/${id}`
       )
       return MeasureMapper.toDomain(response.data)
@@ -27,7 +27,7 @@ export class MeasureRepository implements IMeasureRepository {
 
   async findAll(): Promise<IMeasure[]> {
     try {
-      const response = await axiosServices.get<MeasureDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<MeasureDTO[]>(this.baseUrl)
       return response.data
         .map((dto: MeasureDTO) => MeasureMapper.toDomain(dto))
         .filter((measure: IMeasure): measure is IMeasure => measure !== null)
@@ -39,7 +39,7 @@ export class MeasureRepository implements IMeasureRepository {
   async create(measure: IMeasure): Promise<void> {
     try {
       const dto = MeasureMapper.toDTO(new Measure(measure))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -48,7 +48,7 @@ export class MeasureRepository implements IMeasureRepository {
   async update(measure: IMeasure): Promise<void> {
     try {
       const dto = MeasureMapper.toDTO(new Measure(measure))
-      await axiosServices.put(`${this.baseUrl}/${measure.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${measure.id}`, dto)
     } catch (error) {
       throw error
     }
@@ -56,7 +56,7 @@ export class MeasureRepository implements IMeasureRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

@@ -5,7 +5,10 @@
     :show-time="false"
     :range-selection="true"
   />
-  <img :src="'http://localhost:9000/assets/kowiste/logo.png'"/>
+  g{{ Environment.getInstance().storageURL }}g
+  <img
+    :src="Environment.getInstance().storageURL + '/assets/kowiste/logo.png'"
+  />
   <div v-if="false">
     <div>
       <FoldButton :icon="EIcon.Add" :color="EColor.Danger">
@@ -170,6 +173,7 @@ import Card from '@/components/cards/Card.vue'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { EColor } from '@/features/shared/enum/EColor'
 import Calendar from '@/components/form/Calendar/Calendar.vue'
+import { Environment } from '@/utils/enviroment/enviroment'
 
 // other imports
 // props

@@ -1,4 +1,4 @@
-import axiosServices from '@/shared/http/axios-client'
+import axiosServices, { axiosClient } from '@/shared/http/axios-client'
 import {
   Dashboard,
   type IDashboard,
@@ -16,7 +16,7 @@ export class DashboardRepository implements IDashboardRepository {
   }
   async findById(id: string): Promise<IDashboard | null> {
     try {
-      const response = await axiosServices.get<DashboardDTO>(
+      const response = await axiosClient().get<DashboardDTO>(
         `${this.baseUrl}/${id}`
       )
       return DashboardMapper.toDomain(response.data)
@@ -27,7 +27,7 @@ export class DashboardRepository implements IDashboardRepository {
 
   async findAll(): Promise<IDashboard[]> {
     try {
-      const response = await axiosServices.get<DashboardDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<DashboardDTO[]>(this.baseUrl)
       return response.data
         .map((dto: DashboardDTO) => DashboardMapper.toDomain(dto))
         .filter(
@@ -41,7 +41,7 @@ export class DashboardRepository implements IDashboardRepository {
   async create(dashboard: IDashboard): Promise<void> {
     try {
       const dto = DashboardMapper.toDTO(new Dashboard(dashboard))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -50,7 +50,7 @@ export class DashboardRepository implements IDashboardRepository {
   async update(dashboard: IDashboard): Promise<void> {
     try {
       const dto = DashboardMapper.toDTO(new Dashboard(dashboard))
-      await axiosServices.put(`${this.baseUrl}/${dashboard.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${dashboard.id}`, dto)
     } catch (error) {
       throw error
     }
@@ -58,7 +58,7 @@ export class DashboardRepository implements IDashboardRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

@@ -1,5 +1,5 @@
 // features/resource/repository/resourceRepository.ts
-import axiosServices from '@/shared/http/axios-client'
+import axiosServices, { axiosClient } from '@/shared/http/axios-client'
 import { type IScope, type IScopeRepository } from '../domain/scope'
 import type { ScopeDTO } from '../dtos/scopeDTO'
 import { ScopeMapper } from '../dtos/scopeMappers'
@@ -15,7 +15,7 @@ export class ScopeRepository
 
   async findAll(): Promise<IScope[]> {
     try {
-      const response = await axiosServices.get<ScopeDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<ScopeDTO[]>(this.baseUrl)
       return response.data
         .map((dto: ScopeDTO) => ScopeMapper.toDomain(dto))
         .filter((scope: IScope): scope is IScope => scope !== null)

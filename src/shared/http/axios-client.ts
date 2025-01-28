@@ -1,59 +1,69 @@
+// axios-client.ts
 import axios from 'axios'
-
-import { AxiosError } from 'axios'
+import { AxiosError, type AxiosInstance } from 'axios'
 import type { InternalAxiosRequestConfig } from 'axios'
 import { useRequest } from '@/plugins/request/store'
 import { useAuthStore } from '@/plugins/security/store'
-import router from '@/router'
-const axiosServices = axios.create({
-  timeout: import.meta.env.VITE_API_TIMEOUT,
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+import { getRouter } from '@/router'
+import { Environment } from '@/utils/enviroment/enviroment'
 
-axiosServices.interceptors.request.use(
-  async (config) => {
-    const token = useAuthStore().token
-    if (token) {
-      console.log('token axios', token.slice(-5))
+let axiosInstance: AxiosInstance | null = null
 
-      config.headers.Authorization = `Bearer ${token}`
+export const createAxiosClient = () => {
+  const env = Environment.getInstance()
+
+  axiosInstance = axios.create({
+    timeout: env.APITimeOut,
+    baseURL: env.APIURL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  axiosInstance.interceptors.request.use(
+    async (config) => {
+      const token = useAuthStore().token
+      if (token) {
+        console.log('token axios', token.slice(-5))
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      config.cancelToken = useRequest().create(getRequestID(config))
+      return config
+    },
+    (error: Error) => Promise.reject(error)
+  )
+
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      useRequest().delete(getRequestID(response.config))
+      if (response.status == 401 || response.status == 403) {
+        console.log('not auth')
+        useAuthStore().logout()
+        getRouter().push('/')
+      }
+      return response.data
+    },
+    (error: AxiosError) => {
+      console.log('error response')
+      if (error.config) useRequest().delete(getRequestID(error.config))
+      return Promise.reject(error)
     }
-    //useLoading().setRequest(true)
-    //console.log('request id', requestID)
-    config.cancelToken = useRequest().create(getRequestID(config))
-    // config.headers.Authorization = `Bearer ${useKeycloakStore().token}`
-    return config
-  },
-  (error: Error) => Promise.reject(error)
-)
+  )
 
-// interceptor for http response
-axiosServices.interceptors.response.use(
-  (response) => {
-    //useLoading().setRequest(false)
-    useRequest().delete(getRequestID(response.config))
-    if (response.status == 401 || response.status == 403) {
-      console.log('not auth')
+  return axiosInstance
+}
 
-      useAuthStore().logout()
-      router.push('/')
-    }
-    return response.data
-  },
-  (error: AxiosError) => {
-    //useLoading().setRequest(false)
-    console.log('error response')
-
-    if (error.config) useRequest().delete(getRequestID(error.config))
-    return Promise.reject(error)
+export const axiosClient = () => {
+  if (!axiosInstance) {
+    throw new Error(
+      'Axios client not initialized. Call createAxiosClient first'
+    )
   }
-)
+  return axiosInstance
+}
 
 export function getRequestID(config: InternalAxiosRequestConfig<any>): string {
   return `${config.method}-${config.url}`
 }
 
-export default axiosServices
+export default axiosClient

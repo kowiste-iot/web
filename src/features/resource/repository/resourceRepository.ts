@@ -1,5 +1,5 @@
 // features/resource/repository/resourceRepository.ts
-import axiosServices from '@/shared/http/axios-client'
+import axiosServices, { axiosClient } from '@/shared/http/axios-client'
 import {
   Resource,
   type IResource,
@@ -19,7 +19,7 @@ export class ResourceRepository
 
   async findById(id: string): Promise<IResource | null> {
     try {
-      const response = await axiosServices.get<ResourceDTO>(
+      const response = await axiosClient().get<ResourceDTO>(
         `${this.baseUrl}/${id}`
       )
       return ResourceMapper.toDomain(response.data)
@@ -30,7 +30,7 @@ export class ResourceRepository
 
   async findAll(): Promise<IResource[]> {
     try {
-      const response = await axiosServices.get<ResourceDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<ResourceDTO[]>(this.baseUrl)
       return response.data
         .map((dto: ResourceDTO) => ResourceMapper.toDomain(dto))
         .filter(
@@ -44,7 +44,7 @@ export class ResourceRepository
   async create(data: IResource): Promise<void> {
     try {
       const dto = ResourceMapper.toDTO(new Resource(data))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -53,7 +53,7 @@ export class ResourceRepository
   async update(data: IResource): Promise<void> {
     try {
       const dto = ResourceMapper.toDTO(new Resource(data))
-      await axiosServices.put(`${this.baseUrl}/${data.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${data.id}`, dto)
     } catch (error) {
       throw error
     }
@@ -61,7 +61,7 @@ export class ResourceRepository
 
   async delete(id: string): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

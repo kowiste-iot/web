@@ -1,5 +1,5 @@
 // repository/userRepository.ts
-import axiosServices from '@/shared/http/axios-client'
+import axiosServices, { axiosClient } from '@/shared/http/axios-client'
 import { User, type IUser, type IUserRepository } from '../domain/user'
 import type { UserDTO } from '../dtos/userDTO'
 import { UserMapper } from '../dtos/userMappers'
@@ -12,7 +12,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
 
   async findById(id: string): Promise<IUser | null> {
     try {
-      const response = await axiosServices.get<UserDTO>(`${this.baseUrl}/${id}`)
+      const response = await axiosClient().get<UserDTO>(`${this.baseUrl}/${id}`)
       return UserMapper.toDomain(response.data)
     } catch (error) {
       throw error
@@ -20,7 +20,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
   }
   async findAll(): Promise<IUser[]> {
     try {
-      const response = await axiosServices.get<UserDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<UserDTO[]>(this.baseUrl)
       return response.data
         .map((dto: UserDTO) => UserMapper.toDomain(dto))
         .filter((user: IUser): user is IUser => user !== null)
@@ -31,7 +31,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
   async create(data: IUser): Promise<void> {
     try {
       const dto = UserMapper.toDTO(new User(data))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -40,7 +40,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
   async update(data: IUser): Promise<void> {
     try {
       const dto = UserMapper.toDTO(new User(data))
-      await axiosServices.put(`${this.baseUrl}/${data.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${data.id}`, dto)
     } catch (error) {
       throw error
     }
@@ -48,7 +48,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }
@@ -58,7 +58,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
     preferences: IUser['preferences']
   ): Promise<void> {
     try {
-      await axiosServices.patch(
+      await axiosClient().patch(
         `${this.baseUrl}/${id}/preferences`,
         preferences
       )
@@ -69,7 +69,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
 
   async updateSettings(id: string, settings: IUser['settings']): Promise<void> {
     try {
-      await axiosServices.patch(`${this.baseUrl}/${id}/settings`, settings)
+      await axiosClient().patch(`${this.baseUrl}/${id}/settings`, settings)
     } catch (error) {
       throw error
     }
