@@ -27,7 +27,7 @@ import createAppRouter from './router'
 import { extractRealmFromPath } from './plugins/security/utils'
 import { Environment } from './utils/enviroment/enviroment'
 import { URLProvider } from './utils/http/url/url'
-import { createAxiosClient } from './shared/http/axios-client'
+import { createAxiosClient } from './utils/http/axios-client'
 
 const envProv = new URLProvider()
 const env = Environment.init(envProv)

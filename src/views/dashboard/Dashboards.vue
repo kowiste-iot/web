@@ -6,7 +6,7 @@
           <Button
             :color="EColor.Primary"
             small
-            @click="router.push('/dashboard/' + data.id)"
+            @click="getRouter().push('/dashboard/' + data.id)"
             >{{ $t('dashboard.goto') }}</Button
           >
         </template>
@@ -99,7 +99,7 @@ import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import router from '@/router'
+import { getRouter } from '@/router'
 import type { Property } from '@/model/property'
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import { DashboardsPage } from '@/features/dashboard/presentation/pages/pageDashboards'

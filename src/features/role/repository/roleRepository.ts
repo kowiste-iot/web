@@ -1,5 +1,5 @@
 // features/role/repository/roleRepository.ts
-import axiosServices, { axiosClient } from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Role, type IRole, type IRoleRepository } from '../domain/role'
 import type { RoleDTO } from '../dtos/roleDTO'
 import { RoleMapper } from '../dtos/roleMappers'

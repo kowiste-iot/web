@@ -1,4 +1,4 @@
-import axiosServices, { axiosClient } from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import type { AlertDTO } from '../dtos/alertDTO'
 import { AlertMapper } from '../dtos/alertMappers'

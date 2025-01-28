@@ -1,4 +1,4 @@
-import axiosServices, { axiosClient } from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import {
   Dashboard,
   type IDashboard,

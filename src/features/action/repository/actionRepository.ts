@@ -1,4 +1,4 @@
-import { axiosClient } from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
 import type { ActionDTO } from '../dtos/actionDTO'
 import { ActionMapper } from '../dtos/actionMappers'

@@ -4,13 +4,13 @@ export interface IProperty {
   id: number
   icon: EIcon
   name: string
-  option?: { [key: string]: any }
+  option?: Record<string, any>
 }
 export class Property implements IProperty {
   id: number
   icon: EIcon
   name: string
-  option?: { [key: string]: any }
+  option?: Record<string, any>
 
   constructor() {
     this.id = 0

@@ -3,13 +3,9 @@ export class Tab {
   name: string
   selected: boolean
   icon?: string
-  opt: { [key: string]: string }
+  opt: Record<string, string>
 
-  constructor(
-    id: number = 0,
-    name: string = '',
-    selected: boolean = false
-  ) {
+  constructor(id: number = 0, name: string = '', selected: boolean = false) {
     this.id = id
     this.name = name
     this.selected = selected

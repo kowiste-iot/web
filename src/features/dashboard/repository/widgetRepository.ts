@@ -1,10 +1,9 @@
-import axiosServices, { axiosClient }  from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
 import type { WidgetDTO } from '../dtos/widgetDTO'
 import { WidgetMapper } from '../dtos/widgetMappers'
 
-
-export class WidgetRepository implements IWidgetRepository{
+export class WidgetRepository implements IWidgetRepository {
   async findById(id: string): Promise<IWidget | null> {
     try {
       const response = await axiosClient().get<WidgetDTO>(`/widgets/${id}`)

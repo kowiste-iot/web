@@ -7,7 +7,7 @@ export interface IResource {
   id: string
   name: string
   displayName: string
-  roles: { [key: string]: IScope[] }
+  roles: Record<string, IScope[]>
 }
 
 export class Resource implements IResource {
@@ -15,7 +15,7 @@ export class Resource implements IResource {
   id: string
   name: string
   displayName: string
-  roles: { [key: string]: IScope[] }
+  roles: Record<string, IScope[]>
 
   constructor(props: IResource) {
     this.id = props.id

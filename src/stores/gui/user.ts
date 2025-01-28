@@ -1,5 +1,5 @@
+import type { IUser } from '@/features/user/domain/user';
 import { defineStore } from 'pinia';
-import type { IUser } from '@/model/gui/user';
 
 interface State {
   _user: IUser | undefined;

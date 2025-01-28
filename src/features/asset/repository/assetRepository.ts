@@ -1,4 +1,4 @@
-import axiosServices, { axiosClient } from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Asset, type IAsset, type IAssetRepository } from '../domain/asset'
 import type { AssetDTO } from '../dtos/assetDTO'
 import { AsssetMapper } from '../dtos/assetMappers'

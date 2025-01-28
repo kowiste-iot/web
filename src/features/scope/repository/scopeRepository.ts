@@ -1,5 +1,5 @@
 // features/resource/repository/resourceRepository.ts
-import axiosServices, { axiosClient } from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { type IScope, type IScopeRepository } from '../domain/scope'
 import type { ScopeDTO } from '../dtos/scopeDTO'
 import { ScopeMapper } from '../dtos/scopeMappers'

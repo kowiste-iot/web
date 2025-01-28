@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 // stores import
 
@@ -51,7 +51,6 @@ import { ref, computed } from 'vue'
 
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'
-import { EColor } from '@/features/shared/enum/EColor'
 import { ENotificationSeverity } from '@/features/notification/domain/ENotificationSeverity'
 import { Property } from '@/model/property'
 
@@ -68,7 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 // data
 const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
+const isHover = ref({} as Record<string, boolean>)
 // storage calls
 
 // computed
