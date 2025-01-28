@@ -153,7 +153,9 @@ function toggleDropdown() {
 
 function isSelected(option: any): boolean {
   if (props.multiple) {
-    return (modelValue.value as any[]).some((item) => getItemId(item) === getItemId(option))
+    return (modelValue.value as any[]).some(
+      (item) => getItemId(item) === getItemId(option)
+    )
   }
   return modelValue.value && getItemId(modelValue.value) === getItemId(option)
 }
@@ -173,9 +175,10 @@ function toggleSelection(option: any) {
 
     modelValue.value = newValue
   } else {
-    modelValue.value = modelValue.value && getItemId(modelValue.value) === getItemId(option) 
-      ? null 
-      : option
+    modelValue.value =
+      modelValue.value && getItemId(modelValue.value) === getItemId(option)
+        ? null
+        : option
     isOpen.value = false
   }
 }

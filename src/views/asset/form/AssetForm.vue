@@ -18,20 +18,15 @@
     </div>
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
-      <div class="col-md-8">
-        <DropDown
-          optionValue="name"
-          optionLabel="name"
-          :placeholder="$t('asset.form.parentHolder')"
-          :options="availableParents"
-          :error="errors['parent']"
-          v-model="selectedParent"
-        >
-          <template #option="{ data }">
-            {{ data.name }}
-          </template>
-        </DropDown>
-      </div>
+      <MultiDropdown
+        class="col-md-8"
+        :options="availableParents"
+        idField="id"
+        labelField="name"
+        :placeholder="$t('asset.form.parentHolder')"
+        :error="errors['parent']"
+        v-model="selectedParent"
+      />
     </div>
     <template #footer>
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
@@ -52,7 +47,6 @@ import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
@@ -63,6 +57,7 @@ import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
 
 // other imports
 // props
@@ -101,7 +96,7 @@ const assetService = new AssetService(
 const availableParents = computed(() => {
   if (props.edit) {
     // Filter out the current asset when editing
-    return assetStore.assets.filter(asset => asset.id !== props.data.id)
+    return assetStore.assets.filter((asset) => asset.id !== props.data.id)
   }
   return assetStore.assets
 })

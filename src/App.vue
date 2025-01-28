@@ -34,6 +34,7 @@ import AlertContainer from './features/notification/component/AlertContainer.vue
 import { loadTheme } from './utils/theme/init'
 import { useAuthStore } from './plugins/security/store'
 import { useScopeStore } from './features/scope/stores/useScopeStore'
+import { useAssetStore } from './features/asset/stores/useAssetStore'
 // model imports
 
 // props
@@ -43,6 +44,7 @@ import { useScopeStore } from './features/scope/stores/useScopeStore'
 const route = useRoute()
 const authStore = useAuthStore()
 const scopeStore = useScopeStore()
+const assetStore = useAssetStore()
 // computed
 const isTenantRoute = computed(() => route.name === 'tenant')
 
@@ -64,6 +66,7 @@ watch(
     if (isAuthenticated) {
       //fetch here 'static' data
       scopeStore.fetchScopes()
+      assetStore.fetchAssets()
     }
   },
   { immediate: true }
