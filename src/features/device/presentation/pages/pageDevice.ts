@@ -16,6 +16,7 @@ export class DevicePage extends PageBase {
     id: Columns
     name: Columns
     asset: Columns
+    description: Columns
   }
 
   constructor() {
@@ -47,6 +48,7 @@ export class DevicePage extends PageBase {
       id: new Columns('ID', 'id'),
       name: new Columns(t('device.table.name'), 'name'),
       asset: new Columns(t('device.table.parent'), 'parent'),
+      description: new Columns(t('device.table.description'), 'description'),
     }
   }
 }

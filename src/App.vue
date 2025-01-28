@@ -12,7 +12,6 @@
     <AlertContainer />
     <div class="d-flex flex-column w-100 m-0 p-0">
       <Header />
-      <div class="bg-primary">dsgfa</div>
       <div class="flex-fill h-100 m-0 p-0">
         <div class="container-md h-100 pt-4 pb-0 mb-0">
           <RouterView />

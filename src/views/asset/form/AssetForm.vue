@@ -100,24 +100,7 @@ const availableParents = computed(() => {
   }
   return assetStore.assets
 })
-// watchers for real-time validation
-watch(
-  () => form,
-  () => {
-    errors.value = Asset.validate(form)
-  },
-  {
-    deep: true,
-  }
-)
-watch(
-  () => selectedParent.value,
-  () => {
-    if (selectedParent.value.id) {
-      form.parent = selectedParent.value.id
-    }
-  }
-)
+
 // methods
 async function save() {
   if (props.edit) {
@@ -138,6 +121,23 @@ onMounted(() => {
   assetStore.fetchAssets()
 })
 // watch
+watch(
+  () => form,
+  () => {
+    errors.value = Asset.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
+watch(
+  () => selectedParent.value,
+  () => {
+    if (selectedParent.value.id) {
+      form.parent = selectedParent.value.id
+    }
+  }
+)
 </script>
 
 <style scoped></style>

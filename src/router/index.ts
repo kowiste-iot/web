@@ -12,7 +12,8 @@ import { tenantGuard } from '@/features/tenant/router/router'
 let router: Router | null = null
 
 const createAppRouter = (baseUrl: string) => {
-  const router = createRouter({
+  console.log('Init router')
+   router = createRouter({
     history: createWebHistory(baseUrl),
     routes: [
       {

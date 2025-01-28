@@ -6,9 +6,10 @@
           <Button
             :color="EColor.Primary"
             small
-            @click="getRouter().push('/dashboard/' + data.id)"
+            @click="goTo(data.id)"
             >{{ $t('dashboard.goto') }}</Button
           >
+
         </template>
       </Column>
       <Column
@@ -113,7 +114,6 @@ import { useBasePage } from '@/composable/useBasePage'
 // props
 // data
 const page = ref(new DashboardsPage())
-
 // service
 const { notificationService } = useBasePage(page.value.title)
 const dashboardService = new DashboardService(
@@ -144,6 +144,9 @@ function deleteDashboard() {
   dashboardService.deleteDashboard(page.value.selected?.id!)
   page.value.selected = undefined
   page.value.showModal = false
+}
+function goTo(id: string){
+  getRouter().push('/dashboard/' + id)
 }
 // lifeCycle
 // watch

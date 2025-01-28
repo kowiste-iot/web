@@ -6,13 +6,12 @@ import {
 } from '../domain/dashboard'
 import type { DashboardDTO } from '../dtos/dashboardDTO'
 import { DashboardMapper } from '../dtos/dashboardMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
 
-export class DashboardRepository implements IDashboardRepository {
-  private baseUrl: string
+export class DashboardRepository  extends BaseRepository implements IDashboardRepository {
+
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/dashboards`
+   super('dashboards')
   }
   async findById(id: string): Promise<IDashboard | null> {
     try {

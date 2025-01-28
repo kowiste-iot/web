@@ -2,13 +2,14 @@ import { axiosClient } from '@/utils/http/axios-client'
 import { Device, type IDevice, type IDeviceRepository } from '../domain/device'
 import type { DeviceDTO } from '../dtos/deviceDTO'
 import { DeviceMapper } from '../dtos/deviceMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
 
-export class DeviceRepository implements IDeviceRepository {
-  private baseUrl: string
+export class DeviceRepository
+  extends BaseRepository
+  implements IDeviceRepository
+{
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/devices`
+    super('devices')
   }
   async findById(id: string): Promise<IDevice | null> {
     try {

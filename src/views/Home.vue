@@ -6,7 +6,7 @@
     :range-selection="true"
   />
   <img
-    :src="Environment.getInstance().storageURL + '/assets/kowiste/logo.png'"
+    :src="Environment.getInstance().storageURL + '/assets/logo.png'"
   />
   <div v-if="false">
     <div>

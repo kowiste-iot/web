@@ -27,7 +27,7 @@
     }
   },
   "dashboard": {
-    "title": "dasboards",
+    "title": "dashboards",
     "goto": "Go",
     "table": {
       "name": "Name",
@@ -82,7 +82,8 @@
     "title": "device",
     "table": {
       "name": "Name",
-      "parent": "Belong to"
+      "parent": "Belong to",
+      "description": "Description"
     },
     "delete": "Are you sure you want to delete it",
     "form": {
@@ -100,7 +101,8 @@
     "title": "measure",
     "table": {
       "name": "Name",
-      "parent": "Belong to"
+      "parent": "Belong to",
+      "description": "Description"
     },
     "delete": "Are you sure you want to delete it",
     "form": {

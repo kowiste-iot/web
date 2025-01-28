@@ -24,7 +24,7 @@
     }
   },
   "dashboard": {
-    "title": "dasboards",
+    "title": "dashboards",
     "goto": "Ir",
     "table": {
       "name": "Nombre",

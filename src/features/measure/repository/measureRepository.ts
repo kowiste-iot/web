@@ -6,13 +6,12 @@ import {
 } from '../domain/measure'
 import type { MeasureDTO } from '../dtos/measureDTO'
 import { MeasureMapper } from '../dtos/measureMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
 
-export class MeasureRepository implements IMeasureRepository {
-  private baseUrl: string
+export class MeasureRepository  extends BaseRepository implements IMeasureRepository {
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/measures`
+       super('measures')
+
   }
   async findById(id: string): Promise<IMeasure | null> {
     try {

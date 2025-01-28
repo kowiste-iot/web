@@ -36,16 +36,18 @@ export const createAxiosClient = () => {
   axiosInstance.interceptors.response.use(
     (response) => {
       useRequest().delete(getRequestID(response.config))
-      if (response.status == 401 || response.status == 403) {
-        console.log('not auth')
-        useAuthStore().logout()
-        getRouter().push('/')
-      }
       return response.data
     },
     (error: AxiosError) => {
       console.log('error response')
       if (error.config) useRequest().delete(getRequestID(error.config))
+
+      if (error.response?.status === 401)  {
+        console.log('not auth')
+        useAuthStore().logout()
+        getRouter().push('/')
+      }
+
       return Promise.reject(error)
     }
   )
