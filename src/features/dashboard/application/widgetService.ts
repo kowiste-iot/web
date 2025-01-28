@@ -1,7 +1,6 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
-import type { IWidget, IWidgetData, IWidgetLinkData, IWidgetRepository } from '../domain/widget'
+import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
 import { EWidget } from '../domain/EWidget'
 
 const widgetLinkSchema = z.object({
@@ -68,8 +67,9 @@ export class WidgetService {
 
   async createWidget(data: IWidget): Promise<boolean> {
     try {
-      const validated = widgetSchema.parse(data)
-      await this.widgetRepository.create(validated)
+      const errors = Widget.validate(data)
+      const widget = new Widget(data)
+      await this.widgetRepository.create(widget)
       this.notificationService.success('Widget created successfully')
       return true
     } catch (error) {

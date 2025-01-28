@@ -53,6 +53,7 @@ import { ref } from 'vue'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { ENotificationSeverity } from '@/features/notification/domain/ENotificationSeverity'
 import { Property } from '@/model/property'
+import { Notification } from '@/model/notification/notification'
 
 // other imports
 // props
