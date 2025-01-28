@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 // imports
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 // stores import
 // components import
 import { RouterView, useRoute } from 'vue-router'
@@ -32,6 +32,8 @@ import Header from '@/components/menu/Header.vue'
 import SideMenu from './features/menu/component/SideMenu.vue'
 import AlertContainer from './features/notification/component/AlertContainer.vue'
 import { loadTheme } from './utils/theme/init'
+import { useAuthStore } from './plugins/security/store'
+import { useScopeStore } from './features/scope/stores/useScopeStore'
 // model imports
 
 // props
@@ -39,9 +41,10 @@ import { loadTheme } from './utils/theme/init'
 
 // storage calls
 const route = useRoute()
-const isTenantRoute = computed(() => route.name === 'tenant')
-
+const authStore = useAuthStore()
+const scopeStore = useScopeStore()
 // computed
+const isTenantRoute = computed(() => route.name === 'tenant')
 
 // methods
 
@@ -55,6 +58,16 @@ onMounted(() => {
 })
 
 // watch
+watch(
+  () => authStore.isAuthenticated,
+  (isAuthenticated) => {
+    if (isAuthenticated) {
+      //fetch here 'static' data
+      scopeStore.fetchScopes()
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scope></style>

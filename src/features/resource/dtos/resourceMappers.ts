@@ -3,7 +3,7 @@ import type { ResourceDTO } from './resourceDTO'
 import { Resource, type IResource } from '../domain/resource'
 
 export class ResourceMapper extends BaseMapper {
-  static toDomain(raw: ResourceDTO): IResource {
+  static toDomain(raw: ResourceDTO,): IResource {
     return new Resource({
       id: raw.id,
       name: raw.name,
@@ -14,6 +14,7 @@ export class ResourceMapper extends BaseMapper {
 
   static toDTO(domain: Resource): ResourceDTO {
     const json = domain.toJSON()
+    json.roles
     return {
       id: json.id!,
       name: json.name,

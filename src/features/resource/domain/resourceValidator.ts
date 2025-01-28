@@ -1,4 +1,3 @@
-// features/resource/domain/resourceValidator.ts
 import { z } from 'zod'
 import { BaseValidator } from '@/features/shared/domain/baseValidator'
 import { EValidation } from '@/features/shared/enum/EValidation'

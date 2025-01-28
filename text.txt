@@ -47,8 +47,14 @@ src/
     color/
       ColorPicker.vue
     form/
+      Calendar/
+        Calendar.vue
+        models.ts
+        useDatePicker.ts
       DropDown.vue
       Input.vue
+      InputText.vue
+      MultiDropdown.vue
     heatmap/
       CalenderHeatmap.vue
     icons/
@@ -211,11 +217,60 @@ src/
         notificationEnum.ts
       stores/
         notificationStore.ts
+    resource/
+      application/
+        resourceService.ts
+      domain/
+        resource.ts
+        resourceValidator.ts
+      dtos/
+        resourceDTO.ts
+        resourceMappers.ts
+      presentation/
+        pages/
+          pageResource.ts
+      repository/
+        resourceRepository.ts
+      stores/
+        useResourceStore.ts
+    role/
+      application/
+        roleService.ts
+      domain/
+        role.ts
+        roleValidator.ts
+      dtos/
+        roleDTO.ts
+        roleMappers.ts
+      presentation/
+        pages/
+          pageRoles.ts
+      repository/
+        roleRepository.ts
+      stores/
+        useRoleStore.ts
+    scope/
+      application/
+        scopeService.ts
+      domain/
+        scope.ts
+        scopeValidator.ts
+      dtos/
+        scopeDTO.ts
+        scopeMappers.ts
+      presentation/
+        pages/
+          pageScope.ts
+      repository/
+        scopeRepository.ts
+      stores/
+        useScopeStore.ts
     shared/
       domain/
         EActionGUI.ts
         EHttpStatus.ts
         ETableLocation.ts
+        baseRepository.ts
         baseValidator.ts
       dtos/
         baseMapper.ts
@@ -234,6 +289,22 @@ src/
         router.ts
       stores/
         tenant.ts
+    user/
+      application/
+        userService.ts
+      domain/
+        user.ts
+        userValidator.ts
+      dtos/
+        userDTO.ts
+        userMappers.ts
+      presentation/
+        pages/
+          pageUser.ts
+      repository/
+        userRepository.ts
+      stores/
+        useUserStore.ts
   icon.ts
   main.ts
   model/
@@ -276,13 +347,18 @@ src/
     process.ts
   shared/
     http/
-      axios-client.ts
   stores/
     gui/
       alert.ts
       breadcrumb.ts
       user.ts
   utils/
+    enviroment/
+      enviroment.ts
+    http/
+      axios-client.ts
+      url/
+        url.ts
     routes/
       routes.ts
     template/
@@ -298,6 +374,9 @@ src/
         store.ts
       view/
         View.vue
+    theme/
+      init.ts
+      model.ts
     time/
       conversion.ts
       time.ts
@@ -311,6 +390,10 @@ src/
       Resource.vue
       Role.vue
       User.vue
+      form/
+        ResourceForm.vue
+        RoleForm.vue
+        UserForm.vue
     asset/
       Assets.vue
       form/

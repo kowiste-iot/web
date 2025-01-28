@@ -1,4 +1,3 @@
-// features/resource/stores/useResourceStore.ts
 import { defineStore } from 'pinia'
 
 import { NotificationService } from '@/features/notification/application/notificationService'

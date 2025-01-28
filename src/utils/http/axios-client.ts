@@ -24,7 +24,7 @@ export const createAxiosClient = () => {
     async (config) => {
       const token = useAuthStore().token
       if (token) {
-        console.log('token axios', token.slice(-5))
+        //console.log('token axios', token.slice(-5))
         config.headers.Authorization = `Bearer ${token}`
       }
       config.cancelToken = useRequest().create(getRequestID(config))

@@ -83,7 +83,7 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     setKeycloak(keycloak: Keycloak) {
-      console.log('update  kc', keycloak.token?.slice(-5))
+      // console.log('update  kc', keycloak.token?.slice(-5))
       this.keycloak = keycloak
       this.token = keycloak.token
       this.isInitialized = true

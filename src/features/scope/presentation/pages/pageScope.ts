@@ -13,13 +13,7 @@ export class ResourcesPage extends PageBase {
   showForm: boolean
   editForm: boolean
   showModal: boolean
-  table: {
-    name: Columns
-    type: Columns
-    displayName: Columns
-    uris: Columns
-    scopes: Columns
-  }
+
 
   constructor() {
     const { t } = useI18n()
@@ -35,7 +29,6 @@ export class ResourcesPage extends PageBase {
     this.showForm = false
     this.editForm = false
     this.showModal = false
-    this.table = this.createTable()
   }
 
   reset() {
@@ -45,15 +38,5 @@ export class ResourcesPage extends PageBase {
     this.selected = undefined
   }
 
-  private createTable() {
-    const { t } = useI18n()
 
-    return {
-      name: new Columns(t('resource.table.name'), 'displayName'),
-      type: new Columns(t('resource.table.type'), 'type'),
-      displayName: new Columns(t('resource.table.displayName'), 'displayName'),
-      uris: new Columns(t('resource.table.uris'), 'uris'),
-      scopes: new Columns(t('resource.table.scopes'), 'scopes'),
-    }
-  }
 }

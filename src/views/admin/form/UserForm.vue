@@ -32,6 +32,7 @@
         class="col-md-8"
         :placeholder="$t('user.form.emailHolder')"
         type="email"
+        :disabled="props.edit"
         :error="errors['email']"
         v-model="form.email"
       />

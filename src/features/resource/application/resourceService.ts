@@ -1,4 +1,3 @@
-// features/resource/application/resourceService.ts
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import {

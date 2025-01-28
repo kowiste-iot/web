@@ -5,7 +5,6 @@
     :show-time="false"
     :range-selection="true"
   />
-  g{{ Environment.getInstance().storageURL }}g
   <img
     :src="Environment.getInstance().storageURL + '/assets/kowiste/logo.png'"
   />

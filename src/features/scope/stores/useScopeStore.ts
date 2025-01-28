@@ -17,6 +17,9 @@ export const useScopeStore = defineStore('scopeStore', {
         return state.scopes.find((scope) => scope.id === id)
       }
     },
+    scopesMap(): Record<string, IScope> {
+      return Object.fromEntries(this.scopes.map((scope) => [scope.name, scope]))
+    },
   },
   actions: {
     async fetchScopes() {

@@ -87,7 +87,6 @@ export class Environment {
     } else {
       console.log('no redirect set')
     }
-    console.log('redirect set', this)
   }
 
   apiURL(

@@ -1,4 +1,3 @@
-// features/resource/repository/resourceRepository.ts
 import { axiosClient } from '@/utils/http/axios-client'
 import {
   Resource,
@@ -31,6 +30,7 @@ export class ResourceRepository
   async findAll(): Promise<IResource[]> {
     try {
       const response = await axiosClient().get<ResourceDTO[]>(this.baseUrl)
+
       return response.data
         .map((dto: ResourceDTO) => ResourceMapper.toDomain(dto))
         .filter(

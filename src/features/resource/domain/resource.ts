@@ -1,4 +1,3 @@
-// features/resource/domain/resource.ts
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { ResourceValidator } from './resourceValidator'
 import type { IScope } from '@/features/scope/domain/scope'

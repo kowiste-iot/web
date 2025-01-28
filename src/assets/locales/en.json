@@ -193,7 +193,8 @@
   "resource": {
     "title": "resources",
     "table": {
-      "name": "Name"
+      "name": "Name",
+      "scopes": "Scopes"
     },
     "form": {
       "role": "Roles",
