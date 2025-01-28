@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import Keycloak from 'keycloak-js'
 import type { Role, ResourcePermission } from './types'
-import { type IUser, User } from '@/features/user/domain/user'
+import { type ISession, Session } from '@/features/session/domain/session'
 
 interface AuthState {
   keycloak?: Keycloak
@@ -47,13 +47,13 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    getUserInfo(): IUser {
+    getUserInfo(): ISession {
       const tokenParsed = this.keycloak?.tokenParsed
       if (tokenParsed == undefined) {
-        return {} as IUser
+        return {} as ISession
       }
 
-      const temp = new User({
+      const temp = new Session({
         id: tokenParsed.sub!,
         firstName: tokenParsed.given_name ?? '',
         lastName: tokenParsed.family_name ?? '',

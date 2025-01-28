@@ -75,6 +75,9 @@
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
+import { useBasePage } from '@/composable/useBasePage'
+import { useUserStore } from '@/features/user/stores/useUserStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 
 // components import
 // model imports
@@ -89,8 +92,6 @@ import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
 import Modal from '@/components/cards/Modal.vue'
-import { useBasePage } from '@/composable/useBasePage'
-import { useUserStore } from '@/features/user/stores/useUserStore'
 import { UserPage } from '@/features/user/presentation/pages/pageUser'
 import { UserService } from '@/features/user/application/userService'
 import { UserRepository } from '@/features/user/repository/userRepository'
@@ -104,10 +105,8 @@ const page = reactive(new UserPage())
 
 //service
 const { notificationService } = useBasePage(page.title)
-const userService = new UserService(
-  new UserRepository(),
-  notificationService
-)
+const userService = new UserService(new UserRepository(), notificationService)
+const sessionStore = useSessionStore()
 const userStore = useUserStore()
 
 // computed
@@ -115,7 +114,7 @@ const assets = computed(() => {
   return userStore.users
 })
 const branch = computed(() => {
-  return userStore.getCurrentBranch
+  return sessionStore.getCurrentBranch
 })
 // methods
 function propertySelected(prop: Property, data: IUser) {
@@ -140,13 +139,12 @@ function closeForm() {
   refreshData()
   page.reset()
 }
-async function refreshData(){
+async function refreshData() {
   await userStore.fetchUsers()
-
 }
 // lifeCycle
 onMounted(() => {
-   refreshData()
+  refreshData()
 })
 // watch
 watch(

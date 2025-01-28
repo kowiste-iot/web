@@ -2,7 +2,7 @@
 import Keycloak from 'keycloak-js'
 import type { KeycloakConfig } from './types'
 import { useAuthStore } from './store'
-import { useUserStore } from '@/features/user/stores/useUserStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 
 export class KeycloakService {
   private keycloak: Keycloak | null = null
@@ -82,12 +82,12 @@ export class KeycloakService {
               'Token refreshed successfully',
               this.keycloak?.token?.slice(-5)
             )
-            const userStore = useUserStore()
+            const sessionStore = useSessionStore()
             const authStore = useAuthStore()
 
             // Update auth store with the refreshed keycloak instance
             authStore.setKeycloak(this.keycloak!)
-            userStore.syncWithAuth()
+            sessionStore.syncWithAuth()
             this.scheduleTokenRefresh()
           }
         } catch (error) {
@@ -108,10 +108,10 @@ export class KeycloakService {
       const refreshed = await this.keycloak?.updateToken(this.MIN_VALIDITY)
       if (refreshed) {
         console.log('Token refreshed successfully')
-        const userStore = useUserStore()
+        const sessionStore = useSessionStore()
         const authStore = useAuthStore()
         authStore.setKeycloak(this.keycloak!)
-        userStore.syncWithAuth()
+        sessionStore.syncWithAuth()
         this.scheduleTokenRefresh()
       }
     } catch (error) {
@@ -142,10 +142,10 @@ export class KeycloakService {
       })
 
       const authStore = useAuthStore()
-      const userStore = useUserStore()
+      const sessionStore = useSessionStore()
 
       authStore.setKeycloak(this.keycloak)
-      userStore.syncWithAuth()
+      sessionStore.syncWithAuth()
 
       // Schedule initial token refresh
       this.scheduleTokenRefresh()
@@ -182,8 +182,8 @@ export class KeycloakService {
   async logout(redirectUri?: string): Promise<void> {
     if (this.keycloak) {
       this.clearRefreshTimeout()
-      const userStore = useUserStore()
-      userStore.$reset()
+      const sessionStore = useSessionStore()
+      sessionStore.$reset()
       await this.keycloak.logout({
         redirectUri: redirectUri || window.location.origin,
       })

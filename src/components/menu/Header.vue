@@ -10,7 +10,7 @@
     </div>
     <AlertNotification />
     <Notification />
-    <User />
+    <Session />
   </div>
 </template>
 
@@ -21,11 +21,10 @@
 import Breadcrumb from '@/components/menu/BreadCrumb.vue'
 import AlertNotification from '@/features/notification/component/AlertNotification.vue'
 import Notification from '@/features/notification/component/Notification.vue'
-import User from '@/components/user/User.vue'
+import Session from '@/components/session/Session.vue'
 
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'
-import { EColor } from '@/features/shared/enum/EColor'
 // other imports
 // props
 // data

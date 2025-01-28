@@ -10,20 +10,6 @@ export interface IUser {
   fullName: string
   email: string
   roles: string[]
-  branches: string[]
-  preferences: {
-    theme?: string
-    language?: string
-    notifications?: {
-      email: boolean
-      push: boolean
-    }
-  }
-  settings: {
-    defaultView?: string
-    timezone?: string
-    currentBranch?: string
-  }
 }
 
 export class User implements IUser {
@@ -34,19 +20,7 @@ export class User implements IUser {
   fullName: string
   email: string
   roles: string[]
-  branches: string[]
-  preferences: {
-    theme?: string
-    language?: string
-    notifications?: {
-      email: boolean
-      push: boolean
-    }
-  }
-  settings: {
-    defaultView?: string
-    timezone?: string
-  }
+
 
   constructor(props: IUser) {
     this.id = props.id
@@ -55,13 +29,6 @@ export class User implements IUser {
     this.fullName = props.lastName + ' ' + props.firstName
     this.email = props.email
     this.roles = props.roles
-    this.branches = props.branches
-    this.preferences = props.preferences
-    this.settings = props.settings
-
-    this.branches = this.branches?.filter(
-      (branch) => !itemsToRemove.includes(branch)
-    )
   }
 
   static validate(data: Partial<IUser>): ValidationError<IUser> {
@@ -83,9 +50,6 @@ export class User implements IUser {
       fullName: this.fullName,
       email: this.email,
       roles: this.roles,
-      branches: this.branches,
-      preferences: this.preferences,
-      settings: this.settings,
     }
   }
 }
@@ -96,9 +60,4 @@ export interface IUserRepository {
   create(asset: IUser): Promise<void>
   update(asset: IUser): Promise<void>
   delete(id: string): Promise<void>
-  updatePreferences(
-    id: string,
-    preferences: IUser['preferences']
-  ): Promise<void>
-  updateSettings(id: string, settings: IUser['settings']): Promise<void>
 }

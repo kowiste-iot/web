@@ -12,12 +12,6 @@ export class UserMapper extends BaseMapper {
       fullName: raw.lastName + ' ' + raw.firstName,
       email: raw.email,
       roles: raw.roles ? raw.roles : [],
-      branches: raw.branches,
-      preferences: raw.preferences,
-      settings: {
-        defaultView: raw.settings?.default_view,
-        timezone: raw.settings?.timezone,
-      },
     })
   }
 
@@ -31,12 +25,6 @@ export class UserMapper extends BaseMapper {
       lastName: json.lastName,
       email: json.email,
       roles: json.roles,
-      branches: json.branches,
-      preferences: json.preferences,
-      settings: {
-        default_view: json.settings?.defaultView,
-        timezone: json.settings?.timezone,
-      },
     }
   }
 }

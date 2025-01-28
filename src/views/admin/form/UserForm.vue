@@ -136,9 +136,6 @@ watch(
   () => selectedRoles.value,
   () => {
     form.roles = []
-    selectedRoles.value.forEach((role: IRole) => {
-      form.roles.push(role.name)
-    })
   },
   {
     deep: true,
@@ -152,6 +149,23 @@ watch(
   {
     deep: true,
   }
+)
+watch(
+  () => roles.value,
+  () => {
+    selectedRoles.value = []
+    console.log('dfg', form.roles)
+
+    form.roles?.forEach((roleName: string) => {
+      const found = roles.value.find((role) => role.name == roleName)
+      console.log('fou', found)
+
+      if (found != undefined) {
+        selectedRoles.value.push(found)
+      }
+    })
+  },
+  { immediate: true }
 )
 </script>
 

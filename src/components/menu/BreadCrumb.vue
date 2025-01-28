@@ -9,7 +9,7 @@
     </div>
 
     <div class="branch-selector">
-      <template v-if="userStore.userInfo?.branches.length === 1">
+      <template v-if="sessionStore.userInfo?.branches.length === 1">
         <span class="branch-label px-4">{{ currentBranchComputed }}</span>
       </template>
       <select
@@ -19,7 +19,7 @@
         style="width: auto; min-width: 100px"
       >
         <option
-          v-for="branch in userStore.userInfo?.branches"
+          v-for="branch in sessionStore.userInfo?.branches"
           :key="branch"
           :value="branch"
         >
@@ -46,21 +46,21 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
-import { useUserStore } from '@/features/user/stores/useUserStore'
 import { EIcon } from '@/features/shared/enum/EIcon'
+import {useSessionStore} from '@/features/session/store/useSessionStore'
 
 const router = useRouter()
 const storeCrumb = useBreadCrumb()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 
 const data = computed(() => {
   return storeCrumb.data
 })
 const currentBranchComputed = computed({
-  get: () => userStore.getCurrentBranch,
+  get: () => sessionStore.getCurrentBranch,
   set: async (newValue: string) => {
-    await userStore.updateSettings({
-      ...userStore.userInfo!.settings,
+    await sessionStore.updateSettings({
+      ...sessionStore.userInfo!.settings,
       currentBranch: newValue,
     })
   }

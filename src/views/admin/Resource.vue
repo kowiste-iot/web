@@ -42,6 +42,8 @@
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
+import {useSessionStore} from '@/features/session/store/useSessionStore'
+import { useResourceStore } from '@/features/resource/stores/useResourceStore'
 
 // components import
 // model imports
@@ -52,9 +54,7 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import type { Property } from '@/model/property'
 import Modal from '@/components/cards/Modal.vue'
-import { useUserStore } from '@/features/user/stores/useUserStore'
 import { ResourcesPage } from '@/features/resource/presentation/pages/pageResource'
-import { useResourceStore } from '@/features/resource/stores/useResourceStore'
 import ResourceForm from './form/ResourceForm.vue'
 import type { IResource } from '@/features/resource/domain/resource'
 // other imports
@@ -65,14 +65,14 @@ const page = reactive(new ResourcesPage())
 
 //service
 const resourceStore = useResourceStore()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 
 // computed
 const resources = computed(() => {
   return resourceStore.resources
 })
 const branch = computed(() => {
-  return userStore.getCurrentBranch
+  return sessionStore.getCurrentBranch
 })
 // methods
 function propertySelected(prop: Property, data: IResource) {

@@ -1,13 +1,13 @@
 import { useTenant } from '@/composable/useTenant'
-import { useUserStore } from '@/features/user/stores/useUserStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 
 export abstract class BaseRepository {
   protected baseUrl: string
 
   constructor(resource: string) {
     const { getTenantId } = useTenant()
-    const userStore = useUserStore()
-    const branch = userStore.getCurrentBranch
+    const sessionStore = useSessionStore()
+    const branch = sessionStore.getCurrentBranch
 
     this.baseUrl = `${getTenantId()}/${branch}/${resource}`
   }

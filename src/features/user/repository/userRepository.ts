@@ -53,25 +53,4 @@ export class UserRepository extends BaseRepository implements IUserRepository {
       throw error
     }
   }
-  async updatePreferences(
-    id: string,
-    preferences: IUser['preferences']
-  ): Promise<void> {
-    try {
-      await axiosClient().patch(
-        `${this.baseUrl}/${id}/preferences`,
-        preferences
-      )
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async updateSettings(id: string, settings: IUser['settings']): Promise<void> {
-    try {
-      await axiosClient().patch(`${this.baseUrl}/${id}/settings`, settings)
-    } catch (error) {
-      throw error
-    }
-  }
 }
