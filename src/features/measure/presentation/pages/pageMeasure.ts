@@ -16,6 +16,7 @@ export class MeasuresPage extends PageBase {
     id: Columns
     name: Columns
     asset: Columns
+    description: Columns
   }
 
   constructor() {
@@ -46,6 +47,7 @@ export class MeasuresPage extends PageBase {
       id: new Columns('ID', 'id'),
       name: new Columns(t('measure.table.name'), 'name'),
       asset: new Columns(t('measure.table.parent'), 'parent'),
+      description: new Columns(t('measure.table.description'), 'description'),
     }
   }
 }

@@ -6,9 +6,10 @@
           <Button
             :color="EColor.Primary"
             small
-            @click="router.push('/dashboard/' + data.id)"
+            @click="goTo(data.id)"
             >{{ $t('dashboard.goto') }}</Button
           >
+
         </template>
       </Column>
       <Column
@@ -99,7 +100,7 @@ import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import router from '@/router'
+import { getRouter } from '@/router'
 import type { Property } from '@/model/property'
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import { DashboardsPage } from '@/features/dashboard/presentation/pages/pageDashboards'
@@ -113,7 +114,6 @@ import { useBasePage } from '@/composable/useBasePage'
 // props
 // data
 const page = ref(new DashboardsPage())
-
 // service
 const { notificationService } = useBasePage(page.value.title)
 const dashboardService = new DashboardService(
@@ -144,6 +144,9 @@ function deleteDashboard() {
   dashboardService.deleteDashboard(page.value.selected?.id!)
   page.value.selected = undefined
   page.value.showModal = false
+}
+function goTo(id: string){
+  getRouter().push('/dashboard/' + id)
 }
 // lifeCycle
 // watch

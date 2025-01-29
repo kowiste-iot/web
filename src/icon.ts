@@ -18,6 +18,7 @@ import {
   faCircleCheck,
   faCircleExclamation,
   faCircleInfo,
+  faCircleMinus,
   faCirclePlus,
   faCircleXmark,
   faDiagramPredecessor,
@@ -112,6 +113,7 @@ library.add(
   faBuildingShield,
   faArrowLeft,
   faArrowRight,
-  faChessRook
+  faChessRook,
+  faCircleMinus
 )
 //check,x dont work

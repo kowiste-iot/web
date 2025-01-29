@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 // data
 const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
+const isHover = ref({} as Record<string, boolean>)
 // storage calls
 const alertStore = useAlert()
 

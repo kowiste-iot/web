@@ -27,6 +27,7 @@ export const KeycloakPlugin = {
         enableLogging: true,
         onLoad: 'check-sso',
         silentCheckSsoFallback: false, // Disable fallback to avoid iframe issues
+        redirectUri: window.location.href, 
       },
     }
 

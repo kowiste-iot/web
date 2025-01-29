@@ -18,11 +18,11 @@
           class="bg-success rounded-circle mt-2 me-2 p-2 text-white d-flex justify-content-center align-items-center"
           style="height: 2.5rem; width: 2.5rem"
         >
-          {{ userStore.getUserInitials }}
+          {{ sessionStore.getUserInitials }}
         </div>
         <div class="flex-fill ps-2">
-          <div class="fs-5">{{ userStore.userInfo?.fullName }}</div>
-          <div>Role: {{ userStore.userInfo?.roles.join(', ') }}</div>
+          <div class="fs-5">{{ sessionStore.userInfo?.fullName }}</div>
+          <div>Role: {{ sessionStore.userInfo?.roles.join(', ') }}</div>
           <div class="text-muted small">Tenant: {{ currentTenant?.name }}</div>
         </div>
       </div>
@@ -60,8 +60,8 @@ import { ref, computed } from 'vue'
 
 // stores import
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/features/user/stores/useUserStore'
 import { useTenantStore } from '@/features/tenant/stores/tenant'
+import {useSessionStore} from '@/features/session/store/useSessionStore'
 
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'
@@ -74,7 +74,7 @@ const isVisible = ref(false)
 
 // storage calls
 const router = useRouter()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 const tenantStore = useTenantStore()
 
 // computed

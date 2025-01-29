@@ -1,18 +1,18 @@
 export interface IDataDTO {
   id: string
-  values: { [key: string]: any }
+  values: Record<string, any>
   ts: string
 }
 
 export interface IDataModel {
   id: string
-  values: { [key: string]: any }
+  values: Record<string, any>
   ts: Date
 }
 
 export class DataModel implements IDataModel {
   id: string
-  values: { [key: string]: any }
+  values: Record<string, any>
   ts: Date
 
   constructor(data: IDataDTO | IDataModel) {

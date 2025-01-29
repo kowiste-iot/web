@@ -22,24 +22,16 @@
 
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('device.form.parent') }}</label>
-      <div class="col-md-8">
-        <DropDown
-          optionValue="name"
-          optionLabel="name"
-          :placeholder="$t('device.form.parentHolder')"
-          :options="assets"
-          :error="errors['parent']"
-          v-model="form.parent"
-          :class="{ 'is-invalid': errors.parent }"
-        >
-          <template #option="{ data }">
-            {{ data.name }}
-          </template>
-        </DropDown>
-        <div v-if="errors.parent" class="invalid-feedback d-block">
-          {{ errors.parent }}
-        </div>
-      </div>
+
+      <MultiDropdown
+        class="col-md-8"
+        :options="assets"
+        idField="id"
+        labelField="name"
+        :placeholder="$t('device.form.parentHolder')"
+        :error="errors['parent']"
+        v-model="selectedParent"
+      />
     </div>
 
     <div class="row mb-3">
@@ -85,7 +77,8 @@ import { EIcon } from '@/features/shared/enum/EIcon'
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import type { IAsset } from '@/features/asset/domain/asset'
 
 const props = defineProps({
   data: {
@@ -109,7 +102,7 @@ const form = reactive<IDevice>({
   parent: props.data?.parent ?? '',
   description: props.data?.description ?? '',
 })
-
+const selectedParent = ref({} as IAsset)
 const errors = ref<ValidationError<IDevice>>({})
 
 // services
@@ -124,17 +117,6 @@ const assets = computed(() => {
   return useAssetStore().assets
 })
 
-// watchers
-watch(
-  () => form,
-  () => {
-    errors.value = Device.validate(form)
-  },
-  {
-    deep: true,
-  }
-)
-
 // methods
 async function save() {
   if (props.edit) {
@@ -144,7 +126,24 @@ async function save() {
   }
   props.close()
 }
-
+// watch
+watch(
+  () => form,
+  () => {
+    errors.value = Device.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
+watch(
+  () => selectedParent.value,
+  () => {
+    if (selectedParent.value.id) {
+      form.parent = selectedParent.value.id
+    }
+  }
+)
 // lifecycle
 onMounted(() => {
   useAssetStore().fetchAssets()

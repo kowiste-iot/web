@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
 import {
   Measure,
   type IMeasure,

@@ -23,6 +23,16 @@
           </span>
         </template>
       </Column>
+      <Column
+        :class="page.table.description.location"
+        :field="page.table.description.data"
+      >
+        <template #header>
+          <span class="container-fluid">
+            {{ page.table.description.title }}
+          </span>
+        </template>
+      </Column>
 
       <Column>
         <template #body="{ data }">

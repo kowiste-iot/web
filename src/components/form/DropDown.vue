@@ -105,9 +105,9 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // data
-const model = defineModel({} as { [key: string]: any })
+const model = defineModel({} as Record<string, any>)
 const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
+const isHover = ref({} as Record<string, boolean>)
 const optionsFiltered = ref({} as { [group: string]: Array<any> })
 let filterText = ''
 // storage calls

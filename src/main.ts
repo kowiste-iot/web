@@ -18,30 +18,39 @@ import { GridLayout, GridItem } from 'grid-layout-plus'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
-import { WebsocketPlugin } from '@/plugins/websocket/init'
 import { type IWebsocketOption } from '@/plugins/websocket/model'
 import { KeycloakPlugin } from '@/plugins/security/init'
 import { type KeycloakConfig } from '@/plugins/security/types'
 /* import font awesome icon component */
 import App from './App.vue'
-import router from './router'
+import createAppRouter from './router'
 import { extractRealmFromPath } from './plugins/security/utils'
+import { Environment } from './utils/enviroment/enviroment'
+import { URLProvider } from './utils/http/url/url'
+import { createAxiosClient } from './utils/http/axios-client'
+
+const envProv = new URLProvider()
+const env = Environment.init(envProv)
+env.initialize()
+const router = createAppRouter(env.webURLBase)
+
+createAxiosClient()
 
 const app = createApp(App)
 app.use(createPinia())
 
 const wsOptions = {} as IWebsocketOption
 const kcOptions = {
-  url: 'http://localhost:7080/auth',
+  url: env.issuer,
   realm: extractRealmFromPath(),
-  clientId: 'vue-client',
+  clientId: env.clientID,
   initOptions: {
     checkLoginIframe: false,
     pkceMethod: 'S256',
     enableLogging: true,
     onLoad: 'check-sso',
     flow: 'standard',
-    redirectUri: window.location.origin,
+    redirectUri: env.redirectURL,
   },
 } as KeycloakConfig
 
@@ -63,4 +72,5 @@ app.use(PrimeVue)
 
 // .use(WebsocketPlugin, wsOptions)
 app.use(KeycloakPlugin, kcOptions)
+
 app.mount('#app')

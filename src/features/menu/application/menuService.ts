@@ -67,9 +67,9 @@ export class MenuService {
             isParent: false,
           },
           {
-            label: 'menu.admin.rol',
+            label: 'menu.admin.role',
             icon: EIcon.Role,
-            path: '/admin/rol',
+            path: '/admin/role',
             isParent: false,
           },
           {

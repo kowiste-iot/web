@@ -2,6 +2,7 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { RoleValidator } from './roleValidator'
 
+export const adminRole = 'admin'
 export interface IRole {
   id: string
   name: string

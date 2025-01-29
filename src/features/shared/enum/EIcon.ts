@@ -23,6 +23,7 @@ export enum EIcon {
   Edit = 'fa-edit',
   Delete = 'fa-trash',
   Add = 'fa-circle-plus',
+  Sub = 'fa-circle-minus',
   UnLock = 'fa-unlock',
   Lock = 'fa-lock',
   LogOut = 'fa-sign-out',

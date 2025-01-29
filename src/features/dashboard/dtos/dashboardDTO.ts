@@ -1,5 +1,5 @@
 export interface DashboardDTO {
-  id?: string
+  id: string
   name: string
   parent: string
   description?: string

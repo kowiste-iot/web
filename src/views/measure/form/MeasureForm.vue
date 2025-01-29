@@ -20,26 +20,30 @@
     </div>
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('measure.form.parent') }} </label>
-      <DropDown
+      <MultiDropdown
         class="col-md-8"
-        optionValue="name"
-        optionLabel="name"
-        :placeholder="$t('measure.form.parentHolder')"
         :options="assets"
+        idField="id"
+        labelField="name"
+        :placeholder="$t('measure.form.parentHolder')"
         :error="errors['parent']"
-        v-model="form.parent"
-      >
-        <template #option="{ data }">
-          {{ data.name }}
-        </template>
-      </DropDown>
+        v-model="selectedParent"
+      />
+    </div>
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('role.form.description') }} </label>
+      <InputText
+        class="col-md-8"
+        placeholder=""
+        :rows="5"
+        :error="errors['description']"
+        v-model="form.description"
+      />
     </div>
     <template #footer>
-      <Button
-        :color="edit ? EColor.Warning : EColor.Success"
-        @click="save()"
-        >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
-      >
+      <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
+        $t(edit ? 'action.update' : 'action.save')
+      }}</Button>
       <Button :color="EColor.Secondary" outline @click="close()">{{
         $t('action.cancel')
       }}</Button>
@@ -55,7 +59,6 @@ import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
 
 // feauture imports
 import { EColor } from '@/features/shared/enum/EColor'
@@ -67,6 +70,8 @@ import { MeasureRepository } from '@/features/measure/repository/measureReposito
 import { useBasePage } from '@/composable/useBasePage'
 import { Measure, type IMeasure } from '@/features/measure/domain/measure'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import InputText from '@/components/form/InputText.vue'
 
 // other imports
 // props
@@ -91,6 +96,7 @@ const form = reactive<IMeasure>({
   parent: props.data?.parent ?? '',
   description: props.data?.description ?? '',
 })
+const selectedParent = ref({} as IAsset)
 
 const errors = ref<ValidationError<IMeasure>>({})
 
@@ -106,16 +112,6 @@ const assetStore = useAssetStore()
 const assets = computed(() => {
   return assetStore.assets
 })
-// watchers
-watch(
-  () => form,
-  () => {
-    errors.value = Measure.validate(form)
-  },
-  {
-    deep: true,
-  }
-)
 
 // methods
 function save() {
@@ -131,6 +127,23 @@ onMounted(() => {
   useAssetStore().fetchAssets()
 })
 // watch
+watch(
+  () => form,
+  () => {
+    errors.value = Measure.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
+watch(
+  () => selectedParent.value,
+  () => {
+    if (selectedParent.value.id) {
+      form.parent = selectedParent.value.id
+    }
+  }
+)
 </script>
 
 <style scoped></style>

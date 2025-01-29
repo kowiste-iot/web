@@ -75,6 +75,9 @@
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
+import {useSessionStore} from '@/features/session/store/useSessionStore'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { useBasePage } from '@/composable/useBasePage'
 
 // components import
 // model imports
@@ -92,11 +95,9 @@ import type { Property } from '@/model/property'
 import AssetForm from '@/views/asset/form/AssetForm.vue'
 import Modal from '@/components/cards/Modal.vue'
 import type { IAsset } from '@/features/asset/domain/asset'
-import { useAssetStore } from '@/features/asset/stores/useAssetStore'
-import { useBasePage } from '@/composable/useBasePage'
+
 import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
-import { useUserStore } from '@/features/user/stores/useUserStore'
 // other imports
 // props
 
@@ -110,14 +111,14 @@ const assetService = new AssetService(
   notificationService
 )
 const assetStore = useAssetStore()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 
 // computed
 const assets = computed(() => {
   return assetStore.assets
 })
 const branch = computed(() => {
-  return userStore.getCurrentBranch
+  return sessionStore.getCurrentBranch
 })
 // methods
 function propertySelected(prop: Property, data: IAsset) {

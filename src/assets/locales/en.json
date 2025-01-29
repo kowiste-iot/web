@@ -22,12 +22,12 @@
     "admin": {
       "parent": "Admin",
       "user": "Users",
-      "rol": "Roles",
+      "role": "Roles",
       "resource": "Resources"
     }
   },
   "dashboard": {
-    "title": "dasboards",
+    "title": "dashboards",
     "goto": "Go",
     "table": {
       "name": "Name",
@@ -59,11 +59,31 @@
       "parentHolder": "asset belong to asset"
     }
   },
+  "user": {
+    "title": "users",
+    "table": {
+      "name": "Name",
+      "email": "Email"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create User",
+      "titleUpdate": "Update User",
+      "firstName": "First Name",
+      "firstNameHolder": "first Name",
+      "lastName": "Last Name",
+      "lastNameHolder": "last Name",
+      "email": "Email",
+      "emailHolder": "email",
+      "nameHolder": "user name"
+    }
+  },
   "device": {
     "title": "device",
     "table": {
       "name": "Name",
-      "parent": "Belong to"
+      "parent": "Belong to",
+      "description": "Description"
     },
     "delete": "Are you sure you want to delete it",
     "form": {
@@ -81,7 +101,8 @@
     "title": "measure",
     "table": {
       "name": "Name",
-      "parent": "Belong to"
+      "parent": "Belong to",
+      "description": "Description"
     },
     "delete": "Are you sure you want to delete it",
     "form": {
@@ -169,6 +190,21 @@
       "title": "Table",
       "description": "table widget",
       "form": {}
+    }
+  },
+  "resource": {
+    "title": "resources",
+    "table": {
+      "name": "Name",
+      "scopes": "Scopes"
+    },
+    "form": {
+      "role": "Roles",
+      "titleUpdate": "Update Resource",
+      "name": "Name",
+      "nameHolder": "resource name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
     }
   },
   "process": {},

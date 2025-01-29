@@ -1,4 +1,6 @@
-import { EWidget } from "./EWidget"
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { EWidget } from './EWidget'
+import { WidgetValidator } from './widgetValidator'
 
 export interface IWidget {
   id: string
@@ -28,6 +30,8 @@ export interface IWidgetLinkData {
 }
 
 export class Widget implements IWidget {
+  private static validator = new WidgetValidator()
+
   id: string = ''
   dashboardID: string = ''
   type: EWidget = EWidget.Boolean
@@ -64,7 +68,16 @@ export class Widget implements IWidget {
       options: props.data.options ?? {},
     }
   }
+  static validate(data: Partial<IWidget>): ValidationError<IWidget> {
+    return this.validator.validate(data)
+  }
 
+  static validateField<K extends keyof IWidget>(
+    field: K,
+    value: IWidget[K]
+  ): string {
+    return this.validator.validateField(field, value)
+  }
   toJSON(): IWidget {
     return {
       id: this.id,

@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,  computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { Property } from '@/model/property'
 
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
   onClick: function () {},
 })
 const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
+const isHover = ref({} as Record<string, boolean>)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuPosition = ref({ top: 0, left: 0 })
 

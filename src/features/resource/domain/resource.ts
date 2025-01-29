@@ -1,38 +1,26 @@
-// features/resource/domain/resource.ts
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { ResourceValidator } from './resourceValidator'
+import type { IScope } from '@/features/scope/domain/scope'
 
 export interface IResource {
-  id?: string
+  id: string
   name: string
-  type?: string
-  uris?: string[]
-  scopes?: string[]
-  attributes?: Record<string, string[]>
-  displayName?: string
-  iconUri?: string
+  displayName: string
+  roles: Record<string, IScope[]>
 }
 
 export class Resource implements IResource {
   private static validator = new ResourceValidator()
-  id?: string
+  id: string
   name: string
-  type?: string
-  uris?: string[]
-  scopes?: string[]
-  attributes?: Record<string, string[]>
-  displayName?: string
-  iconUri?: string
+  displayName: string
+  roles: Record<string, IScope[]>
 
   constructor(props: IResource) {
     this.id = props.id
     this.name = props.name
-    this.type = props.type
-    this.uris = props.uris
-    this.scopes = props.scopes
-    this.attributes = props.attributes
     this.displayName = props.displayName
-    this.iconUri = props.iconUri
+    this.roles = props.roles
   }
 
   static validate(data: Partial<IResource>): ValidationError<IResource> {
@@ -50,12 +38,8 @@ export class Resource implements IResource {
     return {
       id: this.id,
       name: this.name,
-      type: this.type,
-      uris: this.uris,
-      scopes: this.scopes,
-      attributes: this.attributes,
       displayName: this.displayName,
-      iconUri: this.iconUri,
+      roles: this.roles,
     }
   }
 }
