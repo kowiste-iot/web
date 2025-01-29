@@ -59,6 +59,22 @@
       "parentHolder": "asset belong to asset"
     }
   },
+  "alert": {
+    "title": "alerts",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Alert",
+      "titleUpdate": "Update Alert",
+      "name": "Name",
+      "nameHolder": "alert name",
+      "parent": "Belong To",
+      "parentHolder": "alert belong to asset"
+    }
+  },
   "user": {
     "title": "users",
     "table": {

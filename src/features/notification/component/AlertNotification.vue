@@ -39,7 +39,7 @@
 import { ref, computed, type Prop } from 'vue'
 
 // stores import
-import { useAlert } from '@/stores/gui/alert'
+import { useGUIAlert } from '@/stores/gui/alert'
 
 // components import
 
@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
 const isVisible = ref(false)
 const isHover = ref({} as Record<string, boolean>)
 // storage calls
-const alertStore = useAlert()
+const alertStore = useGUIAlert()
 
 // computed
 const alerts = computed(() => {

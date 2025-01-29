@@ -152,7 +152,7 @@
 // imports
 import { onMounted, ref } from 'vue'
 // stores import
-import { useAlert } from '@/stores/gui/alert'
+import { useGUIAlert } from '@/stores/gui/alert'
 import { useBreadCrumb } from '@/stores/gui/breadcrumb'
 
 // components import
@@ -203,7 +203,7 @@ const contributionData = ref([
   { date: new Date().toISOString().split('T')[0], count: 4 },
 ])
 // storage calls
-const alertStore = useAlert()
+const alertStore = useGUIAlert()
 const storeCrumb = useBreadCrumb()
 
 storeCrumb.reset()

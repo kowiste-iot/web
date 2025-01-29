@@ -8,12 +8,12 @@ const processRoutes = [
   {
     path: '/process/alert',
     name: 'alert',
-    component: () => import('@/views/process/Alert.vue'),
+    component: () => import('@/views/process/alert/Alert.vue'),
   },
   {
     path: '/process/action',
     name: 'action',
-    component: () => import('@/views/process/Action.vue'),
+    component: () => import('@/views/process/action/Action.vue'),
   },
 ]
 

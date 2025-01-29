@@ -6,6 +6,7 @@ import { useSessionStore } from '@/features/session/store/useSessionStore'
 
 export class KeycloakService {
   private keycloak: Keycloak | null = null
+  private config: KeycloakConfig = {} as KeycloakConfig
   private refreshTimeout: number | null = null
   private readonly MIN_VALIDITY = 70 // Minimum token validity in seconds
   private readonly REFRESH_BUFFER = 30 // Seconds before expiration to refresh
@@ -24,9 +25,9 @@ export class KeycloakService {
       }
 
       const newConfig: KeycloakConfig = {
-        url: 'http://localhost:7080/auth',
+        url: this.config.url,
         realm: newRealm,
-        clientId: 'vue-client',
+        clientId: this.config.clientId,
         initOptions: {
           checkLoginIframe: false,
           pkceMethod: 'S256',

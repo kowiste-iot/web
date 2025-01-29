@@ -2,11 +2,20 @@ import { axiosClient } from '@/utils/http/axios-client'
 import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import type { AlertDTO } from '../dtos/alertDTO'
 import { AlertMapper } from '../dtos/alertMappers'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
 
-export class AlertRepository implements IAlertRepository {
+export class AlertRepository
+  extends BaseRepository
+  implements IAlertRepository
+{
+  constructor() {
+    super('alerts')
+  }
   async findById(id: string): Promise<IAlert | null> {
     try {
-      const response = await axiosClient().get<AlertDTO>(`/alerts/${id}`)
+      const response = await axiosClient().get<AlertDTO>(
+        `${this.baseUrl}/${id}`
+      )
       return AlertMapper.toDomain(response.data)
     } catch (error) {
       throw error
@@ -15,7 +24,7 @@ export class AlertRepository implements IAlertRepository {
 
   async findAll(): Promise<IAlert[]> {
     try {
-      const response = await axiosClient().get<AlertDTO[]>('/alerts')
+      const response = await axiosClient().get<AlertDTO[]>(this.baseUrl)
       return response.data
         .map((dto: AlertDTO) => AlertMapper.toDomain(dto))
         .filter((alert: IAlert): alert is IAlert => alert !== null)
@@ -24,19 +33,19 @@ export class AlertRepository implements IAlertRepository {
     }
   }
 
-  async create(alert: IAlert): Promise<void> {
+  async create(data: IAlert): Promise<void> {
     try {
-      const dto = AlertMapper.toDTO(new Alert(alert))
-      await axiosClient().post('/alerts', dto)
+      const dto = AlertMapper.toDTO(new Alert(data))
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
   }
 
-  async update(alert: IAlert): Promise<void> {
+  async update(data: IAlert): Promise<void> {
     try {
-      const dto = AlertMapper.toDTO(new Alert(alert))
-      await axiosClient().put(`/alerts/${alert.id}`, dto)
+      const dto = AlertMapper.toDTO(new Alert(data))
+      await axiosClient().put(`${this.baseUrl}/${data.id}`, dto)
     } catch (error) {
       throw error
     }
@@ -44,7 +53,7 @@ export class AlertRepository implements IAlertRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await axiosClient().delete(`/alerts/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

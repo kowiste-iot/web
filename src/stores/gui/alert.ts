@@ -9,7 +9,7 @@ interface State {
   _alerts: IAlert[]
 }
 
-export const useAlert = defineStore('alertStore', {
+export const useGUIAlert = defineStore('alerGUItStore', {
   state: (): State => ({
     _show: false,
     _alert: undefined,
