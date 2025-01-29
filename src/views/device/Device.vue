@@ -69,7 +69,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteDevice"
     :onCancel="
       () => {
@@ -145,7 +145,7 @@ function deleteDevice() {
   page.showModal = false
 }
 // lifeCycle
-onMounted(()=>{
+onMounted(() => {
   deviceStore.fetchDevices()
 })
 // watch

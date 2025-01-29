@@ -1,45 +1,58 @@
-import { PageBase } from '@/features/shared/presentation/pages/pageBase'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import { Columns } from '@/model/gui/column'
-import { Tab } from '@/model/gui/tab'
+import type { Property } from '@/model/property'
+import { useI18n } from 'vue-i18n'
+import { PageBase } from '@/features/shared/presentation/pages/pageBase'
+import { Path } from '@/model/path'
+import type { IAction } from '../../domain/action'
 
 export class ActionPage extends PageBase {
-  selected: number
-  tabs: Tab[]
+  properties: Property[]
+  selected?: IAction
+  showForm: boolean
+  editForm: boolean
+  showModal: boolean
   table: {
-    id: Columns
-    type: Columns
+    name: Columns
+    asset: Columns
     enabled: Columns
-    updated: Columns
   }
 
   constructor() {
-    super('action', [{ name: 'process', path: 'process' }])
-    this.selected = 1
-    this.tabs = [
-      new Tab(1, 'type', true),
-      new Tab(2, 'other'),
-      new Tab(3, 'more'),
+    const { t } = useI18n()
+    super(t('action.title'), new Array<Path>())
+
+    this.properties = [
+      {
+        id: 1,
+        icon: EIcon.Edit,
+        name: 'Edit',
+      },
+      {
+        id: 2,
+        icon: EIcon.Delete,
+        name: 'Delete',
+      },
     ]
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
     this.table = this.createTable()
+  }
+  reset() {
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
+    this.selected = undefined
   }
 
   private createTable() {
+    const { t } = useI18n()
+
     return {
-      id: new Columns('ID', 'id'),
-      type: new Columns('Type', 'name'),
-      enabled: new Columns('Enabled', 'enabled'),
-      updated: new Columns('Updated', 'updatedDisplay'),
+      name: new Columns(t('action.table.name'), 'name'),
+      asset: new Columns(t('action.table.parent'), 'parent'),
+      enabled: new Columns(t('action.table.enabled'), 'enabled'),
     }
-  }
-  changeTab(tabID: number) {
-    this.tabs.forEach((tab: Tab) => {
-      if (tab.id == tabID) {
-        tab.selected = true
-        this.selected = tab.id
-      } else tab.selected = false
-    })
-  }
-  columnsName(): Columns[] {
-    return Object.values(this.table)
   }
 }

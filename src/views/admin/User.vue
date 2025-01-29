@@ -59,7 +59,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteUser"
     :onCancel="
       () => {

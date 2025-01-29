@@ -1,5 +1,5 @@
-import type { ValidationError } from "@/features/shared/domain/baseValidator"
-import { AlertValidator } from "./alertValidator"
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { AlertValidator } from './alertValidator'
 
 export interface IAlert {
   id: string
@@ -11,8 +11,8 @@ export interface IAlert {
 }
 
 export class Alert implements IAlert {
-    private static validator = new AlertValidator()
-  
+  private static validator = new AlertValidator()
+
   id: string
   name: string
   parent: string

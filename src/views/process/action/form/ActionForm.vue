@@ -1,7 +1,7 @@
 <template>
   <InputCard
     class="h-100"
-    :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
+    :headerText="$t(edit ? 'action.form.titleUpdate' : 'action.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
     showHeader
     showFooter
@@ -10,30 +10,30 @@
       <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
       <Input
         class="col-md-8"
-        :placeholder="$t('asset.form.nameHolder')"
+        :placeholder="$t('action.form.nameHolder')"
         type="text"
         :error="errors['name']"
         v-model="form.name"
       />
     </div>
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('action.form.parent') }} </label>
       <MultiDropdown
         class="col-md-8"
         :options="availableParents"
         idField="id"
         labelField="name"
-        :placeholder="$t('asset.form.parentHolder')"
+        :placeholder="$t('action.form.parentHolder')"
         :error="errors['parent']"
         v-model="selectedParent"
       />
     </div>
     <template #footer>
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
-        $t(edit ? 'action.update' : 'action.save')
+        $t(edit ? 'actionGUI.update' : 'actionGUI.save')
       }}</Button>
       <Button :color="EColor.Secondary" outline @click="close()">{{
-        $t('action.cancel')
+        $t('actionGUI.cancel')
       }}</Button>
     </template>
   </InputCard>
@@ -51,19 +51,20 @@ import Input from '@/components/form/Input.vue'
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import { Asset, type IAsset } from '@/features/asset/domain/asset'
+import { type IAsset } from '@/features/asset/domain/asset'
 import { useBasePage } from '@/composable/useBasePage'
-import { AssetService } from '@/features/asset/application/assetService'
-import { AssetRepository } from '@/features/asset/repository/assetRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import { Action, type IAction } from '@/features/action/domain/action'
+import { ActionService } from '@/features/action/application/actionService'
+import { ActionRepository } from '@/features/action/repository/actionRepository'
 
 // other imports
 // props
 const props = defineProps({
   data: {
-    type: Object as PropType<IAsset>,
+    type: Object as PropType<IAction>,
     default: {},
   },
   edit: {
@@ -76,7 +77,7 @@ const props = defineProps({
   },
 })
 // data
-const form = reactive<IAsset>({
+const form = reactive<IAction>({
   ...props.data,
   name: props.data?.name ?? '',
   parent: props.data?.parent ?? undefined,
@@ -84,29 +85,24 @@ const form = reactive<IAsset>({
 })
 const assetStore = useAssetStore()
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IAsset>>({})
+const errors = ref<ValidationError<IAction>>({})
 //service
 const { notificationService } = useBasePage()
-const assetService = new AssetService(
-  new AssetRepository(),
+const actionService = new ActionService(
+  new ActionRepository(),
   notificationService
 )
 // computed
-// Add a new computed property to filter out the current asset
 const availableParents = computed(() => {
-  if (props.edit) {
-    // Filter out the current asset when editing
-    return assetStore.assets.filter((asset) => asset.id !== props.data.id)
-  }
   return assetStore.assets
 })
 
 // methods
 async function save() {
   if (props.edit) {
-    await assetService.updateAsset(form)
+    await actionService.updateAction(form)
   } else {
-    await assetService.createAsset(form)
+    await actionService.createAction(form)
   }
   props.close()
 }
@@ -124,7 +120,7 @@ onMounted(() => {
 watch(
   () => form,
   () => {
-    errors.value = Asset.validate(form)
+    errors.value = Action.validate(form)
   },
   {
     deep: true,

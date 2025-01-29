@@ -75,11 +75,11 @@
         v-if="page.selectedTab > 1"
         :color="EColor.Success"
         @click="save"
-        >{{ $t('action.save') }}</Button
+        >{{ $t('actionGUI.save') }}</Button
       >
       <div v-else></div>
       <Button :color="EColor.Secondary" outline @click="close()">
-        {{ $t('action.cancel') }}
+        {{ $t('actionGUI.cancel') }}
       </Button>
     </template>
   </InputCard>

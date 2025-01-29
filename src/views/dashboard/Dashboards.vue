@@ -3,13 +3,9 @@
     <DataTable :value="dashboards">
       <Column style="width: 5px">
         <template #body="{ data }">
-          <Button
-            :color="EColor.Primary"
-            small
-            @click="goTo(data.id)"
-            >{{ $t('dashboard.goto') }}</Button
-          >
-
+          <Button :color="EColor.Primary" small @click="goTo(data.id)">{{
+            $t('dashboard.goto')
+          }}</Button>
         </template>
       </Column>
       <Column
@@ -70,7 +66,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteDashboard"
     :onCancel="
       () => {
@@ -145,7 +141,7 @@ function deleteDashboard() {
   page.value.selected = undefined
   page.value.showModal = false
 }
-function goTo(id: string){
+function goTo(id: string) {
   getRouter().push('/dashboard/' + id)
 }
 // lifeCycle

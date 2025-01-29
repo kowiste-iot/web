@@ -26,7 +26,7 @@
             outline
             @click="onCancel()"
           >
-            <div class="w-100 text-center">{{ $t('action.cancel') }}</div>
+            <div class="w-100 text-center">{{ $t('actionGUI.cancel') }}</div>
           </Button>
         </div>
       </div>
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 // imports
-import { type PropType, ref } from 'vue'
+import { ref } from 'vue'
 
 // stores import
 // components import

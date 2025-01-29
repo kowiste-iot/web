@@ -1,6 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable :value="assets">
+    <DataTable :value="actions">
       <Column
         :class="page.table.name.location"
         :field="page.table.name.data"
@@ -48,7 +48,7 @@
   </div>
   <Modal v-if="page.showForm">
     <SideCard class="col-md-6">
-      <AssetForm
+      <ActionForm
         :data="page.selected"
         :edit="page.editForm"
         :close="closeForm"
@@ -59,8 +59,8 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
-    :onAction="deleteAsset"
+    :actionText="$t('actionGUI.delete')"
+    :onAction="deleteAction"
     :onCancel="
       () => {
         page.showModal = false
@@ -75,8 +75,7 @@
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
-import {useSessionStore} from '@/features/session/store/useSessionStore'
-import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 import { useBasePage } from '@/composable/useBasePage'
 
 // components import
@@ -84,7 +83,6 @@ import { useBasePage } from '@/composable/useBasePage'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
-import { AssetsPage } from '@/features/asset/presentation/pages/pageAssets'
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
@@ -92,36 +90,37 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
-import AssetForm from '@/views/asset/form/AssetForm.vue'
 import Modal from '@/components/cards/Modal.vue'
-import type { IAsset } from '@/features/asset/domain/asset'
-
-import { AssetService } from '@/features/asset/application/assetService'
-import { AssetRepository } from '@/features/asset/repository/assetRepository'
+import { ActionPage } from '@/features/action/presentation/pages/pageAction'
+import { ActionService } from '@/features/action/application/actionService'
+import { ActionRepository } from '@/features/action/repository/actionRepository'
+import { useActionStore } from '@/features/action/stores/useActionStore'
+import type { IAction } from '@/features/action/domain/action'
+import ActionForm from './form/ActionForm.vue'
 // other imports
 // props
 
 // data
-const page = reactive(new AssetsPage())
+const page = reactive(new ActionPage())
 
 //service
 const { notificationService } = useBasePage(page.title)
-const assetService = new AssetService(
-  new AssetRepository(),
+const actionService = new ActionService(
+  new ActionRepository(),
   notificationService
 )
-const assetStore = useAssetStore()
+const actionStore = useActionStore()
 const sessionStore = useSessionStore()
 
 // computed
-const assets = computed(() => {
-  return assetStore.assets
+const actions = computed(() => {
+  return actionStore.actions
 })
 const branch = computed(() => {
   return sessionStore.getCurrentBranch
 })
 // methods
-function propertySelected(prop: Property, data: IAsset) {
+function propertySelected(prop: Property, data: IAction) {
   page.selected = data
   switch (prop.id) {
     case 1:
@@ -133,8 +132,8 @@ function propertySelected(prop: Property, data: IAsset) {
       break
   }
 }
-async function deleteAsset() {
-  await assetService.deleteAsset(page.selected!.id!)
+async function deleteAction() {
+  await actionService.deleteAction(page.selected!.id!)
   page.selected = undefined
   page.showModal = false
   refreshData()
@@ -143,13 +142,12 @@ function closeForm() {
   refreshData()
   page.reset()
 }
-async function refreshData(){
-  await assetStore.fetchAssets()
-
+async function refreshData() {
+  await actionStore.fetchActions()
 }
 // lifeCycle
 onMounted(() => {
-   refreshData()
+  refreshData()
 })
 // watch
 watch(

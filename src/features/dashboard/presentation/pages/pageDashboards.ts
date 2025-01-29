@@ -25,12 +25,12 @@ export class DashboardsPage extends PageBase {
       {
         id: 1,
         icon: EIcon.Edit,
-        name: t('action.edit'),
+        name: t('actionGUI.edit'),
       },
       {
         id: 2,
         icon: EIcon.Delete,
-        name: t('action.delete'),
+        name: t('actionGUI.delete'),
       },
     ]
     this.showForm = false

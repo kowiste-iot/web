@@ -2,7 +2,7 @@
   "tenant": {
     "inputName": "tenant name"
   },
-  "action": {
+  "actionGUI": {
     "save": "Save",
     "update": "Update",
     "edit": "Edit",
@@ -73,6 +73,22 @@
       "nameHolder": "alert name",
       "parent": "Belong To",
       "parentHolder": "alert belong to asset"
+    }
+  },
+  "action": {
+    "title": "actions",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Action",
+      "titleUpdate": "Update Action",
+      "name": "Name",
+      "nameHolder": "action name",
+      "parent": "Belong To",
+      "parentHolder": "action belong to asset"
     }
   },
   "user": {

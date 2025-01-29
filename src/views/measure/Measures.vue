@@ -26,7 +26,6 @@
       <Column
         :class="page.table.description.location"
         :field="page.table.description.data"
-        
       >
         <template #header>
           <span class="container-fluid">
@@ -70,7 +69,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteMeasure"
     :onCancel="
       () => {
@@ -144,7 +143,7 @@ function deleteMeasure() {
   page.value.showModal = false
 }
 // lifeCycle
-onMounted(()=>{  
+onMounted(() => {
   measureStore.fetchMeasures()
 })
 // watch

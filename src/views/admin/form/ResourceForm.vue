@@ -87,10 +87,10 @@
 
     <template #footer>
       <Button :color="EColor.Success" @click="save()">{{
-        $t('action.save')
+        $t('actionGUI.save')
       }}</Button>
       <Button :color="EColor.Secondary" outline @click="close()">{{
-        $t('action.cancel')
+        $t('actionGUI.cancel')
       }}</Button>
     </template>
   </InputCard>

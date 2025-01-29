@@ -23,7 +23,17 @@
           </span>
         </template>
       </Column>
-
+      <Column
+        :class="page.table.enabled.location"
+        :field="page.table.enabled.data"
+        sortable
+      >
+        <template #header>
+          <span class="container-fluid">
+            {{ page.table.enabled.title }}
+          </span>
+        </template>
+      </Column>
       <Column>
         <template #body="{ data }">
           <PropertyDot
@@ -59,7 +69,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteAlert"
     :onCancel="
       () => {

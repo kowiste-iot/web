@@ -60,7 +60,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteRole"
     :onCancel="
       () => {
@@ -77,7 +77,7 @@
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
 import { useRoleStore } from '@/features/role/stores/useRoleStore'
-import {useSessionStore} from '@/features/session/store/useSessionStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 // components import
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'

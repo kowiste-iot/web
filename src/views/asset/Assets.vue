@@ -59,7 +59,7 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
+    :actionText="$t('actionGUI.delete')"
     :onAction="deleteAsset"
     :onCancel="
       () => {
@@ -75,7 +75,7 @@
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
-import {useSessionStore} from '@/features/session/store/useSessionStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { useBasePage } from '@/composable/useBasePage'
 
@@ -143,13 +143,12 @@ function closeForm() {
   refreshData()
   page.reset()
 }
-async function refreshData(){
+async function refreshData() {
   await assetStore.fetchAssets()
-
 }
 // lifeCycle
 onMounted(() => {
-   refreshData()
+  refreshData()
 })
 // watch
 watch(

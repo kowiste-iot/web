@@ -1,5 +1,8 @@
+import { AlertValidator } from '@/features/alert/domain/alertValidator'
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+
 export interface IAction {
-  id?: string
+  id: string
   name: string
   parent: string
   description?: string
@@ -7,7 +10,9 @@ export interface IAction {
 }
 
 export class Action implements IAction {
-  id?: string
+  private static validator = new AlertValidator()
+
+  id: string
   name: string
   parent: string
   description?: string
@@ -20,7 +25,16 @@ export class Action implements IAction {
     this.description = props.description
     this.updatedAt = props.updatedAt
   }
+  static validate(data: Partial<IAction>): ValidationError<IAction> {
+    return this.validator.validate(data)
+  }
 
+  static validateField<K extends keyof IAction>(
+    field: K,
+    value: IAction[K]
+  ): string {
+    return this.validator.validateField(field, value)
+  }
   toJSON(): IAction {
     return {
       id: this.id,
