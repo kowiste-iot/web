@@ -10,7 +10,13 @@ export const useActionStore = defineStore('actionStore', {
     actions: [] as IAction[],
     currentAction: null as IAction | null,
   }),
-
+  getters: {
+    getActionById: (state) => {
+      return (id: string): IAction | undefined => {
+        return state.actions.find((action) => action.id === id)
+      }
+    },
+  },
   actions: {
     async fetchAction(id: string) {
       const actionService = new ActionService(

@@ -24,6 +24,17 @@
         </template>
       </Column>
       <Column
+        :class="page.table.enabled.location"
+        :field="page.table.enabled.data"
+        sortable
+      >
+        <template #header>
+          <span class="container-fluid">
+            {{ page.table.enabled.title }}
+          </span>
+        </template>
+      </Column>
+      <Column
         :class="page.table.description.location"
         :field="page.table.description.data"
       >
@@ -61,7 +72,7 @@
       <MeasureForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="() => (page.showForm = false)"
+        :close="closeForm"
       />
     </SideCard>
   </Modal>
@@ -83,7 +94,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 // stores import
 // components import
 import MeasureForm from '@/views/measure/form/MeasureForm.vue'
@@ -105,18 +116,20 @@ import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 import { MeasureService } from '@/features/measure/application/measureService'
 import { MeasureRepository } from '@/features/measure/repository/measureRepository'
 import { useBasePage } from '@/composable/useBasePage'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 // other imports
 // props
 
 // data
-const page = ref(new MeasuresPage())
+const page = reactive(new MeasuresPage())
 
 // service
 // service
-const { notificationService } = useBasePage(page.value.title)
+const { notificationService } = useBasePage(page.title)
 const measureService = new MeasureService(
   new MeasureRepository(),
-  notificationService
+  notificationService,
+  useAssetStore()
 )
 const measureStore = useMeasureStore()
 // computed
@@ -125,26 +138,33 @@ const measures = computed(() => {
 })
 // methods
 function propertySelected(prop: Property, data: IMeasure) {
-  page.value.selected = data
+  page.selected = data
   switch (prop.id) {
     case 1:
-      page.value.showForm = true
-      page.value.editForm = true
+      page.showForm = true
+      page.editForm = true
       break
     case 2:
-      page.value.showModal = true
+      page.showModal = true
 
       break
   }
 }
 function deleteMeasure() {
-  measureService.deleteMeasure(page.value.selected!.id)
-  page.value.selected = undefined
-  page.value.showModal = false
+  measureService.deleteMeasure(page.selected!.id)
+  page.selected = undefined
+  page.showModal = false
+}
+function closeForm() {
+  refreshData()
+  page.reset()
+}
+async function refreshData() {
+  await measureStore.fetchMeasures()
 }
 // lifeCycle
 onMounted(() => {
-  measureStore.fetchMeasures()
+  refreshData()
 })
 // watch
 </script>

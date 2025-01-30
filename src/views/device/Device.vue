@@ -61,7 +61,7 @@
       <DeviceForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="() => (page.showForm = false)"
+        :close="closeForm"
       />
     </SideCard>
   </Modal>
@@ -143,6 +143,13 @@ function deleteDevice() {
   deviceService.deleteDevice(page.selected!.id)
   page.selected = undefined
   page.showModal = false
+}
+function closeForm() {
+  refreshData()
+  page.reset()
+}
+async function refreshData() {
+  await deviceStore.fetchDevices()
 }
 // lifeCycle
 onMounted(() => {

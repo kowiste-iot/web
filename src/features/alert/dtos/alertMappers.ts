@@ -10,6 +10,7 @@ export class AlertMapper extends BaseMapper {
       name: raw.name,
       parent: raw.parent,
       enabled: raw.enabled,
+      description: raw.description,
       updatedAt: raw.updated_at ? new Date(raw.updated_at) : undefined,
     })
   }

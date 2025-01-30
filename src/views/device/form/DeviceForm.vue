@@ -112,10 +112,12 @@ const deviceService = new DeviceService(
   notificationService
 )
 
+const assetStore = useAssetStore()
 // computed
 const assets = computed(() => {
-  return useAssetStore().assets
+  return assetStore.assets
 })
+
 
 // methods
 async function save() {
@@ -146,6 +148,12 @@ watch(
 )
 // lifecycle
 onMounted(() => {
+  if (props.edit && props.data.parent) {
+    const parent = assetStore.getAssetById(props.data.parent)
+    if (parent) {
+      selectedParent.value = parent
+    }
+  }
   useAssetStore().fetchAssets()
 })
 </script>

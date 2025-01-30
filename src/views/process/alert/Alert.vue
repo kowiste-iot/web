@@ -34,6 +34,16 @@
           </span>
         </template>
       </Column>
+      <Column
+        :class="page.table.description.location"
+        :field="page.table.description.data"
+      >
+        <template #header>
+          <span class="container-fluid">
+            {{ page.table.description.title }}
+          </span>
+        </template>
+      </Column>
       <Column>
         <template #body="{ data }">
           <PropertyDot
@@ -153,8 +163,6 @@ function closeForm() {
   page.reset()
 }
 async function refreshData() {
-  console.log('frt', alertStore)
-
   await useAlertStore().fetchAlerts()
 }
 // lifeCycle

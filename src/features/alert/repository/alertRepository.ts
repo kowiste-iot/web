@@ -24,7 +24,7 @@ export class AlertRepository
 
   async findAll(): Promise<IAlert[]> {
     try {
-      const response = await axiosClient().get<AlertDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<AlertDTO[]>(this.baseUrl)      
       return response.data
         .map((dto: AlertDTO) => AlertMapper.toDomain(dto))
         .filter((alert: IAlert): alert is IAlert => alert !== null)

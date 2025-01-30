@@ -2,6 +2,7 @@
 import { Device } from '../domain/device'
 import type { IDevice, IDeviceRepository } from '../domain/device'
 import type { INotificationService } from '@/features/notification/application/notificationService'
+import { useDeviceStore } from '../stores/useDeviceStore'
 
 export class DeviceService {
   constructor(
@@ -65,7 +66,7 @@ export class DeviceService {
         return false
       }
 
-      const existingDevice = await this.getDevice(data.id)
+      const existingDevice = await useDeviceStore().getDeviceById(data.id)
       if (!existingDevice) {
         throw new Error('Device not found')
       }

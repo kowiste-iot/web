@@ -1,5 +1,6 @@
-import type { ValidationError } from "@/features/shared/domain/baseValidator"
-import { MeasureValidator } from "./measureValidator"
+import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { MeasureValidator } from './measureValidator'
+import type { IAsset } from '@/features/asset/domain/asset'
 
 export interface IMeasure {
   id: string
@@ -44,8 +45,8 @@ export class Measure implements IMeasure {
   }
 }
 export interface IMeasureRepository {
-  findById(id: string): Promise<IMeasure | null>
-  findAll(): Promise<IMeasure[]>
+  findById(id: string, assets: IAsset[]): Promise<IMeasure | null>
+  findAll(assets: IAsset[]): Promise<IMeasure[]>
   create(asset: IMeasure): Promise<void>
   update(asset: IMeasure): Promise<void>
   delete(id: string): Promise<void>

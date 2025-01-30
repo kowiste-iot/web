@@ -15,6 +15,7 @@ export class MeasuresPage extends PageBase {
   table: {
     id: Columns
     name: Columns
+    enabled: Columns
     asset: Columns
     description: Columns
   }
@@ -39,7 +40,12 @@ export class MeasuresPage extends PageBase {
     this.showModal = false
     this.table = this.createTable()
   }
-
+  reset() {
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
+    this.selected = undefined
+  }
   private createTable() {
     const { t } = useI18n()
 
@@ -47,6 +53,7 @@ export class MeasuresPage extends PageBase {
       id: new Columns('ID', 'id'),
       name: new Columns(t('measure.table.name'), 'name'),
       asset: new Columns(t('measure.table.parent'), 'parent'),
+      enabled: new  Columns(t('measure.table.enabled'), 'enabled'),
       description: new Columns(t('measure.table.description'), 'description'),
     }
   }

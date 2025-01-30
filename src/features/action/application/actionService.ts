@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { EValidation } from '@/features/shared/enum/EValidation'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
+import { useActionStore } from '../stores/useActionStore'
 
 const actionSchema = z.object({
   name: z
@@ -88,7 +89,7 @@ export class ActionService {
   }): Promise<boolean> {
     try {
       const validated = actionSchema.parse(data)
-      const existingAction = await this.getAction(data.id)
+      const existingAction = await useActionStore().getActionById(data.id)
       if (!existingAction) throw new Error('Action not found')
 
       const updatedAction: IAction = {

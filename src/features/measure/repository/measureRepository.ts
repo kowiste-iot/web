@@ -1,4 +1,4 @@
-import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import {
   Measure,
   type IMeasure,
@@ -7,28 +7,31 @@ import {
 import type { MeasureDTO } from '../dtos/measureDTO'
 import { MeasureMapper } from '../dtos/measureMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { IAsset } from '@/features/asset/domain/asset'
 
-export class MeasureRepository  extends BaseRepository implements IMeasureRepository {
+export class MeasureRepository
+  extends BaseRepository
+  implements IMeasureRepository
+{
   constructor() {
-       super('measures')
-
+    super('measures')
   }
-  async findById(id: string): Promise<IMeasure | null> {
+  async findById(id: string, assets: IAsset[]): Promise<IMeasure | null> {
     try {
       const response = await axiosClient().get<MeasureDTO>(
         `${this.baseUrl}/${id}`
       )
-      return MeasureMapper.toDomain(response.data)
+      return MeasureMapper.toDomain(response.data,assets)
     } catch (error) {
       throw error
     }
   }
 
-  async findAll(): Promise<IMeasure[]> {
+  async findAll( assets: IAsset[]): Promise<IMeasure[]> {
     try {
       const response = await axiosClient().get<MeasureDTO[]>(this.baseUrl)
       return response.data
-        .map((dto: MeasureDTO) => MeasureMapper.toDomain(dto))
+        .map((dto: MeasureDTO) => MeasureMapper.toDomain(dto, assets))
         .filter((measure: IMeasure): measure is IMeasure => measure !== null)
     } catch (error) {
       throw error

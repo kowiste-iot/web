@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
 import { Asset, type IAsset, type IAssetRepository } from '../domain/asset'
 import { useAssetStore } from '../stores/useAssetStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
 
 export class AssetService {
   constructor(
@@ -27,7 +27,7 @@ export class AssetService {
   async getAssets(): Promise<IAsset[]> {
     try {
       const assets = await this.assetRepository.findAll()
-      return this.setAssetValues(assets)
+      return SharedAssetMapper.setAssetValues(assets)
     } catch (error) {
       const msg =
         error instanceof Error
@@ -98,20 +98,5 @@ export class AssetService {
           : 'Failed to delete asset'
       this.notificationService.error(msg)
     }
-  }
-
-  private setAssetValues(data: IAsset[]): IAsset[] {
-    const assetMap = new Map(data.map((asset) => [asset.id, asset]))
-
-    return data.map((asset) => {
-      if (asset.parent) {
-        const parent = assetMap.get(asset.parent)
-        return {
-          ...asset,
-          parentName: parent?.name ?? '',
-        }
-      }
-      return asset
-    })
   }
 }

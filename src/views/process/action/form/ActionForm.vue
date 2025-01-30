@@ -1,7 +1,9 @@
 <template>
   <InputCard
     class="h-100"
-    :headerText="$t(edit ? 'action.form.titleUpdate' : 'action.form.titleCreate')"
+    :headerText="
+      $t(edit ? 'action.form.titleUpdate' : 'action.form.titleCreate')
+    "
     :icon="edit ? EIcon.Edit : EIcon.Add"
     showHeader
     showFooter
@@ -26,6 +28,16 @@
         :placeholder="$t('action.form.parentHolder')"
         :error="errors['parent']"
         v-model="selectedParent"
+      />
+    </div>
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('action.form.description') }} </label>
+      <InputText
+        class="col-md-8"
+        placeholder=""
+        :rows="5"
+        :error="errors['description']"
+        v-model="form.description"
       />
     </div>
     <template #footer>
@@ -59,6 +71,7 @@ import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import { Action, type IAction } from '@/features/action/domain/action'
 import { ActionService } from '@/features/action/application/actionService'
 import { ActionRepository } from '@/features/action/repository/actionRepository'
+import InputText from '@/components/form/InputText.vue'
 
 // other imports
 // props
@@ -114,7 +127,6 @@ onMounted(() => {
       selectedParent.value = parent
     }
   }
-  assetStore.fetchAssets()
 })
 // watch
 watch(

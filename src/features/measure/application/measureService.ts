@@ -5,16 +5,23 @@ import {
   type IMeasure,
   type IMeasureRepository,
 } from '../domain/measure'
+import { useMeasureStore } from '../stores/useMeasureStore'
+import type { IAssetStore } from '@/features/asset/domain/assetStore'
 
 export class MeasureService {
   constructor(
     private readonly measureRepository: IMeasureRepository,
-    private readonly notificationService: INotificationService
+    private readonly notificationService: INotificationService,
+    private readonly assetStore: IAssetStore
   ) {}
 
   async fetchMeasure(id: string): Promise<IMeasure | null> {
     try {
-      const measure = await this.measureRepository.findById(id)
+    
+      const measure = await this.measureRepository.findById(
+        id,
+        this.assetStore.assets
+      )
       return measure
     } catch (error) {
       const msg =
@@ -28,7 +35,9 @@ export class MeasureService {
 
   async fetchMeasures(): Promise<IMeasure[]> {
     try {
-      const measures = await this.measureRepository.findAll()
+      const measures = await this.measureRepository.findAll(
+        this.assetStore.assets
+      )
       return measures
     } catch (error) {
       const msg =
@@ -71,11 +80,12 @@ export class MeasureService {
         this.notificationService.error(errorMessages.join(', '))
         return false
       }
-      const existingMeasure = await this.fetchMeasure(data.id)
+
+      const existingMeasure = await useMeasureStore().getMeasureById(data.id)
+
       if (!existingMeasure) throw new Error('Measure not found')
 
       const measure = new Measure({ ...existingMeasure, ...data })
-
       await this.measureRepository.update(measure)
       this.notificationService.success('Measure update successfully')
       return true

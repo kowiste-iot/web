@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { EValidation } from '@/features/shared/enum/EValidation'
 import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
+import { useAlertStore } from '../stores/useAlertStore'
 
 const alertSchema = z.object({
   name: z
@@ -88,7 +89,7 @@ export class AlertService {
   }): Promise<boolean> {
     try {
       const validated = alertSchema.parse(data)
-      const existingAlert = await this.getAlert(data.id)
+      const existingAlert = await useAlertStore().getAlertById(data.id)
       if (!existingAlert) throw new Error('Alert not found')
 
       const updatedAlert: IAlert = {

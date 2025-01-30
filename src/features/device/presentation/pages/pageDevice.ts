@@ -40,7 +40,12 @@ export class DevicePage extends PageBase {
     this.showModal = false
     this.table = this.createTable()
   }
-
+  reset() {
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
+    this.selected = undefined
+  }
   private createTable() {
     const { t } = useI18n()
 

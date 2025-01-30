@@ -10,7 +10,13 @@ export const useDeviceStore = defineStore('deviceStore', {
     devices: [] as IDevice[],
     currentDevice: null as IDevice | null,
   }),
-
+  getters: {
+    getDeviceById: (state) => {
+      return (id: string): IDevice | undefined => {
+        return state.devices.find((device) => device.id === id)
+      }
+    },
+  },
   actions: {
     async fetchDevice(id: string) {
       const deviceService = new DeviceService(

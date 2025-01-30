@@ -63,7 +63,9 @@
     "title": "alerts",
     "table": {
       "name": "Name",
-      "parent": "Belong to"
+      "parent": "Belong to",
+      "enabled": "Enabled",
+      "description": "Description"
     },
     "delete": "Are you sure you want to delete it",
     "form": {
@@ -79,7 +81,9 @@
     "title": "actions",
     "table": {
       "name": "Name",
-      "parent": "Belong to"
+      "parent": "Belong to",
+      "enabled": "Enabled",
+      "description": "Description"
     },
     "delete": "Are you sure you want to delete it",
     "form": {
@@ -88,7 +92,9 @@
       "name": "Name",
       "nameHolder": "action name",
       "parent": "Belong To",
-      "parentHolder": "action belong to asset"
+      "parentHolder": "action belong to asset",
+      "description": "Description",
+      "descriptionHolder": "device description"
     }
   },
   "user": {

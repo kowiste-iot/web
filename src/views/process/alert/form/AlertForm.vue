@@ -1,31 +1,41 @@
 <template>
   <InputCard
     class="h-100"
-    :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
+    :headerText="$t(edit ? 'alert.form.titleUpdate' : 'alert.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
     showHeader
     showFooter
   >
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('alert.form.name') }} </label>
       <Input
         class="col-md-8"
-        :placeholder="$t('asset.form.nameHolder')"
+        :placeholder="$t('alert.form.nameHolder')"
         type="text"
         :error="errors['name']"
         v-model="form.name"
       />
     </div>
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('alert.form.parent') }} </label>
       <MultiDropdown
         class="col-md-8"
         :options="availableParents"
         idField="id"
         labelField="name"
-        :placeholder="$t('asset.form.parentHolder')"
+        :placeholder="$t('alert.form.parentHolder')"
         :error="errors['parent']"
         v-model="selectedParent"
+      />
+    </div>
+    <div class="row mb-3">
+      <label class="col-md-4 pt-2">{{ $t('alert.form.description') }} </label>
+      <InputText
+        class="col-md-8"
+        placeholder=""
+        :rows="5"
+        :error="errors['description']"
+        v-model="form.description"
       />
     </div>
     <template #footer>
@@ -59,6 +69,7 @@ import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import { Alert, type IAlert } from '@/features/alert/domain/alert'
 import { AlertService } from '@/features/alert/application/alertService'
 import { AlertRepository } from '@/features/alert/repository/alertRepository'
+import InputText from '@/components/form/InputText.vue'
 
 // other imports
 // props

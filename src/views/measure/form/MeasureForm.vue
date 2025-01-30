@@ -31,7 +31,7 @@
       />
     </div>
     <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('role.form.description') }} </label>
+      <label class="col-md-4 pt-2">{{ $t('measure.form.description') }} </label>
       <InputText
         class="col-md-8"
         placeholder=""
@@ -104,7 +104,8 @@ const errors = ref<ValidationError<IMeasure>>({})
 const { notificationService } = useBasePage()
 const measureService = new MeasureService(
   new MeasureRepository(),
-  notificationService
+  notificationService,
+  useAssetStore()
 )
 // storage calls
 const assetStore = useAssetStore()
@@ -114,16 +115,22 @@ const assets = computed(() => {
 })
 
 // methods
-function save() {
+async function save() {
   if (props.edit) {
-    measureService.updateMeasure(form)
+    await measureService.updateMeasure(form)
   } else {
-    measureService.createMeasure(form)
+    await measureService.createMeasure(form)
   }
   props.close()
 }
 // lifeCycle
 onMounted(() => {
+  if (props.edit && props.data.parent) {
+    const parent = assetStore.getAssetById(props.data.parent)
+    if (parent) {
+      selectedParent.value = parent
+    }
+  }
   useAssetStore().fetchAssets()
 })
 // watch

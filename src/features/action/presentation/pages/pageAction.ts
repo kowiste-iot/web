@@ -16,6 +16,7 @@ export class ActionPage extends PageBase {
     name: Columns
     asset: Columns
     enabled: Columns
+    description: Columns
   }
 
   constructor() {
@@ -53,6 +54,7 @@ export class ActionPage extends PageBase {
       name: new Columns(t('action.table.name'), 'name'),
       asset: new Columns(t('action.table.parent'), 'parent'),
       enabled: new Columns(t('action.table.enabled'), 'enabled'),
+      description: new Columns(t('action.table.description'), 'description'),
     }
   }
 }
