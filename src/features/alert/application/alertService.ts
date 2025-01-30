@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { EValidation } from '@/features/shared/enum/EValidation'
-import type { IAlert, IAlertRepository } from '../domain/alert'
+import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 
 const alertSchema = z.object({
   name: z
@@ -57,18 +57,16 @@ export class AlertService {
     }
   }
 
-  async createAlert(data: {
-    name: string
-    parent: string
-    description?: string
-  }): Promise<boolean> {
+  async createAlert(data: IAlert): Promise<boolean> {
     try {
-      const validated = alertSchema.parse(data)
-      const alert: IAlert = {
-        name: validated.name,
-        parent: validated.parent,
-        description: validated.description,
+      const errors = Alert.validate(data)
+
+      if (Object.keys(errors).length > 0) {
+        const errorMessages = Object.values(errors).filter(Boolean)
+        this.notificationService.error(errorMessages.join(', '))
+        return false
       }
+      const alert = new Alert(data)
       await this.alertRepository.create(alert)
       this.notificationService.success('Alert created successfully')
       return true

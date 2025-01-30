@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { EValidation } from '@/features/shared/enum/EValidation'
-import type { IAction, IActionRepository } from '../domain/action'
+import { Action, type IAction, type IActionRepository } from '../domain/action'
 
 const actionSchema = z.object({
   name: z
@@ -57,18 +57,16 @@ export class ActionService {
     }
   }
 
-  async createAction(data: {
-    name: string
-    parent: string
-    description?: string
-  }): Promise<boolean> {
+  async createAction(data: IAction): Promise<boolean> {
     try {
-      const validated = actionSchema.parse(data)
-      const action: IAction = {
-        name: validated.name,
-        parent: validated.parent,
-        description: validated.description,
+      const errors = Action.validate(data)
+
+      if (Object.keys(errors).length > 0) {
+        const errorMessages = Object.values(errors).filter(Boolean)
+        this.notificationService.error(errorMessages.join(', '))
+        return false
       }
+      const action = new Action(data)
       await this.actionRepository.create(action)
       this.notificationService.success('Action created successfully')
       return true

@@ -1,4 +1,4 @@
-import { axiosClient } from '@/utils/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import { Device, type IDevice, type IDeviceRepository } from '../domain/device'
 import type { DeviceDTO } from '../dtos/deviceDTO'
 import { DeviceMapper } from '../dtos/deviceMappers'

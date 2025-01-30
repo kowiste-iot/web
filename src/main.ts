@@ -1,6 +1,11 @@
 // css
 import '@/assets/main.css'
 import '@/assets/custom.css'
+
+const envProv = new URLProvider()
+const env = Environment.init(envProv)
+env.initialize()
+
 //icon
 import '@fortawesome/fontawesome-free'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -27,14 +32,8 @@ import createAppRouter from './router'
 import { extractRealmFromPath } from './plugins/security/utils'
 import { Environment } from './utils/enviroment/enviroment'
 import { URLProvider } from './utils/http/url/url'
-import { createAxiosClient } from './utils/http/axios-client'
 
-const envProv = new URLProvider()
-const env = Environment.init(envProv)
-env.initialize()
 const router = createAppRouter(env.webURLBase)
-
-createAxiosClient()
 
 const app = createApp(App)
 app.use(createPinia())

@@ -38,15 +38,6 @@ export class RoleRepository extends BaseRepository implements IRoleRepository {
       throw error
     }
   }
-  //cant update
-  // async update(data: IRole): Promise<void> {
-  //   try {
-  //     const dto = RoleMapper.toDTO(new Role(data))
-  //     await axiosServices.put(`${this.baseUrl}/${data.id}`, dto)
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
 
   async delete(id: string): Promise<void> {
     try {

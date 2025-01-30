@@ -1,4 +1,4 @@
-import { axiosClient } from '@/utils/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
 import type { WidgetDTO } from '../dtos/widgetDTO'
 import { WidgetMapper } from '../dtos/widgetMappers'

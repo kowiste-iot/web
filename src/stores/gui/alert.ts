@@ -1,12 +1,12 @@
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import type { IAlert } from '@/model/gui/alert'
+import type { IAlertGUI } from '@/model/gui/alert'
 import { defineStore } from 'pinia'
 
 interface State {
   _show: boolean
-  _alert: IAlert | undefined
-  _alerts: IAlert[]
+  _alert: IAlertGUI | undefined
+  _alerts: IAlertGUI[]
 }
 
 export const useGUIAlert = defineStore('alerGUItStore', {
@@ -19,11 +19,11 @@ export const useGUIAlert = defineStore('alerGUItStore', {
     have(): boolean {
       return this._show
     },
-    alert(): IAlert {
-      if (!this._alert) return {} as IAlert
+    alert(): IAlertGUI {
+      if (!this._alert) return {} as IAlertGUI
       return this._alert
     },
-    alerts(): IAlert[] {
+    alerts(): IAlertGUI[] {
       return this._alerts
     },
   },

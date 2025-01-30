@@ -40,6 +40,7 @@ export class Environment {
   }
 
   public static init(environmentProvider: IEnvironmentProvider): Environment {
+
     if (Environment.instance) {
       throw new Error('Environment already initialized')
     }

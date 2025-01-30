@@ -5,6 +5,7 @@ export interface IAction {
   id: string
   name: string
   parent: string
+  enabled: boolean
   description?: string
   updatedAt?: Date
 }
@@ -15,6 +16,7 @@ export class Action implements IAction {
   id: string
   name: string
   parent: string
+  enabled: boolean
   description?: string
   updatedAt?: Date
 
@@ -22,6 +24,7 @@ export class Action implements IAction {
     this.id = props.id
     this.name = props.name
     this.parent = props.parent
+    this.enabled = props.enabled
     this.description = props.description
     this.updatedAt = props.updatedAt
   }
@@ -40,6 +43,7 @@ export class Action implements IAction {
       id: this.id,
       name: this.name,
       parent: this.parent,
+      enabled: this.enabled,
       description: this.description,
     }
   }

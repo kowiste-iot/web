@@ -7,7 +7,7 @@ import { useAuthStore } from '@/plugins/security/store'
 import { getRouter } from '@/router'
 import { Environment } from '@/utils/enviroment/enviroment'
 
-let axiosInstance: AxiosInstance | null = null
+let axiosInstance: AxiosInstance 
 
 export const createAxiosClient = () => {
   const env = Environment.getInstance()
@@ -42,7 +42,7 @@ export const createAxiosClient = () => {
       console.log('error response')
       if (error.config) useRequest().delete(getRequestID(error.config))
 
-      if (error.response?.status === 401)  {
+      if (error.response?.status === 401) {
         console.log('not auth')
         useAuthStore().logout()
         getRouter().push('/')
@@ -56,10 +56,8 @@ export const createAxiosClient = () => {
 }
 
 export const axiosClient = () => {
-  if (!axiosInstance) {
-    throw new Error(
-      'Axios client not initialized. Call createAxiosClient first'
-    )
+  if (!axiosInstance || (axiosInstance == null)) {
+    createAxiosClient()
   }
   return axiosInstance
 }

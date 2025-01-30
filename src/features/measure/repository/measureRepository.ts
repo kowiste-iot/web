@@ -1,4 +1,4 @@
-import { axiosClient } from '@/utils/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import {
   Measure,
   type IMeasure,

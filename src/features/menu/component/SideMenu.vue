@@ -116,8 +116,6 @@ function handleMenuClick(menu: IMenu) {
       }
     }
   } else {
-    console.log('goto', menu.path);
-    
     router.push(menu.path)
   }
 }

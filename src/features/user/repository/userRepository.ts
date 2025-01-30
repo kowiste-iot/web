@@ -1,5 +1,5 @@
 // repository/userRepository.ts
-import { axiosClient } from '@/utils/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import { User, type IUser, type IUserRepository } from '../domain/user'
 import type { UserDTO } from '../dtos/userDTO'
 import { UserMapper } from '../dtos/userMappers'

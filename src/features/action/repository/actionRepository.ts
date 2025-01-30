@@ -1,4 +1,4 @@
-import { axiosClient } from '@/utils/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
 import type { ActionDTO } from '../dtos/actionDTO'
