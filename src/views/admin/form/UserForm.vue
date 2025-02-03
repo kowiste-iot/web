@@ -136,6 +136,9 @@ watch(
   () => selectedRoles.value,
   () => {
     form.roles = []
+    selectedRoles.value.forEach((role)=>{
+      form.roles.push(role.name)
+    })
   },
   {
     deep: true,

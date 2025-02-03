@@ -16,6 +16,9 @@ export const KeycloakPlugin = {
       return
     }
 
+    const windowsOrigin = window.location.origin
+    console.log('init keycloak', windowsOrigin)
+
     // Initialize with current tenant
     const keycloakConfig: KeycloakConfig = {
       ...options,
@@ -27,7 +30,7 @@ export const KeycloakPlugin = {
         enableLogging: true,
         onLoad: 'check-sso',
         silentCheckSsoFallback: false, // Disable fallback to avoid iframe issues
-        redirectUri: window.location.href, 
+        redirectUri: windowsOrigin,
       },
     }
 

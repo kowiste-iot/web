@@ -131,11 +131,12 @@ export const useAuthStore = defineStore('auth', {
     //TODO: maybe remove this and use keycloak service
     async login(redirectUri?: string): Promise<void> {
       if (this.isAuthenticated) return
-
+      const windowsOrigin = window.location.origin
+      console.log('login store keycloak', windowsOrigin)
       if (this.keycloak) {
         try {
           await this.keycloak.login({
-            redirectUri: redirectUri ?? window.location.origin,
+            redirectUri: redirectUri ?? windowsOrigin,
           })
         } catch (error) {
           console.error('Login failed:', error)
@@ -146,8 +147,10 @@ export const useAuthStore = defineStore('auth', {
     //TODO: maybe remove this and use keycloak service
     async logout() {
       if (!this.isAuthenticated) return
+      const windowsOrigin = window.location.origin
+      console.log('logout store keycloak', windowsOrigin)
       await this.keycloak?.logout({
-        redirectUri: window.location.origin,
+        redirectUri: windowsOrigin,
       })
     },
 

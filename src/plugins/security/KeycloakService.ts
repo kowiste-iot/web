@@ -15,12 +15,14 @@ export class KeycloakService {
     if (!newRealm || newRealm === 'undefined') {
       throw new Error('Invalid realm configuration')
     }
+    const windowsOrigin = window.location.origin
+    console.log('update realm keycloak', windowsOrigin)
 
     try {
       if (this.keycloak?.authenticated) {
         this.clearRefreshTimeout()
         await this.keycloak.logout({
-          redirectUri: window.location.origin + '/tenant',
+          redirectUri: windowsOrigin + '/tenant',
         })
       }
 
@@ -35,7 +37,7 @@ export class KeycloakService {
           onLoad: 'login-required',
           silentCheckSsoFallback: false,
           flow: 'standard',
-          redirectUri: window.location.origin,
+          redirectUri: windowsOrigin,
         },
       }
 
@@ -156,10 +158,11 @@ export class KeycloakService {
         console.log('Token expired event triggered')
         this.refreshToken()
       }
-
+      const windowsOrigin = window.location.origin
+      console.log('init service keycloak', windowsOrigin)
       if (!authenticated) {
         await this.keycloak.login({
-          redirectUri: window.location.origin,
+          redirectUri: windowsOrigin,
         })
       }
     } catch (error) {
@@ -173,20 +176,24 @@ export class KeycloakService {
   }
 
   async login(redirectUri?: string): Promise<void> {
+    const windowsOrigin = window.location.origin
+    console.log('login keycloak', windowsOrigin)
     if (this.keycloak) {
       await this.keycloak.login({
-        redirectUri: redirectUri || window.location.origin,
+        redirectUri: redirectUri || windowsOrigin,
       })
     }
   }
 
   async logout(redirectUri?: string): Promise<void> {
+    const windowsOrigin = window.location.origin
+    console.log('logout keycloak', windowsOrigin)
     if (this.keycloak) {
       this.clearRefreshTimeout()
       const sessionStore = useSessionStore()
       sessionStore.$reset()
       await this.keycloak.logout({
-        redirectUri: redirectUri || window.location.origin,
+        redirectUri: redirectUri || windowsOrigin,
       })
     }
   }

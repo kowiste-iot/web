@@ -1,8 +1,8 @@
-import type { EWidget } from "../domain/EWidget"
+import type { EWidget } from '../domain/EWidget'
 
 export interface WidgetDTO {
   id: string
-  dashboard_id: string
+  dashboardID: string
   type: EWidget
   i: number
   x: number
@@ -11,9 +11,9 @@ export interface WidgetDTO {
   h: number
   data: {
     label: string
-    show_label: boolean
-    show_emotion: boolean
-    true_emotion: boolean
+    showLabel: boolean
+    showEmotion: boolean
+    trueEmotion: boolean
     link: {
       measure: string
       tag: string

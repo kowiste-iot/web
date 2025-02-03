@@ -12,19 +12,19 @@ export const useWidgetStore = defineStore('widgetStore', {
   }),
 
   actions: {
-    async fetchWidget(id: string) {
+    async fetchWidget(dashboardID: string, id: string) {
       const widgetService = new WidgetService(
         new WidgetRepository(),
         new NotificationService(useNotificationStore())
       )
-      this.currentWidget = await widgetService.getWidget(id)
+      this.currentWidget = await widgetService.getWidget(dashboardID, id)
     },
-    async fetchWidgets() {
+    async fetchWidgets(dashboardID: string) {
       const widgetService = new WidgetService(
         new WidgetRepository(),
         new NotificationService(useNotificationStore())
       )
-      this.widgets = await widgetService.getWidgets()
+      this.widgets = await widgetService.getWidgets(dashboardID)
     },
   },
 })

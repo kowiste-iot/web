@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 // components import
 import SideCard from '@/components/cards/SideCard.vue'
@@ -120,13 +120,19 @@ import { DashboardPage } from '@/features/dashboard/presentation/pages/pageDashb
 import { EWidget } from '@/features/dashboard/domain/EWidget'
 import { useBasePage } from '@/composable/useBasePage'
 import { useWidgetStore } from '@/features/dashboard/stores/useWidgetStore'
+import { getParam } from '@/utils/routes/routes'
+import { useRoute } from 'vue-router'
 
 // other imports
 // props
 const page = ref(new DashboardPage())
+const route = useRoute()
+
+const dashboardID = getParam(route.params.did)
 
 // service
 useBasePage(page.value.title, page.value.path)
+const widgetStore = useWidgetStore()
 
 // computed
 const widgets = computed(() => {
@@ -134,6 +140,9 @@ const widgets = computed(() => {
 })
 // methods
 // lifeCycle
+onMounted(() => {
+  widgetStore.fetchWidgets(dashboardID)
+})
 // watch
 </script>
 

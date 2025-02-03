@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Boolean class="" :data="model.data" v-model="measure" />
+        <Boolean class="" :data="model?.data" v-model="measure" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
@@ -64,7 +64,7 @@
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="model.data.options.trueEmotion"
+            v-model="model.data.trueEmotion"
           />
         </div>
       </div>

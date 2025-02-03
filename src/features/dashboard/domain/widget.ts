@@ -1,6 +1,7 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { EWidget } from './EWidget'
 import { WidgetValidator } from './widgetValidator'
+import type { IWidgetType } from '@/model/widget/widgetType'
 
 export interface IWidget {
   id: string
@@ -78,6 +79,10 @@ export class Widget implements IWidget {
   ): string {
     return this.validator.validateField(field, value)
   }
+  set(selected: IWidgetType, dashboardID: string) {
+    this.dashboardID = dashboardID
+    console.log('gt', selected)
+  }
   toJSON(): IWidget {
     return {
       id: this.id,
@@ -101,9 +106,9 @@ export class Widget implements IWidget {
 }
 
 export interface IWidgetRepository {
-  findById(id: string): Promise<IWidget | null>
-  findAll(): Promise<IWidget[]>
-  create(widget: IWidget): Promise<void>
-  update(widget: IWidget): Promise<void>
-  delete(id: string): Promise<void>
+  findById(dashboardID: string, id: string): Promise<IWidget | null>
+  findAll(dashboardID: string): Promise<IWidget[]>
+  create(dashboardID: string,widget: IWidget): Promise<void>
+  update(dashboardID: string,widget: IWidget): Promise<void>
+  delete(dashboardID: string,id: string): Promise<void>
 }

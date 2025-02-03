@@ -37,9 +37,9 @@ export class WidgetService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getWidget(id: string): Promise<IWidget | null> {
+  async getWidget(dashboardID: string, id: string): Promise<IWidget | null> {
     try {
-      const widget = await this.widgetRepository.findById(id)
+      const widget = await this.widgetRepository.findById(dashboardID,id)
       return widget
     } catch (error) {
       const msg =
@@ -51,9 +51,9 @@ export class WidgetService {
     }
   }
 
-  async getWidgets(): Promise<IWidget[]> {
+  async getWidgets(dashboardID: string): Promise<IWidget[]> {
     try {
-      const widgets = await this.widgetRepository.findAll()
+      const widgets = await this.widgetRepository.findAll(dashboardID)
       return widgets
     } catch (error) {
       const msg =
@@ -65,11 +65,11 @@ export class WidgetService {
     }
   }
 
-  async createWidget(data: IWidget): Promise<boolean> {
+  async createWidget(dashboardID: string, data: IWidget): Promise<boolean> {
     try {
       const errors = Widget.validate(data)
       const widget = new Widget(data)
-      await this.widgetRepository.create(widget)
+      await this.widgetRepository.create(dashboardID,widget)
       this.notificationService.success('Widget created successfully')
       return true
     } catch (error) {
@@ -82,13 +82,13 @@ export class WidgetService {
     }
   }
 
-  async updateWidget(data: IWidget): Promise<boolean> {
+  async updateWidget(dashboardID: string, data: IWidget): Promise<boolean> {
     try {
       const validated = widgetSchema.parse(data)
-      const existingWidget = await this.getWidget(data.id)
+      const existingWidget = await this.getWidget(dashboardID, data.id)
       if (!existingWidget) throw new Error('Widget not found')
 
-      await this.widgetRepository.update(data)
+      await this.widgetRepository.update(dashboardID,data)
       this.notificationService.success('Widget updated successfully')
       return true
     } catch (error) {
@@ -101,9 +101,9 @@ export class WidgetService {
     }
   }
 
-  async deleteWidget(id: string): Promise<void> {
+  async deleteWidget(dashboardID: string, id: string): Promise<void> {
     try {
-      await this.widgetRepository.delete(id)
+      await this.widgetRepository.delete(dashboardID,id)
       this.notificationService.success('Widget deleted successfully')
     } catch (error) {
       const msg =
