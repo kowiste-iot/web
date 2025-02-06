@@ -39,6 +39,10 @@
           <FIcon class="pt-1" :icon="EIcon.Tenant" />
           <div class="ms-4 w-auto">Tenant</div>
         </div>
+        <div class="btn d-flex" @click="sessionStore.openTour = true">
+          <FIcon class="pt-1" :icon="EIcon.WalkThrough" />
+          <div class="ms-4 w-auto">Tour</div>
+        </div>
       </div>
 
       <div class="btn d-flex border-top mt-4">
@@ -61,7 +65,7 @@ import { ref, computed } from 'vue'
 // stores import
 import { useRouter } from 'vue-router'
 import { useTenantStore } from '@/features/tenant/stores/tenant'
-import {useSessionStore} from '@/features/session/store/useSessionStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'

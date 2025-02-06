@@ -3,10 +3,10 @@ import { defineStore } from 'pinia'
 import { useAuthStore } from '@/plugins/security/store'
 import type { ISession } from '../domain/session'
 
-
 export const useSessionStore = defineStore('sessionStore', {
   state: () => ({
     userInfo: null as ISession | null,
+    openTour: false,
   }),
 
   getters: {

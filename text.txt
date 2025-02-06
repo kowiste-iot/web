@@ -18,14 +18,19 @@ public/
 src/
   App.vue
   assets/
+    .DS_Store
     base.css
     custom.css
     custom.css.map
     custom.scss
     locales/
-      en.json
-      es.json
-      th.json
+      en/
+        en.json
+        tour.json
+      es/
+        es.json
+      th/
+        th.json
     logo.svg
     main.css
   components/
@@ -66,6 +71,8 @@ src/
       Header.vue
     property/
       Property.vue
+    session/
+      Session.vue
     slider/
       MultiSlider.vue
       Slider.vue
@@ -75,8 +82,6 @@ src/
       Tabs.vue
     table/
       DefaulTable.vue
-    user/
-      User.vue
   composable/
     useBasePage.ts
     useTenant.ts
@@ -94,6 +99,7 @@ src/
         actionService.ts
       domain/
         action.ts
+        actionValidator.ts
       dtos/
         actionDTO.ts
         actionMappers.ts
@@ -109,6 +115,7 @@ src/
         alertService.ts
       domain/
         alert.ts
+        alertValidator.ts
       dtos/
         alertDTO.ts
         alertMappers.ts
@@ -124,6 +131,7 @@ src/
         assetService.ts
       domain/
         asset.ts
+        assetStore.ts
         assetValidator.ts
       dtos/
         assetDTO.ts
@@ -144,6 +152,7 @@ src/
         dashboard.ts
         dashboardValidator.ts
         widget.ts
+        widgetValidator.ts
       dtos/
         dashboardDTO.ts
         dashboardMappers.ts
@@ -258,6 +267,9 @@ src/
       dtos/
         scopeDTO.ts
         scopeMappers.ts
+        scopeProvider.ts
+      infrastructure/
+        piniaScopeProvider.ts
       presentation/
         pages/
           pageScope.ts
@@ -265,6 +277,11 @@ src/
         scopeRepository.ts
       stores/
         useScopeStore.ts
+    session/
+      domain/
+        session.ts
+      store/
+        useSessionStore.ts
     shared/
       domain/
         EActionGUI.ts
@@ -273,6 +290,7 @@ src/
         baseRepository.ts
         baseValidator.ts
       dtos/
+        assetMappers.ts
         baseMapper.ts
       enum/
         EColor.ts
@@ -289,6 +307,22 @@ src/
         router.ts
       stores/
         tenant.ts
+    tour/
+      application/
+        tourService.ts
+      domain/
+        tour.ts
+      dtos/
+      presentation/
+        components/
+          PlatformTour.vue
+        pages/
+      repository/
+        tourRepository.ts
+      stores/
+        useTourStore.ts
+      tours/
+        example.ts
     user/
       application/
         userService.ts
@@ -345,13 +379,10 @@ src/
     index.ts
     measure.ts
     process.ts
-  shared/
-    http/
   stores/
     gui/
       alert.ts
       breadcrumb.ts
-      user.ts
   utils/
     enviroment/
       enviroment.ts
@@ -430,9 +461,15 @@ src/
       form/
         MeasureForm.vue
     process/
-      Action.vue
-      Alert.vue
       Process.vue
+      action/
+        Action.vue
+        form/
+          ActionForm.vue
+      alert/
+        Alert.vue
+        form/
+          AlertForm.vue
   vue-i18n.d.ts
 text.txt
 tsconfig.app.json
