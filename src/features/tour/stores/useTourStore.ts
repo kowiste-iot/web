@@ -6,7 +6,6 @@ import type { Tour, TourProgress, TourStep } from '../domain/tour'
 import { TourRepository } from '../repository/tourRepository'
 import { TourService } from '../application/tourService'
 
-
 export const useTourStore = defineStore('tourStore', {
   state: () => ({
     tours: {} as Record<string, Tour>,
@@ -138,7 +137,7 @@ export const useTourStore = defineStore('tourStore', {
     },
 
     async previousStep() {
-      const  tourService = new TourService(
+      const tourService = new TourService(
         new TourRepository(),
         new NotificationService(useNotificationStore())
       )

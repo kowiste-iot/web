@@ -29,6 +29,7 @@ export enum EIcon {
   LogOut = 'fa-sign-out',
   Close = 'fa-rectangle-xmark',
   Next = 'fa-arrow-right',
+  Play = 'fa-play',
   Tenant = 'fa-chess-rook',
 
   //

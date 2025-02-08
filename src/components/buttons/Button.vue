@@ -7,7 +7,7 @@
       (disabled ? ' disabled' : '')
     "
   >
-    <FIcon v-if="icon" class="far pe-2 pt-1" :icon="icon" />
+    <FIcon v-if="icon" class="" :icon="icon" />
     <div v-if="loading"><Spinner /></div>
     <slot/>
   </button>

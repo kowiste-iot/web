@@ -55,6 +55,7 @@ const kcOptions = {
 } as KeycloakConfig
 
 const i18n = createI18n({
+  legacy: false,
   locale: 'en', // Set the default locale
   fallbackLocale: 'en', // Set the fallback locale
   messages: {

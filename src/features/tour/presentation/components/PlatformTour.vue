@@ -1,7 +1,7 @@
 //features/tour/presentation/components/PlatformTour.vue
 <template>
   <div v-if="isVisible" class="tour-overlay">
-    <div 
+    <div
       class="tour-popup"
       :style="popupStyle"
       :class="{ 'with-highlight': currentStep?.highlight }"
@@ -20,7 +20,7 @@
       </div>
 
       <div class="tour-footer">
-        <button 
+        <button
           v-if="currentStepIndex > 0"
           @click="handlePrevious"
           class="tour-button"
@@ -29,7 +29,8 @@
         >
           Previous
         </button>
-        <button 
+        <div v-else></div>
+        <button
           v-if="hasNextStep"
           @click="handleNext"
           class="tour-button primary"
@@ -38,7 +39,7 @@
         >
           Next
         </button>
-        <button 
+        <button
           v-else
           @click="endTour"
           class="tour-button primary"
@@ -50,7 +51,7 @@
     </div>
 
     <!-- Target element highlight -->
-    <div 
+    <div
       v-if="highlightPosition"
       class="tour-highlight"
       :style="highlightPosition"
@@ -71,14 +72,14 @@ const { currentStep, currentStepIndex, isVisible } = storeToRefs(tourStore)
 
 const popupStyle = ref({
   top: '0px',
-  left: '0px'
+  left: '0px',
 })
 
 const highlightPosition = ref({
   top: '0px',
   left: '0px',
   width: '0px',
-  height: '0px'
+  height: '0px',
 })
 
 const isActionPending = ref(false)
@@ -93,19 +94,23 @@ const totalSteps = computed(() => {
   return tourStore.currentTour?.steps.length || 0
 })
 
-watch(currentStep, async (step) => {
-  if (!step) return
+watch(
+  currentStep,
+  async (step) => {
+    if (!step) return
 
-  if (step.route && router.currentRoute.value.path !== step.route) {
-    await router.push(step.route)
-  }
+    if (step.route && router.currentRoute.value.path !== step.route) {
+      await router.push(step.route)
+    }
 
-  if (step.waitForElement) {
-    await waitForElement(step.target)
-  }
+    if (step.waitForElement) {
+      await waitForElement(step.target)
+    }
 
-  await updatePositions()
-}, { immediate: true })
+    await updatePositions()
+  },
+  { immediate: true }
+)
 
 // Update positions on window resize
 let resizeTimeout: number
@@ -145,7 +150,7 @@ async function handleNext() {
       await waitForElement(nextStep.target)
     }
   }
-  
+
   tourStore.nextStep()
 }
 
@@ -157,7 +162,7 @@ async function handlePrevious() {
       await waitForElement(prevStep.target)
     }
   }
-  
+
   tourStore.previousStep()
 }
 
@@ -203,27 +208,33 @@ async function executeStepAction(step: TourStep) {
 
   try {
     if (step.action.delay) {
-      await new Promise(resolve => setTimeout(resolve, step.action?.delay))
+      await new Promise((resolve) => setTimeout(resolve, step.action?.delay))
     }
 
     switch (step.action.type) {
       case 'click':
         simulateClick(element as HTMLElement)
+        // Wait for a short time to let the click effect happen
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        window.dispatchEvent(new CustomEvent('tour-action-complete'))
         break
       case 'input':
         if (step.action.value && element instanceof HTMLInputElement) {
           element.value = step.action.value
           element.dispatchEvent(new Event('input'))
           element.dispatchEvent(new Event('change'))
+          window.dispatchEvent(new CustomEvent('tour-action-complete'))
         }
         break
       case 'hover':
         element.dispatchEvent(new MouseEvent('mouseover'))
+        window.dispatchEvent(new CustomEvent('tour-action-complete'))
         break
       case 'wait':
-        await new Promise(resolve => 
+        await new Promise((resolve) =>
           setTimeout(resolve, step.action?.delay || 1000)
         )
+        window.dispatchEvent(new CustomEvent('tour-action-complete'))
         break
     }
 
@@ -233,6 +244,7 @@ async function executeStepAction(step: TourStep) {
   } catch (error) {
     console.error('Error executing tour action:', error)
     isActionPending.value = false
+    window.dispatchEvent(new CustomEvent('tour-action-complete'))
   }
 }
 
@@ -240,10 +252,10 @@ function simulateClick(element: HTMLElement) {
   const clickEvents = [
     new MouseEvent('mousedown', { bubbles: true }),
     new MouseEvent('mouseup', { bubbles: true }),
-    new MouseEvent('click', { bubbles: true })
+    new MouseEvent('click', { bubbles: true }),
   ]
 
-  clickEvents.forEach(event => element.dispatchEvent(event))
+  clickEvents.forEach((event) => element.dispatchEvent(event))
 }
 
 async function waitForElement(selector: string): Promise<void> {
@@ -278,7 +290,7 @@ async function updatePositions() {
     top: `${targetRect.top}px`,
     left: `${targetRect.left}px`,
     width: `${targetRect.width}px`,
-    height: `${targetRect.height}px`
+    height: `${targetRect.height}px`,
   }
 
   // Calculate popup position
@@ -306,7 +318,7 @@ async function updatePositions() {
   // Ensure popup stays within viewport
   const viewport = {
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   }
 
   top = Math.max(10, Math.min(top, viewport.height - popupRect.height - 10))
@@ -314,7 +326,7 @@ async function updatePositions() {
 
   popupStyle.value = {
     top: `${top}px`,
-    left: `${left}px`
+    left: `${left}px`,
   }
 }
 </script>
@@ -327,7 +339,7 @@ async function updatePositions() {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 5000;
 }
 
 .tour-popup {
@@ -383,7 +395,7 @@ async function updatePositions() {
   padding: 16px;
   border-top: 1px solid #eee;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 8px;
 }
 
@@ -403,9 +415,9 @@ async function updatePositions() {
 }
 
 .tour-button.primary {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
-  border-color: #4CAF50;
+  border-color: #4caf50;
 }
 
 .tour-button:hover:not(:disabled) {
@@ -414,7 +426,7 @@ async function updatePositions() {
 
 .tour-highlight {
   position: fixed;
-  border: 2px solid #4CAF50;
+  border: 2px solid #4caf50;
   border-radius: 4px;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
   z-index: 1001;

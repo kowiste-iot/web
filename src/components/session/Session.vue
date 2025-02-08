@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative over">
-    <div class="px-2" role="button" @click="toggleVisibility">
+    <div id="menu-profile-button" class="px-2" role="button" @click="toggleVisibility">
       <FIcon
         class="pe-3"
         :icon="EIcon.User"
@@ -39,7 +39,11 @@
           <FIcon class="pt-1" :icon="EIcon.Tenant" />
           <div class="ms-4 w-auto">Tenant</div>
         </div>
-        <div class="btn d-flex" @click="sessionStore.openTour = true">
+        <div
+          id="menu-tour"
+          class="btn d-flex"
+          @click="sessionStore.openTour = true"
+        >
           <FIcon class="pt-1" :icon="EIcon.WalkThrough" />
           <div class="ms-4 w-auto">Tour</div>
         </div>

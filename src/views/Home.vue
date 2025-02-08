@@ -11,7 +11,7 @@
     :color="EColor.Success"
     @click="
       () => {
-        tourStore.startTour('example-tour')
+        tourStore.startTour('welcome-tour')
       }
     "
   >

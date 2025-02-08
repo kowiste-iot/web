@@ -10,48 +10,7 @@
   >
     <SideMenu />
     <AlertContainer />
-    <div
-      v-if="showTour"
-      class="position-absolute tour"
-      style="height: 100%; width: 100%"
-    >
-      <div
-        class="bg-dark opacity-50 position-absolute"
-        style="height: 100%; width: 100%"
-      ></div>
-      <div class="position-relative h-100">
-        <div class="container h-100">
-          <div class="row h-100 align-items-center">
-            <div class="col-md-8 mx-auto">
-              <Card showHeader showFooter>
-                <template #header>header</template>
-                <template #footer>
-                  <Button
-                    :color="EColor.Success"
-                    @click="
-                      () => {
-                        tourStore.startTour('example-tour')
-                        sessionStore.openTour = false
-                      }
-                    "
-                  >
-                    Follow
-                  </Button>
-                  <Button
-                    :color="EColor.Secondary"
-                    outline
-                    @click="sessionStore.openTour = false"
-                  >
-                    Cancel
-                  </Button></template
-                >
-                Tour
-              </Card>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ToursProgress v-if="showTour" />
     <PlatformTour />
     <div class="d-flex flex-column w-100 m-0 p-0">
       <Header />
@@ -71,11 +30,9 @@ import { computed, onMounted, watch } from 'vue'
 // components import
 import { RouterView, useRoute } from 'vue-router'
 import Header from '@/components/menu/Header.vue'
-import Button from '@/components/buttons/Button.vue'
 
 import SideMenu from './features/menu/component/SideMenu.vue'
 import AlertContainer from './features/notification/component/AlertContainer.vue'
-import Card from '@/components/cards/Card.vue'
 import { loadTheme } from './utils/theme/init'
 import { useAuthStore } from './plugins/security/store'
 import { useScopeStore } from './features/scope/stores/useScopeStore'
@@ -84,7 +41,12 @@ import { useSessionStore } from './features/session/store/useSessionStore'
 import { EColor } from './features/shared/enum/EColor'
 import PlatformTour from './features/tour/presentation/components/PlatformTour.vue'
 import { useTourStore } from './features/tour/stores/useTourStore'
-import { exampleTour } from './features/tour/tours/example'
+import { welcomeTour } from './features/tour/tours/welcome'
+import ToursProgress from './features/tour/presentation/components/ToursProgress.vue'
+import { assetTour } from './features/tour/tours/asset'
+import { userTour } from './features/tour/tours/user'
+import { roleTour } from './features/tour/tours/roles'
+import { resourceTour } from './features/tour/tours/resource'
 // model imports
 
 // props
@@ -105,7 +67,11 @@ const showTour = computed(() => sessionStore.openTour)
 
 async function refresh() {
   await loadTheme('http://localhost:9000', undefined)
-  await tourStore.registerTour(exampleTour)
+  await tourStore.registerTour(welcomeTour)
+  await tourStore.registerTour(assetTour)
+  await tourStore.registerTour(userTour)
+  await tourStore.registerTour(roleTour)
+  await tourStore.registerTour(resourceTour)
 }
 
 // lifeCycle
@@ -129,6 +95,6 @@ watch(
 
 <style scope>
 .tour {
-  z-index: 9000;
+  z-index: 2000;
 }
 </style>

@@ -9,6 +9,7 @@
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('user.form.firstName') }} </label>
       <Input
+        id="admin-user-form-name"
         class="col-md-8"
         :placeholder="$t('user.form.firstNameHolder')"
         type="text"
@@ -19,6 +20,7 @@
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('user.form.lastName') }} </label>
       <Input
+        id="admin-user-form-lastname"
         class="col-md-8"
         :placeholder="$t('user.form.lastNameHolder')"
         type="text"
@@ -29,6 +31,7 @@
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('user.form.email') }} </label>
       <Input
+        id="admin-user-form-email"
         class="col-md-8"
         :placeholder="$t('user.form.emailHolder')"
         type="email"
@@ -136,7 +139,7 @@ watch(
   () => selectedRoles.value,
   () => {
     form.roles = []
-    selectedRoles.value.forEach((role)=>{
+    selectedRoles.value.forEach((role) => {
       form.roles.push(role.name)
     })
   },

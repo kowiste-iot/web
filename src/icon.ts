@@ -42,6 +42,7 @@ import {
   faMoon,
   faPersonRunning,
   faPieChart,
+  faPlay,
   faRectangleXmark,
   faRuler,
   faShoePrints,
@@ -116,6 +117,7 @@ library.add(
   faArrowRight,
   faChessRook,
   faCircleMinus,
-  faShoePrints
+  faShoePrints,
+  faPlay
 )
 //check,x dont work
