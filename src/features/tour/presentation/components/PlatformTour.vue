@@ -1,6 +1,18 @@
-//features/tour/presentation/components/PlatformTour.vue
 <template>
-  <div v-if="isVisible" class="tour-overlay">
+  <div v-if="isVisible">
+    <!-- Background Overlay -->
+    <div class="tour-overlay"></div>
+
+    <!-- Highlight Area -->
+    <div
+      v-if="currentStep?.highlight && highlightPosition"
+      class="tour-highlight-area"
+      :style="highlightPosition"
+    >
+      <div class="tour-highlight-border"></div>
+    </div>
+
+    <!-- Tour Card -->
     <div
       class="tour-popup"
       :style="popupStyle"
@@ -49,13 +61,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Target element highlight -->
-    <div
-      v-if="highlightPosition"
-      class="tour-highlight"
-      :style="highlightPosition"
-    ></div>
   </div>
 </template>
 
@@ -93,6 +98,26 @@ const hasNextStep = computed(() => {
 const totalSteps = computed(() => {
   return tourStore.currentTour?.steps.length || 0
 })
+
+function findTargetElement(selector: string): Element | null {
+  // Split the selector into parts (base selector and inner selectors)
+  const [baseSelector, ...innerSelectors] = selector.split('>')
+
+  // Find the base element
+  let selectElement = document.querySelector(baseSelector.trim())
+  if (selectElement == null) return selectElement
+  // If there are inner selectors, traverse through them
+  if (selectElement && innerSelectors.length > 0) {
+    for (const innerSelector of innerSelectors) {
+      const trimmedSelector = innerSelector.trim()
+      // Search within the current element
+      const found = selectElement.querySelector(trimmedSelector)
+      return found
+    }
+  }
+
+  return selectElement
+}
 
 watch(
   currentStep,
@@ -201,7 +226,7 @@ function endTour() {
 async function executeStepAction(step: TourStep) {
   if (!step.action) return
 
-  const element = document.querySelector(step.target)
+  const element = findTargetElement(step.target)
   if (!element) return
 
   isActionPending.value = true
@@ -214,12 +239,41 @@ async function executeStepAction(step: TourStep) {
     switch (step.action.type) {
       case 'click':
         simulateClick(element as HTMLElement)
-        // Wait for a short time to let the click effect happen
         await new Promise((resolve) => setTimeout(resolve, 500))
+
+        if (step.postActionWait) {
+          const duration = step.postActionWait.duration
+          if (duration) {
+            await new Promise((resolve) => setTimeout(resolve, duration))
+          }
+
+          if (step.postActionWait.selector) {
+            await waitForElement(step.postActionWait.selector)
+          }
+
+          if (step.postActionWait.condition) {
+            await new Promise((resolve) => {
+              const checkCondition = async () => {
+                const result = await step.postActionWait?.condition?.()
+                if (result) {
+                  resolve(true)
+                } else {
+                  setTimeout(checkCondition, 100)
+                }
+              }
+              checkCondition()
+            })
+          }
+        }
+
         window.dispatchEvent(new CustomEvent('tour-action-complete'))
         break
       case 'input':
-        if (step.action.value && element instanceof HTMLInputElement) {
+        if (
+          step.action.value &&
+          (element instanceof HTMLInputElement ||
+            element instanceof HTMLTextAreaElement)
+        ) {
           element.value = step.action.value
           element.dispatchEvent(new Event('input'))
           element.dispatchEvent(new Event('change'))
@@ -234,6 +288,12 @@ async function executeStepAction(step: TourStep) {
         await new Promise((resolve) =>
           setTimeout(resolve, step.action?.delay || 1000)
         )
+        window.dispatchEvent(new CustomEvent('tour-action-complete'))
+        break
+      case 'custom':
+        if (step.action.callback) {
+          await step.action.callback()
+        }
         window.dispatchEvent(new CustomEvent('tour-action-complete'))
         break
     }
@@ -261,7 +321,7 @@ function simulateClick(element: HTMLElement) {
 async function waitForElement(selector: string): Promise<void> {
   return new Promise((resolve) => {
     const checkElement = () => {
-      const element = document.querySelector(selector)
+      const element = findTargetElement(selector)
       if (element) {
         resolve()
       } else {
@@ -275,8 +335,13 @@ async function waitForElement(selector: string): Promise<void> {
 async function updatePositions() {
   if (!currentStep.value) return
 
-  const targetElement = document.querySelector(currentStep.value.target)
-  if (!targetElement) return
+  const targetElement = findTargetElement(currentStep.value.target)
+  if (!targetElement) {
+    if (currentStep.value.skipIfNotFound) {
+      handleNext()
+    }
+    return
+  }
 
   const targetRect = targetElement.getBoundingClientRect()
   const popupElement = document.querySelector('.tour-popup') as HTMLElement
@@ -286,11 +351,14 @@ async function updatePositions() {
   const placement = currentStep.value.placement || 'bottom'
 
   // Update highlight position
-  highlightPosition.value = {
-    top: `${targetRect.top}px`,
-    left: `${targetRect.left}px`,
-    width: `${targetRect.width}px`,
-    height: `${targetRect.height}px`,
+  if (currentStep.value.highlight) {
+    const padding = 8 // Padding in pixels
+    highlightPosition.value = {
+      top: `${targetRect.top - padding}px`,
+      left: `${targetRect.left - padding}px`,
+      width: `${targetRect.width + padding * 2}px`,
+      height: `${targetRect.height + padding * 2}px`,
+    }
   }
 
   // Calculate popup position
@@ -332,6 +400,7 @@ async function updatePositions() {
 </script>
 
 <style scoped>
+/* Base overlay that covers the entire screen */
 .tour-overlay {
   position: fixed;
   top: 0;
@@ -342,13 +411,41 @@ async function updatePositions() {
   z-index: 5000;
 }
 
-.tour-popup {
+/* Highlight area - creates a "window" effect */
+.tour-highlight-area {
+  position: fixed;
+  z-index: 5001;
+  background: transparent;
+  /* Cut-out effect */
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  /* Ensure the element itself is transparent */
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Border for the highlighted element */
+.tour-highlight-border {
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  /* Enhanced glowing effect */
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3),
+              0 0 8px 2px rgba(76, 175, 80, 0.2);
+  pointer-events: none;
+}
+
+/* Tour popup styling */
+.tour-popup {
+  position: fixed;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   width: 300px;
-  z-index: 1002;
+  z-index: 5002;
 }
 
 .tour-header {
@@ -422,15 +519,6 @@ async function updatePositions() {
 
 .tour-button:hover:not(:disabled) {
   opacity: 0.9;
-}
-
-.tour-highlight {
-  position: fixed;
-  border: 2px solid #4caf50;
-  border-radius: 4px;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
-  z-index: 1001;
-  pointer-events: none;
 }
 
 .with-highlight {

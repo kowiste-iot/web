@@ -2,20 +2,23 @@ export interface TourStep {
   target: string
   content: string
   title?: string
-  placement?: 'top' | 'right' | 'bottom' | 'left'
+  placement?: ETourPlacement
   route?: string
   waitForElement?: boolean
   action?: TourAction
   waitForAction?: boolean
   highlight?: boolean // Added for highlighting functionality
-  field?: string // Added for form field targeting
   class?: string // Optional: for custom styling
-  order?: number // Optional: for explicit ordering
   skipIfNotFound?: boolean // Optional: skip step if target not found
+  postActionWait?: {
+    duration?: number // Wait for specific duration in ms
+    selector?: string // Wait for element to appear
+    condition?: () => boolean | Promise<boolean> // Custom wait condition
+  }
 }
 
 export interface TourAction {
-  type: 'click' | 'input' | 'hover' | 'wait'
+  type: ETourActionType
   value?: string
   delay?: number
   callback?: () => Promise<void> // Optional: custom action callback
@@ -54,6 +57,7 @@ export enum ETourActionType {
   INPUT = 'input',
   HOVER = 'hover',
   WAIT = 'wait',
+  CUSTOM = 'custom'
 }
 
 // Optional: Validator class

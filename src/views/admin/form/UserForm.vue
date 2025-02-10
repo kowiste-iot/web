@@ -53,7 +53,7 @@
       />
     </div>
     <template #footer>
-      <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
+      <Button id="admin-user-form-save" :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
         $t(edit ? 'actionGUI.update' : 'actionGUI.save')
       }}</Button>
       <Button :color="EColor.Secondary" outline @click="close()">{{

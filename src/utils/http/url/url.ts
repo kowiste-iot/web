@@ -14,3 +14,8 @@ export class URLProvider implements IEnvironmentProvider {
     return 'PROD'
   }
 }
+
+export function getBaseDomain() {
+  const hostname = new URL(window.location.href).hostname
+  return hostname.split('.').slice(-2).join('.')
+}
