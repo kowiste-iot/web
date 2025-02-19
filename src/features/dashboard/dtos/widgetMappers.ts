@@ -6,7 +6,7 @@ export class WidgetMapper extends BaseMapper {
   static toDomain(raw: WidgetDTO): IWidget {
     return new Widget({
       id: raw.id,
-      dashboardID: raw.dashboard_id,
+      dashboardID: raw.dashboardID,
       type: raw.type,
       i: raw.i,
       x: raw.x,
@@ -15,9 +15,9 @@ export class WidgetMapper extends BaseMapper {
       h: raw.h,
       data: {
         label: raw.data.label,
-        showLabel: raw.data.show_label,
-        showEmotion: raw.data.show_emotion,
-        trueEmotion: raw.data.true_emotion,
+        showLabel: raw.data.showLabel,
+        showEmotion: raw.data.showEmotion,
+        trueEmotion: raw.data.trueEmotion ,
         link: raw.data.link.map((l) => ({
           measure: l.measure,
           tag: l.tag,
@@ -31,7 +31,7 @@ export class WidgetMapper extends BaseMapper {
   static toDTO(domain: Widget): WidgetDTO {
     return {
       id: domain.id,
-      dashboard_id: domain.dashboardID,
+      dashboardID: domain.dashboardID,
       type: domain.type,
       i: domain.i,
       x: domain.x,
@@ -40,9 +40,9 @@ export class WidgetMapper extends BaseMapper {
       h: domain.h,
       data: {
         label: domain.data.label,
-        show_label: domain.data.showLabel,
-        show_emotion: domain.data.showEmotion,
-        true_emotion: domain.data.trueEmotion,
+        showLabel: domain.data.showLabel,
+        showEmotion: domain.data.showEmotion,
+        trueEmotion: domain.data.trueEmotion,
         link: domain.data.link.map((l) => ({
           measure: l.measure,
           tag: l.tag,
