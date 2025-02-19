@@ -1,5 +1,5 @@
 // features/tour/tours/exampleTour.ts
-import { ETourPlacement, type Tour } from '../domain/tour'
+import { ETourActionType, ETourPlacement, type Tour } from '../domain/tour'
 
 export const assetTour: Tour = {
   id: 'asset-tour',
@@ -13,7 +13,7 @@ export const assetTour: Tour = {
       placement: ETourPlacement.LEFT,
       highlight: true,
       action: {
-        type: 'click',
+        type: ETourActionType.CLICK,
         delay: 100,
       },
       waitForElement: true,
@@ -26,8 +26,8 @@ export const assetTour: Tour = {
       placement: ETourPlacement.LEFT,
       highlight: true,
       action: {
-        type: 'click',
-        delay: 500, 
+        type: ETourActionType.CLICK,
+        delay: 500,
       },
       waitForElement: true,
       waitForAction: false,
@@ -35,17 +35,17 @@ export const assetTour: Tour = {
     {
       target: '#tour-card',
       title: 'Tour Progress',
-      content: 'Here you can see your tour progress or select one topic to learn more about',
+      content:
+        'Here you can see your tour progress or select one topic to learn more about',
       placement: ETourPlacement.LEFT,
       highlight: true,
       action: {
-        type: 'wait',
-        delay: 500, 
+        type: ETourActionType.WAIT,
+        delay: 500,
       },
       waitForElement: true,
       waitForAction: false,
     },
-
   ],
   enabled: true,
   version: '1.0.0',

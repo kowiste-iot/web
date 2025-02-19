@@ -47,7 +47,7 @@ export class DashboardsPage extends PageBase {
       asset: new Columns(t('dashboard.table.parent'), 'parent'),
     }
   }
-  closeForm() {
+  reset() {
     this.showForm = false
     this.editForm = false
   }

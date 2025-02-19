@@ -1,5 +1,5 @@
 // features/tour/tours/exampleTour.ts
-import { ETourPlacement, type Tour } from '../domain/tour'
+import { ETourActionType, ETourPlacement, type Tour } from '../domain/tour'
 
 export const welcomeTour: Tour = {
   id: 'welcome-tour',
@@ -13,7 +13,7 @@ export const welcomeTour: Tour = {
       placement: ETourPlacement.LEFT,
       highlight: true,
       action: {
-        type: 'click',
+        type: ETourActionType.CLICK,
         delay: 100,
       },
       waitForElement: true,
@@ -26,7 +26,7 @@ export const welcomeTour: Tour = {
       placement: ETourPlacement.LEFT,
       highlight: true,
       action: {
-        type: 'click',
+        type: ETourActionType.CLICK,
         delay: 500, 
       },
       waitForElement: true,
@@ -39,7 +39,7 @@ export const welcomeTour: Tour = {
       placement: ETourPlacement.LEFT,
       highlight: true,
       action: {
-        type: 'wait',
+        type: ETourActionType.WAIT,
         delay: 500, 
       },
       waitForElement: true,

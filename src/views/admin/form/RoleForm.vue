@@ -12,7 +12,7 @@
         class="col-md-8"
         :placeholder="$t('role.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors.getError('name')"
         v-model="form.name"
       />
     </div>
@@ -22,7 +22,7 @@
         class="col-md-8"
         placeholder=""
         :rows="5"
-        :error="errors['description']"
+        :error="errors.getError('description')"
         v-model="form.description"
       />
     </div>
@@ -51,7 +51,7 @@ import Input from '@/components/form/Input.vue'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { useBasePage } from '@/composable/useBasePage'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import type { IRole } from '@/features/role/domain/role'
 import { RoleService } from '@/features/role/application/roleService'
 import { RoleRepository } from '@/features/role/repository/roleRepository'
@@ -76,7 +76,7 @@ const form = reactive<IRole>({
   name: props.data?.name ?? '',
   description: props.data?.description ?? undefined,
 })
-const errors = ref<ValidationError<IRole>>({})
+const errors = ref<ValidationError<IRole>>(new ValidationError())
 //service
 const { notificationService } = useBasePage()
 const roleService = new RoleService(new RoleRepository(), notificationService)

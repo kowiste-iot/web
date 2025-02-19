@@ -1,8 +1,15 @@
 // features/shared/domain/baseValidator.ts
 import { z } from 'zod'
 
-export type ValidationError<T> = {
-  [K in keyof T]?: string
+export class ValidationError<T> {
+  constructor(private errors: { [K in keyof T]?: string } = {}) {}
+
+  hasErrors(): boolean {
+    return Object.keys(this.errors).length > 0
+  }
+  getError(field: keyof T): string | undefined {
+    return this.errors[field]
+  }
 }
 
 export abstract class BaseValidator<
@@ -12,7 +19,7 @@ export abstract class BaseValidator<
   protected abstract schema: Schema
 
   validate(data: Partial<T>): ValidationError<T> {
-    const errors: ValidationError<T> = {}
+    const errors: { [K in keyof T]?: string } = {}
 
     try {
       this.schema.parse(data)
@@ -25,7 +32,7 @@ export abstract class BaseValidator<
       }
     }
 
-    return errors
+    return new ValidationError<T>(errors)
   }
 
   validateField<K extends keyof T>(field: string, value: T[K]): string {

@@ -14,7 +14,7 @@
         class="col-md-8"
         :placeholder="$t('dashboard.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors.getError('name')"
         v-model="form.name"
       />
     </div>
@@ -26,7 +26,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('dashboard.form.parentHolder')"
-        :error="errors['parent']"
+        :error="errors.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -63,9 +63,10 @@ import { useBasePage } from '@/composable/useBasePage'
 import { DashboardService } from '@/features/dashboard/application/dashboardService'
 import { DashboardRepository } from '@/features/dashboard/repository/dashboardRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import type { IAsset } from '@/features/asset/domain/asset'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import { useDashboardStore } from '@/features/dashboard/stores/useDashboardStore'
 
 // other imports
 // props
@@ -90,7 +91,7 @@ const form = reactive<IDashboard>({
   parent: props.data?.parent ?? '',
   description: props.data?.description ?? '',
 })
-const errors = ref<ValidationError<IDashboard>>({})
+const errors = ref<ValidationError<IDashboard>>(new ValidationError())
 const selectedParent = ref({} as IAsset)
 
 // service
@@ -99,18 +100,21 @@ const dashboardService = new DashboardService(
   new DashboardRepository(),
   notificationService
 )
+const dashboardStore = useDashboardStore()
+
 // computed
 const assets = computed(() => {
   return useAssetStore().assets
 })
 
 // methods
-function save() {
+async function save() {
   if (props.edit) {
-    dashboardService.updateDashboard(form)
+    await dashboardService.updateDashboard(form)
   } else {
-    dashboardService.createDashboard(form)
+    await dashboardService.createDashboard(form)
   }
+  await dashboardStore.fetchDashboards()
   props.close()
 }
 // lifeCycle

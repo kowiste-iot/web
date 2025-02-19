@@ -14,7 +14,7 @@
         <Input
           :placeholder="$t('device.form.nameHolder')"
           type="text"
-          :error="errors['name']"
+          :error="errors.getError('name')"
           v-model="form.name"
         />
       </div>
@@ -29,7 +29,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('device.form.parentHolder')"
-        :error="errors['parent']"
+        :error="errors.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -41,10 +41,10 @@
           type="textarea"
           :placeholder="$t('device.form.descriptionHolder')"
           v-model="form.description"
-          :class="{ 'is-invalid': errors.description }"
+          :class="{ 'is-invalid': errors.getError('description') }"
         />
-        <div v-if="errors.description" class="invalid-feedback d-block">
-          {{ errors.description }}
+        <div v-if="errors.getError('description')" class="invalid-feedback d-block">
+          {{ errors.getError('description') }}
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
 import { ref, watch, onMounted, type PropType, computed, reactive } from 'vue'
 import { Device } from '@/features/device/domain/device'
 import type { IDevice } from '@/features/device/domain/device'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { NotificationService } from '@/features/notification/application/notificationService'
 import { useNotificationStore } from '@/features/notification/stores/notificationStore'
@@ -103,7 +103,7 @@ const form = reactive<IDevice>({
   description: props.data?.description ?? '',
 })
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IDevice>>({})
+const errors = ref<ValidationError<IDevice>>(new ValidationError())
 
 // services
 const notificationService = new NotificationService(useNotificationStore())

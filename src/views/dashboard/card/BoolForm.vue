@@ -17,6 +17,18 @@
           />
         </div>
       </div>
+      <div class="form-group row justify-content-center">
+        <label class="col-md-4">
+          {{ $t('widget.form.common.measureValue') }}
+        </label>
+        <MultiDropdown
+          class="col-md-8"
+          :options="measures"
+          idField="id"
+          labelField="name"
+          :placeholder="$t('dashboard.form.parentHolder')"
+        />
+      </div>
     </div>
 
     <div class="col-md-6">
@@ -109,13 +121,16 @@
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
 // stores import
 // components import
 import Boolean from './Boolean.vue'
 import Input from '@/components/form/Input.vue'
-import type { IWidget } from '@/features/dashboard/domain/widget';
+import { Widget, type IWidget } from '@/features/dashboard/domain/widget'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 
 // model imports
 // other imports
@@ -127,13 +142,26 @@ const props = defineProps({
   },
 })
 // data
+const form = reactive<IWidget>({}as IWidget)
 const model = defineModel({ default: {} as IWidget })
 const measure = ref(false)
+const errors = ref<ValidationError<IWidget>>(new ValidationError())
+  const measureStore = useMeasureStore()
 // storage calls
 // computed
+const measures = computed(()=> measureStore.measures)
 // methods
 // lifeCycle
 // watch
+watch(
+  () => form,
+  () => {
+    errors.value = Widget.validate(form)
+  },
+  {
+    deep: true,
+  }
+)
 </script>
 
 <style scoped></style>

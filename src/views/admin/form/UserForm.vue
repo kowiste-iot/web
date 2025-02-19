@@ -13,7 +13,7 @@
         class="col-md-8"
         :placeholder="$t('user.form.firstNameHolder')"
         type="text"
-        :error="errors['firstName']"
+        :error="errors.getError('firstName')"
         v-model="form.firstName"
       />
     </div>
@@ -24,7 +24,7 @@
         class="col-md-8"
         :placeholder="$t('user.form.lastNameHolder')"
         type="text"
-        :error="errors['lastName']"
+        :error="errors.getError('lastName')"
         v-model="form.lastName"
       />
     </div>
@@ -36,7 +36,7 @@
         :placeholder="$t('user.form.emailHolder')"
         type="email"
         :disabled="props.edit"
-        :error="errors['email']"
+        :error="errors.getError('email')"
         v-model="form.email"
       />
     </div>
@@ -76,7 +76,7 @@ import Input from '@/components/form/Input.vue'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { useBasePage } from '@/composable/useBasePage'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import { User, type IUser } from '@/features/user/domain/user'
 import { UserService } from '@/features/user/application/userService'
 import { UserRepository } from '@/features/user/repository/userRepository'
@@ -109,8 +109,8 @@ const form = reactive<IUser>({
 })
 const selectedRoles = ref(new Array<IRole>())
 const roleStore = useRoleStore()
-const errors = ref<ValidationError<IUser>>({})
-//service
+const errors = ref<ValidationError<IUser>>(new ValidationError())
+  //service
 const { notificationService } = useBasePage()
 const userService = new UserService(new UserRepository(), notificationService)
 // computed

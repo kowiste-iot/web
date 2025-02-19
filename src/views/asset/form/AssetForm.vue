@@ -12,7 +12,7 @@
         class="col-md-8"
         :placeholder="$t('asset.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors.getError('name')"
         v-model="form.name"
       />
     </div>
@@ -24,7 +24,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('asset.form.parentHolder')"
-        :error="errors['parent']"
+        :error="errors.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -56,7 +56,7 @@ import { useBasePage } from '@/composable/useBasePage'
 import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
 
 // other imports
@@ -84,8 +84,8 @@ const form = reactive<IAsset>({
 })
 const assetStore = useAssetStore()
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IAsset>>({})
-//service
+const errors = ref<ValidationError<IAsset>>(new ValidationError())
+  //service
 const { notificationService } = useBasePage()
 const assetService = new AssetService(
   new AssetRepository(),
