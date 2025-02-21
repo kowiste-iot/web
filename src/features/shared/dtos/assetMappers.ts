@@ -1,19 +1,24 @@
-// features/shared/dtos/assetMappers.ts
-import type { IAsset } from '@/features/asset/domain/asset'
+import type { IHasParent, WithParentName } from '../domain/hasParent'
 
 export class SharedAssetMapper {
-  static setAssetValues(assets: IAsset[]): IAsset[] {
-    const assetMap = new Map(assets.map((asset) => [asset.id, asset]))
+  static setParentNames<T extends IHasParent, P extends IHasParent>(
+    items: T[],
+    parentList: P[]
+  ): (T & { parentName: string })[] {
+    const parentMap = new Map(parentList.map((parent) => [parent.id, parent]))
 
-    return assets.map((asset) => {
-      if (asset.parent) {
-        const parent = assetMap.get(asset.parent)
+    return items.map((item) => {
+      if (item.parent) {
+        const parent = parentMap.get(item.parent)
         return {
-          ...asset,
+          ...item,
           parentName: parent?.name ?? '',
         }
       }
-      return asset
+      return {
+        ...item,
+        parentName: '',
+      }
     })
   }
 }

@@ -2,7 +2,10 @@ import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
 import { useActionStore } from '../stores/useActionStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 
+const assetStore = useAssetStore()
 export class ActionService {
   constructor(
     private readonly actionRepository: IActionRepository,
@@ -26,7 +29,7 @@ export class ActionService {
   async getActions(): Promise<IAction[]> {
     try {
       const actions = await this.actionRepository.findAll()
-      return actions
+      return SharedAssetMapper.setParentNames(actions, assetStore.assets)
     } catch (error) {
       const msg =
         error instanceof Error

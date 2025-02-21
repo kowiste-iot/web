@@ -59,6 +59,7 @@
         :data="page.selected"
         :edit="page.editForm"
         :close="closeForm"
+        :close="closeForm"
       />
     </SideCard>
   </Modal>
@@ -145,17 +146,18 @@ async function deleteDashboard() {
 function goTo(id: string) {
   getRouter().push('/dashboard/' + id)
 }
-async function refreshData() {
-  dashboardStore.fetchDashboards()
-}
 function closeForm() {
+  refreshData()
   page.reset()
 }
+async function refreshData() {
+  await dashboardStore.fetchDashboards()
+}
 // lifeCycle
-// watch
 onMounted(() => {
   refreshData()
 })
+// watch
 </script>
 
 <style scoped></style>

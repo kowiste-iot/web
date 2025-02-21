@@ -52,7 +52,7 @@ export class ActionPage extends PageBase {
 
     return {
       name: new Columns(t('action.table.name'), 'name'),
-      asset: new Columns(t('action.table.parent'), 'parent'),
+      asset: new Columns(t('action.table.parent'), 'parentName'),
       enabled: new Columns(t('action.table.enabled'), 'enabled'),
       description: new Columns(t('action.table.description'), 'description'),
     }

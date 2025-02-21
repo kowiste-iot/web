@@ -2,6 +2,10 @@ import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import { useAlertStore } from '../stores/useAlertStore'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+
+const assetStore = useAssetStore()
+
 
 export class AlertService {
   constructor(
@@ -80,6 +84,9 @@ export class AlertService {
 
       const updatedAlert: IAlert = {
         ...existingAlert,
+        name: data.name,
+        parent: data.parent,
+        description: data.description,
         name: data.name,
         parent: data.parent,
         description: data.description,

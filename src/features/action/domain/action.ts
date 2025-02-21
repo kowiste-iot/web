@@ -1,7 +1,8 @@
 import { AlertValidator } from '@/features/alert/domain/alertValidator'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import type { IHasParent } from '@/features/shared/domain/hasParent'
 
-export interface IAction {
+export interface IAction extends IHasParent {
   id: string
   name: string
   parent: string

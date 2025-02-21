@@ -127,7 +127,7 @@ const props = defineProps({
   },
 })
 // data
-const page = ref(new WidgetFormPage())
+const page = reactive(new WidgetFormPage())
 let form = reactive(new Widget())
 
 // service
@@ -144,12 +144,13 @@ const dashboardID = getParam(route.params.did)
 // computed
 // methods
 function selectWidget(data: IWidgetType) {
-  page.value.changeTab(2)
-  page.value.selectedWidget = data
+  page.changeTab(2)
+  page.selectedWidget = data
 }
-async function save() {
-  form.set(page.value.selectedWidget, dashboardID)
-  await widgetService.createWidget(dashboardID, form)
+function save() {
+  form.set(page.selectedWidget, dashboardID)
+  const ok = widgetService.createWidget(dashboardID, form)
+  if (!ok) return
   props.close()
 }
 // lifeCycle

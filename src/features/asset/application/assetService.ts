@@ -27,7 +27,7 @@ export class AssetService {
   async getAssets(): Promise<IAsset[]> {
     try {
       const assets = await this.assetRepository.findAll()
-      return SharedAssetMapper.setAssetValues(assets)
+      return SharedAssetMapper.setParentNames(assets, assets)
     } catch (error) {
       const msg =
         error instanceof Error
