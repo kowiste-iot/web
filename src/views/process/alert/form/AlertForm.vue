@@ -112,11 +112,13 @@ const availableParents = computed(() => {
 
 // methods
 async function save() {
+  let ok = false
   if (props.edit) {
-    await alertService.updateAlert(form)
+    ok = await alertService.updateAlert(form)
   } else {
-    await alertService.createAlert(form)
+    ok = await alertService.createAlert(form)
   }
+  if (!ok) return
   props.close()
 }
 // lifeCycle

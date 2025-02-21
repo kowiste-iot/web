@@ -103,11 +103,13 @@ const availableParents = computed(() => {
 
 // methods
 async function save() {
+  let ok = false
   if (props.edit) {
-    await assetService.updateAsset(form)
+    ok = await assetService.updateAsset(form)
   } else {
-    await assetService.createAsset(form)
+    ok = await assetService.createAsset(form)
   }
+  if (!ok) return
   props.close()
 }
 // lifeCycle

@@ -109,12 +109,13 @@ const assets = computed(() => {
 
 // methods
 async function save() {
+  let ok = false
   if (props.edit) {
-    await dashboardService.updateDashboard(form)
+    ok = await dashboardService.updateDashboard(form)
   } else {
-    await dashboardService.createDashboard(form)
+    ok = await dashboardService.createDashboard(form)
   }
-  await dashboardStore.fetchDashboards()
+  if (!ok) return
   props.close()
 }
 // lifeCycle

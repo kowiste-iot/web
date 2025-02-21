@@ -114,11 +114,13 @@ const availableParents = computed(() => {
 
 // methods
 async function save() {
+  let ok= false
   if (props.edit) {
-    await actionService.updateAction(form)
+    ok = await actionService.updateAction(form)
   } else {
-    await actionService.createAction(form)
+    ok =await actionService.createAction(form)
   }
+  if(!ok) return
   props.close()
 }
 // lifeCycle

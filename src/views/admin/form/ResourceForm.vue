@@ -175,7 +175,8 @@ async function refreshData() {
 }
 
 async function save() {
-  await resourceService.updateResource(form)
+  const ok = await resourceService.updateResource(form)
+  if (!ok) return
   props.close()
 }
 

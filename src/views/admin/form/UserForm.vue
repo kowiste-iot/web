@@ -120,11 +120,13 @@ const roles = computed(() => {
 
 // methods
 async function save() {
+  let ok = false
   if (props.edit) {
-    await userService.updateUser(form)
+    ok = await userService.updateUser(form)
   } else {
-    await userService.createUser(form)
+    ok = await userService.createUser(form)
   }
+  if (!ok) return
   props.close()
 }
 async function refreshData() {

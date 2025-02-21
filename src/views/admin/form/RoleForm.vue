@@ -95,7 +95,8 @@ watch(
 
 // methods
 async function save() {
-  await roleService.createRole(form)
+  const ok = await roleService.createRole(form)
+  if (!ok) return
   props.close()
 }
 // lifeCycle
