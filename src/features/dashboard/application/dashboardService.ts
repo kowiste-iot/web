@@ -5,6 +5,10 @@ import {
   type IDashboard,
   type IDashboardRepository,
 } from '../domain/dashboard'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+
+const assetStore = useAssetStore()
 
 export class DashboardService {
   constructor(
@@ -29,7 +33,7 @@ export class DashboardService {
   async getDashboards(): Promise<IDashboard[]> {
     try {
       const dashboards = await this.dashboardRepository.findAll()
-      return dashboards
+      return SharedAssetMapper.setParentNames(dashboards, assetStore.assets)
     } catch (error) {
       const msg =
         error instanceof Error

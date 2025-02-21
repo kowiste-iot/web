@@ -3,9 +3,9 @@ import type { INotificationService } from '@/features/notification/application/n
 import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import { useAlertStore } from '../stores/useAlertStore'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
 
 const assetStore = useAssetStore()
-
 
 export class AlertService {
   constructor(
@@ -30,7 +30,7 @@ export class AlertService {
   async getAlerts(): Promise<IAlert[]> {
     try {
       const alerts = await this.alertRepository.findAll()
-      return alerts
+      return SharedAssetMapper.setParentNames(alerts, assetStore.assets)
     } catch (error) {
       const msg =
         error instanceof Error
@@ -84,9 +84,6 @@ export class AlertService {
 
       const updatedAlert: IAlert = {
         ...existingAlert,
-        name: data.name,
-        parent: data.parent,
-        description: data.description,
         name: data.name,
         parent: data.parent,
         description: data.description,

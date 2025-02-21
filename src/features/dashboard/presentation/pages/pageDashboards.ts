@@ -44,7 +44,7 @@ export class DashboardsPage extends PageBase {
     return {
       id: new Columns('ID', 'id'),
       name: new Columns(t('dashboard.table.name'), 'name'),
-      asset: new Columns(t('dashboard.table.parent'), 'parent'),
+      asset: new Columns(t('dashboard.table.parent'), 'parentName'),
     }
   }
   reset() {

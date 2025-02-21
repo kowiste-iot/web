@@ -52,7 +52,7 @@ export class AlertPage extends PageBase {
 
     return {
       name: new Columns(t('alert.table.name'), 'name'),
-      asset: new Columns(t('alert.table.parent'), 'parent'),
+      asset: new Columns(t('alert.table.parent'), 'parentName'),
       enabled: new Columns(t('alert.table.enabled'), 'enabled'),
       description: new Columns(t('alert.table.description'), 'description'),
     }

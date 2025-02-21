@@ -7,6 +7,10 @@ import {
 } from '../domain/measure'
 import { useMeasureStore } from '../stores/useMeasureStore'
 import type { IAssetStore } from '@/features/asset/domain/assetStore'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+
+const assetStore = useAssetStore()
 
 export class MeasureService {
   constructor(
@@ -38,7 +42,7 @@ export class MeasureService {
       const measures = await this.measureRepository.findAll(
         this.assetStore.assets
       )
-      return measures
+      return SharedAssetMapper.setParentNames(measures, assetStore.assets)
     } catch (error) {
       const msg =
         error instanceof Error

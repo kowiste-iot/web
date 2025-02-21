@@ -52,7 +52,7 @@ export class DevicePage extends PageBase {
     return {
       id: new Columns('ID', 'id'),
       name: new Columns(t('device.table.name'), 'name'),
-      asset: new Columns(t('device.table.parent'), 'parent'),
+      asset: new Columns(t('device.table.parent'), 'parentName'),
       description: new Columns(t('device.table.description'), 'description'),
     }
   }

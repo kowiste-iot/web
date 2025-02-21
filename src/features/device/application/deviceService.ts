@@ -3,6 +3,10 @@ import { Device } from '../domain/device'
 import type { IDevice, IDeviceRepository } from '../domain/device'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { useDeviceStore } from '../stores/useDeviceStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+
+const assetStore = useAssetStore()
 
 export class DeviceService {
   constructor(
@@ -27,7 +31,7 @@ export class DeviceService {
   async getDevices(): Promise<IDevice[]> {
     try {
       const devices = await this.deviceRepository.findAll()
-      return devices
+      return SharedAssetMapper.setParentNames(devices, assetStore.assets)
     } catch (error) {
       const msg =
         error instanceof Error
