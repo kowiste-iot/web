@@ -52,7 +52,7 @@ export class MeasureService {
   async createMeasure(data: IMeasure): Promise<boolean> {
     try {
       const errors = Measure.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -75,7 +75,7 @@ export class MeasureService {
   async updateMeasure(data: IMeasure): Promise<boolean> {
     try {
       const errors = Measure.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false

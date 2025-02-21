@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
 import {
   Dashboard,
   type IDashboard,
@@ -44,7 +43,7 @@ export class DashboardService {
   async createDashboard(data: IDashboard): Promise<boolean> {
     try {
       const errors = Dashboard.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -67,7 +66,7 @@ export class DashboardService {
   async updateDashboard(data: IDashboard): Promise<boolean> {
     try {
       const errors = Dashboard.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false

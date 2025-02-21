@@ -41,7 +41,7 @@ export class DeviceService {
   async createDevice(data: IDevice): Promise<boolean> {
     try {
       const errors = Device.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -60,7 +60,7 @@ export class DeviceService {
   async updateDevice(data: IDevice): Promise<boolean> {
     try {
       const errors = Device.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false

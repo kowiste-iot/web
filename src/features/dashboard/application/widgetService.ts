@@ -1,35 +1,6 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
-import { EWidget } from '../domain/EWidget'
-
-const widgetLinkSchema = z.object({
-  measure: z.string(),
-  tag: z.string(),
-  legend: z.string(),
-})
-
-const widgetDataSchema = z.object({
-  label: z.string(),
-  showLabel: z.boolean(),
-  showEmotion: z.boolean(),
-  trueEmotion: z.boolean(),
-  link: z.array(widgetLinkSchema),
-  options: z.any(),
-})
-
-const widgetSchema = z.object({
-  dashboardID: z.string().uuid({
-    message: 'Dashboard ID must be a valid UUID',
-  }),
-  type: z.nativeEnum(EWidget),
-  i: z.number(),
-  x: z.number(),
-  y: z.number(),
-  w: z.number(),
-  h: z.number(),
-  data: widgetDataSchema,
-})
 
 export class WidgetService {
   constructor(
@@ -39,7 +10,7 @@ export class WidgetService {
 
   async getWidget(dashboardID: string, id: string): Promise<IWidget | null> {
     try {
-      const widget = await this.widgetRepository.findById(dashboardID,id)
+      const widget = await this.widgetRepository.findById(dashboardID, id)
       return widget
     } catch (error) {
       const msg =
@@ -68,8 +39,13 @@ export class WidgetService {
   async createWidget(dashboardID: string, data: IWidget): Promise<boolean> {
     try {
       const errors = Widget.validate(data)
+      if (errors.hasErrors()) {
+        const errorMessages = Object.values(errors).filter(Boolean)
+        this.notificationService.error(errorMessages.join(', '))
+        return false
+      }
       const widget = new Widget(data)
-      await this.widgetRepository.create(dashboardID,widget)
+      await this.widgetRepository.create(dashboardID, widget)
       this.notificationService.success('Widget created successfully')
       return true
     } catch (error) {
@@ -84,11 +60,16 @@ export class WidgetService {
 
   async updateWidget(dashboardID: string, data: IWidget): Promise<boolean> {
     try {
-      const validated = widgetSchema.parse(data)
+      const errors = Widget.validate(data)
+      if (errors.hasErrors()) {
+        const errorMessages = Object.values(errors).filter(Boolean)
+        this.notificationService.error(errorMessages.join(', '))
+        return false
+      }
       const existingWidget = await this.getWidget(dashboardID, data.id)
       if (!existingWidget) throw new Error('Widget not found')
 
-      await this.widgetRepository.update(dashboardID,data)
+      await this.widgetRepository.update(dashboardID, data)
       this.notificationService.success('Widget updated successfully')
       return true
     } catch (error) {
@@ -103,7 +84,7 @@ export class WidgetService {
 
   async deleteWidget(dashboardID: string, id: string): Promise<void> {
     try {
-      await this.widgetRepository.delete(dashboardID,id)
+      await this.widgetRepository.delete(dashboardID, id)
       this.notificationService.success('Widget deleted successfully')
     } catch (error) {
       const msg =

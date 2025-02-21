@@ -150,10 +150,11 @@ function propertySelected(prop: Property, data: IMeasure) {
       break
   }
 }
-function deleteMeasure() {
-  measureService.deleteMeasure(page.selected!.id)
+async function deleteMeasure() {
+  await measureService.deleteMeasure(page.selected!.id)
   page.selected = undefined
   page.showModal = false
+  refreshData()
 }
 function closeForm() {
   refreshData()

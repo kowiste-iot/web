@@ -42,7 +42,7 @@ export class AssetService {
     try {
       const errors = Asset.validate(data)
 
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -64,7 +64,7 @@ export class AssetService {
   async updateAsset(data: IAsset): Promise<boolean> {
     try {
       const errors = Asset.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
