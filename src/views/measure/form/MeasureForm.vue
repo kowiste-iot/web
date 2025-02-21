@@ -116,11 +116,13 @@ const assets = computed(() => {
 
 // methods
 async function save() {
+  let ok = false
   if (props.edit) {
-    await measureService.updateMeasure(form)
+    ok = await measureService.updateMeasure(form)
   } else {
-    await measureService.createMeasure(form)
+    ok = await measureService.createMeasure(form)
   }
+  if (!ok) return
   props.close()
 }
 // lifeCycle

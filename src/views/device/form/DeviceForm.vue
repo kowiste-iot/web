@@ -118,14 +118,15 @@ const assets = computed(() => {
   return assetStore.assets
 })
 
-
 // methods
 async function save() {
+  let ok = false
   if (props.edit) {
-    await deviceService.updateDevice(form)
+    ok = await deviceService.updateDevice(form)
   } else {
-    await deviceService.createDevice(form)
+    ok = await deviceService.createDevice(form)
   }
+  if (!ok) return
   props.close()
 }
 // watch

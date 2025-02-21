@@ -147,7 +147,8 @@ function selectWidget(data: IWidgetType) {
 }
 function save() {
   form.set(page.value.selectedWidget, dashboardID)
-  widgetService.createWidget(dashboardID, form)
+  const ok = widgetService.createWidget(dashboardID, form)
+  if (!ok) return
   props.close()
 }
 // lifeCycle

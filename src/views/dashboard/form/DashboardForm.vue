@@ -105,12 +105,14 @@ const assets = computed(() => {
 })
 
 // methods
-function save() {
+async function save() {
+  let ok = false
   if (props.edit) {
-    dashboardService.updateDashboard(form)
+    ok = await dashboardService.updateDashboard(form)
   } else {
-    dashboardService.createDashboard(form)
+    ok = await dashboardService.createDashboard(form)
   }
+  if (!ok) return
   props.close()
 }
 // lifeCycle
