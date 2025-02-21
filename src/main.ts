@@ -12,9 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import '@/icon'
 import '/node_modules/flag-icons/css/flag-icons.min.css'
 //locale
-import en from '@/assets/locales/en.json'
-import es from '@/assets/locales/es.json'
-import th from '@/assets/locales/th.json'
+import en from '@/assets/locales/en/en.json'
+import en_tour from '@/assets/locales/en/tour.json'
+import es from '@/assets/locales/es/es.json'
+import th from '@/assets/locales/th/th.json'
 //extension
 import '@/extension/string/string'
 //components
@@ -54,12 +55,13 @@ const kcOptions = {
 } as KeycloakConfig
 
 const i18n = createI18n({
+  legacy: false,
   locale: 'en', // Set the default locale
   fallbackLocale: 'en', // Set the fallback locale
   messages: {
-    en,
-    es,
-    th,
+    en: { ...en, ...en_tour },
+    es: { ...es },
+    th: { ...th },
   },
 })
 app.use(i18n)

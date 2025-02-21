@@ -1,29 +1,11 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
 import { useActionStore } from '../stores/useActionStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 
-const actionSchema = z.object({
-  name: z
-    .string({
-      required_error: 'Name is required',
-      invalid_type_error: 'Name must be a string',
-    })
-    .min(EValidation.NameMin, {
-      message: 'Name too short',
-    })
-    .max(EValidation.NameMax, {
-      message: 'Name too long',
-    }),
-  parent: z.string().uuid({
-    message: 'parent not valid uuid',
-  }),
-  description: z.string().max(EValidation.NameMax, {
-    message: 'Description too long',
-  }),
-})
-
+const assetStore = useAssetStore()
 export class ActionService {
   constructor(
     private readonly actionRepository: IActionRepository,
@@ -47,7 +29,7 @@ export class ActionService {
   async getActions(): Promise<IAction[]> {
     try {
       const actions = await this.actionRepository.findAll()
-      return actions
+      return SharedAssetMapper.setParentNames(actions, assetStore.assets)
     } catch (error) {
       const msg =
         error instanceof Error
@@ -61,8 +43,7 @@ export class ActionService {
   async createAction(data: IAction): Promise<boolean> {
     try {
       const errors = Action.validate(data)
-
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -88,15 +69,21 @@ export class ActionService {
     description?: string
   }): Promise<boolean> {
     try {
-      const validated = actionSchema.parse(data)
+      const errors = Action.validate(data)
+      if (errors.hasErrors()) {
+        const errorMessages = Object.values(errors).filter(Boolean)
+        this.notificationService.error(errorMessages.join(', '))
+        return false
+      }
+
       const existingAction = await useActionStore().getActionById(data.id)
       if (!existingAction) throw new Error('Action not found')
 
       const updatedAction: IAction = {
         ...existingAction,
-        name: validated.name,
-        parent: validated.parent,
-        description: validated.description,
+        name: data.name,
+        parent: data.parent,
+        description: data.description,
       }
 
       await this.actionRepository.update(updatedAction)

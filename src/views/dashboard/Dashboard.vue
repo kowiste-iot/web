@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 
 // components import
 import SideCard from '@/components/cards/SideCard.vue'
@@ -125,13 +125,13 @@ import { useRoute } from 'vue-router'
 
 // other imports
 // props
-const page = ref(new DashboardPage())
+const page = reactive(new DashboardPage())
 const route = useRoute()
 
 const dashboardID = getParam(route.params.did)
 
 // service
-useBasePage(page.value.title, page.value.path)
+useBasePage(page.title, page.path)
 const widgetStore = useWidgetStore()
 
 // computed

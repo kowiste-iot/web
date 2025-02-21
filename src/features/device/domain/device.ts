@@ -1,8 +1,9 @@
 // features/device/domain/device.ts
+import type { IHasParent } from '@/features/shared/domain/hasParent'
 import { DeviceValidator } from './deviceValidator'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 
-export interface IDevice {
+export interface IDevice extends IHasParent {
   id: string
   name: string
   parent: string

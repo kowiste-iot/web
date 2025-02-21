@@ -16,7 +16,7 @@
         ref="calendarRef"
         :style="calendarPosition"
       >
-        <div class="calendar-header">
+        <div id="calendar-header" class="calendar-header">
           <button @click="navigatePrev">&lt;</button>
           <span @click="toggleView">{{ headerTitle }}</span>
           <button @click="navigateNext">&gt;</button>

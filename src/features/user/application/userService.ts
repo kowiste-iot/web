@@ -40,12 +40,12 @@ export class UserService {
   async createUser(data: IUser): Promise<boolean> {
     try {
       const errors = User.validate(data)
-
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
       }
+
       const user = new User(data)
       await this.userRepository.create(user)
       this.notificationService.success('User created successfully')
@@ -63,11 +63,12 @@ export class UserService {
   async updateUser(data: IUser): Promise<boolean> {
     try {
       const errors = User.validate(data)
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
       }
+      
       const existingUser = this.getUser(data.id)
       if (!existingUser) throw new Error('User not found')
 

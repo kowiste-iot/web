@@ -1,7 +1,8 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { AssetValidator } from './assetValidator'
+import type { IHasParent } from '@/features/shared/domain/hasParent'
 
-export interface IAsset {
+export interface IAsset extends IHasParent{
   id: string
   name: string
   parent?: string

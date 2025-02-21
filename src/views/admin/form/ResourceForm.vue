@@ -13,7 +13,7 @@
         :placeholder="$t('resource.form.nameHolder')"
         type="text"
         disabled
-        :error="errors['name']"
+        :error="errors.getError('name')"
         v-model="form.displayName"
       />
       <div class="col-md-2"></div>
@@ -31,7 +31,7 @@
               type="text"
               :placeholder="String(roleName)"
               disabled
-              :error="errors['name']"
+              :error="errors.getError('name')"
             />
             <MultiDropdown
               class="col-md-6 mt-1"
@@ -104,7 +104,7 @@ import Input from '@/components/form/Input.vue'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { useBasePage } from '@/composable/useBasePage'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import type { IResource } from '@/features/resource/domain/resource'
 import { ResourceService } from '@/features/resource/application/resourceService'
 import { ResourceRepository } from '@/features/resource/repository/resourceRepository'
@@ -140,8 +140,7 @@ const form = reactive<IResource>({
   ...props.data,
   name: props.data?.name ?? '',
 })
-const errors = ref<ValidationError<IResource>>({})
-
+const errors = ref<ValidationError<IResource>>(new ValidationError())
 // computed
 const scopes = computed(() => {
   return scopeStore.scopes

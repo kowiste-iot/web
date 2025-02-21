@@ -1,7 +1,8 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { DashboardValidator } from './dashboardValidator'
+import type { IHasParent } from '@/features/shared/domain/hasParent'
 
-export interface IDashboard {
+export interface IDashboard extends IHasParent {
   id: string
   name: string
   parent: string

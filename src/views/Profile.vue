@@ -47,7 +47,7 @@
       </div>
 
       <div class="row align-items-center p-2">
-        <label class="col-3 text-end fw-bold">Role</label>
+        <label id="my-button2" class="col-3 text-end fw-bold">Role</label>
         <div class="col-6">
           <input
             type="text"

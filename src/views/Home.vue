@@ -1,13 +1,22 @@
 <template>
   <Calendar
+    id="example-tour"
     v-model="selectedDate"
     selection-color="#2196F3"
     :show-time="false"
     :range-selection="true"
   />
-  <img
-    :src="Environment.getInstance().storageURL + '/assets/logo.png'"
-  />
+  <img :src="Environment.getInstance().storageURL + '/assets/logo.png'" />
+  <Button
+    :color="EColor.Success"
+    @click="
+      () => {
+        tourStore.startTour('welcome-tour')
+      }
+    "
+  >
+    Follow
+  </Button>
   <div v-if="false">
     <div>
       <FoldButton :icon="EIcon.Add" :color="EColor.Danger">
@@ -173,6 +182,7 @@ import { EIcon } from '@/features/shared/enum/EIcon'
 import { EColor } from '@/features/shared/enum/EColor'
 import Calendar from '@/components/form/Calendar/Calendar.vue'
 import { Environment } from '@/utils/enviroment/enviroment'
+import { useTourStore } from '@/features/tour/stores/useTourStore'
 
 // other imports
 // props
@@ -205,6 +215,7 @@ const contributionData = ref([
 // storage calls
 const alertStore = useGUIAlert()
 const storeCrumb = useBreadCrumb()
+const tourStore = useTourStore()
 
 storeCrumb.reset()
 // computed

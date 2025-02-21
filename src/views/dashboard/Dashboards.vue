@@ -58,7 +58,8 @@
       <DashboardForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="() => page.closeForm()"
+        :close="closeForm"
+        :close="closeForm"
       />
     </SideCard>
   </Modal>
@@ -80,7 +81,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 // stores import
 
 // components import
@@ -109,9 +110,9 @@ import { useBasePage } from '@/composable/useBasePage'
 // other imports
 // props
 // data
-const page = ref(new DashboardsPage())
+const page = reactive(new DashboardsPage())
 // service
-const { notificationService } = useBasePage(page.value.title)
+const { notificationService } = useBasePage(page.title)
 const dashboardService = new DashboardService(
   new DashboardRepository(),
   notificationService
@@ -124,31 +125,39 @@ const dashboards = computed(() => {
 })
 // methods
 function propertySelected(prop: Property, data: IDashboard) {
-  page.value.selected = data
+  page.selected = data
   switch (prop.id) {
     case 1:
-      page.value.showForm = true
-      page.value.editForm = true
+      page.showForm = true
+      page.editForm = true
       break
     case 2:
-      page.value.showModal = true
+      page.showModal = true
 
       break
   }
 }
-function deleteDashboard() {
-  dashboardService.deleteDashboard(page.value.selected?.id!)
-  page.value.selected = undefined
-  page.value.showModal = false
+async function deleteDashboard() {
+  await dashboardService.deleteDashboard(page.selected?.id!)
+  await refreshData()
+  page.selected = undefined
+  page.showModal = false
 }
 function goTo(id: string) {
   getRouter().push('/dashboard/' + id)
 }
+function closeForm() {
+  refreshData()
+  page.reset()
+}
+async function refreshData() {
+  await dashboardStore.fetchDashboards()
+}
 // lifeCycle
-// watch
 onMounted(() => {
-  dashboardStore.fetchDashboards()
+  refreshData()
 })
+// watch
 </script>
 
 <style scoped></style>

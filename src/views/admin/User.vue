@@ -39,6 +39,7 @@
     style="position: fixed; top: 4rem; right: 1rem"
   >
     <FIcon
+      id="admin-user-add"
       :class="`text-${EColor.Success}`"
       :icon="EIcon.Add"
       role="button"

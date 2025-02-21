@@ -14,7 +14,7 @@
         class="col-md-8"
         :placeholder="$t('measure.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors.getError('name')"
         v-model="form.name"
       />
     </div>
@@ -26,7 +26,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('measure.form.parentHolder')"
-        :error="errors['parent']"
+        :error="errors.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -36,7 +36,7 @@
         class="col-md-8"
         placeholder=""
         :rows="5"
-        :error="errors['description']"
+        :error="errors.getError('description')"
         v-model="form.description"
       />
     </div>
@@ -69,7 +69,7 @@ import { MeasureService } from '@/features/measure/application/measureService'
 import { MeasureRepository } from '@/features/measure/repository/measureRepository'
 import { useBasePage } from '@/composable/useBasePage'
 import { Measure, type IMeasure } from '@/features/measure/domain/measure'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import InputText from '@/components/form/InputText.vue'
 
@@ -98,7 +98,7 @@ const form = reactive<IMeasure>({
 })
 const selectedParent = ref({} as IAsset)
 
-const errors = ref<ValidationError<IMeasure>>({})
+const errors = ref<ValidationError<IMeasure>>(new ValidationError())
 
 // service
 const { notificationService } = useBasePage()

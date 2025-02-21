@@ -12,7 +12,7 @@
         class="col-md-8"
         :placeholder="$t('alert.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors.getError('name')"
         v-model="form.name"
       />
     </div>
@@ -24,7 +24,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('alert.form.parentHolder')"
-        :error="errors['parent']"
+        :error="errors.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -34,7 +34,7 @@
         class="col-md-8"
         placeholder=""
         :rows="5"
-        :error="errors['description']"
+        :error="errors.getError('description')"
         v-model="form.description"
       />
     </div>
@@ -64,7 +64,7 @@ import { EIcon } from '@/features/shared/enum/EIcon'
 import { type IAsset } from '@/features/asset/domain/asset'
 import { useBasePage } from '@/composable/useBasePage'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import { Alert, type IAlert } from '@/features/alert/domain/alert'
 import { AlertService } from '@/features/alert/application/alertService'
@@ -96,7 +96,8 @@ const form = reactive<IAlert>({
 })
 const assetStore = useAssetStore()
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IAlert>>({})
+const errors = ref<ValidationError<IAlert>>(new ValidationError())
+
 //service
 const { notificationService } = useBasePage()
 const alertService = new AlertService(

@@ -1,28 +1,11 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
 import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import { useAlertStore } from '../stores/useAlertStore'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 
-const alertSchema = z.object({
-  name: z
-    .string({
-      required_error: 'Name is required',
-      invalid_type_error: 'Name must be a string',
-    })
-    .min(EValidation.NameMin, {
-      message: 'Name too short',
-    })
-    .max(EValidation.NameMax, {
-      message: 'Name too long',
-    }),
-  parent: z.string().uuid({
-    message: 'parent not valid uuid',
-  }),
-  description: z.string().max(EValidation.NameMax, {
-    message: 'Description too long',
-  }),
-})
+const assetStore = useAssetStore()
+
 
 export class AlertService {
   constructor(
@@ -62,7 +45,7 @@ export class AlertService {
     try {
       const errors = Alert.validate(data)
 
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -88,15 +71,25 @@ export class AlertService {
     description?: string
   }): Promise<boolean> {
     try {
-      const validated = alertSchema.parse(data)
+      const errors = Alert.validate(data)
+
+      if (errors.hasErrors()) {
+        const errorMessages = Object.values(errors).filter(Boolean)
+        this.notificationService.error(errorMessages.join(', '))
+        return false
+      }
+
       const existingAlert = await useAlertStore().getAlertById(data.id)
       if (!existingAlert) throw new Error('Alert not found')
 
       const updatedAlert: IAlert = {
         ...existingAlert,
-        name: validated.name,
-        parent: validated.parent,
-        description: validated.description,
+        name: data.name,
+        parent: data.parent,
+        description: data.description,
+        name: data.name,
+        parent: data.parent,
+        description: data.description,
       }
 
       await this.alertRepository.update(updatedAlert)

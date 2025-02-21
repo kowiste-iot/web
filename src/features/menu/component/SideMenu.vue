@@ -32,6 +32,7 @@
           @mouseleave="handleMenuLeave"
         >
           <div
+            :id="element.id"
             class="d-flex align-items-center p-2 text-white cursor-pointer"
             :class="{ 'justify-content-center': !menuStore.isOpen }"
             @click="handleMenuClick(element)"
@@ -60,11 +61,13 @@
             class="ms-3"
           >
             <div
+              :id="subItem.id"
               v-for="subItem in element.subMenu"
               :key="subItem.path"
               class="menu-item position-relative"
             >
               <RouterLink
+                :id="subItem.id"
                 :to="subItem.path"
                 class="d-flex align-items-center p-2 text-white text-decoration-none"
                 :title="subItem.path"
@@ -131,8 +134,8 @@ function handleMenuHover(menu: IMenu, index: number, event: MouseEvent) {
 function handleMenuLeave() {
   hoveredMenu.value = ''
 }
-onMounted(()=>{
-   menuStore.initializeMenu()
+onMounted(() => {
+  menuStore.initializeMenu()
 })
 // watchers
 // watch(
@@ -140,7 +143,7 @@ onMounted(()=>{
 //   (newParams) => {
 //     const tenant = newParams.tenantId as string
 //     if (tenant != undefined) {
-     
+
 //     }
 //   }
 // )

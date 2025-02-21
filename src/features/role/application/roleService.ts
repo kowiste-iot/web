@@ -41,7 +41,7 @@ export class RoleService {
     try {
       const errors = Role.validate(data)
 
-      if (Object.keys(errors).length > 0) {
+      if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))
         return false
@@ -59,32 +59,7 @@ export class RoleService {
       return false
     }
   }
-  //Cant update
-  // async updateRole(data: IRole): Promise<boolean> {
-  //   try {
-  //     const errors = Role.validate(data)
-  //     if (Object.keys(errors).length > 0) {
-  //       const errorMessages = Object.values(errors).filter(Boolean)
-  //       this.notificationService.error(errorMessages.join(', '))
-  //       return false
-  //     }
-  //     const existingRole = useRoleStore().getRoleById(data.id)
-  //     if (!existingRole) throw new Error('Role not found')
 
-  //     const updatedRole = new Role({ ...existingRole, ...data })
-
-  //     await this.roleRepository.update(updatedRole)
-  //     this.notificationService.success('Role updated successfully')
-  //     return true
-  //   } catch (error) {
-  //     if (error instanceof z.ZodError) {
-  //       this.notificationService.error('Invalid role data')
-  //     } else {
-  //       this.notificationService.error('Failed to update role')
-  //     }
-  //     return false
-  //   }
-  // }
 
   async deleteRole(id: string): Promise<void> {
     try {
