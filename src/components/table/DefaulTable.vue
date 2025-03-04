@@ -1,4 +1,3 @@
-// src/components/BaseDataTable.vue
 <script setup lang="ts">
 import DataTable from 'primevue/datatable'
 interface Props {
