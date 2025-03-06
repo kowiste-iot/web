@@ -1,0 +1,46 @@
+/* Light theme (default) */
+:root {
+  --layout-background: #f1f2f4;
+  --layout-menu: #282e33;
+
+  /* surface: Use as the primary background for the UI. */
+  --layout-card: #ffffff;
+  --layout-card-shadow: #091e4229;
+
+  /* overlay: Use for the background of elements that sit 
+  on top of they UI, such as modals, dialogs, dropdown menus, 
+  floating toolbars*/
+  --layout-overlay: #ffffff;
+  --layout-overlay-shadow: #091e4229;
+
+  /* sunken :  secondary background for the UI commonly 
+  used for grouping items. */
+  --layout-sunken: #f7f8f9;
+
+
+  /* z-index: specifies the stack order of an element */
+  --index-sunk: -9999;
+  --index-back: 0;
+  --index-card: 100;
+  --index-overlay: 200;
+  --index-modal: 1000;
+  --index-god: 9999;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  --layout-background: #22272b;
+  /* surface: Use as the primary background for the UI. */
+  --layout-card: #101214;
+  --layout-card-shadow: #0304048f;
+
+  /* overlay: Use for the background of elements that sit 
+  on top of they UI, such as modals, dialogs, dropdown menus, 
+  floating toolbars. */
+  --layout-overlay: #282e33;
+  --layout-overlay-shadow: #0304048f;
+
+  /* sunken :  secondary background for the UI commonly 
+  used for grouping items. */
+  --layout-sunken: #161a1d;
+}

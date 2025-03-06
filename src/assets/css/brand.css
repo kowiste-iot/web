@@ -1,0 +1,50 @@
+/* Light theme (default) */
+:root {
+  /* brand colors */
+  --color-brand-primary-subtle: #ddadff;
+  --color-brand-primary-default: #9b51e0;
+  --color-brand-primary-dark: #7f36c4;
+  --color-brand-primary-darkest: #47008d;
+
+  --color-brand-danger-subtle: #ffa36b;
+  --color-brand-danger-default  : #fb5a09;
+  --color-brand-danger-dark: #ca2c00;
+  --color-brand-danger-darkest: #9c0000;
+
+  --color-brand-succes-subtle: #8fffda;
+  --color-brand-succes-default: #0fdea0;
+  --color-brand-succes-dark: #00b379;
+  --color-brand-succes-darkest: #008a54;
+
+  --color-brand-warning-subtle: #ffff9e;
+  --color-brand-warning-default: #ffe83b;
+  --color-brand-warning-dark: #d2be00;
+  --color-brand-warning-darkest: #a69600;
+
+  --color-brand-secondary-subtle: #ffffff;
+  --color-brand-secondary-default: #d9d9d9;
+  --color-brand-secondary-dark: #b0b0b0;
+  --color-brand-secondary-darkest: #888888;
+
+  --color-brand-tertiary-subtle: #ffffff;
+  --color-brand-tertiary-default: #ffffff;
+  --color-brand-tertiary-dark: #d9d9d9;
+  --color-brand-tertiary-darkest: #b0b0b0;
+
+  /* other button */
+  --color-button-disabled: #b0abab;
+  --color-button-text: #091e42;
+  --color-button-text-inverse: #ffffee;
+  --color-button-text-disabled: var(--color-text-subtle);
+  /* menu text */
+  --color-nochange-text: #091e42;
+  --color-nochange-text-inverse: #dcdcdc;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  --color-brand-tertiary-subtle: #282e33;
+  --color-brand-tertiary-default: #282e33;
+  --color-brand-tertiary-dark: #38414a;
+  --color-brand-tertiary-darkest: #505b66;
+}

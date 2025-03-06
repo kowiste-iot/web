@@ -1,0 +1,5 @@
+.error-text {
+  color: var(--color-brand-danger-dark);
+  font-size: small;
+  margin-top: 0;
+}

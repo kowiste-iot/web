@@ -1,0 +1,343 @@
+:root {
+  /* Lime */
+  --color-background-accent-lime-subtlest: #efffd6;
+  --color-background-accent-lime-subtlest-hovered: #d3f1a7;
+  --color-background-accent-lime-subtlest-pressed: #b3df72;
+
+  --color-background-accent-lime-subtler: #d3f1a7;
+  --color-background-accent-lime-subtler-hovered: #b3df72;
+  --color-background-accent-lime-subtler-pressed: #94c748;
+
+  --color-background-accent-lime-subtle: #94c748;
+  --color-background-accent-lime-subtle-hovered: #b3df72;
+  --color-background-accent-lime-subtle-pressed: #d3f1a7;
+
+  --color-background-accent-lime-bolder: #5b7f24;
+  --color-background-accent-lime-bolder-hovered: #4c6b1f;
+  --color-background-accent-lime-bolder-pressed: #37471f;
+
+  /* Red */
+  --color-background-accent-red-subtlest: #ffeceb;
+  --color-background-accent-red-subtlest-hovered: #ffd5d2;
+  --color-background-accent-red-subtlest-pressed: #fd9891;
+
+  --color-background-accent-red-subtler: #ffd5d2;
+  --color-background-accent-red-subtler-hovered: #fd9891;
+  --color-background-accent-red-subtler-pressed: #f87168;
+
+  --color-background-accent-red-subtle: #f87168;
+  --color-background-accent-red-subtle-hovered: #fd9891;
+  --color-background-accent-red-subtle-pressed: #ffd5d2;
+
+  --color-background-accent-red-bolder: #c9372c;
+  --color-background-accent-red-bolder-hovered: #ae2e24;
+  --color-background-accent-red-bolder-pressed: #5d1f1a;
+
+  /* Orange */
+  --color-background-accent-orange-subtlest: #fff3eb;
+  --color-background-accent-orange-subtlest-hovered: #fedec8;
+  --color-background-accent-orange-subtlest-pressed: #fec195;
+
+  --color-background-accent-orange-subtler: #fedec8;
+  --color-background-accent-orange-subtler-hovered: #fec195;
+  --color-background-accent-orange-subtler-pressed: #fea362;
+
+  --color-background-accent-orange-subtle: #fea362;
+  --color-background-accent-orange-subtle-hovered: #fec195;
+  --color-background-accent-orange-subtle-pressed: #fedec8;
+
+  --color-background-accent-orange-bolder: #c25100;
+  --color-background-accent-orange-bolder-hovered: #a54800;
+  --color-background-accent-orange-bolder-pressed: #702e00;
+
+  /* Yellow */
+  --color-background-accent-yellow-subtlest: #fff7d6;
+  --color-background-accent-yellow-subtlest-hovered: #f8e6a0;
+  --color-background-accent-yellow-subtlest-pressed: #f5cd47;
+
+  --color-background-accent-yellow-subtler: #f8e6a0;
+  --color-background-accent-yellow-subtler-hovered: #f5cd47;
+  --color-background-accent-yellow-subtler-pressed: #e2b203;
+
+  --color-background-accent-yellow-subtle: #f5cd47;
+  --color-background-accent-yellow-subtle-hovered: #e2b203;
+  --color-background-accent-yellow-subtle-pressed: #cf9f02;
+
+  --color-background-accent-yellow-bolder: #946f00;
+  --color-background-accent-yellow-bolder-hovered: #7f5f01;
+  --color-background-accent-yellow-bolder-pressed: #533f04;
+
+  /* Green */
+  --color-background-accent-green-subtlest: #dcfff1;
+  --color-background-accent-green-subtlest-hovered: #baf3db;
+  --color-background-accent-green-subtlest-pressed: #7ee2b8;
+
+  --color-background-accent-green-subtler: #baf3db;
+  --color-background-accent-green-subtler-hovered: #7ee2b8;
+  --color-background-accent-green-subtler-pressed: #4bce97;
+
+  --color-background-accent-green-subtle: #4bce97;
+  --color-background-accent-green-subtle-hovered: #7ee2b8;
+  --color-background-accent-green-subtle-pressed: #baf3db;
+
+  --color-background-accent-green-bolder: #1f845a;
+  --color-background-accent-green-bolder-hovered: #216e4e;
+  --color-background-accent-green-bolder-pressed: #164b35;
+
+  /* Teal */
+  --color-background-accent-teal-subtlest: #e7f9ff;
+  --color-background-accent-teal-subtlest-hovered: #c6edfb;
+  --color-background-accent-teal-subtlest-pressed: #9dd9ee;
+
+  --color-background-accent-teal-subtler: #c6edfb;
+  --color-background-accent-teal-subtler-hovered: #9dd9ee;
+  --color-background-accent-teal-subtler-pressed: #6cc3e0;
+
+  --color-background-accent-teal-subtle: #6cc3e0;
+  --color-background-accent-teal-subtle-hovered: #9dd9ee;
+  --color-background-accent-teal-subtle-pressed: #c6edfb;
+
+  --color-background-accent-teal-bolder: #227d9b;
+  --color-background-accent-teal-bolder-hovered: #206a83;
+  --color-background-accent-teal-bolder-pressed: #164555;
+
+  /* Blue */
+  --color-background-accent-blue-subtlest: #e9f2ff;
+  --color-background-accent-blue-subtlest-hovered: #cce0ff;
+  --color-background-accent-blue-subtlest-pressed: #85b8ff;
+
+  --color-background-accent-blue-subtler: #cce0ff;
+  --color-background-accent-blue-subtler-hovered: #85b8ff;
+  --color-background-accent-blue-subtler-pressed: #579dff;
+
+  --color-background-accent-blue-subtle: #579dff;
+  --color-background-accent-blue-subtle-hovered: #85b8ff;
+  --color-background-accent-blue-subtle-pressed: #cce0ff;
+
+  --color-background-accent-blue-bolder: #0c66e4;
+  --color-background-accent-blue-bolder-hovered: #0055cc;
+  --color-background-accent-blue-bolder-pressed: #09326c;
+
+  /* Purple*/
+  --color-background-accent-purple-subtlest: #f3f0ff;
+  --color-background-accent-purple-subtlest-hovered: #dfd8fd;
+  --color-background-accent-purple-subtlest-pressed: #b8acf6;
+
+  --color-background-accent-purple-subtler: #dfd8fd;
+  --color-background-accent-purple-subtler-hovered: #b8acf6;
+  --color-background-accent-purple-subtler-pressed: #9f8fef;
+
+  --color-background-accent-purple-subtle: #9f8fef;
+  --color-background-accent-purple-subtle-hovered: #b8acf6;
+  --color-background-accent-purple-subtle-pressed: #dfd8fd;
+
+  --color-background-accent-purple-bolder: #6e5dc6;
+  --color-background-accent-purple-bolder-hovered: #5e4db2;
+  --color-background-accent-purple-bolder-pressed: #352c63;
+
+  /* Magenta*/
+  --color-background-accent-magenta-subtlest: #ffecf8;
+  --color-background-accent-magenta-subtlest-hovered: #fdd0ec;
+  --color-background-accent-magenta-subtlest-pressed: #f797d2;
+
+  --color-background-accent-magenta-subtler: #fdd0ec;
+  --color-background-accent-magenta-subtler-hovered: #f797d2;
+  --color-background-accent-magenta-subtler-pressed: #e774bb;
+
+  --color-background-accent-magenta-subtle: #e774bb;
+  --color-background-accent-magenta-subtle-hovered: #f797d2;
+  --color-background-accent-magenta-subtle-pressed: #fdd0ec;
+
+  --color-background-accent-magenta-bolder: #ae4787;
+  --color-background-accent-magenta-bolder-hovered: #943d73;
+  --color-background-accent-magenta-bolder-pressed: #50253f;
+
+  /* Gray*/
+  --color-background-accent-gray-subtlest: #f1f2f4;
+  --color-background-accent-gray-subtlest-hovered: #dcdfe4;
+  --color-background-accent-gray-subtlest-pressed: #b3b9c4;
+
+  --color-background-accent-gray-subtler: #dcdfe4;
+  --color-background-accent-gray-subtler-hovered: #b3b9c4;
+  --color-background-accent-gray-subtler-pressed: #8590a2;
+
+  --color-background-accent-gray-subtle: #8590a2;
+  --color-background-accent-gray-subtle-hovered: #b3b9c4;
+  --color-background-accent-gray-subtle-pressed: #dcdfe4;
+
+  --color-background-accent-gray-bolder: #626f86;
+  --color-background-accent-gray-bolder-hovered: #44546f;
+  --color-background-accent-gray-bolder-pressed: #2c3e5d;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* Lime */
+  --color-background-accent-lime-subtlest: #28311b;
+  --color-background-accent-lime-subtlest-hovered: #37471f;
+  --color-background-accent-lime-subtlest-pressed: #4c6b1f;
+
+  --color-background-accent-lime-subtler: #37471f;
+  --color-background-accent-lime-subtler-hovered: #4c6b1f;
+  --color-background-accent-lime-subtler-pressed: #5b7f24;
+
+  --color-background-accent-lime-subtle: #4c6b1f;
+  --color-background-accent-lime-subtle-hovered: #37471f;
+  --color-background-accent-lime-subtle-pressed: #28311b;
+
+  --color-background-accent-lime-bolder: #94c748;
+  --color-background-accent-lime-bolder-hovered: #b3df72;
+  --color-background-accent-lime-bolder-pressed: #d3f1a7;
+
+  /* Red */
+  --color-background-accent-red-subtlest: #42221f;
+  --color-background-accent-red-subtlest-hovered: #5d1f1a;
+  --color-background-accent-red-subtlest-pressed: #ae2e24;
+
+  --color-background-accent-red-subtler: #5d1f1a;
+  --color-background-accent-red-subtler-hovered: #ae2e24;
+  --color-background-accent-red-subtler-pressed: #c9372c;
+
+  --color-background-accent-red-subtle: #ae2e24;
+  --color-background-accent-red-subtle-hovered: #5d1f1a;
+  --color-background-accent-red-subtle-pressed: #42221f;
+
+  --color-background-accent-red-bolder: #f87168;
+  --color-background-accent-red-bolder-hovered: #fd9891;
+  --color-background-accent-red-bolder-pressed: #ffd5d2;
+
+  /* Orange */
+  --color-background-accent-orange-subtlest: #38291e;
+  --color-background-accent-orange-subtlest-hovered: #702e00;
+  --color-background-accent-orange-subtlest-pressed: #a54800;
+
+  --color-background-accent-orange-subtler: #702e00;
+  --color-background-accent-orange-subtler-hovered: #a54800;
+  --color-background-accent-orange-subtler-pressed: #c25100;
+
+  --color-background-accent-orange-subtle: #a54800;
+  --color-background-accent-orange-subtle-hovered: #702e00;
+  --color-background-accent-orange-subtle-pressed: #38291e;
+
+  --color-background-accent-orange-bolder: #fea362;
+  --color-background-accent-orange-bolder-hovered: #fec195;
+  --color-background-accent-orange-bolder-pressed: #fedec8;
+
+  /* Yellow */
+  --color-background-accent-yellow-subtlest: #332e1b;
+  --color-background-accent-yellow-subtlest-hovered: #533f04;
+  --color-background-accent-yellow-subtlest-pressed: #7f5f01;
+
+  --color-background-accent-yellow-subtler: #533f04;
+  --color-background-accent-yellow-subtler-hovered: #7f5f01;
+  --color-background-accent-yellow-subtler-pressed: #946f00;
+
+  --color-background-accent-yellow-subtle: #7f5f01;
+  --color-background-accent-yellow-subtle-hovered: #533f04;
+  --color-background-accent-yellow-subtle-pressed: #332e1b;
+
+  --color-background-accent-yellow-bolder: #e2b203;
+  --color-background-accent-yellow-bolder-hovered: #f5cd47;
+  --color-background-accent-yellow-bolder-pressed: #f8e6a0;
+  /* Grean */
+  --color-background-accent-green-subtlest: #1c3329;
+  --color-background-accent-green-subtlest-hovered: #164b35;
+  --color-background-accent-green-subtlest-pressed: #216e4e;
+
+  --color-background-accent-green-subtler: #164b35;
+  --color-background-accent-green-subtler-hovered: #216e4e;
+  --color-background-accent-green-subtler-pressed: #1f845a;
+
+  --color-background-accent-green-subtle: #216e4e;
+  --color-background-accent-green-subtle-hovered: #164b35;
+  --color-background-accent-green-subtle-pressed: #1c3329;
+
+  --color-background-accent-green-bolder: #4bce97;
+  --color-background-accent-green-bolder-hovered: #7ee2b8;
+  --color-background-accent-green-bolder-pressed: #baf3db;
+
+  /* Teal */
+  --color-background-accent-teal-subtlest: #1e3137;
+  --color-background-accent-teal-subtlest-hovered: #164555;
+  --color-background-accent-teal-subtlest-pressed: #206a83;
+
+  --color-background-accent-teal-subtler: #164555;
+  --color-background-accent-teal-subtler-hovered: #206a83;
+  --color-background-accent-teal-subtler-pressed: #227d9b;
+
+  --color-background-accent-teal-subtle: #206a83;
+  --color-background-accent-teal-subtle-hovered: #164555;
+  --color-background-accent-teal-subtle-pressed: #1e3137;
+
+  --color-background-accent-teal-bolder: #6cc3e0;
+  --color-background-accent-teal-bolder-hovered: #9dd9ee;
+  --color-background-accent-teal-bolder-pressed: #c6edfb;
+
+  /* Blue */
+  --color-background-accent-blue-subtlest: #1c2b41;
+  --color-background-accent-blue-subtlest-hovered: #09326c;
+  --color-background-accent-blue-subtlest-pressed: #0055ccff;
+
+  --color-background-accent-blue-subtler: #09326c;
+  --color-background-accent-blue-subtler-hovered: #0055cc;
+  --color-background-accent-blue-subtler-pressed: #0c66e4;
+
+  --color-background-accent-blue-subtle: #0055cc;
+  --color-background-accent-blue-subtle-hovered: #09326c;
+  --color-background-accent-blue-subtle-pressed: #1c2b41;
+
+  --color-background-accent-blue-bolder: #579dff;
+  --color-background-accent-blue-bolder-hovered: #85b8ff;
+  --color-background-accent-blue-bolder-pressed: #cce0ff;
+
+  /* Purple*/
+  --color-background-accent-purple-subtlest: #2b273f;
+  --color-background-accent-purple-subtlest-hovered: #352c63;
+  --color-background-accent-purple-subtlest-pressed: #5e4db2;
+
+  --color-background-accent-purple-subtler: #352c63;
+  --color-background-accent-purple-subtler-hovered: #5e4db2;
+  --color-background-accent-purple-subtler-pressed: #6e5dc6;
+
+  --color-background-accent-purple-subtle: #5e4db2;
+  --color-background-accent-purple-subtle-hovered: #352c63;
+  --color-background-accent-purple-subtle-pressed: #2b273f;
+
+  --color-background-accent-purple-bolder: #9f8fef;
+  --color-background-accent-purple-bolder-hovered: #b8acf6;
+  --color-background-accent-purple-bolder-pressed: #dfd8fd;
+
+  /* Magenta*/
+  --color-background-accent-magenta-subtlest: #3d2232;
+  --color-background-accent-magenta-subtlest-hovered: #50253f;
+  --color-background-accent-magenta-subtlest-pressed: #943d73;
+
+  --color-background-accent-magenta-subtler: #50253f;
+  --color-background-accent-magenta-subtler-hovered: #943d73;
+  --color-background-accent-magenta-subtler-pressed: #ae4787;
+
+  --color-background-accent-magenta-subtle: #943d73;
+  --color-background-accent-magenta-subtle-hovered: #50253f;
+  --color-background-accent-magenta-subtle-pressed: #3d2232;
+
+  --color-background-accent-magenta-bolder: #e774bb;
+  --color-background-accent-magenta-bolder-hovered: #f797d2;
+  --color-background-accent-magenta-bolder-pressed: #fdd0ec;
+
+  /* Gray*/
+  --color-background-accent-gray-subtlest: #2c333a;
+  --color-background-accent-gray-subtlest-hovered: #38414a;
+  --color-background-accent-gray-subtlest-pressed: #454f59;
+
+  --color-background-accent-gray-subtler: #454f59;
+  --color-background-accent-gray-subtler-hovered: #596773;
+  --color-background-accent-gray-subtler-pressed: #8590a2;
+
+  --color-background-accent-gray-subtle: #596773;
+  --color-background-accent-gray-subtle-hovered: #454f59;
+  --color-background-accent-gray-subtle-pressed: #38414a;
+
+  --color-background-accent-gray-bolder: #8c9bab;
+  --color-background-accent-gray-bolder-hovered: #9fadbc;
+  --color-background-accent-gray-bolder-pressed: #b6c2cf;
+}
