@@ -46,7 +46,7 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-md-6">
       <AssetForm
         :data="page.selected"
@@ -93,7 +93,7 @@ import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
 import AssetForm from '@/views/asset/form/AssetForm.vue'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import type { IAsset } from '@/features/asset/domain/asset'
 
 import { AssetService } from '@/features/asset/application/assetService'

@@ -56,7 +56,7 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-md-6">
       <DeviceForm
         :data="page.selected"
@@ -94,7 +94,7 @@ import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'

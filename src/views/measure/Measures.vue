@@ -67,7 +67,7 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-md-6">
       <MeasureForm
         :data="page.selected"
@@ -98,7 +98,7 @@ import { computed, onMounted, reactive } from 'vue'
 // stores import
 // components import
 import MeasureForm from '@/views/measure/form/MeasureForm.vue'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'

@@ -87,7 +87,7 @@
 
 <script setup lang="ts">
 // imports
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive } from 'vue'
 // stores import
 import { useRoute } from 'vue-router'
 // components import
@@ -113,7 +113,6 @@ import { WidgetRepository } from '@/features/dashboard/repository/widgetReposito
 import { WidgetFormPage } from '@/features/dashboard/presentation/pages/pageWidgetForm'
 import type { IWidgetType } from '@/model/widget/widgetType'
 import { Widget } from '@/features/dashboard/domain/widget'
-import { useMenuStore } from '@/features/menu/store/menuStore'
 import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 // props
 const props = defineProps({
@@ -138,7 +137,7 @@ const widgetService = new WidgetService(
 )
 // storage calls
 const route = useRoute()
-const measureStore=useMeasureStore()
+const measureStore = useMeasureStore()
 
 const dashboardID = getParam(route.params.did)
 // computed
@@ -148,15 +147,14 @@ function selectWidget(data: IWidgetType) {
   page.selectedWidget = data
 }
 function save() {
-  form.set(page.value.selectedWidget, dashboardID)
+  form.set(page.selectedWidget, dashboardID)
   const ok = widgetService.createWidget(dashboardID, form)
   if (!ok) return
   props.close()
 }
 // lifeCycle
-onMounted(()=>{
-measureStore.fetchMeasures()
-
+onMounted(() => {
+  measureStore.fetchMeasures()
 })
 // watch
 </script>

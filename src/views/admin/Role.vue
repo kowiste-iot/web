@@ -47,7 +47,7 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-md-6">
       <RoleForm
         :data="page.selected"
@@ -90,7 +90,7 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import { useBasePage } from '@/composable/useBasePage'
 import { RolesPage } from '@/features/role/presentation/pages/pageRoles'
 import { RoleService } from '@/features/role/application/roleService'

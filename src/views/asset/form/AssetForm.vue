@@ -1,25 +1,23 @@
 <template>
   <InputCard
-    class="h-100"
+    class="h-100 m-0"
     :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
     showHeader
     showFooter
   >
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
+    <Flex column>
+      <label>{{ $t('asset.form.name') }} </label>
       <Input
-        class="col-md-8"
         :placeholder="$t('asset.form.nameHolder')"
         type="text"
         :error="errors.getError('name')"
         v-model="form.name"
       />
-    </div>
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
+    </Flex>
+    <Flex column>
+      <label>{{ $t('asset.form.parent') }} </label>
       <MultiDropdown
-        class="col-md-8"
         :options="availableParents"
         idField="id"
         labelField="name"
@@ -27,7 +25,7 @@
         :error="errors.getError('parent')"
         v-model="selectedParent"
       />
-    </div>
+    </Flex>
     <template #footer>
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
         $t(edit ? 'actionGUI.update' : 'actionGUI.save')
@@ -58,6 +56,7 @@ import { AssetRepository } from '@/features/asset/repository/assetRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { ValidationError } from '@/features/shared/domain/baseValidator'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import Flex from '@/components/layout/Flex.vue'
 
 // other imports
 // props
@@ -85,7 +84,7 @@ const form = reactive<IAsset>({
 const assetStore = useAssetStore()
 const selectedParent = ref({} as IAsset)
 const errors = ref<ValidationError<IAsset>>(new ValidationError())
-  //service
+//service
 const { notificationService } = useBasePage()
 const assetService = new AssetService(
   new AssetRepository(),

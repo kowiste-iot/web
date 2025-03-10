@@ -53,7 +53,7 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-12 col-sm-10 col-md-6 col-lg-4">
       <DashboardForm
         :data="page.selected"
@@ -100,7 +100,7 @@ import { getRouter } from '@/router'
 import type { Property } from '@/model/property'
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import { DashboardsPage } from '@/features/dashboard/presentation/pages/pageDashboards'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import type { IDashboard } from '@/features/dashboard/domain/dashboard'
 import { useDashboardStore } from '@/features/dashboard/stores/useDashboardStore'
 import { DashboardService } from '@/features/dashboard/application/dashboardService'

@@ -13,7 +13,6 @@
         </template>
       </Column>
 
-
       <Column>
         <template #body="{ data }">
           <PropertyDot
@@ -25,7 +24,7 @@
     </DataTable>
   </TabletCard>
 
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-md-12">
       <ResourceForm
         :data="page.selected"
@@ -34,15 +33,13 @@
       />
     </SideCard>
   </Modal>
-
-
 </template>
 
 <script setup lang="ts">
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
-import {useSessionStore} from '@/features/session/store/useSessionStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 import { useResourceStore } from '@/features/resource/stores/useResourceStore'
 
 // components import
@@ -53,7 +50,7 @@ import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import type { Property } from '@/model/property'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import { ResourcesPage } from '@/features/resource/presentation/pages/pageResource'
 import ResourceForm from './form/ResourceForm.vue'
 import type { IResource } from '@/features/resource/domain/resource'

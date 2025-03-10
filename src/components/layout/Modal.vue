@@ -1,6 +1,8 @@
 <template>
-  <div class="modal">
-    <slot></slot>
+  <div id="modal" class="modal" @click="handleBackgroundClick">
+    <div @click.stop>
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -11,16 +13,17 @@
 // model imports
 // other imports
 // props
-interface Props {
-  onCancel?: Function
-}
-const props = withDefaults(defineProps<Props>(), {
-  onCancel: function () {},
-})
+const emit = defineEmits<{
+  cancel: []
+}>()
+
 // data
 // storage calls
 // computed
 // methods
+function handleBackgroundClick() {
+  emit('cancel')
+}
 // lifeCycle
 // watch
 </script>
@@ -30,14 +33,11 @@ const props = withDefaults(defineProps<Props>(), {
 .modal {
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 100; /* Sit on top */
-  padding-top: 5rem; /* Location of the box */
-  left: 0;
-  top: 0;
+  z-index: var(--index-modal); /* Sit on top */
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+  background-color: var(--modal-color); /* Black w/ opacity */
 }
 </style>
