@@ -5,6 +5,7 @@ export interface IMenu {
   icon: string
   path: string
   isParent: boolean
+  isHeader?: boolean
   subMenu?: IMenu[]
   requiresOrg?: boolean
 }

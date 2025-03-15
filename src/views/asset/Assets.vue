@@ -224,8 +224,8 @@ import type { IAsset } from '@/features/asset/domain/asset'
 
 import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
-import Row from '@/components/layout/Row.vue'
-import Col, { EBreakpoint } from '@/components/layout/Col.vue'
+import Row from '@/components/layout/grid/Row.vue'
+import Col from '@/components/layout/grid/Col.vue'
 import { MeasuresPage } from '@/features/measure/presentation/pages/pageMeasure'
 import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 import Card from '@/components/cards/Card.vue'
@@ -241,6 +241,7 @@ import MeasureForm from './form/MeasureForm.vue'
 import DeviceForm from './form/DeviceForm.vue'
 import { Page } from '@/features/shared/presentation/pages/pageBase'
 import { useI18n } from 'vue-i18n'
+import { EBreakpoint } from '@/components/layout/grid/col'
 // other imports
 // props
 

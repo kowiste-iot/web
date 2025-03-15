@@ -3,8 +3,12 @@
   --text-color: #091e42;
   --text-color-subtle: #626f86;
   --text-color-subtlest: #bdc5d1;
-  --text-color-light: #ffffee;
+  --text-color-light: #dcdcdc;
   --text-color-dark: #091e42;
+
+  --text-color-button-dark: #091e42;
+  --text-color-button-light: #ffffee;
+  --text-color-button-disabled: var(--text-color-subtle);
 
   --text-color-accent-lime: #4c6b1f;
   --text-color-accent-lime-bolder: #37471f;

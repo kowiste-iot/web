@@ -2,8 +2,6 @@ import { createRouter, createWebHistory, type Router } from 'vue-router'
 import { useRequest } from '@/plugins/request/store'
 import assetRoutes from './asset'
 import dashboardRoutes from './dashboard'
-import measureRoutes from './measure'
-import deviceRoutes from './device'
 import adminRoutes from './admin'
 import processRoutes from './process'
 import { authGuard } from '@/plugins/security/router'
@@ -46,8 +44,6 @@ const createAppRouter = (baseUrl: string) => {
 
       ...dashboardRoutes,
       ...assetRoutes,
-      ...measureRoutes,
-      ...deviceRoutes,
       ...adminRoutes,
       ...processRoutes,
 

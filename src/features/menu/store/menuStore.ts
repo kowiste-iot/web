@@ -7,16 +7,20 @@ export const useMenuStore = defineStore('menuStore', {
   state: () => ({
     isOpen: true,
     items: [] as IMenu[],
+    admin: [] as IMenu[],
   }),
 
   actions: {
     toggleMenu() {
       this.isOpen = !this.isOpen
     },
-
+    closeMenu() {
+      this.isOpen = false
+    },
     initializeMenu() {
       const menuService = new MenuService()
       this.items = menuService.getProcessedMenuItems()
+      this.admin = menuService.getProcessedAdmin()
     },
   },
 })

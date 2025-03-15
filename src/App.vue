@@ -4,23 +4,23 @@
     <RouterView />
   </div>
 
-  <div
+  <Flex
     v-else
-    class="d-flex align-items-stretch h-100 w-100 position-relative p-0 m-0"
+    id="full"
   >
     <SideMenu />
     <AlertContainer />
     <ToursProgress v-if="showTour" />
     <PlatformTour />
-    <div class="d-flex flex-column w-100 m-0 p-0">
+    <Flex column class="w-100">
       <Header />
-      <div class="flex-fill h-100 m-0 p-0">
-        <div class="container-md h-100 pt-4 pb-0 mb-0">
+      <div class="flex-fill main-content">
+        <div class="container-md  py-4">
           <RouterView />
         </div>
       </div>
-    </div>
-  </div>
+    </Flex>
+  </Flex>
 </template>
 
 <script setup lang="ts">
@@ -31,7 +31,7 @@ import { computed, onMounted, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import Header from '@/components/menu/Header.vue'
 
-import SideMenu from './features/menu/component/SideMenu.vue'
+import SideMenu from './features/menu/presentation/SideMenu.vue'
 import AlertContainer from './features/notification/component/AlertContainer.vue'
 import { loadTheme } from './utils/theme/init'
 import { useAuthStore } from './plugins/security/store'
@@ -46,6 +46,7 @@ import { assetTour } from './features/tour/tours/asset'
 import { userTour } from './features/tour/tours/user'
 import { roleTour } from './features/tour/tours/roles'
 import { resourceTour } from './features/tour/tours/resource'
+import Flex from './components/layout/Flex.vue'
 // model imports
 
 // props
@@ -94,6 +95,15 @@ watch(
 
 <style scope>
 .tour {
-  z-index: 2000;
+  z-index: var(--index-god);
+}
+.main-content{
+  overflow-y: auto;
+}
+#full{
+overflow: hidden;
+position: relative;
+height: 100%;
+width: 100%;
 }
 </style>

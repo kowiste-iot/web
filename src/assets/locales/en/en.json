@@ -246,7 +246,9 @@
       "parentHolder": "asset belong to asset"
     }
   },
-  "process": {},
+  "process": {
+    "title": "process"
+  },
   "admin": {},
   "role": {
     "title": "roles",

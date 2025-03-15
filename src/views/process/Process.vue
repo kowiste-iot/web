@@ -175,8 +175,8 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import Modal from '@/components/layout/Modal.vue'
-import Row from '@/components/layout/Row.vue'
-import Col, { EBreakpoint } from '@/components/layout/Col.vue'
+import Row from '@/components/layout/grid/Row.vue'
+import Col from '@/components/layout/grid/Col.vue'
 import Card from '@/components/cards/Card.vue'
 import Button from '@/components/buttons/Button.vue'
 import Flex from '@/components/layout/Flex.vue'
@@ -200,15 +200,20 @@ import { useAlertStore } from '@/features/alert/stores/useAlertStore'
 import { ETooltipPosition } from '@/components/tooltip/ETooltipPosition'
 import Tooltip from '@/components/tooltip/Tooltip.vue'
 import Tag from '@/components/tag/Tag.vue'
+import { EBreakpoint } from '@/components/layout/grid/col'
+import { Page } from '@/features/shared/presentation/pages/pageBase'
+import { useI18n } from 'vue-i18n'
 // other imports
 // props
 
 // data
+const { t } = useI18n()
+const page = reactive(new Page(t('process.title')))
 const pageAction = reactive(new ActionPage())
 const pageAlert = reactive(new AlertPage())
 
 //service
-const { notificationService } = useBasePage(pageAction.title)
+const { notificationService } = useBasePage(page.title)
 const assetService = new AssetService(
   new AssetRepository(),
   notificationService

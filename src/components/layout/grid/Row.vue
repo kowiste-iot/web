@@ -4,28 +4,11 @@
   </div>
 </template>
 
-<script lang="ts">
-// Enums must be outside the setup script
-export enum RowAlignment {
-  START = 'start',
-  CENTER = 'center',
-  END = 'end',
-  BETWEEN = 'between',
-  AROUND = 'around',
-  EVENLY = 'evenly'
-}
-
-export enum RowVerticalAlignment {
-  START = 'start',
-  CENTER = 'center',
-  END = 'end',
-  BASELINE = 'baseline',
-  STRETCH = 'stretch'
-}
-</script>
-
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed } from 'vue';
+import type { RowAlignment, RowVerticalAlignment } from './row';
+
+
 
 interface Props {
   align?: RowAlignment;

@@ -33,12 +33,6 @@
 
   /* other button */
   --button-color-disabled: #b0abab;
-  --button-color-text: #091e42;
-  --button-color-text-inverse: #ffffee;
-  --button-color-text-disabled: var(--color-text-subtle);
-  /* menu text */
-  --color-nochange-text: #091e42;
-  --color-nochange-text-inverse: #dcdcdc;
 }
 
 /* Dark theme */

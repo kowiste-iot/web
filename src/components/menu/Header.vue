@@ -30,9 +30,10 @@ import Session from '@/components/session/Session.vue'
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'
 import Flex from '../layout/Flex.vue'
-import Row from '../layout/Row.vue'
-import Col, { EBreakpoint } from '../layout/Col.vue'
+import Row from '../layout/grid/Row.vue'
+import Col from '../layout/grid/Col.vue'
 import { EFlexJustify } from '../layout/EFlex'
+import { EBreakpoint } from '../layout/grid/col'
 // other imports
 // props
 // data

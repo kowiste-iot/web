@@ -31,29 +31,10 @@ export class MenuService {
         path: '/process',
         isParent: true,
       },
-      {
-        id: 'sidemenu-process',
-        label: 'menu.process.parent',
-        icon: EIcon.Process,
-        path: '/process',
-        isParent: true,
-        subMenu: [
-          {
-            id: 'sidemenu-process-alert',
-            label: 'menu.process.alert',
-            icon: EIcon.Alert,
-            path: '/process/alert',
-            isParent: false,
-          },
-          {
-            id: 'sidemenu-process-action',
-            label: 'menu.process.action',
-            icon: EIcon.Action,
-            path: '/process/action',
-            isParent: false,
-          },
-        ],
-      },
+    ]
+  }
+  getMenuAdmin(): IMenu[] {
+    return [
       {
         id: 'sidemenu-admin',
         label: 'menu.admin.parent',
@@ -91,7 +72,10 @@ export class MenuService {
     const items = this.getMenuItems()
     return items.map((item) => this.processMenuItem(item))
   }
-
+  getProcessedAdmin(): IMenu[] {
+    const items = this.getMenuAdmin()
+    return items.map((item) => this.processMenuItem(item))
+  }
   private processMenuItem(item: IMenu): IMenu {
     const processed = { ...item }
 

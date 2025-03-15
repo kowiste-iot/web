@@ -118,7 +118,7 @@ const props = withDefaults(defineProps<Props>(), {
   --btn-hover: var(--color-brand-primary-dark);
   --btn-press: var(--color-brand-primary-darkest);
   background-color: var(--btn-base);
-  --btn-text-color: var(--button-color-text-inverse);
+  --btn-text-color: var(--text-color-button-light);
 }
 
 .bt-secondary {
@@ -126,14 +126,14 @@ const props = withDefaults(defineProps<Props>(), {
   --btn-hover: var(--color-brand-secondary-dark);
   --btn-press: var(--color-brand-secondary-darkest);
   background-color: var(--btn-base);
-  --btn-text-color: var(--button-color-text);
+  --btn-text-color: var(--text-color-button-dark);
 }
 .bt-success {
   --btn-base: var(--color-brand-success-default);
   --btn-hover: var(--color-brand-success-dark);
   --btn-press: var(--color-brand-success-darkest);
   background-color: var(--btn-base);
-  --btn-text-color: var(--text-color-light);
+  --btn-text-color: var(--text-color-button-light);
 }
 
 .bt-tertiary {
@@ -141,10 +141,10 @@ const props = withDefaults(defineProps<Props>(), {
   --btn-hover: var(--color-brand-tertiary-dark);
   --btn-press: var(--color-brand-tertiary-darkest);
   background-color: var(--btn-base);
-  --btn-text-color: var(--button-color-text);
+  --btn-text-color: var(--text-color-button-dark);
 }
 [data-theme='dark'] .bt-tertiary {
-  --btn-text-color: var(--button-color-text-inverse);
+  --btn-text-color: var(--text-color-button-light);
 }
 
 .bt-warning {
@@ -152,7 +152,7 @@ const props = withDefaults(defineProps<Props>(), {
   --btn-hover: var(--color-brand-warning-dark);
   --btn-press: var(--color-brand-warning-darkest);
   background-color: var(--btn-base);
-  --btn-text-color: var(--button-color-text);
+  --btn-text-color: var(--text-color-button-dark);
 }
 
 .bt-danger {
@@ -160,6 +160,6 @@ const props = withDefaults(defineProps<Props>(), {
   --btn-hover: var(--color-brand-danger-darkest);
   --btn-press: var(--color-brand-danger-darkest);
   background-color: var(--btn-base);
-  --btn-text-color: var(--button-color-text-inverse);
+  --btn-text-color: var(--text-color-button-light);
 }
 </style>
