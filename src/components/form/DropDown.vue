@@ -291,8 +291,8 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   z-index: 99;
-  background-color: var(--elevation-surface-overlay);
-  border: var(--border-width) solid var(--color-border);
+  background-color: var(--layout-overlay);
+  border: var(--border-width) solid var(--border-color);
   border-radius: 0.25rem;
   margin-top: 0.25rem;
   max-height: 200px;
@@ -302,10 +302,10 @@ onUnmounted(() => {
 /* Dropdown styles */
 .drop {
   padding: 0.25rem 1rem;
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid var(--border-color);
   border-radius: 0.25rem;
-  background-color: var(--elevation-surface-overlay);
-  color: var(--color-text);
+  background-color: var(--layout-overlay);
+  color: var(--text-color);
   transition: all 0.2s ease;
   position: relative;
   box-sizing: border-box;
@@ -317,13 +317,13 @@ onUnmounted(() => {
 }
 
 .drop.disabled {
-  background-color: var(--color-background-disabled);
+  background-color: var(--background-color-disabled);
   cursor: not-allowed;
 }
 
 .drop:hover:not(.disabled) {
   border: var(--border-width) solid var(--color-brand-primary-default);
-  background-color: var(--elevation-surface-overlay-hovered);
+  background-color: var(--layout-overlay-hovered);
 }
 .drop_invalid {
   border: var(--border-width) solid var(--color-brand-danger-dark);
@@ -331,13 +331,13 @@ onUnmounted(() => {
 }
 
 .bt:active {
-  border: var(--color-border) solid var(--color-brand-primary-default);
+  border: var(--border-color) solid var(--color-brand-primary-default);
 }
 
 .option-item {
   padding: 0.5rem 1rem;
   cursor: pointer;
-  color: var(--color-text);
+  color: var(--text-color);
 }
 
 .option-item:hover,

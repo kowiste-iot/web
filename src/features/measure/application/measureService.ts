@@ -21,7 +21,6 @@ export class MeasureService {
 
   async fetchMeasure(id: string): Promise<IMeasure | null> {
     try {
-    
       const measure = await this.measureRepository.findById(
         id,
         this.assetStore.assets
@@ -55,7 +54,11 @@ export class MeasureService {
 
   async createMeasure(data: IMeasure): Promise<boolean> {
     try {
+      console.log('dsf')
+
       const errors = Measure.validate(data)
+      console.log('erro', errors)
+
       if (errors.hasErrors()) {
         const errorMessages = Object.values(errors).filter(Boolean)
         this.notificationService.error(errorMessages.join(', '))

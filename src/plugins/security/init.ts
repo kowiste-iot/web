@@ -1,13 +1,13 @@
 import type { App } from 'vue'
 import type { KeycloakConfig } from './types'
 import { keycloakService } from './KeycloakService'
-import { useRouter } from 'vue-router'
 import { useTenantStore } from '@/features/tenant/stores/tenant'
+import type { Router } from 'vue-router'
 
 export const KeycloakPlugin = {
-  install: async (app: App, options: KeycloakConfig) => {
+  install: async (app: App, options: KeycloakConfig, router?: Router) => {
     const tenantStore = useTenantStore()
-    tenantStore.loadTenants()
+    await tenantStore.loadTenants()
 
     // Skip Keycloak initialization if no tenant
     const currentTenant = tenantStore.getCurrentTenant
@@ -15,9 +15,6 @@ export const KeycloakPlugin = {
       console.log('No tenant selected, skipping Keycloak initialization')
       return
     }
-
-    const windowsOrigin = window.location.origin
-    console.log('init keycloak', windowsOrigin)
 
     // Initialize with current tenant
     const keycloakConfig: KeycloakConfig = {
@@ -30,7 +27,7 @@ export const KeycloakPlugin = {
         enableLogging: true,
         onLoad: 'check-sso',
         silentCheckSsoFallback: false, // Disable fallback to avoid iframe issues
-        redirectUri: windowsOrigin,
+        redirectUri: window.location.href,
       },
     }
 
@@ -39,8 +36,9 @@ export const KeycloakPlugin = {
       app.config.globalProperties.$keycloak = keycloakService.getKeycloak()
     } catch (error) {
       console.error('Keycloak initialization failed:', error)
-      const router = useRouter()
-      router.push({ name: 'error' })
+      if (router) {
+        router.push({ name: 'error' })
+      }
     }
   },
 }

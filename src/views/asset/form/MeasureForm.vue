@@ -8,38 +8,37 @@
     showHeader
     showFooter
   >
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('measure.form.name') }} </label>
+    <Flex class="pt-2" column :gap="2">
+      <label>{{ $t('measure.form.name') }} </label>
       <Input
-        class="col-md-8"
         :placeholder="$t('measure.form.nameHolder')"
         type="text"
         :error="errors.getError('name')"
         v-model="form.name"
       />
-    </div>
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('measure.form.parent') }} </label>
-      <MultiDropdown
-        class="col-md-8"
+    </Flex>
+    <Flex class="pt-2" column :gap="2">
+      <label>{{ $t('measure.form.parent') }} </label>
+      <DropDown
         :options="assets"
-        idField="id"
         labelField="name"
+        valueField="id"
         :placeholder="$t('measure.form.parentHolder')"
         :error="errors.getError('parent')"
         v-model="selectedParent"
       />
-    </div>
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('measure.form.description') }} </label>
+    </Flex>
+    <Flex class="pt-2" column :gap="2">
+      <label>{{ $t('measure.form.description') }} </label>
       <InputText
-        class="col-md-8"
         placeholder=""
         :rows="5"
         :error="errors.getError('description')"
         v-model="form.description"
       />
-    </div>
+    </Flex>
+
+    <div class="row mb-3"></div>
     <template #footer>
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
         $t(edit ? 'actionGUI.update' : 'actionGUI.save')
@@ -70,8 +69,9 @@ import { MeasureRepository } from '@/features/measure/repository/measureReposito
 import { useBasePage } from '@/composable/useBasePage'
 import { Measure, type IMeasure } from '@/features/measure/domain/measure'
 import { ValidationError } from '@/features/shared/domain/baseValidator'
-import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import InputText from '@/components/form/InputText.vue'
+import DropDown from '@/components/form/DropDown.vue'
+import Flex from '@/components/layout/Flex.vue'
 
 // other imports
 // props
@@ -96,7 +96,7 @@ const form = reactive<IMeasure>({
   parent: props.data?.parent ?? '',
   description: props.data?.description ?? '',
 })
-const selectedParent = ref({} as IAsset)
+const selectedParent = ref('')
 
 const errors = ref<ValidationError<IMeasure>>(new ValidationError())
 
@@ -130,7 +130,7 @@ onMounted(() => {
   if (props.edit && props.data.parent) {
     const parent = assetStore.getAssetById(props.data.parent)
     if (parent) {
-      selectedParent.value = parent
+      selectedParent.value = parent.id
     }
   }
   useAssetStore().fetchAssets()
@@ -148,8 +148,10 @@ watch(
 watch(
   () => selectedParent.value,
   () => {
-    if (selectedParent.value.id) {
-      form.parent = selectedParent.value.id
+    console.log('parent', selectedParent.value)
+
+    if (selectedParent.value) {
+      form.parent = selectedParent.value
     }
   }
 )

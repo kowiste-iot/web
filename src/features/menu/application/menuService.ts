@@ -25,17 +25,10 @@ export class MenuService {
         isParent: true,
       },
       {
-        id: 'sidemenu-measure',
-        label: 'menu.measure',
-        icon: EIcon.Measure,
-        path: '/measure',
-        isParent: true,
-      },
-      {
-        id: 'sidemenu-device',
-        label: 'menu.device',
-        icon: EIcon.Device,
-        path: '/device',
+        id: 'sidemenu-process',
+        label: 'menu.process.parent',
+        icon: EIcon.Process,
+        path: '/process',
         isParent: true,
       },
       {

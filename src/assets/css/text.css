@@ -1,9 +1,10 @@
 :root {
   /* text */
   --text-color: #091e42;
-  --text-color-inverse: #ffffee;
   --text-color-subtle: #626f86;
   --text-color-subtlest: #bdc5d1;
+  --text-color-light: #ffffee;
+  --text-color-dark: #091e42;
 
   --text-color-accent-lime: #4c6b1f;
   --text-color-accent-lime-bolder: #37471f;

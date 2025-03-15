@@ -14,11 +14,11 @@
       <span class="switch-handle"></span>
       <!-- Left icon container -->
       <span class="icon-container icon-left">
-        <FIcon class="switch-icon" :icon="props.onIcon" />
+        <FIcon v-if="!noIcon" class="switch-icon" :icon="props.onIcon" />
       </span>
       <!-- Right icon container -->
       <span class="icon-container icon-right">
-        <FIcon class="switch-icon" :icon="props.offIcon" />
+        <FIcon v-if="!noIcon" class="switch-icon" :icon="props.offIcon" />
       </span>
     </div>
   </button>
@@ -37,6 +37,7 @@ interface Props {
   handleColor?: string
   onIcon?: string
   offIcon?: string
+  noIcon?: boolean
   disabled?: boolean
   onChange?: Function
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="chips-container">
+  <div class="chips-container" :class="{ 'chips-overlap': overlap }">
     <BaseTag
       v-for="(value, index) in values"
       :key="index"
@@ -8,6 +8,7 @@
       :deletable="deletable"
       v-show="index < maxVisible"
       @remove="$emit('remove', getValue(value))"
+      :class="{ 'chip-overlapped': overlap && index < maxVisible - 1 }"
     />
     <BaseTag
       v-if="values.length > maxVisible"
@@ -29,6 +30,7 @@ interface Props<T> {
   labelField?: keyof T
   deletable?: boolean
   color?: EColor
+  overlap?: boolean
 }
 
 const props = withDefaults(defineProps<Props<any>>(), {
@@ -37,6 +39,7 @@ const props = withDefaults(defineProps<Props<any>>(), {
   labelField: 'label',
   color: EColor.Primary,
   deletable: true,
+  overlap: false,
 })
 
 defineEmits<{
@@ -58,5 +61,28 @@ function getLabel(option: any): string {
   flex-wrap: wrap;
   gap: 0.1rem;
   align-items: center;
+}
+
+.chips-overlap {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+.chip-overlapped {
+  position: relative;
+  margin-right: calc(-1 * var(--size-600));
+  z-index: var(--index-card-1);
+  border: 1px solid #e0e0e0;
+}
+
+.chips-overlap .chip-overlapped:hover {
+  z-index: var(--index-card-2);
+}
+
+.chips-overlap BaseTag:last-of-type,
+.chips-overlap BaseTag:nth-last-of-type(2):not(.chip-overlapped) {
+  position: relative;
+  z-index: var(--index-card-3);
 }
 </style>

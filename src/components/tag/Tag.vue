@@ -55,11 +55,11 @@ defineEmits<{
 /* Color variants */
 .chip-primary {
   --chip-base: var(--color-brand-primary-default);
-  --chip-text: var(--text-color-inverse);
+  --chip-text: var(--text-color-light);
 }
 .chip-success {
-  --chip-base: var(--color-brand-succes-default);
-  --chip-text: var(--text-color);
+  --chip-base: var(--color-brand-success-default);
+  --chip-text: var(--text-color-light);
 }
 [data-theme='dark'] .chip-success {
   --chip-text: var(--color-nochange-text);

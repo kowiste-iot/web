@@ -1,60 +1,6 @@
 <template>
   <TabletCard class="mt-5">
-    <DataTable :value="actions">
-      <Column
-        :class="page.table.name.location"
-        :field="page.table.name.data"
-        sortable
-      >
-        <template #header>
-          <span class="container-fluid">
-            {{ page.table.name.title }}
-          </span>
-        </template>
-      </Column>
-      <Column
-        :class="page.table.asset.location"
-        :field="page.table.asset.data"
-        sortable
-      >
-        <template #header>
-          <span class="container-fluid">
-            {{ page.table.asset.title }}
-          </span>
-        </template>
-      </Column>
-      <Column
-        :class="page.table.enabled.location"
-        :field="page.table.enabled.data"
-        sortable
-      >
-        <template #header>
-          <span class="container-fluid">
-            {{ page.table.enabled.title }}
-          </span>
-        </template>
-      </Column>
-      <Column
-        :class="page.table.description.location"
-        :field="page.table.description.data"
-        sortable
-      >
-        <template #header>
-          <span class="container-fluid">
-            {{ page.table.description.title }}
-          </span>
-        </template>
-      </Column>
 
-      <Column>
-        <template #body="{ data }">
-          <PropertyDot
-            :data="page.properties"
-            :onClick="(prop:Property)=>propertySelected(prop,data)"
-          />
-        </template>
-      </Column>
-    </DataTable>
   </TabletCard>
   <div
     class="d-flex flex-column"

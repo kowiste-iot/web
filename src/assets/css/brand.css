@@ -1,25 +1,25 @@
 /* Light theme (default) */
 :root {
   /* brand colors */
-  --color-brand-primary-subtle: #ddadff;
+  --color-brand-primary-subtle: #0d6efd;
   --color-brand-primary-default: #0d6efd;
-  --color-brand-primary-dark: #7f36c4;
-  --color-brand-primary-darkest: #47008d;
+  --color-brand-primary-dark: #0c63e3;
+  --color-brand-primary-darkest: #0a58ca;
 
-  --color-brand-danger-subtle: #ffa36b;
-  --color-brand-danger-default  : #fb5a09;
-  --color-brand-danger-dark: #ca2c00;
-  --color-brand-danger-darkest: #9c0000;
+  --color-brand-danger-subtle: #e95d5d;
+  --color-brand-danger-default: #e94646;
+  --color-brand-danger-dark: #d03e3e;
+  --color-brand-danger-darkest: #b63737;
 
-  --color-brand-succes-subtle: #8fffda;
-  --color-brand-succes-default: #0fdea0;
-  --color-brand-succes-dark: #00b379;
-  --color-brand-succes-darkest: #008a54;
+  --color-brand-success-subtle: #41a37a;
+  --color-brand-success-default: #31a373;
+  --color-brand-success-dark: #298961;
+  --color-brand-success-darkest: #22704f;
 
-  --color-brand-warning-subtle: #ffff9e;
-  --color-brand-warning-default: #ffe83b;
-  --color-brand-warning-dark: #d2be00;
-  --color-brand-warning-darkest: #a69600;
+  --color-brand-warning-subtle: #e8b720;
+  --color-brand-warning-default: #e8b109;
+  --color-brand-warning-dark: #e8b720;
+  --color-brand-warning-darkest: #cfa31c;
 
   --color-brand-secondary-subtle: #ffffff;
   --color-brand-secondary-default: #d9d9d9;
@@ -32,10 +32,10 @@
   --color-brand-tertiary-darkest: #b0b0b0;
 
   /* other button */
-  --color-button-disabled: #b0abab;
-  --color-button-text: #091e42;
-  --color-button-text-inverse: #ffffee;
-  --color-button-text-disabled: var(--color-text-subtle);
+  --button-color-disabled: #b0abab;
+  --button-color-text: #091e42;
+  --button-color-text-inverse: #ffffee;
+  --button-color-text-disabled: var(--color-text-subtle);
   /* menu text */
   --color-nochange-text: #091e42;
   --color-nochange-text-inverse: #dcdcdc;

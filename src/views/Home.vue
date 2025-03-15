@@ -17,6 +17,18 @@
   >
     Follow
   </Button>
+  <Flex :gap="2">
+    <Button>hello</Button>
+    <Button :color="EColor.Danger">hello</Button>
+    <Button :color="EColor.Warning">hello</Button>
+    <Button :color="EColor.Success">hello</Button>
+    <Button :color="EColor.Secondary">hello</Button>
+    <Button :color="EColor.Tertiary">hello</Button>
+  </Flex>
+  <TagsContainer
+    overlap
+    :values="[{ label: 'fds' }, { label: 'sdfs' }]"
+  ></TagsContainer>
   <div v-if="false">
     <div>
       <FoldButton :icon="EIcon.Add" :color="EColor.Danger">
@@ -183,6 +195,8 @@ import { EColor } from '@/features/shared/enum/EColor'
 import Calendar from '@/components/form/Calendar/Calendar.vue'
 import { Environment } from '@/utils/enviroment/enviroment'
 import { useTourStore } from '@/features/tour/stores/useTourStore'
+import Flex from '@/components/layout/Flex.vue'
+import TagsContainer from '@/components/tag/TagsContainer.vue'
 
 // other imports
 // props

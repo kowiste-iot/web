@@ -15,7 +15,6 @@ export class MeasuresPage extends PageBase {
   table: {
     id: Columns
     name: Columns
-    enabled: Columns
     asset: Columns
     description: Columns
   }
@@ -53,7 +52,6 @@ export class MeasuresPage extends PageBase {
       id: new Columns('ID', 'id'),
       name: new Columns(t('measure.table.name'), 'name'),
       asset: new Columns(t('measure.table.parent'), 'parentName'),
-      enabled: new Columns(t('measure.table.enabled'), 'enabled'),
       description: new Columns(t('measure.table.description'), 'description'),
     }
   }

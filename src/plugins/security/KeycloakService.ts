@@ -127,7 +127,7 @@ export class KeycloakService {
     if (!config.realm || config.realm === 'undefined') {
       throw new Error('Invalid realm configuration')
     }
-
+    this.config = config
     this.clearRefreshTimeout()
 
     this.keycloak = new Keycloak({
@@ -158,11 +158,10 @@ export class KeycloakService {
         console.log('Token expired event triggered')
         this.refreshToken()
       }
-      const windowsOrigin = window.location.origin
-      console.log('init service keycloak', windowsOrigin)
+
       if (!authenticated) {
         await this.keycloak.login({
-          redirectUri: windowsOrigin,
+          redirectUri: window.location.origin,
         })
       }
     } catch (error) {

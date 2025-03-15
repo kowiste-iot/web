@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheckCircle, faSmile } from '@fortawesome/free-regular-svg-icons' // regular icon
+import { faCheckCircle, faSmile } from '@fortawesome/free-regular-svg-icons'; // regular icon
 import {
   fa1,
   faArrowLeft,
@@ -43,6 +43,7 @@ import {
   faPersonRunning,
   faPieChart,
   faPlay,
+  faPlus,
   faRectangleXmark,
   faRuler,
   faShoePrints,
@@ -118,6 +119,7 @@ library.add(
   faChessRook,
   faCircleMinus,
   faShoePrints,
-  faPlay
+  faPlay, 
+  faPlus
 )
 //check,x dont work

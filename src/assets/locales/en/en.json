@@ -149,7 +149,8 @@
       "name": "Name",
       "nameHolder": "measure name",
       "parent": "Belong To",
-      "parentHolder": "measure belong to asset"
+      "parentHolder": "measure belong to asset",
+      "description": "description"
     }
   },
   "widget": {

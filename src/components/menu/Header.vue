@@ -1,17 +1,22 @@
 <template>
-  <div class="d-flex justify-content-end pt-1 text-secondary">
-    <div class="flex-fill"><Breadcrumb class="ms-2" /></div>
-    <div role="button" @click="fullscreen">
-      <FIcon
-        class="pe-3"
-        :icon="EIcon.Expand"
-        style="height: 1.2rem; width: 1.2rem"
-      />
-    </div>
-    <AlertNotification />
-    <Notification />
-    <Session />
-  </div>
+  <Row class="pt-1 text-secondary">
+    <Col :breakpoint="EBreakpoint.MD" :size="10">
+      <Breadcrumb class="ms-2" />
+    </Col>
+    <Col :breakpoint="EBreakpoint.MD" :size="2">
+      <Flex :justify="EFlexJustify.End">
+        <div class="hide-on-mobile" role="button" @click="fullscreen">
+          <FIcon
+            class="pe-3"
+            :icon="EIcon.Expand"
+            style="height: 1.2rem; width: 1.2rem"
+          />
+        </div>
+        <Notification />
+        <Session />
+      </Flex>
+    </Col>
+  </Row>
 </template>
 
 <script setup lang="ts">
@@ -19,12 +24,15 @@
 // stores import
 // components import
 import Breadcrumb from '@/components/menu/BreadCrumb.vue'
-import AlertNotification from '@/features/notification/component/AlertNotification.vue'
 import Notification from '@/features/notification/component/Notification.vue'
 import Session from '@/components/session/Session.vue'
 
 // model imports
 import { EIcon } from '@/features/shared/enum/EIcon'
+import Flex from '../layout/Flex.vue'
+import Row from '../layout/Row.vue'
+import Col, { EBreakpoint } from '../layout/Col.vue'
+import { EFlexJustify } from '../layout/EFlex'
 // other imports
 // props
 // data
@@ -43,4 +51,10 @@ function fullscreen() {
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+</style>
