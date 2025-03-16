@@ -139,6 +139,7 @@ watch(
 }
 .layout-header {
   max-height: fit-content;
+  flex: 1;
 }
 
 @media (max-width: 768px) {

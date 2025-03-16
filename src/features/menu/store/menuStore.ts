@@ -17,6 +17,9 @@ export const useMenuStore = defineStore('menuStore', {
     closeMenu() {
       this.isOpen = false
     },
+    openMenu() {
+      this.isOpen = true
+    },
     initializeMenu() {
       const menuService = new MenuService()
       this.items = menuService.getProcessedMenuItems()

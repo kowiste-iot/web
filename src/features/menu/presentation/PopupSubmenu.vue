@@ -20,6 +20,7 @@
           <Flex :gap="3">
             <FIcon :icon="subItem.icon" />
             <span>{{ t(subItem.label) }}</span>
+            
           </Flex>
         </RouterLink>
       </div>
@@ -60,6 +61,7 @@ const popupContent = ref<HTMLElement | null>(null)
   left: 100%;
   top: 0;
   display: flex;
+  animation: fadeIn 0.2s ease-out;
   z-index: 1001;
 }
 
@@ -92,11 +94,6 @@ const popupContent = ref<HTMLElement | null>(null)
   color: var(--text-color-light);
 }
 
-
-.pop-submenu-container {
-  animation: fadeIn 0.2s ease-out;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -105,6 +102,15 @@ const popupContent = ref<HTMLElement | null>(null)
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+@media (max-width: 768px) {
+  .pop-submenu-container {
+    position: static;
+  }
+  .pop-submenu {
+    background-color: var(--layout-menu-subtle);
+    width: 100%;
   }
 }
 </style>

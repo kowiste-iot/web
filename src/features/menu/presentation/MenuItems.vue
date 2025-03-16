@@ -29,6 +29,13 @@
               <template v-if="isOpen">
                 <span>{{ t(subItem.label) }}</span>
               </template>
+              <FIcon
+                v-if="subItem.subMenu && subItem.subMenu.length > 0"
+                :icon="
+                  hoveredMenu === item.path ? EIcon.MenuClose : EIcon.MenuOpen
+                "
+                class="fold-mobile"
+              />
             </Flex>
 
             <!-- Popup submenu for second level items -->
@@ -50,6 +57,15 @@
         <template v-if="isOpen">
           <span>{{ t(item.label) }}</span>
         </template>
+        <Flex
+          v-if="item.subMenu && item.subMenu.length > 0"
+          class="fold-mobile"
+          :justify="EFlexJustify.End"
+        >
+          <FIcon
+            :icon="hoveredMenu === item.path ? EIcon.MenuClose : EIcon.MenuOpen"
+          />
+        </Flex>
       </Flex>
 
       <!-- Popup submenu for all non-header items -->
@@ -71,6 +87,7 @@ import type { IMenu } from '@/features/menu/domain/menu'
 import PopupSubmenu from './PopupSubmenu.vue'
 import Flex from '@/components/layout/Flex.vue'
 import { EFlexJustify } from '@/components/layout/EFlex'
+import { EIcon } from '@/features/shared/enum/EIcon'
 
 const props = defineProps<{
   items: IMenu[]
@@ -109,4 +126,14 @@ function handleMenuLeave() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.fold-mobile {
+  visibility: hidden;
+}
+@media (max-width: 768px) {
+  .fold-mobile {
+    visibility: visible;
+    flex: 1;
+  }
+}
+</style>
