@@ -4,6 +4,7 @@ import {
   fa1,
   faArrowLeft,
   faArrowRight,
+  faBars,
   faBell,
   faBuilding,
   faBuildingShield,
@@ -120,6 +121,7 @@ library.add(
   faCircleMinus,
   faShoePrints,
   faPlay, 
-  faPlus
+  faPlus,
+  faBars
 )
 //check,x dont work

@@ -1,5 +1,5 @@
 <template>
-  <Row class="pt-1 text-secondary">
+  <Row class=" w-100 pt-1 text-secondary">
     <Col :breakpoint="EBreakpoint.MD" :size="10">
       <Breadcrumb class="ms-2" />
     </Col>

@@ -59,6 +59,7 @@ export enum EIcon {
   Profile = 'fa-user-circle',
   Process = 'fa-diagram-predecessor',
   WalkThrough = 'fa-shoe-prints',
+  Burger='fa-bars',
 
   //Face
   Smile = 'fa-face-smile',

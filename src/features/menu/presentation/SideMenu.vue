@@ -2,11 +2,17 @@
   <Flex
     column
     class="sidemenu"
-    :style="`width: ${
+    :style="`min-width: ${
       menuStore.isOpen ? 'var(--size-menu-open)' : 'var(--size-menu-close)'
     } `"
   >
-    <div class="logo-container position-relative">
+    <div class="logo-container">
+      <FIcon
+        class="burger-button"
+        :icon="EIcon.Burger"
+        role="button"
+        style="height: 1rem; width: 1rem"
+      />
       <Logo
         class="logo"
         logoColor="var(--color-brand-danger-default)"
@@ -80,11 +86,13 @@ onMounted(() => {
   position: absolute;
   right: calc(-1 * var(--size-150)); /* Position it outside the container */
   top: 100%; /* Center it vertically */
-  transform: translateY(-50%); /* Proper vertical centering */
-  z-index: var(--index-card); /* Ensure the button stays above other elements */
+  transform: translateY(-100%); /* Proper vertical centering */
+  z-index: var(--index-card);
   cursor: pointer;
 }
-
+.burger-button {
+  visibility: hidden;
+}
 .admin-menu-container {
   position: relative;
   margin-bottom: 1rem;
@@ -92,7 +100,27 @@ onMounted(() => {
 .logo {
   width: var(--size-300);
   height: var(--size-300);
-  margin-inline: var(--size-200);
-  margin-block: var(--size-300);
+  margin-inline: var(--size-150);
+  margin-top: var(--size-300);
+  margin-bottom: var(--size-800);
+}
+@media (max-width: 768px) {
+  .sidemenu {
+    position: relative;
+  }
+  .logo-container {
+    display: flex;
+  }
+  .toggle-button {
+    visibility: hidden;
+  }
+  .burger-button {
+    visibility: visible;
+    margin-top: var(--size-300);
+    padding: var(--size-050);
+    border-radius: var(--border-sm);
+    background-color: var(--layout-overlay);
+    z-index: var(--index-overlay);
+  }
 }
 </style>

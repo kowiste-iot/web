@@ -25,6 +25,36 @@ export class MenuService {
         isParent: true,
       },
       {
+        id: 'sidemenu-admin',
+        label: 'test',
+        icon: EIcon.Admin,
+        path: '/admin',
+        isParent: true,
+        subMenu: [
+          {
+            id: 'sidemenu-admin-user',
+            label: 'one',
+            icon: EIcon.User,
+            path: '/admin/user',
+            isParent: false,
+          },
+          {
+            id: 'sidemenu-admin-role',
+            label: 'two',
+            icon: EIcon.Role,
+            path: '/admin/role',
+            isParent: false,
+          },
+          {
+            id: 'sidemenu-admin-resource',
+            label: 'three',
+            icon: EIcon.Resource,
+            path: '/admin/resource',
+            isParent: false,
+          },
+        ],
+      },
+      {
         id: 'sidemenu-process',
         label: 'menu.process.parent',
         icon: EIcon.Process,
