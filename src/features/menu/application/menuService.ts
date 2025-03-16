@@ -29,6 +29,7 @@ export class MenuService {
         label: 'test',
         icon: EIcon.Admin,
         path: '/admin',
+        isHeader: true,
         isParent: true,
         subMenu: [
           {

@@ -2,17 +2,12 @@
   <Row>
     <Col :breakpoint="EBreakpoint.LG" :size="6" class="pb-4">
       <Card class="mt-5 h-100">
-        <Flex class="p-2" :justify="EFlexJustify.Between"
-          >Asset
-          <Button
-            :icon="EIcon.Add"
-            :color="EColor.Success"
-            compact
-            @click="() => (pageAsset.showForm = true)"
-          >
-            Asset</Button
-          ></Flex
-        >
+        <CardHeader
+          :headerIcon="EIcon.Asset"
+          :headerText="'Assets'"
+          :buttonText="'Asset'"
+          @click="() => (pageAsset.showForm = true)"
+        />
         <DataTable :value="assets" :rows="4">
           <Column
             :class="pageAsset.table.name.location"
@@ -54,17 +49,12 @@
     </Col>
     <Col :breakpoint="EBreakpoint.LG" :size="6" class="pb-4">
       <Card class="mt-5 h-100">
-        <Flex class="p-2" :justify="EFlexJustify.Between"
-          >Measures
-          <Button
-            :icon="EIcon.Add"
-            :color="EColor.Success"
-            compact
-            @click="() => (pageMeasure.showForm = true)"
-          >
-            Measure</Button
-          ></Flex
-        >
+        <CardHeader
+          :headerIcon="EIcon.Measure"
+          :headerText="'Measures'"
+          :buttonText="'Measure'"
+          @click="() => (pageMeasure.showForm = true)"
+        />
         <DataTable :value="measures" :rows="4">
           <Column
             :class="pageMeasure.table.name.location"
@@ -105,17 +95,12 @@
     </Col>
     <Col :breakpoint="EBreakpoint.LG" :size="6">
       <Card class="mt-5">
-        <Flex class="p-2" :justify="EFlexJustify.Between"
-          >Devices
-          <Button
-            :icon="EIcon.Add"
-            :color="EColor.Success"
-            compact
-            @click="() => (pageDevice.showForm = true)"
-          >
-            Devices</Button
-          ></Flex
-        >
+        <CardHeader
+          :headerIcon="EIcon.Device"
+          :headerText="'Devices'"
+          :buttonText="'Device'"
+          @click="() => (pageDevice.showForm = true)"
+        />
         <DataTable :value="devices" :rows="4">
           <Column
             :class="pageDevice.table.name.location"
@@ -242,6 +227,7 @@ import DeviceForm from './form/DeviceForm.vue'
 import { Page } from '@/features/shared/presentation/pages/pageBase'
 import { useI18n } from 'vue-i18n'
 import { EBreakpoint } from '@/components/layout/grid/col'
+import CardHeader from '@/components/cards/CardHeader.vue'
 // other imports
 // props
 

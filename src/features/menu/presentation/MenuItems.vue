@@ -77,13 +77,17 @@ const props = defineProps<{
   isOpen: boolean
   bottom?: boolean
 }>()
-
+const emit = defineEmits<{
+  menuClick: []
+}>()
 const { t } = useI18n()
 const router = useRouter()
 const hoveredMenu = ref('')
 
 function handleMenuClick(item: IMenu) {
   if (!item.subMenu) {
+    emit('menuClick')
+    console.log('fre')
     router.push(item.path)
   }
 }
@@ -105,6 +109,4 @@ function handleMenuLeave() {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

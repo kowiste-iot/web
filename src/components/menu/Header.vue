@@ -1,5 +1,5 @@
 <template>
-  <Row class=" w-100 pt-1 text-secondary">
+  <Row class="header-row">
     <Col :breakpoint="EBreakpoint.MD" :size="10">
       <Breadcrumb class="ms-2" />
     </Col>
@@ -53,6 +53,11 @@ function fullscreen() {
 </script>
 
 <style scoped>
+.header-row {
+  color: var(--text-color-subtle);
+  padding-top: var(--size-050);
+  margin-left: var(--size-050);
+}
 @media (max-width: 767px) {
   .hide-on-mobile {
     display: none;

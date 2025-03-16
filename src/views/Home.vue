@@ -26,6 +26,7 @@
     <Button :color="EColor.Tertiary">hello</Button>
   </Flex>
   <TagsContainer
+    class="m-2"
     overlap
     :values="[{ label: 'fds' }, { label: 'sdfs' }]"
   ></TagsContainer>

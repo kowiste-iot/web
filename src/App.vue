@@ -4,23 +4,33 @@
     <RouterView />
   </div>
 
-  <Flex
-    v-else
-    id="full"
-  >
-    <SideMenu />
+  <div id="full" v-else>
     <AlertContainer />
     <ToursProgress v-if="showTour" />
     <PlatformTour />
-    <Flex column class="w-100">
-      <Header />
-      <div class="flex-fill main-content">
-        <div class="container-md  py-4">
+
+    <Flex>
+      <SideMenu
+        id="layout-sidemenu"
+        class="layout-sidemenu"
+        @close="toggleMenu()"
+      />
+      <Flex class="layout-content" column>
+        <Flex>
+          <FIcon
+            class="burger-button"
+            :icon="EIcon.Burger"
+            role="button"
+            @click="toggleMenu()"
+          />
+          <Header class="layout-header" />
+        </Flex>
+        <Container class="layout-main">
           <RouterView />
-        </div>
-      </div>
+        </Container>
+      </Flex>
     </Flex>
-  </Flex>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +56,9 @@ import { assetTour } from './features/tour/tours/asset'
 import { userTour } from './features/tour/tours/user'
 import { roleTour } from './features/tour/tours/roles'
 import { resourceTour } from './features/tour/tours/resource'
+import { EIcon } from './features/shared/enum/EIcon'
 import Flex from './components/layout/Flex.vue'
+import Container from './components/layout/Container.vue'
 // model imports
 
 // props
@@ -73,7 +85,10 @@ async function refresh() {
   await tourStore.registerTour(roleTour)
   await tourStore.registerTour(resourceTour)
 }
-
+function toggleMenu() {
+  const sideMenu = document.getElementById('layout-sidemenu')
+  if (sideMenu) sideMenu.classList.toggle('active')
+}
 // lifeCycle
 onMounted(() => {
   refresh()
@@ -97,13 +112,51 @@ watch(
 .tour {
   z-index: var(--index-god);
 }
-.main-content{
-  overflow-y: auto;
+
+#full {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
-#full{
-overflow: hidden;
-position: relative;
-height: 100%;
-width: 100%;
+.burger-button {
+  display: none;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-sm);
+  padding: var(--size-050);
+  background-color: var(--layout-overlaay);
+  height: var(--size-300);
+  width: var(--size-300);
+  cursor: pointer;
+}
+.layout-sidemenu {
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.layout-content {
+  flex: 1;
+}
+.layout-header {
+  max-height: fit-content;
+}
+
+@media (max-width: 768px) {
+  .burger-button {
+    display: block;
+    z-index: var(--index-overlay-1);
+  }
+  .layout-sidemenu {
+    position: fixed;
+    transform: translateX(-100%);
+  }
+  .layout-header {
+    flex: 1;
+  }
+  .layout-sidemenu.active {
+    width: 100%;
+    transform: translateX(0);
+    z-index: var(--index-overlay);
+  }
 }
 </style>

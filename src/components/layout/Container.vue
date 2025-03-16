@@ -23,7 +23,7 @@
 
 <style scoped>
 .main-container {
- height: 100vh;
+  height: 100vh;
   overflow-y: auto;
 }
 </style>
