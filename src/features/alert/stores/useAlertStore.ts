@@ -6,6 +6,7 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IAlert } from '../domain/alert'
 import { AlertService } from '../application/alertService'
 import { AlertRepository } from '../repository/alertRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useAlertStore = defineStore('alertStore', {
   state: () => ({
@@ -14,13 +15,13 @@ export const useAlertStore = defineStore('alertStore', {
   }),
   getters: {
     getAlertById: (state) => {
-      return (id: string): IAlert | undefined => {
+      return (id: ID): IAlert | undefined => {
         return state.alerts.find((alert) => alert.id === id)
       }
     },
   },
   actions: {
-    async fetchAlert(id: string) {
+    async fetchAlert(id: ID) {
       const alertService = new AlertService(
         new AlertRepository(),
         new NotificationService(useNotificationStore())

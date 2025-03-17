@@ -4,13 +4,14 @@ import { Role, type IRole, type IRoleRepository } from '../domain/role'
 import type { RoleDTO } from '../dtos/roleDTO'
 import { RoleMapper } from '../dtos/roleMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class RoleRepository extends BaseRepository implements IRoleRepository {
   constructor() {
     super('roles')
   }
 
-  async findById(id: string): Promise<IRole | null> {
+  async findById(id: ID): Promise<IRole | null> {
     try {
       const response = await axiosClient().get<RoleDTO>(`${this.baseUrl}/${id}`)
       return RoleMapper.toDomain(response.data)
@@ -39,7 +40,7 @@ export class RoleRepository extends BaseRepository implements IRoleRepository {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

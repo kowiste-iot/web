@@ -1,10 +1,11 @@
 // features/role/domain/role.ts
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { RoleValidator } from './roleValidator'
+import type { ID } from '@/features/shared/domain/id'
 
 export const adminRole = 'admin'
 export interface IRole {
-  id: string
+  id: ID
   name: string
   readonly: boolean
   description?: string
@@ -13,7 +14,7 @@ export interface IRole {
 
 export class Role implements IRole {
   private static validator = new RoleValidator()
-  id: string
+  id: ID
   name: string
   readonly: boolean
   description?: string
@@ -42,16 +43,16 @@ export class Role implements IRole {
     return {
       id: this.id,
       name: this.name,
-      readonly:this.readonly,
+      readonly: this.readonly,
       description: this.description,
     }
   }
 }
 
 export interface IRoleRepository {
-  findById(id: string): Promise<IRole | null>
+  findById(id: ID): Promise<IRole | null>
   findAll(): Promise<IRole[]>
   create(role: IRole): Promise<void>
   //update(role: IRole): Promise<void> //dont alow to update roles
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

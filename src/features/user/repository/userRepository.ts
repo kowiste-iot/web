@@ -4,13 +4,14 @@ import { User, type IUser, type IUserRepository } from '../domain/user'
 import type { UserDTO } from '../dtos/userDTO'
 import { UserMapper } from '../dtos/userMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class UserRepository extends BaseRepository implements IUserRepository {
   constructor() {
     super('users')
   }
 
-  async findById(id: string): Promise<IUser | null> {
+  async findById(id: ID): Promise<IUser | null> {
     try {
       const response = await axiosClient().get<UserDTO>(`${this.baseUrl}/${id}`)
       return UserMapper.toDomain(response.data)
@@ -46,7 +47,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

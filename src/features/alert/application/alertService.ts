@@ -4,6 +4,7 @@ import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import { useAlertStore } from '../stores/useAlertStore'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import type { ID } from '@/features/shared/domain/id'
 
 const assetStore = useAssetStore()
 
@@ -13,7 +14,7 @@ export class AlertService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getAlert(id: string): Promise<IAlert | null> {
+  async getAlert(id: ID): Promise<IAlert | null> {
     try {
       const alert = await this.alertRepository.findById(id)
       return alert

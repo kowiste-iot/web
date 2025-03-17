@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
+import type { ID } from '@/features/shared/domain/id'
 
 export class WidgetService {
   constructor(
@@ -8,7 +9,7 @@ export class WidgetService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getWidget(dashboardID: string, id: string): Promise<IWidget | null> {
+  async getWidget(dashboardID: ID, id: ID): Promise<IWidget | null> {
     try {
       const widget = await this.widgetRepository.findById(dashboardID, id)
       return widget
@@ -22,7 +23,7 @@ export class WidgetService {
     }
   }
 
-  async getWidgets(dashboardID: string): Promise<IWidget[]> {
+  async getWidgets(dashboardID: ID): Promise<IWidget[]> {
     try {
       const widgets = await this.widgetRepository.findAll(dashboardID)
       return widgets
@@ -36,7 +37,7 @@ export class WidgetService {
     }
   }
 
-  async createWidget(dashboardID: string, data: IWidget): Promise<boolean> {
+  async createWidget(dashboardID: ID, data: IWidget): Promise<boolean> {
     try {
       const errors = Widget.validate(data)
       if (errors.hasErrors()) {
@@ -58,7 +59,7 @@ export class WidgetService {
     }
   }
 
-  async updateWidget(dashboardID: string, data: IWidget): Promise<boolean> {
+  async updateWidget(dashboardID: ID, data: IWidget): Promise<boolean> {
     try {
       const errors = Widget.validate(data)
       if (errors.hasErrors()) {
@@ -82,7 +83,7 @@ export class WidgetService {
     }
   }
 
-  async deleteWidget(dashboardID: string, id: string): Promise<void> {
+  async deleteWidget(dashboardID: ID, id: ID): Promise<void> {
     try {
       await this.widgetRepository.delete(dashboardID, id)
       this.notificationService.success('Widget deleted successfully')

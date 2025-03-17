@@ -1,6 +1,8 @@
+import type { ID } from "./id"
+
 export interface IHasParent {
-  id: string | number
-  parent?: string | number
+  id: ID 
+  parent?: ID
   name: string
 }
 export type WithParentName<T extends IHasParent> = T & {

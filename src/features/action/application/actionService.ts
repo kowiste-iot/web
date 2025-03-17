@@ -4,6 +4,7 @@ import { Action, type IAction, type IActionRepository } from '../domain/action'
 import { useActionStore } from '../stores/useActionStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import type { ID } from '@/features/shared/domain/id'
 
 const assetStore = useAssetStore()
 export class ActionService {
@@ -12,7 +13,7 @@ export class ActionService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getAction(id: string): Promise<IAction | null> {
+  async getAction(id: ID): Promise<IAction | null> {
     try {
       const action = await this.actionRepository.findById(id)
       return action
@@ -63,9 +64,9 @@ export class ActionService {
   }
 
   async updateAction(data: {
-    id: string
+    id: ID
     name: string
-    parent: string
+    parent: ID
     description?: string
   }): Promise<boolean> {
     try {
@@ -99,7 +100,7 @@ export class ActionService {
     }
   }
 
-  async deleteAction(id: string): Promise<void> {
+  async deleteAction(id: ID): Promise<void> {
     try {
       await this.actionRepository.delete(id)
       this.notificationService.success('Action deleted successfully')

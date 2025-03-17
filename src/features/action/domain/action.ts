@@ -1,22 +1,23 @@
-import { AlertValidator } from '@/features/alert/domain/alertValidator'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
+import type { ID } from '@/features/shared/domain/id'
+import { ActionValidator } from './actionValidator'
 
 export interface IAction extends IHasParent {
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   enabled: boolean
   description?: string
   updatedAt?: Date
 }
 
 export class Action implements IAction {
-  private static validator = new AlertValidator()
+  private static validator = new ActionValidator()
 
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   enabled: boolean
   description?: string
   updatedAt?: Date
@@ -51,9 +52,9 @@ export class Action implements IAction {
 }
 
 export interface IActionRepository {
-  findById(id: string): Promise<IAction | null>
+  findById(id: ID): Promise<IAction | null>
   findAll(): Promise<IAction[]>
   create(action: IAction): Promise<void>
   update(action: IAction): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

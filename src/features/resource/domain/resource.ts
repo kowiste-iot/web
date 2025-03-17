@@ -1,9 +1,10 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { ResourceValidator } from './resourceValidator'
 import type { IScope } from '@/features/scope/domain/scope'
+import type { ID } from '@/features/shared/domain/id'
 
 export interface IResource {
-  id: string
+  id: ID
   name: string
   displayName: string
   roles: Record<string, IScope[]>
@@ -11,7 +12,7 @@ export interface IResource {
 
 export class Resource implements IResource {
   private static validator = new ResourceValidator()
-  id: string
+  id: ID
   name: string
   displayName: string
   roles: Record<string, IScope[]>

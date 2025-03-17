@@ -6,6 +6,7 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IScope } from '../domain/scope'
 import { ScopeService } from '../application/scopeService'
 import { ScopeRepository } from '../repository/scopeRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useScopeStore = defineStore('scopeStore', {
   state: () => ({
@@ -13,7 +14,7 @@ export const useScopeStore = defineStore('scopeStore', {
   }),
   getters: {
     getScopeById: (state) => {
-      return (id: string): IScope | undefined => {
+      return (id: ID): IScope | undefined => {
         return state.scopes.find((scope) => scope.id === id)
       }
     },

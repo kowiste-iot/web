@@ -2,20 +2,21 @@
 import type { IHasParent } from '@/features/shared/domain/hasParent'
 import { DeviceValidator } from './deviceValidator'
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import type { ID } from '@/features/shared/domain/id'
 
 export interface IDevice extends IHasParent {
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 }
 
 export class Device implements IDevice {
   private static validator = new DeviceValidator()
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 
@@ -49,9 +50,9 @@ export class Device implements IDevice {
 }
 
 export interface IDeviceRepository {
-  findById(id: string): Promise<IDevice | null>
+  findById(id: ID): Promise<IDevice | null>
   findAll(): Promise<IDevice[]>
   create(device: IDevice): Promise<void>
   update(device: IDevice): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

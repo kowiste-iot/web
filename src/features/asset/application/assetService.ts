@@ -3,6 +3,7 @@ import type { INotificationService } from '@/features/notification/application/n
 import { Asset, type IAsset, type IAssetRepository } from '../domain/asset'
 import { useAssetStore } from '../stores/useAssetStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import type { ID } from '@/features/shared/domain/id'
 
 export class AssetService {
   constructor(
@@ -10,7 +11,7 @@ export class AssetService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getAsset(id: string): Promise<IAsset | null> {
+  async getAsset(id: ID): Promise<IAsset | null> {
     try {
       const asset = await this.assetRepository.findById(id)
       return asset
@@ -87,7 +88,7 @@ export class AssetService {
     }
   }
 
-  async deleteAsset(id: string): Promise<void> {
+  async deleteAsset(id: ID): Promise<void> {
     try {
       await this.assetRepository.delete(id)
       this.notificationService.success('Asset delete successfully')

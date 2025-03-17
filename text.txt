@@ -16,10 +16,24 @@ public/
   favicon.ico
   silent-check-sso.html
 src/
+  .DS_Store
   App.vue
   assets/
     .DS_Store
     base.css
+    css/
+      background.accent.css
+      background.css
+      border.css
+      brand.css
+      chart.css
+      error.css
+      icon.css
+      layout.css
+      menu.css
+      other.css
+      size.css
+      text.css
     custom.css
     custom.css.map
     custom.scss
@@ -45,8 +59,8 @@ src/
       FoldButton.vue
     cards/
       Card.vue
+      CardHeader.vue
       ConfirmCard.vue
-      Modal.vue
       SideCard.vue
       TabletCard.vue
     color/
@@ -64,6 +78,16 @@ src/
       CalenderHeatmap.vue
     icons/
       Logo.vue
+    layout/
+      Container.vue
+      EFlex.ts
+      Flex.vue
+      Modal.vue
+      grid/
+        Col.vue
+        Row.vue
+        col.ts
+        row.ts
     loading/
       Spinner.vue
     menu/
@@ -82,6 +106,12 @@ src/
       Tabs.vue
     table/
       DefaulTable.vue
+    tag/
+      Tag.vue
+      TagsContainer.vue
+    tooltip/
+      ETooltipPosition.ts
+      Tooltip.vue
   composable/
     useBasePage.ts
     useTenant.ts
@@ -94,6 +124,7 @@ src/
     string/
       string.ts
   features/
+    .DS_Store
     action/
       application/
         actionService.ts
@@ -205,11 +236,12 @@ src/
     menu/
       application/
         menuService.ts
-      component/
-        PopupSubmenu.vue
-        SideMenu.vue
       domain/
         menu.ts
+      presentation/
+        MenuItems.vue
+        PopupSubmenu.vue
+        SideMenu.vue
       store/
         menuStore.ts
     notification/
@@ -218,7 +250,6 @@ src/
       component/
         Alert.vue
         AlertContainer.vue
-        AlertNotification.vue
         Notification.vue
       domain/
         ENotificationSeverity.ts
@@ -289,6 +320,7 @@ src/
         ETableLocation.ts
         baseRepository.ts
         baseValidator.ts
+        hasParent.ts
       dtos/
         assetMappers.ts
         baseMapper.ts
@@ -308,21 +340,28 @@ src/
       stores/
         tenant.ts
     tour/
+      .DS_Store
       application/
         tourService.ts
       domain/
         tour.ts
       dtos/
       presentation/
+        .DS_Store
         components/
           PlatformTour.vue
+          ToursProgress.vue
         pages/
       repository/
         tourRepository.ts
       stores/
         useTourStore.ts
       tours/
-        example.ts
+        asset.ts
+        resource.ts
+        roles.ts
+        user.ts
+        welcome.ts
     user/
       application/
         userService.ts
@@ -375,9 +414,7 @@ src/
     admin.ts
     asset.ts
     dashboard.ts
-    device.ts
     index.ts
-    measure.ts
     process.ts
   stores/
     gui/
@@ -429,6 +466,8 @@ src/
       Assets.vue
       form/
         AssetForm.vue
+        DeviceForm.vue
+        MeasureForm.vue
     dashboard/
       Dashboard.vue
       Dashboards.vue
@@ -452,24 +491,11 @@ src/
       form/
         DashboardForm.vue
         WidgetForm.vue
-    device/
-      Device.vue
-      form/
-        DeviceForm.vue
-    measure/
-      Measures.vue
-      form/
-        MeasureForm.vue
     process/
       Process.vue
-      action/
-        Action.vue
-        form/
-          ActionForm.vue
-      alert/
-        Alert.vue
-        form/
-          AlertForm.vue
+      form/
+        ActionForm.vue
+        AlertForm.vue
   vue-i18n.d.ts
 text.txt
 tsconfig.app.json

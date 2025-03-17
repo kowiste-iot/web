@@ -4,6 +4,7 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IDevice } from '../domain/device'
 import { DeviceService } from '../application/deviceService'
 import { DeviceRepository } from '../repository/deviceRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useDeviceStore = defineStore('deviceStore', {
   state: () => ({
@@ -12,13 +13,13 @@ export const useDeviceStore = defineStore('deviceStore', {
   }),
   getters: {
     getDeviceById: (state) => {
-      return (id: string): IDevice | undefined => {
+      return (id: ID): IDevice | undefined => {
         return state.devices.find((device) => device.id === id)
       }
     },
   },
   actions: {
-    async fetchDevice(id: string) {
+    async fetchDevice(id: ID) {
       const deviceService = new DeviceService(
         new DeviceRepository(),
         new NotificationService(useNotificationStore())

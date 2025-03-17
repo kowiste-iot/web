@@ -9,6 +9,7 @@ import { useMeasureStore } from '../stores/useMeasureStore'
 import type { IAssetStore } from '@/features/asset/domain/assetStore'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import type { ID } from '@/features/shared/domain/id'
 
 const assetStore = useAssetStore()
 
@@ -19,7 +20,7 @@ export class MeasureService {
     private readonly assetStore: IAssetStore
   ) {}
 
-  async fetchMeasure(id: string): Promise<IMeasure | null> {
+  async fetchMeasure(id: ID): Promise<IMeasure | null> {
     try {
       const measure = await this.measureRepository.findById(
         id,
@@ -106,7 +107,7 @@ export class MeasureService {
     }
   }
 
-  async deleteMeasure(id: string): Promise<void> {
+  async deleteMeasure(id: ID): Promise<void> {
     try {
       await this.measureRepository.delete(id)
       this.notificationService.success('Measure delete successfully')

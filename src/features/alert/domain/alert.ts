@@ -1,11 +1,13 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { AlertValidator } from './alertValidator'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
+import type { ID } from '@/features/shared/domain/id'
 
 export interface IAlert extends IHasParent {
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
+  measures: ID[]
   enabled: boolean
   description?: string
   updatedAt?: Date
@@ -14,9 +16,10 @@ export interface IAlert extends IHasParent {
 export class Alert implements IAlert {
   private static validator = new AlertValidator()
 
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
+  measures: ID[]
   enabled: boolean
   description?: string
   updatedAt?: Date
@@ -25,6 +28,7 @@ export class Alert implements IAlert {
     this.id = props.id
     this.name = props.name
     this.parent = props.parent
+    this.measures = props.measures
     this.enabled = props.enabled
     this.description = props.description
     this.updatedAt = props.updatedAt
@@ -44,6 +48,7 @@ export class Alert implements IAlert {
     return {
       id: this.id,
       name: this.name,
+      measures: this.measures,
       enabled: this.enabled,
       parent: this.parent,
       description: this.description,
@@ -52,9 +57,9 @@ export class Alert implements IAlert {
 }
 
 export interface IAlertRepository {
-  findById(id: string): Promise<IAlert | null>
+  findById(id: ID): Promise<IAlert | null>
   findAll(): Promise<IAlert[]>
   create(alert: IAlert): Promise<void>
   update(alert: IAlert): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

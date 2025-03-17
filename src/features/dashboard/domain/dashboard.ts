@@ -1,20 +1,21 @@
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { DashboardValidator } from './dashboardValidator'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
+import type { ID } from '@/features/shared/domain/id'
 
 export interface IDashboard extends IHasParent {
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 }
 
 export class Dashboard implements IDashboard {
   private static validator = new DashboardValidator()
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 
@@ -45,9 +46,9 @@ export class Dashboard implements IDashboard {
   }
 }
 export interface IDashboardRepository {
-  findById(id: string): Promise<IDashboard | null>
+  findById(id: ID): Promise<IDashboard | null>
   findAll(): Promise<IDashboard[]>
   create(asset: IDashboard): Promise<void>
   update(asset: IDashboard): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

@@ -3,6 +3,7 @@ import { Asset, type IAsset, type IAssetRepository } from '../domain/asset'
 import type { AssetDTO } from '../dtos/assetDTO'
 import { AsssetMapper } from '../dtos/assetMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class AssetRepository
   extends BaseRepository
@@ -11,7 +12,7 @@ export class AssetRepository
   constructor() {
     super('assets')
   }
-  async findById(id: string): Promise<IAsset | null> {
+  async findById(id: ID): Promise<IAsset | null> {
     try {
       const response = await axiosClient().get<AssetDTO>(
         `${this.baseUrl}/${id}`
@@ -51,7 +52,7 @@ export class AssetRepository
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

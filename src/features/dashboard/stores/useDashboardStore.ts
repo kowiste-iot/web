@@ -5,6 +5,7 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IDashboard } from '../domain/dashboard'
 import { DashboardService } from '../application/dashboardService'
 import { DashboardRepository } from '../repository/dashboardRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useDashboardStore = defineStore('dashboardStore', {
   state: () => ({
@@ -13,7 +14,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
   }),
 
   actions: {
-    async fetchDashboard(id: string) {
+    async fetchDashboard(id: ID) {
       const dashboardService = new DashboardService(
         new DashboardRepository(),
         new NotificationService(useNotificationStore())

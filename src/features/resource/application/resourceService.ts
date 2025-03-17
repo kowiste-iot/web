@@ -5,6 +5,7 @@ import {
   type IResource,
   type IResourceRepository,
 } from '../domain/resource'
+import type { ID } from '@/features/shared/domain/id'
 
 export class ResourceService {
   constructor(
@@ -12,7 +13,7 @@ export class ResourceService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getResource(id: string): Promise<IResource | null> {
+  async getResource(id: ID): Promise<IResource | null> {
     try {
       const resource = await this.resourceRepository.findById(id)
       return resource
@@ -85,7 +86,7 @@ export class ResourceService {
     }
   }
 
-  async deleteResource(id: string): Promise<void> {
+  async deleteResource(id: ID): Promise<void> {
     try {
       await this.resourceRepository.delete(id)
       this.notificationService.success('Resource deleted successfully')

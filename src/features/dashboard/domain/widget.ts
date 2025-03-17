@@ -2,10 +2,11 @@ import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { EWidget } from './EWidget'
 import { WidgetValidator } from './widgetValidator'
 import type { IWidgetType } from '@/model/widget/widgetType'
+import type { ID } from '@/features/shared/domain/id'
 
 export interface IWidget {
-  id: string
-  dashboardID: string
+  id: ID
+  dashboardID: ID
   type: EWidget
   i: number
   x: number
@@ -25,7 +26,7 @@ export interface IWidgetData {
 }
 
 export interface IWidgetLinkData {
-  measure: string
+  measure: ID
   tag: string
   legend: string
 }
@@ -33,8 +34,8 @@ export interface IWidgetLinkData {
 export class Widget implements IWidget {
   private static validator = new WidgetValidator()
 
-  id: string = ''
-  dashboardID: string = ''
+  id: ID = ''
+  dashboardID: ID = ''
   type: EWidget = EWidget.Boolean
   i: number = 0
   x: number = 0
@@ -106,9 +107,9 @@ export class Widget implements IWidget {
 }
 
 export interface IWidgetRepository {
-  findById(dashboardID: string, id: string): Promise<IWidget | null>
-  findAll(dashboardID: string): Promise<IWidget[]>
-  create(dashboardID: string,widget: IWidget): Promise<void>
-  update(dashboardID: string,widget: IWidget): Promise<void>
-  delete(dashboardID: string,id: string): Promise<void>
+  findById(dashboardID: ID, id: ID): Promise<IWidget | null>
+  findAll(dashboardID: ID): Promise<IWidget[]>
+  create(dashboardID: ID, widget: IWidget): Promise<void>
+  update(dashboardID: ID, widget: IWidget): Promise<void>
+  delete(dashboardID: ID, id: ID): Promise<void>
 }

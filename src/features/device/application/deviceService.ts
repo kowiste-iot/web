@@ -5,6 +5,7 @@ import type { INotificationService } from '@/features/notification/application/n
 import { useDeviceStore } from '../stores/useDeviceStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import type { ID } from '@/features/shared/domain/id'
 
 const assetStore = useAssetStore()
 
@@ -14,7 +15,7 @@ export class DeviceService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getDevice(id: string): Promise<IDevice | null> {
+  async getDevice(id: ID): Promise<IDevice | null> {
     try {
       const device = await this.deviceRepository.findById(id)
       return device
@@ -89,7 +90,7 @@ export class DeviceService {
     }
   }
 
-  async deleteDevice(id: string): Promise<void> {
+  async deleteDevice(id: ID): Promise<void> {
     try {
       await this.deviceRepository.delete(id)
       this.notificationService.success('Device deleted successfully')

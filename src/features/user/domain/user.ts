@@ -1,10 +1,11 @@
 // domain/user.ts
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { UserValidator } from './userValidator'
+import type { ID } from '@/features/shared/domain/id'
 const itemsToRemove = ['admin']
 
 export interface IUser {
-  id: string
+  id: ID
   firstName: string
   lastName: string
   fullName: string
@@ -14,13 +15,12 @@ export interface IUser {
 
 export class User implements IUser {
   private static validator = new UserValidator()
-  id: string
+  id: ID
   firstName: string
   lastName: string
   fullName: string
   email: string
   roles: string[]
-
 
   constructor(props: IUser) {
     this.id = props.id
@@ -55,9 +55,9 @@ export class User implements IUser {
 }
 
 export interface IUserRepository {
-  findById(id: string): Promise<IUser | null>
+  findById(id: ID): Promise<IUser | null>
   findAll(): Promise<IUser[]>
   create(asset: IUser): Promise<void>
   update(asset: IUser): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

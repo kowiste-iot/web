@@ -1,16 +1,17 @@
 // features/resource/domain/resource.ts
 import type { ValidationError } from '@/features/shared/domain/baseValidator'
 import { ScopeValidator } from './scopeValidator'
+import type { ID } from '@/features/shared/domain/id'
 
 export interface IScope {
-  id: string
+  id: ID
   name: string
   displayName: string
 }
 
 export class Scope implements IScope {
   private static validator = new ScopeValidator()
-  id: string
+  id: ID
   name: string
   displayName: string
 

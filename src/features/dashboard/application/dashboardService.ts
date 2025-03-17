@@ -7,6 +7,7 @@ import {
 } from '../domain/dashboard'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import type { ID } from '@/features/shared/domain/id'
 
 const assetStore = useAssetStore()
 
@@ -16,7 +17,7 @@ export class DashboardService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getDashboard(id: string): Promise<IDashboard | null> {
+  async getDashboard(id: ID): Promise<IDashboard | null> {
     try {
       const dashboard = await this.dashboardRepository.findById(id)
       return dashboard
@@ -93,7 +94,7 @@ export class DashboardService {
     }
   }
 
-  async deleteDashboard(id: string): Promise<void> {
+  async deleteDashboard(id: ID): Promise<void> {
     try {
       await this.dashboardRepository.delete(id)
       this.notificationService.success('Dashboard delete successfully')

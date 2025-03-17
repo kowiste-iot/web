@@ -3,6 +3,7 @@ import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { User, type IUser, type IUserRepository } from '../domain/user'
 import { useUserStore } from '../stores/useUserStore'
+import type { ID } from '@/features/shared/domain/id'
 
 export class UserService {
   constructor(
@@ -10,7 +11,7 @@ export class UserService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getUser(id: string): Promise<IUser | null> {
+  async getUser(id: ID): Promise<IUser | null> {
     try {
       const asset = await this.userRepository.findById(id)
       return asset
@@ -68,7 +69,7 @@ export class UserService {
         this.notificationService.error(errorMessages.join(', '))
         return false
       }
-      
+
       const existingUser = this.getUser(data.id)
       if (!existingUser) throw new Error('User not found')
 
@@ -87,7 +88,7 @@ export class UserService {
     }
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: ID): Promise<void> {
     try {
       await this.userRepository.delete(id)
       this.notificationService.success('User delete successfully')

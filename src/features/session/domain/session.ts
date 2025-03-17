@@ -1,7 +1,9 @@
+import type { ID } from "@/features/shared/domain/id"
+
 const itemsToRemove = ['admin']
 
 export interface ISession {
-  id: string
+  id: ID
   firstName: string
   lastName: string
   fullName: string
@@ -24,7 +26,7 @@ export interface ISession {
 }
 
 export class Session implements ISession {
-  id: string
+  id: ID
   firstName: string
   lastName: string
   fullName: string
@@ -76,9 +78,6 @@ export class Session implements ISession {
 }
 
 export interface ISessionRepository {
-  updatePreferences(
-    id: string,
-    preferences: ISession['preferences']
-  ): Promise<void>
-  updateSettings(id: string, settings: ISession['settings']): Promise<void>
+  updatePreferences(id: ID, preferences: ISession['preferences']): Promise<void>
+  updateSettings(id: ID, settings: ISession['settings']): Promise<void>
 }

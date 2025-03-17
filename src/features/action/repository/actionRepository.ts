@@ -3,6 +3,7 @@ import { BaseRepository } from '@/features/shared/domain/baseRepository'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
 import type { ActionDTO } from '../dtos/actionDTO'
 import { ActionMapper } from '../dtos/actionMappers'
+import type { ID } from '@/features/shared/domain/id'
 
 export class ActionRepository
   extends BaseRepository
@@ -11,7 +12,7 @@ export class ActionRepository
   constructor() {
     super('actions')
   }
-  async findById(id: string): Promise<IAction | null> {
+  async findById(id: ID): Promise<IAction | null> {
     try {
       const response = await axiosClient().get<ActionDTO>(
         `${this.baseUrl}/${id}`
@@ -51,7 +52,7 @@ export class ActionRepository
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

@@ -16,11 +16,11 @@
           :to="subItem.path"
           class="submenu-item-element"
           :title="subItem.path"
+          @click="close()"
         >
           <Flex :gap="3">
             <FIcon :icon="subItem.icon" />
             <span>{{ t(subItem.label) }}</span>
-            
           </Flex>
         </RouterLink>
       </div>
@@ -33,7 +33,9 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { IMenu } from '@/features/menu/domain/menu'
 import Flex from '@/components/layout/Flex.vue'
-
+const emit = defineEmits<{
+  menuClick: []
+}>()
 const { t } = useI18n()
 
 const props = defineProps({
@@ -53,6 +55,10 @@ const props = defineProps({
 
 const popupContainer = ref<HTMLElement | null>(null)
 const popupContent = ref<HTMLElement | null>(null)
+function close() {
+  console.log('close')
+  emit('menuClick')
+}
 </script>
 
 <style scoped>

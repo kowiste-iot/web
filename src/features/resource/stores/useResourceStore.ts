@@ -5,6 +5,7 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IResource } from '../domain/resource'
 import { ResourceService } from '../application/resourceService'
 import { ResourceRepository } from '../repository/resourceRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useResourceStore = defineStore('resourceStore', {
   state: () => ({
@@ -13,13 +14,13 @@ export const useResourceStore = defineStore('resourceStore', {
   }),
   getters: {
     getResourceById: (state) => {
-      return (id: string): IResource | undefined => {
+      return (id: ID): IResource | undefined => {
         return state.resources.find((resource) => resource.id === id)
       }
     },
   },
   actions: {
-    async fetchResource(id: string) {
+    async fetchResource(id: ID) {
       const resourceService = new ResourceService(
         new ResourceRepository(),
         new NotificationService(useNotificationStore())
@@ -55,7 +56,7 @@ export const useResourceStore = defineStore('resourceStore', {
       }
       return success
     },
-    async deleteResource(id: string) {
+    async deleteResource(id: ID) {
       const resourceService = new ResourceService(
         new ResourceRepository(),
         new NotificationService(useNotificationStore())

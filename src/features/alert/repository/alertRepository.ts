@@ -3,6 +3,7 @@ import { Alert, type IAlert, type IAlertRepository } from '../domain/alert'
 import type { AlertDTO } from '../dtos/alertDTO'
 import { AlertMapper } from '../dtos/alertMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class AlertRepository
   extends BaseRepository
@@ -11,7 +12,7 @@ export class AlertRepository
   constructor() {
     super('alerts')
   }
-  async findById(id: string): Promise<IAlert | null> {
+  async findById(id: ID): Promise<IAlert | null> {
     try {
       const response = await axiosClient().get<AlertDTO>(
         `${this.baseUrl}/${id}`
@@ -51,7 +52,7 @@ export class AlertRepository
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

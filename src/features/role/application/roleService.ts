@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Role, type IRole, type IRoleRepository } from '../domain/role'
+import type { ID } from '@/features/shared/domain/id'
 
 export class RoleService {
   constructor(
@@ -9,7 +10,7 @@ export class RoleService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getRole(id: string): Promise<IRole | null> {
+  async getRole(id: ID): Promise<IRole | null> {
     try {
       const role = await this.roleRepository.findById(id)
       return role
@@ -60,8 +61,7 @@ export class RoleService {
     }
   }
 
-
-  async deleteRole(id: string): Promise<void> {
+  async deleteRole(id: ID): Promise<void> {
     try {
       await this.roleRepository.delete(id)
       this.notificationService.success('Role deleted successfully')

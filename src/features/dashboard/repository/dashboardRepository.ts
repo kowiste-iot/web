@@ -7,13 +7,14 @@ import {
 import type { DashboardDTO } from '../dtos/dashboardDTO'
 import { DashboardMapper } from '../dtos/dashboardMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class DashboardRepository  extends BaseRepository implements IDashboardRepository {
 
   constructor() {
    super('dashboards')
   }
-  async findById(id: string): Promise<IDashboard | null> {
+  async findById(id: ID): Promise<IDashboard | null> {
     try {
       const response = await axiosClient().get<DashboardDTO>(
         `${this.baseUrl}/${id}`
@@ -55,7 +56,7 @@ export class DashboardRepository  extends BaseRepository implements IDashboardRe
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

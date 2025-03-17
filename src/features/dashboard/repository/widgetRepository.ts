@@ -3,6 +3,7 @@ import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
 import type { WidgetDTO } from '../dtos/widgetDTO'
 import { WidgetMapper } from '../dtos/widgetMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class WidgetRepository
   extends BaseRepository
@@ -11,7 +12,7 @@ export class WidgetRepository
   constructor() {
     super('dashboards')
   }
-  async findById(dashboardID: string, id: string): Promise<IWidget | null> {
+  async findById(dashboardID: ID, id: ID): Promise<IWidget | null> {
     try {
       const response = await axiosClient().get<WidgetDTO>(
         `${this.baseUrl}/${dashboardID}/widgets/${id}`
@@ -22,7 +23,7 @@ export class WidgetRepository
     }
   }
 
-  async findAll(dashboardID: string): Promise<IWidget[]> {
+  async findAll(dashboardID: ID): Promise<IWidget[]> {
     try {
       const response = await axiosClient().get<WidgetDTO[]>(
         `${this.baseUrl}/${dashboardID}/widgets`
@@ -35,7 +36,7 @@ export class WidgetRepository
     }
   }
 
-  async create(dashboardID: string, widget: IWidget): Promise<void> {
+  async create(dashboardID: ID, widget: IWidget): Promise<void> {
     try {
       const dto = WidgetMapper.toDTO(new Widget(widget))
       await axiosClient().post(`${this.baseUrl}/${dashboardID}/widgets`, dto)
@@ -44,7 +45,7 @@ export class WidgetRepository
     }
   }
 
-  async update(dashboardID: string, widget: IWidget): Promise<void> {
+  async update(dashboardID: ID, widget: IWidget): Promise<void> {
     try {
       const dto = WidgetMapper.toDTO(new Widget(widget))
       await axiosClient().put(
@@ -56,7 +57,7 @@ export class WidgetRepository
     }
   }
 
-  async delete(dashboardID: string, id: string): Promise<void> {
+  async delete(dashboardID: ID, id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${dashboardID}/widgets/${id}`)
     } catch (error) {

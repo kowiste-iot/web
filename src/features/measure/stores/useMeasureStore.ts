@@ -6,6 +6,7 @@ import type { IMeasure } from '../domain/measure'
 import { MeasureService } from '../application/measureService'
 import { MeasureRepository } from '../repository/measureRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useMeasureStore = defineStore('measureStore', {
   state: () => ({
@@ -14,13 +15,13 @@ export const useMeasureStore = defineStore('measureStore', {
   }),
   getters: {
     getMeasureById: (state) => {
-      return (id: string): IMeasure | undefined => {
+      return (id: ID): IMeasure | undefined => {
         return state.measures.find((measure) => measure.id === id)
       }
     },
   },
   actions: {
-    async fetchMeasure(id: string) {
+    async fetchMeasure(id: ID) {
       const measureService = new MeasureService(
         new MeasureRepository(),
         new NotificationService(useNotificationStore()),

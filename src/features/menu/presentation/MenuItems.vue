@@ -43,6 +43,7 @@
               v-if="subItem.subMenu"
               :sub-menu="subItem.subMenu"
               :show="hoveredMenu === subItem.path"
+              @menu-click="emit('menuClick')"
             />
           </div>
         </div>
@@ -74,6 +75,7 @@
         :sub-menu="item.subMenu"
         :show="hoveredMenu === item.path"
         :use-bottom-position="!!props.bottom"
+        @menu-click="emit('menuClick')"
       />
     </div>
   </Flex>
@@ -104,7 +106,6 @@ const hoveredMenu = ref('')
 function handleMenuClick(item: IMenu) {
   if (!item.subMenu) {
     emit('menuClick')
-    console.log('fre')
     router.push(item.path)
   }
 }

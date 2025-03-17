@@ -7,16 +7,14 @@ import {
 import type { ResourceDTO } from '../dtos/resourceDTO'
 import { ResourceMapper } from '../dtos/resourceMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
-export class ResourceRepository
-  extends BaseRepository
-  implements IResourceRepository
-{
+export class ResourceRepository extends BaseRepository implements IResourceRepository {
   constructor() {
     super('resources')
   }
 
-  async findById(id: string): Promise<IResource | null> {
+  async findById(id: ID): Promise<IResource | null> {
     try {
       const response = await axiosClient().get<ResourceDTO>(
         `${this.baseUrl}/${id}`
@@ -59,7 +57,7 @@ export class ResourceRepository
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {

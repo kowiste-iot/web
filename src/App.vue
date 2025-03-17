@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isTenantRoute" class="vh-100 w-100">
+  <div v-if="isTenantRoute" class="page-size">
     <AlertContainer />
     <RouterView />
   </div>
@@ -109,6 +109,10 @@ watch(
 </script>
 
 <style scope>
+.page-size {
+  height: 100%;
+  width: 100%;
+}
 .tour {
   z-index: var(--index-god);
 }

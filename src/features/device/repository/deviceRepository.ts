@@ -3,18 +3,14 @@ import { Device, type IDevice, type IDeviceRepository } from '../domain/device'
 import type { DeviceDTO } from '../dtos/deviceDTO'
 import { DeviceMapper } from '../dtos/deviceMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
-export class DeviceRepository
-  extends BaseRepository
-  implements IDeviceRepository
-{
+export class DeviceRepository extends BaseRepository implements IDeviceRepository {
   constructor() {
     super('devices')
   }
-  async findById(id: string): Promise<IDevice | null> {
+  async findById(id: ID): Promise<IDevice | null> {
     try {
-      console.log('this', this.baseUrl)
-
       const response = await axiosClient().get<DeviceDTO>(
         `${this.baseUrl}/${id}`
       )
@@ -26,8 +22,6 @@ export class DeviceRepository
 
   async findAll(): Promise<IDevice[]> {
     try {
-      console.log('this', this.baseUrl)
-
       const response = await axiosClient().get<DeviceDTO[]>(this.baseUrl)
       return response.data
         .map((dto: DeviceDTO) => DeviceMapper.toDomain(dto))
@@ -55,7 +49,7 @@ export class DeviceRepository
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
       await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
