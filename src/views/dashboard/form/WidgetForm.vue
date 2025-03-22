@@ -7,29 +7,16 @@
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
     </template>
-    <div class="h-100 w-100 container">
-      <div v-if="page.selectedTab == 1" class="row overflow-auto">
-        <div v-for="widget in page.widgets" class="col-lg-3 col-md-4 col-xs-6">
-          <div role="button" @click="selectWidget(widget)">
-            <div
-              class="border border-2 rounded box p-3 m-3 d-flex flex-column justify-content-center"
-            >
-              <FIcon
-                class="mb-2 opacity-50"
-                :class="`text-${EColor.Secondary}`"
-                :icon="widget.icon"
-                style="height: 5rem"
-              />
-              <div class="">
-                <div class="text-start fw-bold" style="font-size: 1.2rem">
-                  {{ widget.name }}
-                </div>
-                <div class="text-center">{{ widget.description }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <Container>
+      <Row v-if="page.selectedTab == 1" class="row-widget">
+        <Col
+          v-for="widget in page.widgets"
+          :breakpoint="EBreakpoint.LG"
+          :size="3"
+        >
+          <WidgetFormCard class="widget-card" :data="widget" @click="selectWidget"/>
+        </Col>
+      </Row>
       <div v-else>
         <div v-if="page.selectedWidget.id == EWidget.None">
           Select a widget first
@@ -68,7 +55,7 @@
           />
         </div>
       </div>
-    </div>
+    </Container>
 
     <template #footer>
       <Button
@@ -94,7 +81,7 @@ import { useRoute } from 'vue-router'
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
-import BoolForm from '@/views/dashboard/card/BoolForm.vue'
+import BoolForm from '@/features/dashboard/presentation/components/BoolForm.vue'
 import NumberForm from '@/views/dashboard/card/NumberForm.vue'
 import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
 import LineForm from '@/views/dashboard/card/LineForm.vue'
@@ -114,6 +101,11 @@ import { WidgetFormPage } from '@/features/dashboard/presentation/pages/pageWidg
 import type { IWidgetType } from '@/model/widget/widgetType'
 import { Widget } from '@/features/dashboard/domain/widget'
 import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
+import Container from '@/components/layout/Container.vue'
+import Row from '@/components/layout/grid/Row.vue'
+import Col from '@/components/layout/grid/Col.vue'
+import { EBreakpoint } from '@/components/layout/grid/col'
+import WidgetFormCard from '@/features/dashboard/presentation/components/WidgetFormCard.vue'
 // props
 const props = defineProps({
   data: {
@@ -159,4 +151,12 @@ onMounted(() => {
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+.row-widget {
+  overflow-y: auto;
+  margin-top: var(--size-400);
+}
+.widget-card {
+  padding: var(--size-100);
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-md-6">
+  <Row>
+    <Col >
       <div class="form-group row justify-content-center px-5 my-4">
         <Boolean class="" :data="model?.data" v-model="measure" />
       </div>
@@ -29,9 +29,8 @@
           :placeholder="$t('dashboard.form.parentHolder')"
         />
       </div>
-    </div>
-
-    <div class="col-md-6">
+    </Col>
+    <Col  >
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4 col-form-label">
           {{ $t('widget.form.common.label') }}
@@ -115,8 +114,8 @@
           />
         </div>
       </div>
-    </div>
-  </div>
+    </Col>
+  </Row>
 </template>
 
 <script setup lang="ts">
@@ -125,12 +124,15 @@ import { computed, reactive, ref, watch } from 'vue'
 
 // stores import
 // components import
-import Boolean from './Boolean.vue'
+import Boolean from './widgets/Boolean.vue'
 import Input from '@/components/form/Input.vue'
 import { Widget, type IWidget } from '@/features/dashboard/domain/widget'
 import { ValidationError } from '@/features/shared/domain/baseValidator'
 import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
+import Row from '@/components/layout/grid/Row.vue'
+import Col from '@/components/layout/grid/Col.vue'
+import { EBreakpoint } from '@/components/layout/grid/col'
 
 // model imports
 // other imports
@@ -142,14 +144,14 @@ const props = defineProps({
   },
 })
 // data
-const form = reactive<IWidget>({}as IWidget)
+const form = reactive<IWidget>({} as IWidget)
 const model = defineModel({ default: {} as IWidget })
 const measure = ref(false)
 const errors = ref<ValidationError<IWidget>>(new ValidationError())
-  const measureStore = useMeasureStore()
+const measureStore = useMeasureStore()
 // storage calls
 // computed
-const measures = computed(()=> measureStore.measures)
+const measures = computed(() => measureStore.measures)
 // methods
 // lifeCycle
 // watch

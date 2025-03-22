@@ -72,10 +72,7 @@
       </GridItem>
     </GridLayout>
   </div>
-  <div
-    class="d-flex flex-column"
-    style="position: fixed; top: 4rem; right: 1rem"
-  >
+  <Flex column style="position: fixed; top: 4rem; right: 1rem">
     <FIcon
       :class="`text-${EColor.Success}`"
       :icon="EIcon.Add"
@@ -91,23 +88,25 @@
       style="height: 1.5rem"
       @click="() => (page.unlock = !page.unlock)"
     />
-  </div>
+  </Flex>
 
-  <SideCard v-if="page.show" class="col-md-12">
-    <WidgetForm :close="() => (page.show = false)" />
-  </SideCard>
+  <Modal v-if="page.show">
+    <SideCard :size="12">
+      <WidgetForm :close="() => (page.show = false)" />
+    </SideCard>
+  </Modal>
 </template>
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 
 // components import
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import WidgetForm from '@/views/dashboard/form/WidgetForm.vue'
 import BarWidget from '@/views/dashboard/card/Bar.vue'
-import BoolWidget from '@/views/dashboard/card/Boolean.vue'
+import BoolWidget from '@/features/dashboard/presentation/components/widgets/Boolean.vue'
 import NumberWidget from '@/views/dashboard/card/Number.vue'
 import LineWidget from '@/views/dashboard/card/Line.vue'
 import PieWidget from '@/views/dashboard/card/Pie.vue'
@@ -122,6 +121,8 @@ import { useBasePage } from '@/composable/useBasePage'
 import { useWidgetStore } from '@/features/dashboard/stores/useWidgetStore'
 import { getParam } from '@/utils/routes/routes'
 import { useRoute } from 'vue-router'
+import Flex from '@/components/layout/Flex.vue'
+import Modal from '@/components/layout/Modal.vue'
 
 // other imports
 // props

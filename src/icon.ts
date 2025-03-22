@@ -31,6 +31,7 @@ import {
   faFaceFrown,
   faFaceMeh,
   faFaceSmile,
+  faFileLines,
   faFont,
   faGaugeSimple,
   faGear,
@@ -122,6 +123,7 @@ library.add(
   faShoePrints,
   faPlay, 
   faPlus,
-  faBars
+  faBars,
+  faFileLines
 )
 //check,x dont work

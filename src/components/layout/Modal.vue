@@ -1,12 +1,14 @@
 <template>
   <div id="modal" class="modal" @click="handleBackgroundClick">
-    <div @click.stop>
+    <Row @click.stop>
       <slot></slot>
-    </div>
+    </Row>
   </div>
 </template>
 
 <script setup lang="ts">
+import Row from './grid/Row.vue'
+
 // imports
 // stores import
 // components import

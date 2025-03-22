@@ -1,5 +1,11 @@
 <template>
-  <TabletCard class="mt-5">
+  <Card class="mt-5 ">
+    <CardHeader
+      :headerIcon="EIcon.Dashboard"
+      :headerText="'Dasnboard'"
+      :buttonText="'Dashboard'"
+      @click="() => (page.showForm = true)"
+    />
     <DataTable :value="dashboards">
       <Column style="width: 5px">
         <template #body="{ data }">
@@ -40,21 +46,10 @@
         </template>
       </Column>
     </DataTable>
-  </TabletCard>
-  <div
-    class="d-flex flex-column"
-    style="position: fixed; top: 4rem; right: 1rem"
-  >
-    <FIcon
-      :class="`text-${EColor.Success}`"
-      :icon="EIcon.Add"
-      role="button"
-      style="height: 1.5rem"
-      @click="() => (page.showForm = true)"
-    />
-  </div>
+  </Card>
+
   <Modal v-if="page.showForm" @cancel="closeForm">
-    <SideCard class="col-12 col-sm-10 col-md-6 col-lg-4">
+    <SideCard :size="4">
       <DashboardForm
         :data="page.selected"
         :edit="page.editForm"
@@ -84,7 +79,6 @@ import { computed, onMounted, reactive } from 'vue'
 // stores import
 
 // components import
-import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import Button from '@/components/buttons/Button.vue'
@@ -106,6 +100,8 @@ import { useDashboardStore } from '@/features/dashboard/stores/useDashboardStore
 import { DashboardService } from '@/features/dashboard/application/dashboardService'
 import { DashboardRepository } from '@/features/dashboard/repository/dashboardRepository'
 import { useBasePage } from '@/composable/useBasePage'
+import Card from '@/components/cards/Card.vue'
+import CardHeader from '@/components/cards/CardHeader.vue'
 // other imports
 // props
 // data

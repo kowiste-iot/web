@@ -60,6 +60,7 @@ export enum EIcon {
   Process = 'fa-diagram-predecessor',
   WalkThrough = 'fa-shoe-prints',
   Burger='fa-bars',
+  Report='fa-file-lines',
 
   //Face
   Smile = 'fa-face-smile',

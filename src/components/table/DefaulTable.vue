@@ -98,7 +98,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 /* Table header styling */
 .p-datatable .p-datatable-header {
-  color: var(--elevation-surface-overlay);
+  color: var(--layout-overlay);
   font-weight: bold;
   border: none !important;
 }

@@ -17,8 +17,9 @@
 // components import\
 
 import { EColor } from '@/features/shared/enum/EColor'
-import WidgetCard from './WidgetCard.vue'
+
 import type { IWidgetData } from '@/features/dashboard/domain/widget';
+import WidgetCard from '@/views/dashboard/card/WidgetCard.vue';
 // model imports
 // other imports
 // props
