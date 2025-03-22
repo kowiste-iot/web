@@ -150,7 +150,7 @@ import { ref } from 'vue'
 // stores import
 // components import
 import Input from '@/components/form/Input.vue'
-import Gauge from '@/views/dashboard/card/Gauge.vue'
+import Gauge from '@/features/dashboard/presentation/components/widgets/Gauge.vue'
 import Slider from '@/components/slider/Slider.vue'
 
 // model imports

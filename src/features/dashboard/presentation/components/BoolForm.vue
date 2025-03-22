@@ -1,6 +1,6 @@
 <template>
   <Row>
-    <Col >
+    <Col>
       <div class="form-group row justify-content-center px-5 my-4">
         <Boolean class="" :data="model?.data" v-model="measure" />
       </div>
@@ -30,7 +30,7 @@
         />
       </div>
     </Col>
-    <Col  >
+    <Col>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4 col-form-label">
           {{ $t('widget.form.common.label') }}
@@ -132,7 +132,6 @@ import MultiDropdown from '@/components/form/MultiDropdown.vue'
 import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 import Row from '@/components/layout/grid/Row.vue'
 import Col from '@/components/layout/grid/Col.vue'
-import { EBreakpoint } from '@/components/layout/grid/col'
 
 // model imports
 // other imports

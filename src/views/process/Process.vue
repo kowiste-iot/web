@@ -200,7 +200,7 @@ import { useAlertStore } from '@/features/alert/stores/useAlertStore'
 import { ETooltipPosition } from '@/components/tooltip/ETooltipPosition'
 import Tooltip from '@/components/tooltip/Tooltip.vue'
 import Tag from '@/components/tag/Tag.vue'
-import { EBreakpoint } from '@/components/layout/grid/col'
+import { EBreakpoint } from '@/components/layout/grid/model'
 import { Page } from '@/features/shared/presentation/pages/pageBase'
 import { useI18n } from 'vue-i18n'
 // other imports

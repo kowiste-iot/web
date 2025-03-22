@@ -14,7 +14,11 @@
           :breakpoint="EBreakpoint.LG"
           :size="3"
         >
-          <WidgetFormCard class="widget-card" :data="widget" @click="selectWidget"/>
+          <WidgetFormCard
+            class="widget-card"
+            :data="widget"
+            @click="selectWidget"
+          />
         </Col>
       </Row>
       <div v-else>
@@ -82,12 +86,12 @@ import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
 import BoolForm from '@/features/dashboard/presentation/components/BoolForm.vue'
-import NumberForm from '@/views/dashboard/card/NumberForm.vue'
-import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
-import LineForm from '@/views/dashboard/card/LineForm.vue'
-import BarForm from '@/views/dashboard/card/BarForm.vue'
-import PieForm from '@/views/dashboard/card/PieForm.vue'
-import TextForm from '@/views/dashboard/card/TextForm.vue'
+import NumberForm from '@/features/dashboard/presentation/components/NumberForm.vue'
+import GaugeForm from '@/features/dashboard/presentation/components/GaugeForm.vue'
+import LineForm from '@/features/dashboard/presentation/components/LineForm.vue'
+import BarForm from '@/features/dashboard/presentation/components/BarForm.vue'
+import PieForm from '@/features/dashboard/presentation/components/PieForm.vue'
+import TextForm from '@/features/dashboard/presentation/components/TextForm.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
@@ -104,7 +108,7 @@ import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 import Container from '@/components/layout/Container.vue'
 import Row from '@/components/layout/grid/Row.vue'
 import Col from '@/components/layout/grid/Col.vue'
-import { EBreakpoint } from '@/components/layout/grid/col'
+import { EBreakpoint } from '@/components/layout/grid/model'
 import WidgetFormCard from '@/features/dashboard/presentation/components/WidgetFormCard.vue'
 // props
 const props = defineProps({

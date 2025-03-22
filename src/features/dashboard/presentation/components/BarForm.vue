@@ -2,18 +2,20 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Number class="" :data="model.data" v-model="measure" />
+        <Bar class="" :measure="measure" :data="model.data" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
           {{ $t('widget.form.common.measureValue') }}
         </label>
-        <Input
-          class="col-md-8 col-form-label"
-          :placeholder="$t('widget.form.common.labelHolder')"
-          type="number"
-          v-model="measure"
-        />
+        <div class="col-md-8 form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            v-model="measure"
+          />
+        </div>
       </div>
     </div>
 
@@ -67,44 +69,39 @@
         </div>
       </div>
       <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4">
-          {{ $t('widget.number.form.showDecimal') }}
-        </label>
+        <label class="col-md-4"> {{ $t('widget.bool.form.showText') }} </label>
         <div class="col-md-8 form-switch">
           <input
             class="form-check-input"
             type="checkbox"
             role="switch"
-            v-model="model.data.options.showDecimal"
+            v-model="model.data.options.showText"
           />
         </div>
       </div>
-      <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4">
-          {{ $t('widget.number.form.showUnit') }}
-        </label>
-        <div class="col-md-8 form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            v-model="model.data.options.showUnit"
+      <div v-if="model.data.options.showText">
+        <div class="form-group row justify-content-center mb-1">
+          <label class="col-md-4 col-form-label">
+            {{ $t('widget.bool.form.textTrue') }}
+          </label>
+          <Input
+            class="col-md-8 col-form-label"
+            placeholder=""
+            type="text"
+            v-model="model.data.options.trueText"
           />
         </div>
-      </div>
-      <div
-        v-if="model.data.options.showUnit"
-        class="form-group row justify-content-center mb-1"
-      >
-        <label class="col-md-4 col-form-label">
-          {{ $t('widget.number.form.unit') }}
-        </label>
-        <Input
-          class="col-md-8 col-form-label"
-          placeholder=""
-          type="text"
-          v-model="model.data.options.unit"
-        />
+        <div class="form-group row justify-content-center mb-3">
+          <label class="col-md-4 col-form-label">
+            {{ $t('widget.bool.form.textFalse') }}
+          </label>
+          <Input
+            class="col-md-8 col-form-label"
+            placeholder=""
+            type="text"
+            v-model="model.data.options.falseText"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -116,17 +113,22 @@ import { ref } from 'vue'
 
 // stores import
 // components import
-import Number from './Number.vue'
+import Bar from './widgets/Bar.vue'
 import Input from '@/components/form/Input.vue'
-import type { IWidget } from '@/features/dashboard/domain/widget';
+import type { IWidget } from '@/features/dashboard/domain/widget'
 
 // model imports
 // other imports
 // props
-const model = defineModel({ default: {} as IWidget })
-
+const props = defineProps({
+  data: {
+    type: String,
+    default: '',
+  },
+})
 // data
-const measure = ref(0)
+const model = defineModel({ default: {} as IWidget })
+const measure = ref(false)
 // storage calls
 // computed
 // methods

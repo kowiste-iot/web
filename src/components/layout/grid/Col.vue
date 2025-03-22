@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { ColOffset, ColOrder, ColSize, EBreakpoint } from './col'
+import type { ColOffset, ColOrder, ColSize, EBreakpoint } from './model'
 // Enums must be outside the setup script
 
 interface Props {

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { RowAlignment, RowVerticalAlignment } from './row';
+import type { RowAlignment, RowVerticalAlignment } from './model';
 
 
 

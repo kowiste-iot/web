@@ -74,8 +74,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import WidgetCard from './WidgetCard.vue'
 import type { IWidgetData } from '@/features/dashboard/domain/widget';
+import WidgetCard from '../WidgetCard.vue';
 interface Props {
   data: IWidgetData
 }

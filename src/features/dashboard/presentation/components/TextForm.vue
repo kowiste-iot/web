@@ -2,20 +2,18 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group row justify-content-center px-5 my-4">
-        <Bar class="" :measure="measure" :data="model.data" />
+        <Text :data="model.data" v-model="measure" />
       </div>
       <div class="form-group row justify-content-center">
         <label class="col-md-4">
           {{ $t('widget.form.common.measureValue') }}
         </label>
-        <div class="col-md-8 form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            v-model="measure"
-          />
-        </div>
+        <Input
+          class="col-md-8 col-form-label"
+          :placeholder="$t('widget.form.common.labelHolder')"
+          type="text"
+          v-model="measure"
+        />
       </div>
     </div>
 
@@ -68,41 +66,6 @@
           />
         </div>
       </div>
-      <div class="form-group row justify-content-center mb-3">
-        <label class="col-md-4"> {{ $t('widget.bool.form.showText') }} </label>
-        <div class="col-md-8 form-switch">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            v-model="model.data.options.showText"
-          />
-        </div>
-      </div>
-      <div v-if="model.data.options.showText">
-        <div class="form-group row justify-content-center mb-1">
-          <label class="col-md-4 col-form-label">
-            {{ $t('widget.bool.form.textTrue') }}
-          </label>
-          <Input
-            class="col-md-8 col-form-label"
-            placeholder=""
-            type="text"
-            v-model="model.data.options.trueText"
-          />
-        </div>
-        <div class="form-group row justify-content-center mb-3">
-          <label class="col-md-4 col-form-label">
-            {{ $t('widget.bool.form.textFalse') }}
-          </label>
-          <Input
-            class="col-md-8 col-form-label"
-            placeholder=""
-            type="text"
-            v-model="model.data.options.falseText"
-          />
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -113,9 +76,9 @@ import { ref } from 'vue'
 
 // stores import
 // components import
-import Bar from './Bar.vue'
+import Text from './widgets/Text.vue'
 import Input from '@/components/form/Input.vue'
-import type { IWidget } from '@/features/dashboard/domain/widget';
+import type { IWidget } from '@/features/dashboard/domain/widget'
 
 // model imports
 // other imports
@@ -128,7 +91,8 @@ const props = defineProps({
 })
 // data
 const model = defineModel({ default: {} as IWidget })
-const measure = ref(false)
+const measure = ref('')
+
 // storage calls
 // computed
 // methods

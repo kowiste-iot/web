@@ -152,7 +152,7 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ $t('widget.line.form.fill')  }}
+          {{ $t('widget.line.form.fill') }}
         </label>
         <div class="col-md-8 form-switch">
           <input
@@ -165,7 +165,7 @@
       </div>
       <div class="form-group row justify-content-center mb-3">
         <label class="col-md-4">
-          {{ $t('widget.line.form.color')  }}
+          {{ $t('widget.line.form.color') }}
         </label>
         <div class="col-md-8">
           <ColorPicker v-model="model.data.options.color" />
@@ -182,7 +182,7 @@ import { ref, reactive, computed } from 'vue'
 // stores import
 
 // components import
-import Line from './Line.vue'
+import Line from './widgets/Line.vue'
 import Input from '@/components/form/Input.vue'
 import ColorPicker from '@/components/color/ColorPicker.vue'
 import Button from '@/components/buttons/Button.vue'

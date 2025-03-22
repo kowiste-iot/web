@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { EBreakpoint, type ColSize } from '../layout/grid/col'
+import { EBreakpoint, type ColSize } from '../layout/grid/model'
 import Col from '../layout/grid/Col.vue'
 
 // imports

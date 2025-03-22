@@ -22,10 +22,10 @@ import {
   TimeScale,
   TimeSeriesScale,
 } from 'chart.js'
-import WidgetCard from './WidgetCard.vue'
 import { DateTime } from 'luxon'
 import type { IWidgetData } from '@/features/dashboard/domain/widget'
 import type { IDataModel } from '@/model/data/data'
+import WidgetCard from '../WidgetCard.vue'
 
 interface Props {
   data: IWidgetData

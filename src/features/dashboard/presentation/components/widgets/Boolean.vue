@@ -18,8 +18,8 @@
 
 import { EColor } from '@/features/shared/enum/EColor'
 
-import type { IWidgetData } from '@/features/dashboard/domain/widget';
-import WidgetCard from '@/views/dashboard/card/WidgetCard.vue';
+import type { IWidgetData } from '@/features/dashboard/domain/widget'
+import WidgetCard from '@/features/dashboard/presentation/components/WidgetCard.vue'
 // model imports
 // other imports
 // props

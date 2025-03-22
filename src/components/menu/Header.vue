@@ -33,7 +33,7 @@ import Flex from '../layout/Flex.vue'
 import Row from '../layout/grid/Row.vue'
 import Col from '../layout/grid/Col.vue'
 import { EFlexJustify } from '../layout/EFlex'
-import { EBreakpoint } from '../layout/grid/col'
+import { EBreakpoint } from '../layout/grid/model'
 // other imports
 // props
 // data

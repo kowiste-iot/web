@@ -18,7 +18,7 @@
 // components import\
 
 import type { IWidgetData } from '@/features/dashboard/domain/widget';
-import WidgetCard from './WidgetCard.vue'
+import WidgetCard from '../WidgetCard.vue'
 // model imports
 // other imports
 // props

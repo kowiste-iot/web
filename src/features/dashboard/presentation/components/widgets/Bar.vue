@@ -20,7 +20,7 @@ import {
  CategoryScale,
  LinearScale
 } from 'chart.js'
-import WidgetCard from './WidgetCard.vue'
+import WidgetCard from '../WidgetCard.vue'
 import type { IWidgetData } from '@/features/dashboard/domain/widget';
 
 ChartJS.register(

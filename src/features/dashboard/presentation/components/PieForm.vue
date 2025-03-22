@@ -113,9 +113,9 @@ import { ref } from 'vue'
 
 // stores import
 // components import
-import Pie from './Pie.vue'
+import Pie from './widgets/Pie.vue'
 import Input from '@/components/form/Input.vue'
-import type { IWidget } from '@/features/dashboard/domain/widget';
+import type { IWidget } from '@/features/dashboard/domain/widget'
 
 // model imports
 // other imports
