@@ -36,7 +36,7 @@
             v-if="page.unlock"
             class="position-absolute top-0 end-0"
             :data="page.properties"
-            :onClick="(id:number)=>console.log('press',id)"
+            @click="(id:Property)=>console.log('press',id)"
           />
           <BoolWidget
             v-if="item.type == EWidget.Boolean"
@@ -123,6 +123,7 @@ import { getParam } from '@/utils/routes/routes'
 import { useRoute } from 'vue-router'
 import Flex from '@/components/layout/Flex.vue'
 import Modal from '@/components/layout/Modal.vue'
+import type { Property } from '@/model/property'
 
 // other imports
 // props

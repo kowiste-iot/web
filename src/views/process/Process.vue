@@ -57,7 +57,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageAction.properties"
-                :onClick="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop:Property)=>propertySelected(prop,data)"
               />
             </template>
           </Column>
@@ -120,7 +120,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageAlert.properties"
-                :onClick="(prop:Property)=>propertySelected(prop,data)"
+               @click="(prop:Property)=>propertySelected(prop,data)"
               />
             </template>
           </Column>
@@ -150,8 +150,8 @@
     v-if="pageAction.showModal"
     :action="EActionGUI.Danger"
     :actionText="$t('actionGUI.delete')"
-    :onAction="deleteAsset"
-    :onCancel="
+    @action="deleteAsset"
+    @cancel="
       () => {
         pageAction.showModal = false
       }

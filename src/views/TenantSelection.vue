@@ -31,7 +31,7 @@
                 <Input
                   :placeholder="$t('tenant.inputName')"
                   type="text"
-                  :onEnter="addNewTenant"
+                  @enter="addNewTenant"
                   v-model="newTenantId"
                 />
                 <Button

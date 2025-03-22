@@ -40,7 +40,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageAsset.properties"
-                :onClick="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop:Property)=>propertySelected(prop,data)"
               />
             </template>
           </Column>
@@ -86,7 +86,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageMeasure.properties"
-                :onClick="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop:Property)=>propertySelected(prop,data)"
               />
             </template>
           </Column>
@@ -133,7 +133,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageDevice.properties"
-                :onClick="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop:Property)=>propertySelected(prop,data)"
               />
             </template>
           </Column>
@@ -172,8 +172,8 @@
     v-if="pageAsset.showModal"
     :action="EActionGUI.Danger"
     :actionText="$t('actionGUI.delete')"
-    :onAction="deleteAsset"
-    :onCancel="
+    @action="deleteAsset"
+    @cancel="
       () => {
         pageAsset.showModal = false
       }

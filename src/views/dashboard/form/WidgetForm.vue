@@ -3,7 +3,7 @@
     <template #header
       >{{ page.title }}
 
-      <Tabs :tabs="page.tabs" :onChange="(id:number)=>page.changeTab(id)">
+      <Tabs :tabs="page.tabs" @change="(id:number)=>page.changeTab(id)">
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
     </template>

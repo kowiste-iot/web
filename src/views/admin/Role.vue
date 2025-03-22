@@ -29,7 +29,7 @@
           <PropertyDot
             v-if="!data.readonly"
             :data="page.properties"
-            :onClick="(prop:Property)=>propertySelected(prop,data)"
+            @click="(prop:Property)=>propertySelected(prop,data)"
           />
         </template>
       </Column>
@@ -61,8 +61,8 @@
     v-if="page.showModal"
     :action="EActionGUI.Danger"
     :actionText="$t('actionGUI.delete')"
-    :onAction="deleteRole"
-    :onCancel="
+    @action="deleteRole"
+    @cancel="
       () => {
         page.showModal = false
       }

@@ -39,7 +39,6 @@ interface Props {
   offIcon?: string
   noIcon?: boolean
   disabled?: boolean
-  onChange?: Function
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,8 +49,10 @@ const props = withDefaults(defineProps<Props>(), {
   onIcon: EIcon.Smile,
   offIcon: EIcon.Sad,
   disabled: false,
-  onChange: function () {},
 })
+const emit = defineEmits<{
+  change: []
+}>()
 
 // Helper function to ensure rem units
 const ensureRem = (value: string) => {
@@ -93,7 +94,7 @@ const switchStyle = computed(() => ({
 const handleClick = () => {
   if (!props.disabled) {
     modelValue.value = !modelValue.value
-    props.onChange()
+    emit('change')
   }
 }
 </script>

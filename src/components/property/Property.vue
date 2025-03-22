@@ -14,7 +14,7 @@
             <div
               class="btn d-flex"
               :class="isHover[element.id] ? 'bg-secondary' : 'bg-light'"
-              @click="onClick(element)"
+              @click="emit('click', element)"
               @mouseover="isHover[element.id] = true"
               @mouseleave="isHover[element.id] = false"
             >
@@ -42,8 +42,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   data: () => [],
   inverse: false,
-  onClick: function () {},
 })
+const emit = defineEmits<{
+  click: [data: Property]
+}>()
+
 const isVisible = ref(false)
 const isHover = ref({} as Record<string, boolean>)
 const triggerRef = ref<HTMLElement | null>(null)

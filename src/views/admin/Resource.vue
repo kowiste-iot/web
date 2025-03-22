@@ -17,7 +17,7 @@
         <template #body="{ data }">
           <PropertyDot
             :data="page.properties"
-            :onClick="(prop:Property)=>propertySelected(prop,data)"
+            @click="(prop:Property)=>propertySelected(prop,data)"
           />
         </template>
       </Column>
