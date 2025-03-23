@@ -1,14 +1,18 @@
 <template>
-  <InputCard class="h-100 forms" showHeader showFooter>
-    <template #header
-      >{{ page.title }}
+  <Card id="widget-form" showHeader showFooter>
+    <template #header>
+      {{ page.title }}
 
       <Tabs :tabs="page.tabs" @change="(id:number)=>page.changeTab(id)">
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
     </template>
     <Container>
-      <Row v-if="page.selectedTab == 1" class="row-widget">
+      <Row
+        id="widget-selection-card"
+        v-if="page.selectedTab == 1"
+        class="row-widget"
+      >
         <Col
           v-for="widget in page.widgets"
           :breakpoint="EBreakpoint.LG"
@@ -21,14 +25,11 @@
           />
         </Col>
       </Row>
-      <div v-else>
+      <div class="full-size" v-else>
         <div v-if="page.selectedWidget.id == EWidget.None">
           Select a widget first
         </div>
-        <div v-else>
-          <div class="row pb-2">
-            {{ $t('widget.form.selected') }} {{ page.selectedWidget.name }}
-          </div>
+        <div class="full-size" v-else>
           <BoolForm
             v-if="page.selectedWidget.id == EWidget.Boolean"
             v-model="form"
@@ -60,7 +61,6 @@
         </div>
       </div>
     </Container>
-
     <template #footer>
       <Button
         v-if="page.selectedTab > 1"
@@ -73,7 +73,7 @@
         {{ $t('actionGUI.cancel') }}
       </Button>
     </template>
-  </InputCard>
+  </Card>
 </template>
 
 <script setup lang="ts">
@@ -83,7 +83,6 @@ import { onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 // components import
 import Button from '@/components/buttons/Button.vue'
-import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
 import BoolForm from '@/features/dashboard/presentation/components/BoolForm.vue'
 import NumberForm from '@/features/dashboard/presentation/components/NumberForm.vue'
@@ -110,17 +109,18 @@ import Row from '@/components/layout/grid/Row.vue'
 import Col from '@/components/layout/grid/Col.vue'
 import { EBreakpoint } from '@/components/layout/grid/model'
 import WidgetFormCard from '@/features/dashboard/presentation/components/WidgetFormCard.vue'
+import Card from '@/components/cards/Card.vue'
 // props
 const props = defineProps({
   data: {
     type: String,
     default: '',
   },
-  close: {
-    type: Function,
-    default: function () {},
-  },
 })
+const emit = defineEmits<{
+  close: []
+}>()
+
 // data
 const page = reactive(new WidgetFormPage())
 let form = reactive(new Widget())
@@ -144,9 +144,12 @@ function selectWidget(data: IWidgetType) {
 }
 function save() {
   form.set(page.selectedWidget, dashboardID)
+
+  const err = Widget.validate(form)
+  console.log('create w', err)
   const ok = widgetService.createWidget(dashboardID, form)
   if (!ok) return
-  props.close()
+  emit('close')
 }
 // lifeCycle
 onMounted(() => {
@@ -162,5 +165,8 @@ onMounted(() => {
 }
 .widget-card {
   padding: var(--size-100);
+}
+#widget-form {
+  height: 100% !important;
 }
 </style>

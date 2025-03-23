@@ -41,6 +41,7 @@ const classes = computed(() => {
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
+  margin-top: var(--size-100);
 }
 
 /* Alignment classes */

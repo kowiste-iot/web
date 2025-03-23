@@ -45,6 +45,18 @@ export class MeasuresPage extends PageBase {
     this.showModal = false
     this.selected = undefined
   }
+  propertySelected(id: number, data: IMeasure) {
+    this.selected = data
+    switch (id) {
+      case 1:
+        this.showForm = true
+        this.editForm = true
+        break
+      case 2:
+        this.showModal = true
+        break
+    }
+  }
   private createTable() {
     const { t } = useI18n()
 

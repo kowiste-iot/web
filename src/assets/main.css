@@ -43,3 +43,11 @@ body,
   border: 1px solid #ff000080;
   border-radius: 0.6rem;
 }
+
+.full-size{
+  height: 100%;
+  width: 100%;
+}
+.group-form{
+  padding: var(--size-200) !important;
+}

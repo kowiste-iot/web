@@ -1,44 +1,49 @@
 <template>
-  <div class="border rounded h-100 d-flex flex-column">
-    <div class="d-flex w-100 justify-content-center">
-      <slot ></slot>
-    </div>
-    <div class="border-top">
-      <div class="d-flex px-1">
-        <div v-if="data.showLabel" class="flex-fill">{{ data.label }}</div>
-        <FIcon
-          v-if="data.showEmotion"
-          class="pt-1"
-          :class="`text-${
-            data.options.trueEmotion
-              ? !measureCondition
+  <Card>
+    <Flex column>
+      <Flex :justify="EFlexJustify.Center">
+        <slot></slot>
+      </Flex>
+      <div v-if="data.showLabel || data.showEmotion" class="border-top">
+        <Flex>
+          <div v-if="data.showLabel" class="footer-text">{{ data.label }}</div>
+          <FIcon
+            v-if="data.showEmotion"
+            class="footer-icon"
+            :class="`text-${
+              data.trueEmotion
+                ? !measureCondition
+                  ? EColor.Success
+                  : EColor.Danger
+                : measureCondition
                 ? EColor.Success
                 : EColor.Danger
-              : measureCondition
-              ? EColor.Success
-              : EColor.Danger
-          }`"
-          :icon="
-            data.options.trueEmotion
-              ? !measureCondition
+            }`"
+            :icon="
+              data.trueEmotion
+                ? !measureCondition
+                  ? EIcon.Smile
+                  : EIcon.Sad
+                : measureCondition
                 ? EIcon.Smile
                 : EIcon.Sad
-              : measureCondition
-              ? EIcon.Smile
-              : EIcon.Sad
-          "
-          role="button"
-          style="height: 1rem"
-        />
+            "
+            role="button"
+            style="height: 1rem"
+          />
+        </Flex>
       </div>
-    </div>
-  </div>
+    </Flex>
+  </Card>
 </template>
 
 <script setup lang="ts">
-import { EColor } from '@/features/shared/enum/EColor';
-import { EIcon } from '@/features/shared/enum/EIcon';
-import type { IWidgetData } from '@/features/dashboard/domain/widget';
+import { EColor } from '@/features/shared/enum/EColor'
+import { EIcon } from '@/features/shared/enum/EIcon'
+import type { IWidgetData } from '@/features/dashboard/domain/widget'
+import Card from '@/components/cards/Card.vue'
+import Flex from '@/components/layout/Flex.vue'
+import { EFlexJustify } from '@/components/layout/EFlex'
 
 // imports
 // stores import
@@ -47,10 +52,10 @@ import type { IWidgetData } from '@/features/dashboard/domain/widget';
 // other imports
 // props
 interface Props {
-  data: IWidgetData;
-  measureCondition: boolean;
+  data: IWidgetData
+  measureCondition: boolean
 }
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 // data
 // storage calls
 // computed
@@ -59,4 +64,11 @@ const props = defineProps<Props>();
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+.footer-icon {
+  padding-top: var(--size-100);
+}
+.footer-text {
+  flex: 1;
+}
+</style>

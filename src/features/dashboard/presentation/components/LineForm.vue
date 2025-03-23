@@ -30,8 +30,8 @@
         <DropDown
           v-if="model.data.link.length != 0"
           class="col-md-8"
-          optionValue="name"
-          optionLabel="name"
+          valueField="name"
+          labelField="name"
           :placeholder="$t('widget.line.form.measureHolder')"
           :options="measures"
           v-model="model.data.link[0].measure"

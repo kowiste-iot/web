@@ -1,6 +1,11 @@
 <template>
   <div :class="['chip', `chip-${color}`]">
-    <FIcon class="chip-icon" :icon="icon" style="height: var(--size-150)" />
+    <FIcon
+      v-if="icon"
+      class="chip-icon"
+      :icon="icon"
+      style="height: var(--size-150)"
+    />
     {{ label }}
     <span v-if="deletable" class="chip-remove" @click.stop="$emit('remove')"
       >×</span

@@ -1,6 +1,7 @@
 :root {
   /* margin, padding */
   --size-0: 0rem;
+  --size-010: 0.062rem;
   --size-025: 0.125rem;
   --size-050: 0.25rem;
   --size-075: 0.375rem;

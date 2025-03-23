@@ -40,7 +40,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageAsset.properties"
-                @click="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop) => pageAsset.propertySelected(prop.id, data)"
               />
             </template>
           </Column>
@@ -86,7 +86,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageMeasure.properties"
-                @click="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop) => pageMeasure.propertySelected(prop.id, data)"
               />
             </template>
           </Column>
@@ -133,7 +133,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageDevice.properties"
-                @click="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop) => pageDevice.propertySelected(prop.id, data)"
               />
             </template>
           </Column>
@@ -202,10 +202,8 @@ import Column from 'primevue/column'
 import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
-import type { Property } from '@/model/property'
 import AssetForm from '@/views/asset/form/AssetForm.vue'
 import Modal from '@/components/layout/Modal.vue'
-import type { IAsset } from '@/features/asset/domain/asset'
 
 import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
@@ -263,18 +261,7 @@ const devices = computed(() => {
   return deviceStore.devices
 })
 // methods
-function propertySelected(prop: Property, data: IAsset) {
-  pageAsset.selected = data
-  switch (prop.id) {
-    case 1:
-      pageAsset.showForm = true
-      pageAsset.editForm = true
-      break
-    case 2:
-      pageAsset.showModal = true
-      break
-  }
-}
+
 async function deleteAsset() {
   await assetService.deleteAsset(pageAsset.selected!.id!)
   pageAsset.selected = undefined

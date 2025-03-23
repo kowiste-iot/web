@@ -1,6 +1,6 @@
 <template>
-  <Flex column class="custom-card" :justify="EFlexJustify.Between">
-    <div>
+  <Flex column class="custom-card" fullHeight :justify="EFlexJustify.Between">
+    <div class="inner-card">
       <Flex
         v-if="showHeader"
         class="custom-header"
@@ -54,10 +54,10 @@ const props = defineProps<Props>()
 
 <style scoped>
 .custom-card {
+  height: 100%;
   background-color: var(--layout-card);
-
   border-radius: var(--border-md);
-  box-shadow: var(--size-025) var(--size-025) var(--size-025) var(--size-025)
+  box-shadow: var(--size-010) var(--size-010) var(--size-010) var(--size-010)
     var(--layout-card-shadow);
 }
 .custom-header {
@@ -65,9 +65,13 @@ const props = defineProps<Props>()
   border-bottom: var(--border-width) solid var(--border-color);
 }
 .custom-body {
+  height: 100%;
   padding: var(--size-100);
 }
 .custom-footer {
   padding: var(--size-100);
+}
+.inner-card{
+  height: 100%;
 }
 </style>

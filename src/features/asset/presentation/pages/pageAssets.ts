@@ -45,7 +45,18 @@ export class AssetsPage extends PageBase {
     this.showModal = false
     this.selected = undefined
   }
-
+  propertySelected(id: number, data: IAsset) {
+    this.selected = data
+    switch (id) {
+      case 1:
+        this.showForm = true
+        this.editForm = true
+        break
+      case 2:
+        this.showModal = true
+        break
+    }
+  }
   private createTable() {
     const { t } = useI18n()
 
