@@ -69,7 +69,7 @@
         >{{ $t('actionGUI.save') }}</Button
       >
       <div v-else></div>
-      <Button :color="EColor.Secondary" outline @click="close()">
+      <Button :color="EColor.Secondary" outline @click="emit('close')">
         {{ $t('actionGUI.cancel') }}
       </Button>
     </template>
