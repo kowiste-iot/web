@@ -11,7 +11,7 @@
       <Input
         :placeholder="$t('asset.form.nameHolder')"
         type="text"
-        :error="errors.getError('name')"
+        :error="errors?.getError('name')"
         v-model="form.name"
       />
     </Flex>
@@ -22,7 +22,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('asset.form.parentHolder')"
-        :error="errors.getError('parent')"
+        :error="errors?.getError('parent')"
         v-model="selectedParent"
       />
     </Flex>
@@ -83,7 +83,7 @@ const form = reactive<IAsset>({
 })
 const assetStore = useAssetStore()
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IAsset>>(new ValidationError())
+const errors = ref<ValidationError<IAsset> | null>(new ValidationError())
 //service
 const { notificationService } = useBasePage()
 const assetService = new AssetService(
@@ -102,13 +102,14 @@ const availableParents = computed(() => {
 
 // methods
 async function save() {
-  let ok = false
   if (props.edit) {
-    ok = await assetService.updateAsset(form)
+    errors.value = await assetService.updateAsset(form)
   } else {
-    ok = await assetService.createAsset(form)
+    errors.value = await assetService.createAsset(form)
   }
-  if (!ok) return
+  console.log('err', errors.value)
+
+  if (errors.value?.hasErrors()) return
   props.close()
 }
 // lifeCycle
