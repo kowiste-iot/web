@@ -13,7 +13,7 @@
         class="col-md-8"
         :placeholder="$t('user.form.firstNameHolder')"
         type="text"
-        :error="errors.getError('firstName')"
+        :error="errors?.getError('firstName')"
         v-model="form.firstName"
       />
     </div>
@@ -24,7 +24,7 @@
         class="col-md-8"
         :placeholder="$t('user.form.lastNameHolder')"
         type="text"
-        :error="errors.getError('lastName')"
+        :error="errors?.getError('lastName')"
         v-model="form.lastName"
       />
     </div>
@@ -36,7 +36,7 @@
         :placeholder="$t('user.form.emailHolder')"
         type="email"
         :disabled="props.edit"
-        :error="errors.getError('email')"
+        :error="errors?.getError('email')"
         v-model="form.email"
       />
     </div>
@@ -53,10 +53,13 @@
       />
     </div>
     <template #footer>
-      <Button id="admin-user-form-save" :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
-        $t(edit ? 'actionGUI.update' : 'actionGUI.save')
-      }}</Button>
-      <Button :color="EColor.Secondary" outline @click="close()">{{
+      <Button
+        id="admin-user-form-save"
+        :color="edit ? EColor.Warning : EColor.Success"
+        @click="save()"
+        >{{ $t(edit ? 'actionGUI.update' : 'actionGUI.save') }}</Button
+      >
+      <Button :color="EColor.Secondary" outline @click="emit('close')">{{
         $t('actionGUI.cancel')
       }}</Button>
     </template>
@@ -95,11 +98,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  close: {
-    type: Function,
-    default: function () {},
-  },
 })
+const emit = defineEmits<{
+  close: []
+}>()
 // data
 const form = reactive<IUser>({
   ...props.data,
@@ -109,8 +111,8 @@ const form = reactive<IUser>({
 })
 const selectedRoles = ref(new Array<IRole>())
 const roleStore = useRoleStore()
-const errors = ref<ValidationError<IUser>>(new ValidationError())
-  //service
+const errors = ref<ValidationError<IUser> | null>(new ValidationError())
+//service
 const { notificationService } = useBasePage()
 const userService = new UserService(new UserRepository(), notificationService)
 // computed
@@ -120,14 +122,13 @@ const roles = computed(() => {
 
 // methods
 async function save() {
-  let ok = false
   if (props.edit) {
-    ok = await userService.updateUser(form)
+    errors.value = await userService.updateUser(form)
   } else {
-    ok = await userService.createUser(form)
+    errors.value = await userService.createUser(form)
   }
-  if (!ok) return
-  props.close()
+  if (errors.value?.hasErrors()) return
+  emit('close')
 }
 async function refreshData() {
   await roleStore.fetchRoles()

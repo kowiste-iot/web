@@ -120,7 +120,7 @@
             <template #body="{ data }">
               <PropertyDot
                 :data="pageAlert.properties"
-               @click="(prop:Property)=>propertySelected(prop,data)"
+                @click="(prop:Property)=>propertySelected(prop,data)"
               />
             </template>
           </Column>
@@ -135,13 +135,13 @@
         v-if="pageAction.showForm"
         :data="pageAction.selected"
         :edit="pageAction.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
       <AlertForm
         v-if="pageAlert.showForm"
         :data="pageAlert.selected"
         :edit="pageAlert.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
     </SideCard>
   </Modal>

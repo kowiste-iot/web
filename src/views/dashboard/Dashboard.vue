@@ -92,7 +92,7 @@
 
   <Modal v-if="page.show">
     <SideCard :size="12">
-      <WidgetForm :close="() => (page.show = false)" />
+      <WidgetForm @close="() => (page.show = false)" />
     </SideCard>
   </Modal>
 </template>

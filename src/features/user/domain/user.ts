@@ -1,10 +1,14 @@
 // domain/user.ts
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type IError,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { UserValidator } from './userValidator'
 import type { ID } from '@/features/shared/domain/id'
 const itemsToRemove = ['admin']
 
-export interface IUser {
+export interface IUser extends IError {
   id: ID
   firstName: string
   lastName: string
@@ -37,9 +41,15 @@ export class User implements IUser {
 
   static validateField<K extends keyof IUser>(
     field: K,
-    value: IUser[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IUser[K],
+    currentErrors: ValidationError<IUser> | null = null
+  ): ValidationError<IUser> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IUser {

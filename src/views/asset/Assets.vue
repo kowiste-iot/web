@@ -151,19 +151,19 @@
         v-if="pageAsset.showForm"
         :data="pageAsset.selected"
         :edit="pageAsset.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
       <MeasureForm
         v-if="pageMeasure.showForm"
         :data="pageMeasure.selected"
         :edit="pageMeasure.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
       <DeviceForm
         v-if="pageDevice.showForm"
         :data="pageDevice.selected"
         :edit="pageDevice.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
     </SideCard>
   </Modal>

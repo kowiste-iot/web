@@ -1,9 +1,13 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type IError,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { ResourceValidator } from './resourceValidator'
 import type { IScope } from '@/features/scope/domain/scope'
 import type { ID } from '@/features/shared/domain/id'
 
-export interface IResource {
+export interface IResource extends IError {
   id: ID
   name: string
   displayName: string
@@ -30,9 +34,15 @@ export class Resource implements IResource {
 
   static validateField<K extends keyof IResource>(
     field: K,
-    value: IResource[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IResource[K],
+    currentErrors: ValidationError<IResource> | null = null
+  ): ValidationError<IResource> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IResource {

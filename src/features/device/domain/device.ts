@@ -1,7 +1,7 @@
 // features/device/domain/device.ts
 import type { IHasParent } from '@/features/shared/domain/hasParent'
 import { DeviceValidator } from './deviceValidator'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationMapper, type ValidationError } from '@/features/shared/domain/baseValidator'
 import type { ID } from '@/features/shared/domain/id'
 
 export interface IDevice extends IHasParent {
@@ -34,9 +34,15 @@ export class Device implements IDevice {
 
   static validateField<K extends keyof IDevice>(
     field: K,
-    value: IDevice[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IDevice[K],
+    currentErrors: ValidationError<IDevice> | null = null
+  ): ValidationError<IDevice> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IDevice {

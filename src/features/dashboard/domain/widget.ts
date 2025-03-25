@@ -1,10 +1,14 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type IError,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { EWidget } from './EWidget'
 import { WidgetValidator } from './widgetValidator'
 import type { IWidgetType } from '@/model/widget/widgetType'
 import type { ID } from '@/features/shared/domain/id'
 
-export interface IWidget {
+export interface IWidget extends IError {
   id: ID
   dashboardID: ID
   type: EWidget
@@ -76,10 +80,17 @@ export class Widget implements IWidget {
 
   static validateField<K extends keyof IWidget>(
     field: K,
-    value: IWidget[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IWidget[K],
+    currentErrors: ValidationError<IWidget> | null = null
+  ): ValidationError<IWidget> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
+
   set(selected: IWidgetType, dashboardID: string) {
     this.dashboardID = dashboardID
     console.log('gt', selected)

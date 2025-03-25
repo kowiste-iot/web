@@ -1,9 +1,7 @@
-// application/userService.ts
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { User, type IUser, type IUserRepository } from '../domain/user'
-import { useUserStore } from '../stores/useUserStore'
 import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 export class UserService {
   constructor(
@@ -16,11 +14,11 @@ export class UserService {
       const asset = await this.userRepository.findById(id)
       return asset
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch user: ${error.message}`
-          : 'Failed to fetch user'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch user: ' + errors.getError('gError')!
+      )
       return null
     }
   }
@@ -29,62 +27,58 @@ export class UserService {
     try {
       return await this.userRepository.findAll()
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch users: ${error.message}`
-          : 'Failed to fetch users'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch users: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createUser(data: IUser): Promise<boolean> {
+  async createUser(data: IUser): Promise<ValidationError<IUser> | null> {
     try {
       const errors = User.validate(data)
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
 
       const user = new User(data)
       await this.userRepository.create(user)
       this.notificationService.success('User created successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid user data')
-      } else {
-        this.notificationService.error('Failed to create user')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create user: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async updateUser(data: IUser): Promise<boolean> {
+  async updateUser(data: IUser): Promise<ValidationError<IUser> | null> {
     try {
       const errors = User.validate(data)
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
 
       const existingUser = this.getUser(data.id)
       if (!existingUser) throw new Error('User not found')
 
-      const updatedAsset = new User({ ...existingUser, ...data })
+      const updatedUser = new User({ ...existingUser, ...data })
 
-      await this.userRepository.update(updatedAsset)
+      await this.userRepository.update(updatedUser)
       this.notificationService.success('User update successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid user data')
-      } else {
-        this.notificationService.error('Failed to update user')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update user: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
@@ -93,11 +87,12 @@ export class UserService {
       await this.userRepository.delete(id)
       this.notificationService.success('User delete successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete asset: ${error.message}`
-          : 'Failed to delete asset'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete user: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

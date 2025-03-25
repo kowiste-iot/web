@@ -1,4 +1,4 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationMapper, type ValidationError } from '@/features/shared/domain/baseValidator'
 import { MeasureValidator } from './measureValidator'
 import type { IAsset } from '@/features/asset/domain/asset'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
@@ -33,10 +33,17 @@ export class Measure implements IMeasure {
 
   static validateField<K extends keyof IMeasure>(
     field: K,
-    value: IMeasure[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IMeasure[K],
+    currentErrors: ValidationError<IMeasure> | null = null
+  ): ValidationError<IMeasure> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
+
   toJSON(): IMeasure {
     return {
       id: this.id,

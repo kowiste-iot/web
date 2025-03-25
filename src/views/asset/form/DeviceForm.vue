@@ -14,7 +14,7 @@
         <Input
           :placeholder="$t('device.form.nameHolder')"
           type="text"
-          :error="errors.getError('name')"
+          :error="errors?.getError('name')"
           v-model="form.name"
         />
       </div>
@@ -29,7 +29,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('device.form.parentHolder')"
-        :error="errors.getError('parent')"
+        :error="errors?.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -41,9 +41,12 @@
           type="textarea"
           :placeholder="$t('device.form.descriptionHolder')"
           v-model="form.description"
-          :class="{ 'is-invalid': errors.getError('description') }"
+          :class="{ 'is-invalid': errors?.getError('description') }"
         />
-        <div v-if="errors.getError('description')" class="invalid-feedback d-block">
+        <div
+          v-if="errors?.getError('description')"
+          class="invalid-feedback d-block"
+        >
           {{ errors.getError('description') }}
         </div>
       </div>
@@ -53,7 +56,7 @@
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">
         {{ $t(edit ? 'actionGUI.update' : 'actionGUI.save') }}
       </Button>
-      <Button :color="EColor.Secondary" outline @click="close()">
+      <Button :color="EColor.Secondary" outline @click="emit('close')">
         {{ $t('actionGUI.cancel') }}
       </Button>
     </template>
@@ -89,12 +92,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  close: {
-    type: Function,
-    default: () => {},
-  },
 })
-
+const emit = defineEmits<{
+  close: []
+}>()
 // form and validation state
 const form = reactive<IDevice>({
   ...props.data,
@@ -103,7 +104,7 @@ const form = reactive<IDevice>({
   description: props.data?.description ?? '',
 })
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IDevice>>(new ValidationError())
+const errors = ref<ValidationError<IDevice> | null>(new ValidationError())
 
 // services
 const notificationService = new NotificationService(useNotificationStore())
@@ -120,14 +121,13 @@ const assets = computed(() => {
 
 // methods
 async function save() {
-  let ok = false
   if (props.edit) {
-    ok = await deviceService.updateDevice(form)
+    errors.value = await deviceService.updateDevice(form)
   } else {
-    ok = await deviceService.createDevice(form)
+    errors.value = await deviceService.createDevice(form)
   }
-  if (!ok) return
-  props.close()
+  if (errors.value?.hasErrors()) return
+  emit('close')
 }
 // watch
 watch(

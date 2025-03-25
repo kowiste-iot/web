@@ -6,6 +6,7 @@ import { useDeviceStore } from '../stores/useDeviceStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 const assetStore = useAssetStore()
 
@@ -20,11 +21,11 @@ export class DeviceService {
       const device = await this.deviceRepository.findById(id)
       return device
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch device: ${error.message}`
-          : 'Failed to fetch device'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IDevice>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch device: ' + errors.getError('gError')!
+      )
       return null
     }
   }
@@ -34,41 +35,41 @@ export class DeviceService {
       const devices = await this.deviceRepository.findAll()
       return SharedAssetMapper.setParentNames(devices, assetStore.assets)
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch devices: ${error.message}`
-          : 'Failed to fetch devices'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IDevice>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch device: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createDevice(data: IDevice): Promise<boolean> {
+  async createDevice(data: IDevice): Promise<ValidationError<IDevice> | null> {
     try {
       const errors = Device.validate(data)
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
 
       const device = new Device(data)
       await this.deviceRepository.create(device)
       this.notificationService.success('Device created successfully')
-      return true
+      return null
     } catch (error) {
-      this.notificationService.error('Failed to create device')
-      return false
+      const errors = ValidationError.fromRequest<IDevice>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create device: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async updateDevice(data: IDevice): Promise<boolean> {
+  async updateDevice(data: IDevice): Promise<ValidationError<IDevice> | null> {
     try {
       const errors = Device.validate(data)
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
 
       const existingDevice = await useDeviceStore().getDeviceById(data.id)
@@ -79,14 +80,14 @@ export class DeviceService {
       const device = new Device({ ...existingDevice, ...data })
       await this.deviceRepository.update(device)
       this.notificationService.success('Device updated successfully')
-      return true
+      return null
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to update device: ${error.message}`
-          : 'Failed to update device'
-      this.notificationService.error(msg)
-      return false
+      const errors = ValidationError.fromRequest<IDevice>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update device: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
@@ -95,11 +96,12 @@ export class DeviceService {
       await this.deviceRepository.delete(id)
       this.notificationService.success('Device deleted successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete device: ${error.message}`
-          : 'Failed to delete device'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IDevice>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete device: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

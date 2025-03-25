@@ -30,7 +30,7 @@
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
         $t(edit ? 'actionGUI.update' : 'actionGUI.save')
       }}</Button>
-      <Button :color="EColor.Secondary" outline @click="close()">{{
+      <Button :color="EColor.Secondary" outline @click="emit('close')">{{
         $t('actionGUI.cancel')
       }}</Button>
     </template>
@@ -69,11 +69,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  close: {
-    type: Function,
-    default: function () {},
-  },
 })
+const emit = defineEmits<{
+  close: []
+}>()
 // data
 const form = reactive<IAsset>({
   ...props.data,
@@ -107,10 +106,9 @@ async function save() {
   } else {
     errors.value = await assetService.createAsset(form)
   }
-  console.log('err', errors.value)
 
   if (errors.value?.hasErrors()) return
-  props.close()
+  emit('close')
 }
 // lifeCycle
 onMounted(() => {

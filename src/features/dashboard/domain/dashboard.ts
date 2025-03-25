@@ -1,4 +1,7 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { DashboardValidator } from './dashboardValidator'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
 import type { ID } from '@/features/shared/domain/id'
@@ -32,9 +35,15 @@ export class Dashboard implements IDashboard {
 
   static validateField<K extends keyof IDashboard>(
     field: K,
-    value: IDashboard[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IDashboard[K],
+    currentErrors: ValidationError<IDashboard> | null = null
+  ): ValidationError<IDashboard> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
   toJSON(): IDashboard {
     return {

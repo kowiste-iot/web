@@ -52,7 +52,7 @@
       <UserForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
     </SideCard>
   </Modal>

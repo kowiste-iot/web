@@ -1,4 +1,4 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationMapper, type ValidationError } from '@/features/shared/domain/baseValidator'
 import { AlertValidator } from './alertValidator'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
 import type { ID } from '@/features/shared/domain/id'
@@ -39,9 +39,15 @@ export class Alert implements IAlert {
 
   static validateField<K extends keyof IAlert>(
     field: K,
-    value: IAlert[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IAlert[K],
+    currentErrors: ValidationError<IAlert> | null = null
+  ): ValidationError<IAlert> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IAlert {

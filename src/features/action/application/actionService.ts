@@ -1,10 +1,10 @@
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Action, type IAction, type IActionRepository } from '../domain/action'
 import { useActionStore } from '../stores/useActionStore'
 import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
 import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 const assetStore = useAssetStore()
 export class ActionService {
@@ -18,11 +18,11 @@ export class ActionService {
       const action = await this.actionRepository.findById(id)
       return action
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch action: ${error.message}`
-          : 'Failed to fetch action'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch action: ' + errors.getError('gError')!
+      )
       return null
     }
   }
@@ -32,34 +32,32 @@ export class ActionService {
       const actions = await this.actionRepository.findAll()
       return SharedAssetMapper.setParentNames(actions, assetStore.assets)
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch actions: ${error.message}`
-          : 'Failed to fetch actions'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch actions: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createAction(data: IAction): Promise<boolean> {
+  async createAction(data: IAction): Promise<ValidationError<IAction> | null> {
     try {
       const errors = Action.validate(data)
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
       const action = new Action(data)
       await this.actionRepository.create(action)
       this.notificationService.success('Action created successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid action data')
-      } else {
-        this.notificationService.error('Failed to create action')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create action: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
@@ -68,13 +66,11 @@ export class ActionService {
     name: string
     parent: ID
     description?: string
-  }): Promise<boolean> {
+  }): Promise<ValidationError<IAction> | null> {
     try {
       const errors = Action.validate(data)
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
 
       const existingAction = await useActionStore().getActionById(data.id)
@@ -89,14 +85,14 @@ export class ActionService {
 
       await this.actionRepository.update(updatedAction)
       this.notificationService.success('Action updated successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid action data')
-      } else {
-        this.notificationService.error('Failed to update action')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update action: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
@@ -105,11 +101,12 @@ export class ActionService {
       await this.actionRepository.delete(id)
       this.notificationService.success('Action deleted successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete action: ${error.message}`
-          : 'Failed to delete action'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete action: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

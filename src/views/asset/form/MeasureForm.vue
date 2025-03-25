@@ -13,7 +13,7 @@
       <Input
         :placeholder="$t('measure.form.nameHolder')"
         type="text"
-        :error="errors.getError('name')"
+        :error="errors?.getError('name')"
         v-model="form.name"
       />
     </Flex>
@@ -24,7 +24,7 @@
         labelField="name"
         valueField="id"
         :placeholder="$t('measure.form.parentHolder')"
-        :error="errors.getError('parent')"
+        :error="errors?.getError('parent')"
         v-model="selectedParent"
       />
     </Flex>
@@ -33,7 +33,7 @@
       <InputText
         placeholder=""
         :rows="5"
-        :error="errors.getError('description')"
+        :error="errors?.getError('description')"
         v-model="form.description"
       />
     </Flex>
@@ -43,7 +43,7 @@
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
         $t(edit ? 'actionGUI.update' : 'actionGUI.save')
       }}</Button>
-      <Button :color="EColor.Secondary" outline @click="close()">{{
+      <Button :color="EColor.Secondary" outline @click="emit('close')">{{
         $t('actionGUI.cancel')
       }}</Button>
     </template>
@@ -84,11 +84,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  close: {
-    type: Function,
-    default: function () {},
-  },
 })
+const emit = defineEmits<{
+  close: []
+}>()
 // data
 const form = reactive<IMeasure>({
   ...props.data,
@@ -98,7 +97,7 @@ const form = reactive<IMeasure>({
 })
 const selectedParent = ref('')
 
-const errors = ref<ValidationError<IMeasure>>(new ValidationError())
+const errors = ref<ValidationError<IMeasure> | null>(new ValidationError())
 
 // service
 const { notificationService } = useBasePage()
@@ -116,14 +115,14 @@ const assets = computed(() => {
 
 // methods
 async function save() {
-  let ok = false
   if (props.edit) {
-    ok = await measureService.updateMeasure(form)
+    errors.value = await measureService.updateMeasure(form)
   } else {
-    ok = await measureService.createMeasure(form)
+    errors.value = await measureService.createMeasure(form)
   }
-  if (!ok) return
-  props.close()
+
+  if (errors.value?.hasErrors()) return
+  emit('close')
 }
 // lifeCycle
 onMounted(() => {

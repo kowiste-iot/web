@@ -1,4 +1,4 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationMapper, type ValidationError } from '@/features/shared/domain/baseValidator'
 import type { IHasParent } from '@/features/shared/domain/hasParent'
 import type { ID } from '@/features/shared/domain/id'
 import { ActionValidator } from './actionValidator'
@@ -36,9 +36,15 @@ export class Action implements IAction {
 
   static validateField<K extends keyof IAction>(
     field: K,
-    value: IAction[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IAction[K],
+    currentErrors: ValidationError<IAction> | null = null
+  ): ValidationError<IAction> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
   toJSON(): IAction {
     return {

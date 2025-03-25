@@ -1,5 +1,6 @@
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { type IScope, type IScopeRepository } from '../domain/scope'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 export class ScopeService {
   constructor(
@@ -12,11 +13,11 @@ export class ScopeService {
       const scopes = await this.scopeRepository.findAll()
       return scopes
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch scopes: ${error.message}`
-          : 'Failed to fetch scopes'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IScope>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch scopes: ' + errors.getError('gError')!
+      )
       return []
     }
   }

@@ -1,8 +1,7 @@
-// features/role/application/roleService.ts
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { Role, type IRole, type IRoleRepository } from '../domain/role'
 import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 export class RoleService {
   constructor(
@@ -15,11 +14,11 @@ export class RoleService {
       const role = await this.roleRepository.findById(id)
       return role
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch role: ${error.message}`
-          : 'Failed to fetch role'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IRole>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch role: ' + errors.getError('gError')!
+      )
       return null
     }
   }
@@ -29,35 +28,33 @@ export class RoleService {
       const roles = await this.roleRepository.findAll()
       return roles
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch roles: ${error.message}`
-          : 'Failed to fetch roles'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IRole>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch roles: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createRole(data: IRole): Promise<boolean> {
+  async createRole(data: IRole): Promise<ValidationError<IRole> | null> {
     try {
       const errors = Role.validate(data)
 
       if (errors.hasErrors()) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+        return errors
       }
       const role = new Role(data)
       await this.roleRepository.create(role)
       this.notificationService.success('Role created successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid role data')
-      } else {
-        this.notificationService.error('Failed to create role')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IRole>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create role: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
@@ -66,11 +63,12 @@ export class RoleService {
       await this.roleRepository.delete(id)
       this.notificationService.success('Role deleted successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete role: ${error.message}`
-          : 'Failed to delete role'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IRole>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete role: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

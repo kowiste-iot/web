@@ -1,5 +1,5 @@
 <template>
-  <Card class="mt-5 ">
+  <Card class="mt-5">
     <CardHeader
       :headerIcon="EIcon.Dashboard"
       :headerText="'Dasnboard'"
@@ -53,7 +53,7 @@
       <DashboardForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="closeForm"
+        @close="closeForm"
       />
     </SideCard>
   </Modal>

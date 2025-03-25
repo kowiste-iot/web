@@ -14,7 +14,7 @@
         class="col-md-8"
         :placeholder="$t('dashboard.form.nameHolder')"
         type="text"
-        :error="errors.getError('name')"
+        :error="errors?.getError('name')"
         v-model="form.name"
       />
     </div>
@@ -26,7 +26,7 @@
         idField="id"
         labelField="name"
         :placeholder="$t('dashboard.form.parentHolder')"
-        :error="errors.getError('parent')"
+        :error="errors?.getError('parent')"
         v-model="selectedParent"
       />
     </div>
@@ -34,7 +34,7 @@
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
         $t(edit ? 'actionGUI.update' : 'actionGUI.save')
       }}</Button>
-      <Button :color="EColor.Secondary" outline @click="close()">{{
+      <Button :color="EColor.Secondary" outline @click="emit('close')">{{
         $t('actionGUI.cancel')
       }}</Button>
     </template>
@@ -79,11 +79,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  close: {
-    type: Function,
-    default: function () {},
-  },
 })
+const emit = defineEmits<{
+  close: []
+}>()
 // data
 const form = reactive<IDashboard>({
   ...props.data,
@@ -91,7 +90,7 @@ const form = reactive<IDashboard>({
   parent: props.data?.parent ?? '',
   description: props.data?.description ?? '',
 })
-const errors = ref<ValidationError<IDashboard>>(new ValidationError())
+const errors = ref<ValidationError<IDashboard> | null>(new ValidationError())
 const selectedParent = ref({} as IAsset)
 
 // service
@@ -109,14 +108,13 @@ const assets = computed(() => {
 
 // methods
 async function save() {
-  let ok = false
   if (props.edit) {
-    ok = await dashboardService.updateDashboard(form)
+    errors.value = await dashboardService.updateDashboard(form)
   } else {
-    ok = await dashboardService.createDashboard(form)
+    errors.value = await dashboardService.createDashboard(form)
   }
-  if (!ok) return
-  props.close()
+  if (errors.value?.hasErrors()) return
+  emit('close')
 }
 // lifeCycle
 onMounted(() => {

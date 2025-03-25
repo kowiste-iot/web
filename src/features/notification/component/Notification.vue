@@ -84,12 +84,11 @@ notifications.push(
 
 // methods
 function toggleVisibility() {
-  console.log('sf')
-
   isVisible.value = !isVisible.value
 }
 // lifeCycle
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

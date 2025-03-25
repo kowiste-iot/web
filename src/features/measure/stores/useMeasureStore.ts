@@ -27,7 +27,7 @@ export const useMeasureStore = defineStore('measureStore', {
         new NotificationService(useNotificationStore()),
         useAssetStore()
       )
-      this.currentMeasure = await measureService.fetchMeasure(id)
+      this.currentMeasure = await measureService.getMeasure(id)
     },
     async fetchMeasures() {
       const measureService = new MeasureService(
@@ -35,7 +35,7 @@ export const useMeasureStore = defineStore('measureStore', {
         new NotificationService(useNotificationStore()),
         useAssetStore()
       )
-      this.measures = await measureService.fetchMeasures()
+      this.measures = await measureService.getMeasures()
     },
   },
 })
