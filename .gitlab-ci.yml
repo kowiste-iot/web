@@ -18,7 +18,6 @@ github-web-sync:
 
     # Setup and push to GitHub
     - git remote remove github || true
-    - git remote -vv
     - git remote add github "https://${GITHUB_TOKEN}@github.com/kowiste-iot/web.git"
     - |
       if ! git push -u github public:main --force; then
