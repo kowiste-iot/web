@@ -25,12 +25,12 @@ export class DashboardsPage extends PageBase {
       {
         id: 1,
         icon: EIcon.Edit,
-        name: t('action.edit'),
+        name: t('actionGUI.edit'),
       },
       {
         id: 2,
         icon: EIcon.Delete,
-        name: t('action.delete'),
+        name: t('actionGUI.delete'),
       },
     ]
     this.showForm = false
@@ -44,10 +44,10 @@ export class DashboardsPage extends PageBase {
     return {
       id: new Columns('ID', 'id'),
       name: new Columns(t('dashboard.table.name'), 'name'),
-      asset: new Columns(t('dashboard.table.parent'), 'parent'),
+      asset: new Columns(t('dashboard.table.parent'), 'parentName'),
     }
   }
-  closeForm() {
+  reset() {
     this.showForm = false
     this.editForm = false
   }

@@ -1,5 +1,7 @@
+import type { ID } from "@/features/shared/domain/id"
+
 export interface ITenant {
-  id: string
+  id: ID
   name: string
   lastAccessed: Date
 }

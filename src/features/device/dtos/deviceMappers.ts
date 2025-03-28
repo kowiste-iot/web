@@ -9,6 +9,7 @@ export class DeviceMapper extends BaseMapper {
       id: raw.id ? raw.id : '',
       name: raw.name,
       parent: raw.parent,
+      description:raw.description,
       updatedAt: raw.updated_at ? new Date(raw.updated_at) : undefined,
     })
   }

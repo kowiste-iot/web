@@ -1,14 +1,17 @@
 <template>
-  <TabletCard class="mt-5">
+  <Card class="mt-5">
+    <CardHeader
+      :headerIcon="EIcon.Dashboard"
+      :headerText="'Dasnboard'"
+      :buttonText="'Dashboard'"
+      @click="() => (page.showForm = true)"
+    />
     <DataTable :value="dashboards">
       <Column style="width: 5px">
         <template #body="{ data }">
-          <Button
-            :color="EColor.Primary"
-            small
-            @click="router.push('/dashboard/' + data.id)"
-            >{{ $t('dashboard.goto') }}</Button
-          >
+          <Button :color="EColor.Primary" small @click="goTo(data.id)">{{
+            $t('dashboard.goto')
+          }}</Button>
         </template>
       </Column>
       <Column
@@ -38,30 +41,19 @@
         <template #body="{ data }">
           <PropertyDot
             :data="page.properties"
-            :onClick="(prop:Property)=>propertySelected(prop,data)"
+            @click="(prop:Property)=>propertySelected(prop,data)"
           />
         </template>
       </Column>
     </DataTable>
-  </TabletCard>
-  <div
-    class="d-flex flex-column"
-    style="position: fixed; top: 4rem; right: 1rem"
-  >
-    <FIcon
-      :class="`text-${EColor.Success}`"
-      :icon="EIcon.Add"
-      role="button"
-      style="height: 1.5rem"
-      @click="() => (page.showForm = true)"
-    />
-  </div>
-  <Modal v-if="page.showForm">
-    <SideCard class="col-12 col-sm-10 col-md-6 col-lg-4">
+  </Card>
+
+  <Modal v-if="page.showForm" @cancel="closeForm">
+    <SideCard :size="4">
       <DashboardForm
         :data="page.selected"
         :edit="page.editForm"
-        :close="() => page.closeForm()"
+        @close="closeForm"
       />
     </SideCard>
   </Modal>
@@ -69,9 +61,9 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
-    :onAction="deleteDashboard"
-    :onCancel="
+    :actionText="$t('actionGUI.delete')"
+    @action="deleteDashboard"
+    @cancel="
       () => {
         page.showModal = false
       }
@@ -83,11 +75,10 @@
 
 <script setup lang="ts">
 // imports
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 // stores import
 
 // components import
-import TabletCard from '@/components/cards/TabletCard.vue'
 import DataTable from '@/components/table/DefaulTable.vue'
 import Column from 'primevue/column'
 import Button from '@/components/buttons/Button.vue'
@@ -99,23 +90,24 @@ import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import router from '@/router'
+import { getRouter } from '@/router'
 import type { Property } from '@/model/property'
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import { DashboardsPage } from '@/features/dashboard/presentation/pages/pageDashboards'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import type { IDashboard } from '@/features/dashboard/domain/dashboard'
 import { useDashboardStore } from '@/features/dashboard/stores/useDashboardStore'
 import { DashboardService } from '@/features/dashboard/application/dashboardService'
 import { DashboardRepository } from '@/features/dashboard/repository/dashboardRepository'
 import { useBasePage } from '@/composable/useBasePage'
+import Card from '@/components/cards/Card.vue'
+import CardHeader from '@/components/cards/CardHeader.vue'
 // other imports
 // props
 // data
-const page = ref(new DashboardsPage())
-
+const page = reactive(new DashboardsPage())
 // service
-const { notificationService } = useBasePage(page.value.title)
+const { notificationService } = useBasePage(page.title)
 const dashboardService = new DashboardService(
   new DashboardRepository(),
   notificationService
@@ -128,28 +120,39 @@ const dashboards = computed(() => {
 })
 // methods
 function propertySelected(prop: Property, data: IDashboard) {
-  page.value.selected = data
+  page.selected = data
   switch (prop.id) {
     case 1:
-      page.value.showForm = true
-      page.value.editForm = true
+      page.showForm = true
+      page.editForm = true
       break
     case 2:
-      page.value.showModal = true
+      page.showModal = true
 
       break
   }
 }
-function deleteDashboard() {
-  dashboardService.deleteDashboard(page.value.selected?.id!)
-  page.value.selected = undefined
-  page.value.showModal = false
+async function deleteDashboard() {
+  await dashboardService.deleteDashboard(page.selected?.id!)
+  await refreshData()
+  page.selected = undefined
+  page.showModal = false
+}
+function goTo(id: string) {
+  getRouter().push('/dashboard/' + id)
+}
+function closeForm() {
+  refreshData()
+  page.reset()
+}
+async function refreshData() {
+  await dashboardStore.fetchDashboards()
 }
 // lifeCycle
-// watch
 onMounted(() => {
-  dashboardStore.fetchDashboards()
+  refreshData()
 })
+// watch
 </script>
 
 <style scoped></style>

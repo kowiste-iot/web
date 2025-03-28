@@ -5,6 +5,7 @@ export enum EColor {
   Success = 'success',
   Danger = 'danger',
   Warning = 'warning',
+  Tertiary = 'tertiary',
   Info = 'info',
   Dark = 'dark',
   Light = 'light',

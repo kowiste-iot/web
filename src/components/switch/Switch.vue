@@ -3,7 +3,11 @@
     type="button"
     :class="[
       'switch-button',
-      { 'switch-checked': modelValue, 'switch-disabled': disabled },
+      { 
+        'switch-checked': modelValue, 
+        'switch-disabled': disabled,
+        'switch-small': compact
+      },
     ]"
     :style="switchStyle"
     @click="handleClick"
@@ -14,11 +18,11 @@
       <span class="switch-handle"></span>
       <!-- Left icon container -->
       <span class="icon-container icon-left">
-        <FIcon class="switch-icon" :icon="props.onIcon" />
+        <FIcon v-if="!noIcon" class="switch-icon" :icon="props.onIcon" />
       </span>
       <!-- Right icon container -->
       <span class="icon-container icon-right">
-        <FIcon class="switch-icon" :icon="props.offIcon" />
+        <FIcon v-if="!noIcon" class="switch-icon" :icon="props.offIcon" />
       </span>
     </div>
   </button>
@@ -31,59 +35,31 @@ import { computed } from 'vue'
 const modelValue = defineModel<boolean>({ default: false })
 
 interface Props {
-  width?: string
   onColor?: string
   offColor?: string
   handleColor?: string
   onIcon?: string
   offIcon?: string
+  noIcon?: boolean
   disabled?: boolean
-  onChange?: Function
+  compact?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  width: '5rem', // Default width in rem
   onColor: '#4ADE80',
   offColor: '#EF4444',
   handleColor: '#FFFFFF',
   onIcon: EIcon.Smile,
   offIcon: EIcon.Sad,
   disabled: false,
-  onChange: function () {},
+  compact: false,
 })
 
-// Helper function to ensure rem units
-const ensureRem = (value: string) => {
-  // If the value already includes a unit, convert it to rem
-  if (value.includes('px')) {
-    return `${parseFloat(value) / 16}rem`
-  }
-  if (!value.includes('rem')) {
-    return `${value}rem`
-  }
-  return value
-}
-
-// Compute all dimensions based on the provided width
-const dimensions = computed(() => {
-  const widthInRem = ensureRem(props.width)
-  const width = parseFloat(widthInRem)
-
-  return {
-    width: `${width}rem`,
-    height: `${width * 0.4}rem`, // Increased to 40% of width
-    handleSize: `${width * 0.34}rem`, // Proportionally increased by 60%
-    handleSpacing: `${width * 0.0304}rem`, // Proportionally increased by 60%
-    iconSize: `${width * 0.2}rem`, // Proportionally increased by 60%
-  }
-})
+const emit = defineEmits<{
+  change: []
+}>()
 
 const switchStyle = computed(() => ({
-  '--switch-width': dimensions.value.width,
-  '--switch-height': dimensions.value.height,
-  '--handle-size': dimensions.value.handleSize,
-  '--handle-spacing': dimensions.value.handleSpacing,
-  '--icon-size': dimensions.value.iconSize,
   '--on-color': props.onColor,
   '--off-color': props.offColor,
   '--handle-color': props.handleColor,
@@ -92,7 +68,7 @@ const switchStyle = computed(() => ({
 const handleClick = () => {
   if (!props.disabled) {
     modelValue.value = !modelValue.value
-    props.onChange()
+    emit('change')
   }
 }
 </script>
@@ -100,12 +76,17 @@ const handleClick = () => {
 <style scoped>
 .switch-button {
   position: relative;
-  width: var(--switch-width);
-  height: var(--switch-height);
+  width: 5rem;
+  height: 2rem;
   padding: 0;
   border: none;
   cursor: pointer;
   background: none;
+}
+
+.switch-small {
+  width: 3.5rem;
+  height: 1.4rem;
 }
 
 .switch-container {
@@ -123,44 +104,72 @@ const handleClick = () => {
 
 .switch-handle {
   position: absolute;
-  top: var(--handle-spacing);
-  left: var(--handle-spacing);
-  width: var(--handle-size);
-  height: var(--handle-size);
+  top: 0.15rem;
+  left: 0.15rem;
+  width: 1.7rem;
+  height: 1.7rem;
   border-radius: 50%;
   background-color: var(--handle-color);
   transition: transform 0.3s;
 }
 
+.switch-small .switch-handle {
+  top: 0.1rem;
+  left: 0.1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
 .switch-checked .switch-handle {
-  transform: translateX(
-    calc(var(--switch-width) - var(--handle-size) - 2 * var(--handle-spacing))
-  );
+  transform: translateX(3rem);
+}
+
+.switch-small.switch-checked .switch-handle {
+  transform: translateX(2.1rem);
 }
 
 .icon-container {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: var(--handle-size);
-  height: var(--handle-size);
+  width: 1.7rem;
+  height: 1.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   transition: opacity 0.3s;
 }
+
+.switch-small .icon-container {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
 .icon-left {
-  left: var(--handle-spacing);
+  left: 0.15rem;
+}
+
+.switch-small .icon-left {
+  left: 0.1rem;
 }
 
 .icon-right {
-  right: var(--handle-spacing);
+  right: 0.15rem;
+}
+
+.switch-small .icon-right {
+  right: 0.1rem;
 }
 
 .switch-icon {
-  width: var(--icon-size);
-  height: var(--icon-size);
+  width: 1rem;
+  height: 1rem;
+}
+
+.switch-small .switch-icon {
+  width: 0.7rem;
+  height: 0.7rem;
 }
 
 .switch-disabled {

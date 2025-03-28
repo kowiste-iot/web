@@ -1,43 +1,34 @@
 <template>
-  <InputCard class="h-100 forms" showHeader showFooter>
-    <template #header
-      >{{ page.title }}
-
-      <Tabs :tabs="page.tabs" :onChange="(id:number)=>page.changeTab(id)">
+  <Card id="widget-form" showHeader showFooter>
+    <template #header>
+      {{ page.title }}
+      <Tabs :tabs="page.tabs" @change="(id:number)=>page.changeTab(id)">
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
     </template>
-    <div class="h-100 w-100 container">
-      <div v-if="page.selectedTab == 1" class="row overflow-auto">
-        <div v-for="widget in page.widgets" class="col-lg-3 col-md-4 col-xs-6">
-          <div role="button" @click="selectWidget(widget)">
-            <div
-              class="border border-2 rounded box p-3 m-3 d-flex flex-column justify-content-center"
-            >
-              <FIcon
-                class="mb-2 opacity-50"
-                :class="`text-${EColor.Secondary}`"
-                :icon="widget.icon"
-                style="height: 5rem"
-              />
-              <div class="">
-                <div class="text-start fw-bold" style="font-size: 1.2rem">
-                  {{ widget.name }}
-                </div>
-                <div class="text-center">{{ widget.description }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-else>
+    <Container>
+      <Row
+        id="widget-selection-card"
+        v-if="page.selectedTab == 1"
+        class="row-widget"
+      >
+        <Col
+          v-for="widget in page.widgets"
+          :breakpoint="EBreakpoint.LG"
+          :size="3"
+        >
+          <WidgetFormCard
+            class="widget-card"
+            :data="widget"
+            @click="selectWidget"
+          />
+        </Col>
+      </Row>
+      <div class="full-size" v-else>
         <div v-if="page.selectedWidget.id == EWidget.None">
           Select a widget first
         </div>
-        <div v-else>
-          <div class="row pb-2">
-            {{ $t('widget.form.selected') }} {{ page.selectedWidget.name }}
-          </div>
+        <div class="full-size" v-else>
           <BoolForm
             v-if="page.selectedWidget.id == EWidget.Boolean"
             v-model="form"
@@ -68,39 +59,37 @@
           />
         </div>
       </div>
-    </div>
-
+    </Container>
     <template #footer>
       <Button
         v-if="page.selectedTab > 1"
         :color="EColor.Success"
         @click="save"
-        >{{ $t('action.save') }}</Button
+        >{{ $t('actionGUI.save') }}</Button
       >
       <div v-else></div>
-      <Button :color="EColor.Secondary" outline @click="close()">
-        {{ $t('action.cancel') }}
+      <Button :color="EColor.Secondary" outline @click="emit('close')">
+        {{ $t('actionGUI.cancel') }}
       </Button>
     </template>
-  </InputCard>
+  </Card>
 </template>
 
 <script setup lang="ts">
 // imports
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 // stores import
 import { useRoute } from 'vue-router'
 // components import
 import Button from '@/components/buttons/Button.vue'
-import InputCard from '@/components/cards/Card.vue'
 import Tabs from '@/components/tab/Tabs.vue'
-import BoolForm from '@/views/dashboard/card/BoolForm.vue'
-import NumberForm from '@/views/dashboard/card/NumberForm.vue'
-import GaugeForm from '@/views/dashboard/card/GaugeForm.vue'
-import LineForm from '@/views/dashboard/card/LineForm.vue'
-import BarForm from '@/views/dashboard/card/BarForm.vue'
-import PieForm from '@/views/dashboard/card/PieForm.vue'
-import TextForm from '@/views/dashboard/card/TextForm.vue'
+import BoolForm from '@/features/dashboard/presentation/components/BoolForm.vue'
+import NumberForm from '@/features/dashboard/presentation/components/NumberForm.vue'
+import GaugeForm from '@/features/dashboard/presentation/components/GaugeForm.vue'
+import LineForm from '@/features/dashboard/presentation/components/LineForm.vue'
+import BarForm from '@/features/dashboard/presentation/components/BarForm.vue'
+import PieForm from '@/features/dashboard/presentation/components/PieForm.vue'
+import TextForm from '@/features/dashboard/presentation/components/TextForm.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
@@ -112,21 +101,47 @@ import { WidgetService } from '@/features/dashboard/application/widgetService'
 import { WidgetRepository } from '@/features/dashboard/repository/widgetRepository'
 import { WidgetFormPage } from '@/features/dashboard/presentation/pages/pageWidgetForm'
 import type { IWidgetType } from '@/model/widget/widgetType'
-import type { IWidget } from '@/features/dashboard/domain/widget'
+import {
+  type IWidget,
+  type IWidgetData,
+} from '@/features/dashboard/domain/widget'
+import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
+import Container from '@/components/layout/Container.vue'
+import Row from '@/components/layout/grid/Row.vue'
+import Col from '@/components/layout/grid/Col.vue'
+import { EBreakpoint } from '@/components/layout/grid/model'
+import WidgetFormCard from '@/features/dashboard/presentation/components/WidgetFormCard.vue'
+import Card from '@/components/cards/Card.vue'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
-  close: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  data?: IWidget
+  edit: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  edit: false,
 })
+const emit = defineEmits<{
+  close: []
+}>()
+
 // data
-const page = ref(new WidgetFormPage())
-let form = reactive({} as IWidget)
+const page = reactive(new WidgetFormPage())
+
+const form = reactive<IWidget>({
+  ...props.data,
+  id: props.data?.id ?? '',
+  dashboardID: props.data?.dashboardID ?? '',
+  type: props.data?.type ?? EWidget.Boolean,
+  i: props.data?.i ?? 0,
+  x: props.data?.x ?? 0,
+  y: props.data?.y ?? 0,
+  w: props.data?.w ?? 4,
+  h: props.data?.h ?? 3,
+  data: props.data?.data ?? ({ options: {} } as IWidgetData),
+})
+const errors = ref<ValidationError<IWidget> | null>(new ValidationError())
 
 // service
 const { notificationService } = useBasePage()
@@ -136,22 +151,53 @@ const widgetService = new WidgetService(
 )
 // storage calls
 const route = useRoute()
+const measureStore = useMeasureStore()
 
 const dashboardID = getParam(route.params.did)
-//form.set(page.value.selectedWidget, dashboardID)
 // computed
 // methods
 function selectWidget(data: IWidgetType) {
-  page.value.changeTab(2)
-  page.value.selectedWidget = data
+  page.changeTab(2)
+  page.selectedWidget = data
 }
-function save() {
-  //form.set(page.value.selectedWidget, dashboardID)
-  widgetService.createWidget(form)
-  props.close()
+async function save() {
+  form.dashboardID = dashboardID
+  errors.value = await widgetService.createWidget(dashboardID, form)
+  if (errors.value?.hasErrors()) return
+  emit('close')
 }
 // lifeCycle
+onMounted(() => {
+  measureStore.fetchMeasures()
+})
 // watch
+watch(
+  () => props.edit,
+  (edit) => {
+    console.log('hi')
+
+    //pass to true
+    if (edit) {
+      console.log('hi1')
+
+      const found = page.widgets.find((widget) => widget.id == props.data?.type)
+      if (!found) return
+      selectWidget(found)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
-<style scoped></style>
+<style scoped>
+.row-widget {
+  overflow-y: auto;
+  margin-top: var(--size-400);
+}
+.widget-card {
+  padding: var(--size-100);
+}
+#widget-form {
+  height: 100% !important;
+}
+</style>

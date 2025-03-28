@@ -1,0 +1,197 @@
+{
+  "action": {
+    "save": "Guardar",
+    "update": "Actualizar",
+    "edit": "Editar",
+    "delete": "Borrar",
+    "cancel": "Cancelar"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "asset": "Activos",
+    "measure": "Medidas",
+    "device": "Dispositivos",
+    "process": {
+      "parent": "Procesos",
+      "alert": "Alertas",
+      "action": "Acciones"
+    },
+    "admin": {
+      "parent": "Administracion",
+      "user": "Usuarios",
+      "rol": "Roles",
+      "resource": "Recursos"
+    }
+  },
+  "dashboard": {
+    "title": "dashboards",
+    "goto": "Ir",
+    "table": {
+      "name": "Nombre",
+      "parent": "Pertenece"
+    },
+    "delete": "Esta seguro que desea borrarlo",
+    "form": {
+      "titleCreate": "Crear Dashboard",
+      "titleUpdate": "Actualizar Dashboard",
+      "name": "Nombre",
+      "nameHolder": "nombre del dashboard",
+      "parent": "Pertenece a",
+      "parentHolder": "dashboard pertenece a activo"
+    }
+  },
+  "asset": {
+    "title": "activos",
+    "table": {
+      "name": "Nombre",
+      "parent": "Pertenece a"
+    },
+    "delete": "Esta seguro que desea borrarlo",
+    "form": {
+      "titleCreate": "Crear Asset",
+      "titleUpdate": "Actualizar Asset",
+      "name": "Nombre",
+      "nameHolder": "nombre del asset",
+      "parent": "Pertenece a",
+      "parentHolder": "asset pertenece a activo"
+    }
+  },
+  "resource": {
+    "title": "recursos",
+    "table": {
+      "name": "Nombre"
+    },
+    "form": {
+      "titleCreate": "Create Asset",
+      "titleUpdate": "Update Asset",
+      "name": "Name",
+      "nameHolder": "asset name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
+  "device": {
+    "title": "dispositivo",
+    "table": {
+      "name": "Nombre",
+      "parent": "Pertenece a"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Creare Dispositivo",
+      "titleUpdate": "Actualizar Dispositivo",
+      "name": "Nombre",
+      "nameHolder": "nombre del dispositivo",
+      "parent": "Pertenece a",
+      "parentHolder": "dispositivo pertenece al activo",
+      "description": "Description",
+      "descriptionHolder": "descripcion del dispositivo"
+    }
+  },
+  "measure": {
+    "title": "medidas",
+    "table": {
+      "name": "Nombre",
+      "parent": "Pertenece a"
+    },
+    "delete": "Esta seguro que desea borrarlo",
+    "form": {
+      "titleCreate": "Crear Medida",
+      "titleUpdate": "Actualizar Medida",
+      "name": "Nombre",
+      "nameHolder": "nombre de la medida",
+      "parent": "Pertenece a",
+      "parentHolder": "medida pertenece a activo"
+    }
+  },
+  "widget": {
+    "form": {
+      "title": "Selecciona un widget",
+      "type": "tipo",
+      "options": "opciones",
+      "selected": "Widget seleccionado:",
+      "common": {
+        "label": "Etiqueta",
+        "labelHolder": "Etiqueta que se muestra en widget",
+        "showLabel": "Mostrar etiqueta",
+        "emotion": "Icono emocion",
+        "measureValue": "Valor de la medida"
+      }
+    },
+    "bool": {
+      "title": "Booleano",
+      "description": "widget booleano, verdadero / falso",
+      "form": {
+        "showText": "Mostrar texto",
+        "trueEmotion": "Emocion para verdadero",
+        "textTrue": "Texto Verdadero",
+        "textFalse": "Texto Falso"
+      }
+    },
+    "number": {
+      "title": "Numerico",
+      "description": "widget numerico, max 2 decimales",
+      "form": {
+        "showDecimal": "Mostrar decimales",
+        "showUnit": "Mostrar unidades",
+        "unit": "unit"
+      }
+    },
+    "gauge": {
+      "title": "Inidicador",
+      "description": "widget indicador",
+      "form": {}
+    },
+    "line": {
+      "title": "Grafico lineal",
+      "description": "widget de grafico lineal",
+      "form": {
+        "measureHolder": "selecciona una medida",
+        "tag": "Etiqueta",
+        "tagHolder": "Etiqueta en la medida",
+        "tagHolderBad": "selecciona medidad primero",
+        "legend": "Legenda",
+        "legendHolder": "legenda para la medida",
+        "max": "Maximo",
+        "maxHolder": "maximo true emotion",
+        "min": "Minimo",
+        "minHolder": "minimo true emotion",
+        "showLegend": "Mostrar Legenda",
+        "fill": "Rellenar",
+        "color": "Color"
+      }
+    },
+    "bar": {
+      "title": "Grafico de barras",
+      "description": "widget de grafico de barras",
+      "form": {}
+    },
+    "pie": {
+      "title": "Grafico circular",
+      "description": "widget grafico circular",
+      "form": {}
+    },
+    "text": {
+      "title": "Texto",
+      "description": "widget texto",
+      "form": {}
+    },
+    "table": {
+      "title": "Tabla",
+      "description": "widget tabla",
+      "form": {}
+    }
+  },
+  "process": {},
+  "admin": {},
+  "profile": {},
+  "setting": {
+    "title": "Ajustes de usuario",
+    "theme": "Tema claro/oscuro",
+    "language": "Idioma",
+    "languageHolder": "escoge un idioma"
+  },
+  "error": {
+    "page404": "pagina no encontrada"
+  }
+}

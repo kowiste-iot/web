@@ -1,14 +1,17 @@
 // features/menu/domain/menu.ts
 export interface IMenu {
+  id: string
   label: string
   icon: string
   path: string
   isParent: boolean
+  isHeader?: boolean
   subMenu?: IMenu[]
   requiresOrg?: boolean
 }
 
 export class Menu implements IMenu {
+  id: string
   label: string
   icon: string
   path: string
@@ -17,6 +20,7 @@ export class Menu implements IMenu {
   requiresOrg: boolean
 
   constructor(props: IMenu) {
+    this.id = props.id
     this.label = props.label
     this.icon = props.icon
     this.path = props.path

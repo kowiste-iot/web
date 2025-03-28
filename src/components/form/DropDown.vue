@@ -1,170 +1,347 @@
-``
 <template>
-  <div class="position-relative">
-    <div
-      class="border rounded p-2 d-flex"
-      :class="error ? 'invalid' : ''"
-      role="button"
-      @click="toggleVisibility"
-    >
-      <FIcon v-if="icon" class="pe-2 pt-1" :icon="icon" />
-      <input
-        v-if="model"
-        class="border-0 px-2 input-no-focus"
-        readonly
-        v-model=" (model as any)[optionValue] "
-      />
-      <div v-else>
-        <div v-if="placeholder">{{ placeholder }}</div>
-        <div v-else>Select an option</div>
+  <div class="custom-select position-relative">
+    <div :class="[fill ? 'flex-fill' : '']">
+      <div
+        class="drop"
+        @click="toggleDropdown"
+        :class="[disabled ? 'disabled' : '', error ? 'drop_invalid' : '']"
+      >
+        <div class="selected-area">
+          <template v-if="multiple">
+            <TagsContainer
+              :values="selectedValues"
+              :value-field="valueField"
+              :label-field="labelField"
+              :max-visible="maxVisibleChips"
+              :color="chipColor"
+              @remove="removeSelection"
+            />
+          </template>
+          <template v-else>
+            <span class="selected-text">{{ selectedLabel }}</span>
+          </template>
+
+          <input
+            type="text"
+            class="search-input"
+            v-model="searchQuery"
+            @click.stop
+            @input="handleInput"
+            @focus="handleFocus"
+            @keydown="handleKeydown"
+            :placeholder="selectedValues.length ? '' : defaultPlaceholder"
+            :disabled="disabled"
+          />
+        </div>
+        <div class="select-arrow"></div>
+      </div>
+
+      <div class="select-items" v-show="(isOpen || searchQuery) && !disabled">
+        <div
+          v-for="option in filteredOptions"
+          :key="getValue(option)"
+          @click="selectOption(option)"
+          :class="{ selected: isSelected(getValue(option)) }"
+          class="option-item"
+        >
+          {{ getLabel(option) }}
+        </div>
+        <div v-if="filteredOptions.length === 0" class="no-results">
+          No results found
+        </div>
       </div>
     </div>
-    <div v-if="error" class="mt-0 invalid-feedback d-block">
+    <div v-if="error" class="error-text">
       {{ error }}
     </div>
-    <ul
-      v-if="isVisible"
-      class="position-absolute top-1 list-group w-100"
-      @mouseleave="toggleVisibility"
-    >
-      <li v-if="filter" class="bg-ligth list-group-item w-100 p-1">
-        <Input
-          :icon="EIcon.MagnifyGlass"
-          class="w-100"
-          placeholder="filter"
-          :onChange="changeFilter"
-          v-model="filterText"
-        />
-      </li>
-      <div v-for="(group, key) in optionsFiltered">
-        <div
-          v-if="key != ''"
-          class="bg-ligth list-group-item w-100 p-1 text-center"
-        >
-          <slot name="group" :data="key">
-            {{ key }}
-          </slot>
-        </div>
-        <li
-          v-for="element in group"
-          :class="isHover[element.id] ? 'bg-secondary' : 'btn-ligth'"
-          @mouseover="isHover[element.id] = true"
-          @mouseleave="isHover[element.id] = false"
-          class="list-group-item"
-          role="button"
-          @click="change(element)"
-        >
-          <div class="d-flex">
-            <FIcon
-              v-if="model == element"
-              class="me-2 pt-1"
-              :icon="EIcon.Success"
-            />
-
-            <div v-else class="me-4"></div>
-            <slot name="option" :data="element" />
-          </div>
-        </li>
-      </div>
-    </ul>
+    <div v-else class="mt-1"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-// imports
-import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import type { EColor } from '@/features/shared/enum/EColor'
+import TagsContainer from '../tag/TagsContainer.vue'
 
-// stores import
-// components import
-import Input from '@/components/form/Input.vue'
+const { t } = useI18n()
 
-// model imports
-import { EIcon } from '@/features/shared/enum/EIcon'
-
-// other imports
-// props
-interface Props {
-  options?: Array<any>
-  optionValue?: string
-  optionLabel?: string
-  groupLabel?: string
+interface Props<T> {
+  fill?: boolean
+  options: T[]
+  valueField?: keyof T
+  labelField?: keyof T
   placeholder?: string
-  icon?: EIcon
-  filter?: boolean
-  onChange?: Function
+  disabled?: boolean
   error?: string
+  multiple?: boolean
+  chipColor?: EColor
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  options: () => [],
-  optionValue: 'id',
-  optionLabel: '',
-  groupLabel: '',
+const props = withDefaults(defineProps<Props<any>>(), {
+  valueField: 'value',
+  labelField: 'label',
   placeholder: '',
-  onChange: function () {},
+  disabled: false,
+  multiple: false,
+  fill: true,
 })
 
-// data
-const model = defineModel({} as { [key: string]: any })
-const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
-const optionsFiltered = ref({} as { [group: string]: Array<any> })
-let filterText = ''
-// storage calls
-// computed
-// methods
-function toggleVisibility() {
-  isVisible.value = !isVisible.value
-  if (props.filter) changeFilter()
-}
-function change(data: any) {
-  model.value = data
-  toggleVisibility()
-  props.onChange(data)
-}
-function changeFilter() {
-  if (!props.optionLabel) return
-  const filtered = props.options.filter((option) => {
-    return option[props.optionLabel]
-      .toLowerCase()
-      .includes(filterText.toLowerCase())
-  })
-  optionsFiltered.value = {}
-  if (props.groupLabel && props.groupLabel != '') {
-    const groupValues = [
-      ...new Set(filtered.map((obj) => obj[props.groupLabel])),
-    ]
-    groupValues.forEach((group) => {
-      filtered.forEach((option) => {
-        //loop over options filtered
-        if (option[props.groupLabel] == group) {
-          if (!optionsFiltered.value[group]) {
-            optionsFiltered.value[group] = []
-          }
-          optionsFiltered.value[group].push(option)
-        }
-      })
-    })
-  } else {
-    optionsFiltered.value[''] = filtered
+const model = defineModel<any[] | any>()
+const isOpen = ref(false)
+const searchQuery = ref('')
+const maxVisibleChips = ref(3)
+
+const defaultPlaceholder = computed(
+  () => props.placeholder ?? t('common.placeholder.dropdown')
+)
+const emit = defineEmits<{
+  change: []
+}>()
+const selectedLabel = computed(() => {
+  if (!model.value) return ''
+  const selected = props.options.find((opt) => getValue(opt) === model.value)
+  return selected ? getLabel(selected) : ''
+})
+
+function handleKeydown(event: KeyboardEvent) {
+  // Handle backspace for both multiple and single selection
+  if (event.key === 'Backspace' && searchQuery.value === '') {
+    event.preventDefault()
+    if (props.multiple) {
+      if (Array.isArray(model.value) && model.value.length > 0) {
+        const lastValue = model.value[model.value.length - 1]
+        removeSelection(lastValue)
+      }
+    } else {
+      if (model.value !== null) {
+        removeSelection(model.value)
+      }
+    }
   }
 
-  // optionsFiltered.value
+  // Handle enter key for selection
+  if (
+    event.key === 'Enter' &&
+    filteredOptions.value.length > 0 &&
+    isOpen.value
+  ) {
+    event.preventDefault()
+    const firstOption = filteredOptions.value[0]
+    selectOption(firstOption)
+  }
 }
-// lifeCycle
-// watch
+
+function handleInput() {
+  if (!isOpen.value && !props.disabled) {
+    isOpen.value = true
+  }
+}
+
+function handleFocus() {
+  if (!isOpen.value && !props.disabled) {
+    isOpen.value = true
+  }
+}
+
+const selectedValues = computed(() => {
+  if (props.multiple) {
+    return Array.isArray(model.value)
+      ? model.value
+          .map((v) => props.options.find((opt) => getValue(opt) === v))
+          .filter(Boolean)
+      : []
+  }
+  const selected = props.options.find((opt) => getValue(opt) === model.value)
+  return selected ? [selected] : []
+})
+
+const filteredOptions = computed(() => {
+  return props.options.filter((option) =>
+    getLabel(option)?.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
+
+function getValue(option: any): string | number {
+  return option[props.valueField]
+}
+
+function getLabel(option: any): string {
+  return option[props.labelField]
+}
+
+function isSelected(value: any): boolean {
+  if (props.multiple) {
+    return Array.isArray(model.value) && model.value.includes(value)
+  }
+  return model.value === value
+}
+
+function toggleDropdown() {
+  if (!props.disabled) {
+    isOpen.value = !isOpen.value
+  }
+}
+
+function selectOption(option: any) {
+  if (props.disabled) return
+
+  const value = getValue(option)
+  if (props.multiple) {
+    const newValue = Array.isArray(model.value) ? [...model.value] : []
+    const index = newValue.indexOf(value)
+    if (index === -1) {
+      newValue.push(value)
+    } else {
+      newValue.splice(index, 1)
+    }
+    model.value = newValue
+  } else {
+    model.value = value
+    isOpen.value = false
+  }
+  searchQuery.value = ''
+  emit('change')
+}
+
+function removeSelection(value: any) {
+  if (props.disabled) return
+
+  if (props.multiple) {
+    model.value = (model.value as any[]).filter((v) => v !== value)
+  } else {
+    model.value = null
+  }
+  emit('change')
+}
+
+function closeDropdown(e: Event) {
+  if (!e.target || !(e.target as HTMLElement).closest('.custom-select')) {
+    isOpen.value = false
+    if (!props.multiple) {
+      searchQuery.value = ''
+    }
+  }
+}
+
 onMounted(() => {
-  changeFilter()
+  document.addEventListener('click', closeDropdown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown)
 })
 </script>
 
 <style scoped>
-.input-no-focus {
-  outline: none;
+.custom-select {
+  position: relative;
+  width: 100%;
 }
 
-.input-no-focus:focus {
+.selected-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  flex: 1;
+  min-height: 24px;
+}
+
+.no-results {
+  padding: 0.5rem 1rem;
+  color: var(--txt-placeholder);
+  text-align: center;
+}
+
+.selected-text {
+  color: var(--color-text);
+}
+
+.search-input {
+  border: none;
   outline: none;
-  box-shadow: none;
+  background: transparent;
+  flex: 1;
+  min-width: 50px;
+  color: var(--color-text);
+}
+
+.search-input::placeholder {
+  color: var(--txt-placeholder);
+}
+
+.search-input:disabled {
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.select-arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--txt-dark);
+  margin-left: 0.5rem;
+}
+
+.select-items {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background-color: var(--layout-overlay);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: 0.25rem;
+  margin-top: 0.25rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Dropdown styles */
+.drop {
+  padding: 0.25rem 1rem;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: 0.25rem;
+  background-color: var(--layout-overlay);
+  color: var(--text-color);
+  transition: all 0.2s ease;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drop.disabled {
+  background-color: var(--background-color-disabled);
+  cursor: not-allowed;
+}
+
+.drop:hover:not(.disabled) {
+  border: var(--border-width) solid var(--color-brand-primary-default);
+  background-color: var(--layout-overlay-hovered);
+}
+.drop_invalid {
+  border: var(--border-width) solid var(--color-brand-danger-dark);
+  color: var(--color-brand-danger-dark);
+}
+
+.bt:active {
+  border: var(--border-color) solid var(--color-brand-primary-default);
+}
+
+.option-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.option-item:hover,
+.option-item.selected {
+  background-color: var(--color-brand-primary-subtle);
 }
 </style>

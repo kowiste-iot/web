@@ -27,7 +27,7 @@ interface Props {
   placeholder?: string
   disabled?: boolean
   rows?: number
-  onChange?: Function
+
   error?: string
 }
 
@@ -40,9 +40,11 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const model = defineModel<string>()
-
+const emit = defineEmits<{
+  change: []
+}>()
 function internalChange() {
-  props.onChange()
+  emit('change')
 }
 </script>
 

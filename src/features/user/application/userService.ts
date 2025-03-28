@@ -1,8 +1,7 @@
-// application/userService.ts
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
 import { User, type IUser, type IUserRepository } from '../domain/user'
-import { useUserStore } from '../stores/useUserStore'
+import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 export class UserService {
   constructor(
@@ -10,69 +9,90 @@ export class UserService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async updatePreferences(
-    userId: string,
-    preferences: IUser['preferences']
-  ): Promise<boolean> {
+  async getUser(id: ID): Promise<IUser | null> {
     try {
-      const user = useUserStore().userInfo
-      if (!user) throw new Error('User not found')
-
-      const updatedUser = new User({
-        ...user,
-        preferences,
-      })
-
-      const errors = User.validate(updatedUser)
-      if (Object.keys(errors).length > 0) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
-      }
-
-      await this.userRepository.updatePreferences(userId, preferences)
-      this.notificationService.success('Preferences updated successfully')
-      return true
+      const asset = await this.userRepository.findById(id)
+      return asset
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid preferences data')
-      } else {
-        this.notificationService.error('Failed to update preferences')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch user: ' + errors.getError('gError')!
+      )
+      return null
     }
   }
 
-  async updateSettings(
-    userId: string,
-    settings: IUser['settings']
-  ): Promise<boolean> {
+  async getUsers(): Promise<IUser[]> {
     try {
-      const user = useUserStore().userInfo
-      if (!user) throw new Error('User not found')
-
-      const updatedUser = new User({
-        ...user,
-        settings,
-      })
-
-      const errors = User.validate(updatedUser)
-      if (Object.keys(errors).length > 0) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
-      }
-
-      await this.userRepository.updateSettings(userId, settings)
-      this.notificationService.success('Settings updated successfully')
-      return true
+      return await this.userRepository.findAll()
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid settings data')
-      } else {
-        this.notificationService.error('Failed to update settings')
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch users: ' + errors.getError('gError')!
+      )
+      return []
+    }
+  }
+
+  async createUser(data: IUser): Promise<ValidationError<IUser> | null> {
+    try {
+      const errors = User.validate(data)
+      if (errors.hasErrors()) {
+        return errors
       }
-      return false
+
+      const user = new User(data)
+      await this.userRepository.create(user)
+      this.notificationService.success('User created successfully')
+      return null
+    } catch (error) {
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create user: ' + errors.getError('gError')!
+      )
+      return errors
+    }
+  }
+
+  async updateUser(data: IUser): Promise<ValidationError<IUser> | null> {
+    try {
+      const errors = User.validate(data)
+      if (errors.hasErrors()) {
+        return errors
+      }
+
+      const existingUser = this.getUser(data.id)
+      if (!existingUser) throw new Error('User not found')
+
+      const updatedUser = new User({ ...existingUser, ...data })
+
+      await this.userRepository.update(updatedUser)
+      this.notificationService.success('User update successfully')
+      return null
+    } catch (error) {
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update user: ' + errors.getError('gError')!
+      )
+      return errors
+    }
+  }
+
+  async deleteUser(id: ID): Promise<void> {
+    try {
+      await this.userRepository.delete(id)
+      this.notificationService.success('User delete successfully')
+    } catch (error) {
+      const errors = ValidationError.fromRequest<IUser>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete user: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

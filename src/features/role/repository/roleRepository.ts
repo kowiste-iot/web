@@ -1,18 +1,19 @@
 // features/role/repository/roleRepository.ts
-import axiosServices from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Role, type IRole, type IRoleRepository } from '../domain/role'
 import type { RoleDTO } from '../dtos/roleDTO'
 import { RoleMapper } from '../dtos/roleMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export class RoleRepository extends BaseRepository implements IRoleRepository {
   constructor() {
     super('roles')
   }
 
-  async findById(id: string): Promise<IRole | null> {
+  async findById(id: ID): Promise<IRole | null> {
     try {
-      const response = await axiosServices.get<RoleDTO>(`${this.baseUrl}/${id}`)
+      const response = await axiosClient().get<RoleDTO>(`${this.baseUrl}/${id}`)
       return RoleMapper.toDomain(response.data)
     } catch (error) {
       throw error
@@ -21,7 +22,7 @@ export class RoleRepository extends BaseRepository implements IRoleRepository {
 
   async findAll(): Promise<IRole[]> {
     try {
-      const response = await axiosServices.get<RoleDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<RoleDTO[]>(this.baseUrl)
       return response.data
         .map((dto: RoleDTO) => RoleMapper.toDomain(dto))
         .filter((role: IRole): role is IRole => role !== null)
@@ -33,24 +34,15 @@ export class RoleRepository extends BaseRepository implements IRoleRepository {
   async create(data: IRole): Promise<void> {
     try {
       const dto = RoleMapper.toDTO(new Role(data))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
   }
-  //cant update
-  // async update(data: IRole): Promise<void> {
-  //   try {
-  //     const dto = RoleMapper.toDTO(new Role(data))
-  //     await axiosServices.put(`${this.baseUrl}/${data.id}`, dto)
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

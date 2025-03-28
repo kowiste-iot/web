@@ -1,51 +1,48 @@
 <template>
   <Modal>
-    <div
-      class="bg-light m-auto p-3 border-secondary rounded col-lg-3 col-md-4 col-sm-5"
-    >
-      <div class="d-flex justify-content-center">
+    <Card class="offset-md-4 col-md-4 mt-5">
+      <Flex :justify="EFlexJustify.Center">
         <FIcon
           :class="`text-${getIcon(action).color}`"
           :icon="getIcon(action).icon"
           style="height: 3rem"
         />
-      </div>
-      <div class="my-5">
+      </Flex>
+      <div class="default-content">
         <slot />
       </div>
 
-      <div class="offset-md-3 col-md-6">
-        <div class="d-flex flex-column justify-content-center">
-          <Button :color="getIcon(action).color" @click="onAction()">
-            <div class="w-100 text-center">{{ actionText }}</div>
-          </Button>
-
-          <Button
-            class="my-2"
-            :color="EColor.Secondary"
-            outline
-            @click="onCancel()"
-          >
-            <div class="w-100 text-center">{{ $t('action.cancel') }}</div>
+      <Flex reverse :justify="EFlexJustify.Start" :gap="2">
+        <div>
+          <Button :color="getIcon(action).color" @click="$emit('action')">
+            {{ actionText }}
           </Button>
         </div>
-      </div>
-    </div>
+        <div>
+          <Button :color="EColor.Secondary" outline @click="$emit('cancel')">
+            {{ $t('actionGUI.cancel') }}
+          </Button>
+        </div>
+      </Flex>
+    </Card>
   </Modal>
 </template>
 
 <script setup lang="ts">
 // imports
-import { type PropType, ref } from 'vue'
+import { ref } from 'vue'
 
 // stores import
 // components import
 import Button from '@/components/buttons/Button.vue'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 // model imports
 import { EActionGUI } from '@/features/shared/domain/EActionGUI'
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
+import Flex from '../layout/Flex.vue'
+import { EFlexJustify } from '../layout/EFlex'
+import Card from './Card.vue'
 
 // other imports
 // props
@@ -53,15 +50,15 @@ interface Props {
   headerText?: string
   action?: EActionGUI
   actionText?: string
-  onAction?: Function
-  onCancel?: Function
 }
 const props = withDefaults(defineProps<Props>(), {
   action: EActionGUI.Success,
   actionText: 'Save',
-  onAction: function () {},
-  onCancel: function () {},
 })
+const emit = defineEmits<{
+  cancel: []
+  action: []
+}>()
 
 // data
 interface IAction {
@@ -97,4 +94,8 @@ function getIcon(data: EActionGUI): IAction {
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+.default-content {
+  margin-block: var(--size-500);
+}
+</style>

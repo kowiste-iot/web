@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { ITenant } from '../domain/tenant'
 import { RESERVED_TENANTS } from '../domain/constant'
+import type { ID } from '@/features/shared/domain/id'
 
 interface TenantState {
   tenants: ITenant[]
@@ -54,7 +55,7 @@ export const useTenantStore = defineStore('tenant', {
     },
 
     addTenant(
-      tenantId: string,
+      tenantId: ID,
       tenantName: string
     ): { success: boolean; error?: string } {
       const validation = this.validateTenantId(tenantId)

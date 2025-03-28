@@ -1,9 +1,15 @@
 // features/role/domain/role.ts
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type IError,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { RoleValidator } from './roleValidator'
+import type { ID } from '@/features/shared/domain/id'
 
-export interface IRole {
-  id: string
+export const adminRole = 'admin'
+export interface IRole extends IError {
+  id: ID
   name: string
   readonly: boolean
   description?: string
@@ -12,7 +18,7 @@ export interface IRole {
 
 export class Role implements IRole {
   private static validator = new RoleValidator()
-  id: string
+  id: ID
   name: string
   readonly: boolean
   description?: string
@@ -32,25 +38,31 @@ export class Role implements IRole {
 
   static validateField<K extends keyof IRole>(
     field: K,
-    value: IRole[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IRole[K],
+    currentErrors: ValidationError<IRole> | null = null
+  ): ValidationError<IRole> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IRole {
     return {
       id: this.id,
       name: this.name,
-      readonly:this.readonly,
+      readonly: this.readonly,
       description: this.description,
     }
   }
 }
 
 export interface IRoleRepository {
-  findById(id: string): Promise<IRole | null>
+  findById(id: ID): Promise<IRole | null>
   findAll(): Promise<IRole[]>
   create(role: IRole): Promise<void>
   //update(role: IRole): Promise<void> //dont alow to update roles
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

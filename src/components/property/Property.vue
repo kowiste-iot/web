@@ -14,7 +14,7 @@
             <div
               class="btn d-flex"
               :class="isHover[element.id] ? 'bg-secondary' : 'bg-light'"
-              @click="onClick(element)"
+              @click="emit('click', element)"
               @mouseover="isHover[element.id] = true"
               @mouseleave="isHover[element.id] = false"
             >
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,  computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { Property } from '@/model/property'
 
@@ -42,10 +42,13 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   data: () => [],
   inverse: false,
-  onClick: function () {},
 })
+const emit = defineEmits<{
+  click: [data: Property]
+}>()
+
 const isVisible = ref(false)
-const isHover = ref({} as { [key: number]: boolean })
+const isHover = ref({} as Record<string, boolean>)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuPosition = ref({ top: 0, left: 0 })
 

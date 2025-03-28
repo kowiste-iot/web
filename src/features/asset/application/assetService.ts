@@ -1,8 +1,9 @@
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
 import { Asset, type IAsset, type IAssetRepository } from '../domain/asset'
 import { useAssetStore } from '../stores/useAssetStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 export class AssetService {
   constructor(
@@ -10,16 +11,16 @@ export class AssetService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getAsset(id: string): Promise<IAsset | null> {
+  async getAsset(id: ID): Promise<IAsset | null> {
     try {
       const asset = await this.assetRepository.findById(id)
       return asset
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch asset: ${error.message}`
-          : 'Failed to fetch asset'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAsset>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch asset: ' + errors.getError('gError')!
+      )
       return null
     }
   }
@@ -27,47 +28,42 @@ export class AssetService {
   async getAssets(): Promise<IAsset[]> {
     try {
       const assets = await this.assetRepository.findAll()
-      return this.setAssetValues(assets)
+      return SharedAssetMapper.setParentNames(assets, assets)
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch assets: ${error.message}`
-          : 'Failed to fetch assets'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAsset>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch assets: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createAsset(data: IAsset): Promise<boolean> {
+  async createAsset(data: IAsset): Promise<ValidationError<IAsset> | null> {
     try {
       const errors = Asset.validate(data)
-
-      if (Object.keys(errors).length > 0) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+      if (errors.hasErrors()) {
+        return errors
       }
       const asset = new Asset(data)
       await this.assetRepository.create(asset)
       this.notificationService.success('Asset created successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid asset data')
-      } else {
-        this.notificationService.error('Failed to create asset')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IAsset>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create asset: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async updateAsset(data: IAsset): Promise<boolean> {
+  async updateAsset(data: IAsset): Promise<ValidationError<IAsset> | null> {
     try {
       const errors = Asset.validate(data)
-      if (Object.keys(errors).length > 0) {
-        const errorMessages = Object.values(errors).filter(Boolean)
-        this.notificationService.error(errorMessages.join(', '))
-        return false
+      if (errors.hasErrors()) {
+        return errors
       }
       const existingAsset = useAssetStore().getAssetById(data.id)
       if (!existingAsset) throw new Error('Asset not found')
@@ -76,42 +72,28 @@ export class AssetService {
 
       await this.assetRepository.update(updatedAsset)
       this.notificationService.success('Asset update successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid asset data')
-      } else {
-        this.notificationService.error('Failed to update asset')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IAsset>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update asset: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async deleteAsset(id: string): Promise<void> {
+  async deleteAsset(id: ID): Promise<void> {
     try {
       await this.assetRepository.delete(id)
       this.notificationService.success('Asset delete successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete asset: ${error.message}`
-          : 'Failed to delete asset'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAsset>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete asset: ' + errors.getError('gError')!
+      )
+      return
     }
-  }
-
-  private setAssetValues(data: IAsset[]): IAsset[] {
-    const assetMap = new Map(data.map((asset) => [asset.id, asset]))
-
-    return data.map((asset) => {
-      if (asset.parent) {
-        const parent = assetMap.get(asset.parent)
-        return {
-          ...asset,
-          parentName: parent?.name ?? '',
-        }
-      }
-      return asset
-    })
   }
 }

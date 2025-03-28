@@ -1,20 +1,36 @@
 <template>
-  <div class="card bg-light">
-    <div v-if="showHeader" class="card-header d-flex justify-content-between">
-      <div v-if="headerText">{{ headerText }}</div>
-      <FIcon v-if="headerText && icon" :icon="icon" />
-      <slot v-else name="header" />
+  <Flex column class="custom-card" fullHeight :justify="EFlexJustify.Between">
+    <div class="inner-card">
+      <Flex
+        v-if="showHeader"
+        class="custom-header"
+        :justify="EFlexJustify.Between"
+      >
+        <div v-if="headerText">{{ headerText }}</div>
+        <FIcon v-if="headerText && icon" :icon="icon" />
+        <slot v-else name="header" />
+      </Flex>
+      <div class="custom-body">
+        <slot />
+      </div>
     </div>
-    <div class="card-body">
-      <slot />
-    </div>
-    <div v-if="showFooter" class="card-footer d-flex justify-content-between">
+
+    <Flex
+      v-if="showFooter"
+      class="custom-footer"
+      reverse
+      :justify="EFlexJustify.Start"
+      :gap="2"
+    >
       <slot name="footer"></slot>
-    </div>
-  </div>
+    </Flex>
+  </Flex>
 </template>
 
 <script setup lang="ts">
+import { EFlexJustify } from '../layout/EFlex'
+import Flex from '../layout/Flex.vue'
+
 // imports
 // stores import
 // components import
@@ -36,4 +52,26 @@ const props = defineProps<Props>()
 // watch
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-card {
+  height: 100%;
+  background-color: var(--layout-card);
+  border-radius: var(--border-md);
+  box-shadow: var(--size-010) var(--size-010) var(--size-010) var(--size-010)
+    var(--layout-card-shadow);
+}
+.custom-header {
+  padding: var(--size-100);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+.custom-body {
+  height: 100%;
+  padding: var(--size-100);
+}
+.custom-footer {
+  padding: var(--size-100);
+}
+.inner-card{
+  height: 100%;
+}
+</style>

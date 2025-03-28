@@ -1,44 +1,28 @@
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
-import type { IAction, IActionRepository } from '../domain/action'
+import { Action, type IAction, type IActionRepository } from '../domain/action'
+import { useActionStore } from '../stores/useActionStore'
+import { SharedAssetMapper } from '@/features/shared/dtos/assetMappers'
+import { useAssetStore } from '@/features/asset/stores/useAssetStore'
+import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
-const actionSchema = z.object({
-  name: z
-    .string({
-      required_error: 'Name is required',
-      invalid_type_error: 'Name must be a string',
-    })
-    .min(EValidation.NameMin, {
-      message: 'Name too short',
-    })
-    .max(EValidation.NameMax, {
-      message: 'Name too long',
-    }),
-  parent: z.string().uuid({
-    message: 'parent not valid uuid',
-  }),
-  description: z.string().max(EValidation.NameMax, {
-    message: 'Description too long',
-  }),
-})
-
+const assetStore = useAssetStore()
 export class ActionService {
   constructor(
     private readonly actionRepository: IActionRepository,
     private readonly notificationService: INotificationService
   ) {}
 
-  async getAction(id: string): Promise<IAction | null> {
+  async getAction(id: ID): Promise<IAction | null> {
     try {
       const action = await this.actionRepository.findById(id)
       return action
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch action: ${error.message}`
-          : 'Failed to fetch action'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch action: ' + errors.getError('gError')!
+      )
       return null
     }
   }
@@ -46,83 +30,83 @@ export class ActionService {
   async getActions(): Promise<IAction[]> {
     try {
       const actions = await this.actionRepository.findAll()
-      return actions
+      return SharedAssetMapper.setParentNames(actions, assetStore.assets)
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch actions: ${error.message}`
-          : 'Failed to fetch actions'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch actions: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createAction(data: {
-    name: string
-    parent: string
-    description?: string
-  }): Promise<boolean> {
+  async createAction(data: IAction): Promise<ValidationError<IAction> | null> {
     try {
-      const validated = actionSchema.parse(data)
-      const action: IAction = {
-        name: validated.name,
-        parent: validated.parent,
-        description: validated.description,
+      const errors = Action.validate(data)
+      if (errors.hasErrors()) {
+        return errors
       }
+      const action = new Action(data)
       await this.actionRepository.create(action)
       this.notificationService.success('Action created successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid action data')
-      } else {
-        this.notificationService.error('Failed to create action')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create action: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
   async updateAction(data: {
-    id: string
+    id: ID
     name: string
-    parent: string
+    parent: ID
     description?: string
-  }): Promise<boolean> {
+  }): Promise<ValidationError<IAction> | null> {
     try {
-      const validated = actionSchema.parse(data)
-      const existingAction = await this.getAction(data.id)
+      const errors = Action.validate(data)
+      if (errors.hasErrors()) {
+        return errors
+      }
+
+      const existingAction = await useActionStore().getActionById(data.id)
       if (!existingAction) throw new Error('Action not found')
 
       const updatedAction: IAction = {
         ...existingAction,
-        name: validated.name,
-        parent: validated.parent,
-        description: validated.description,
+        name: data.name,
+        parent: data.parent,
+        description: data.description,
       }
 
       await this.actionRepository.update(updatedAction)
       this.notificationService.success('Action updated successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid action data')
-      } else {
-        this.notificationService.error('Failed to update action')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update action: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async deleteAction(id: string): Promise<void> {
+  async deleteAction(id: ID): Promise<void> {
     try {
       await this.actionRepository.delete(id)
       this.notificationService.success('Action deleted successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete action: ${error.message}`
-          : 'Failed to delete action'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IAction>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete action: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

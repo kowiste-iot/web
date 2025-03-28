@@ -1,20 +1,17 @@
-import axiosServices from '@/shared/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import { Device, type IDevice, type IDeviceRepository } from '../domain/device'
 import type { DeviceDTO } from '../dtos/deviceDTO'
 import { DeviceMapper } from '../dtos/deviceMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
-export class DeviceRepository implements IDeviceRepository {
-  private baseUrl: string
+export class DeviceRepository extends BaseRepository implements IDeviceRepository {
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/devices`
+    super('devices')
   }
-  async findById(id: string): Promise<IDevice | null> {
+  async findById(id: ID): Promise<IDevice | null> {
     try {
-      console.log('this', this.baseUrl)
-
-      const response = await axiosServices.get<DeviceDTO>(
+      const response = await axiosClient().get<DeviceDTO>(
         `${this.baseUrl}/${id}`
       )
       return DeviceMapper.toDomain(response.data)
@@ -25,9 +22,7 @@ export class DeviceRepository implements IDeviceRepository {
 
   async findAll(): Promise<IDevice[]> {
     try {
-      console.log('this', this.baseUrl)
-
-      const response = await axiosServices.get<DeviceDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<DeviceDTO[]>(this.baseUrl)
       return response.data
         .map((dto: DeviceDTO) => DeviceMapper.toDomain(dto))
         .filter((device: IDevice): device is IDevice => device !== null)
@@ -39,7 +34,7 @@ export class DeviceRepository implements IDeviceRepository {
   async create(device: IDevice): Promise<void> {
     try {
       const dto = DeviceMapper.toDTO(new Device(device))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -48,15 +43,15 @@ export class DeviceRepository implements IDeviceRepository {
   async update(device: IDevice): Promise<void> {
     try {
       const dto = DeviceMapper.toDTO(new Device(device))
-      await axiosServices.put(`${this.baseUrl}/${device.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${device.id}`, dto)
     } catch (error) {
       throw error
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

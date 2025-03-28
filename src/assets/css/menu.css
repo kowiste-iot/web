@@ -1,0 +1,24 @@
+.menu-item {
+  color: var(--text-color-light);
+  cursor: pointer;
+}
+.menu-item:hover {
+  background-color: var(--color-brand-primary-default);
+}
+
+.menu-item-label {
+  margin-inline: var(--size-300);
+}
+.menu-header-item {
+  color: var(--text-color-light);
+  padding: var(--size-050) var(--size-050);
+  border-bottom: var(--border-width) solid var(--text-color-light);
+  font-size: small;
+}
+.menu-header {
+  padding-top: var(--size-100);
+}
+.menu-submenu {
+  padding-block: var(--size-100);
+}
+

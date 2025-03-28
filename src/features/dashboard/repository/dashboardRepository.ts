@@ -1,4 +1,4 @@
-import axiosServices from '@/shared/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import {
   Dashboard,
   type IDashboard,
@@ -6,17 +6,17 @@ import {
 } from '../domain/dashboard'
 import type { DashboardDTO } from '../dtos/dashboardDTO'
 import { DashboardMapper } from '../dtos/dashboardMappers'
-import { useTenant } from '@/composable/useTenant'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
-export class DashboardRepository implements IDashboardRepository {
-  private baseUrl: string
+export class DashboardRepository  extends BaseRepository implements IDashboardRepository {
+
   constructor() {
-    const { getTenantId } = useTenant()
-    this.baseUrl = `${getTenantId()}/dashboards`
+   super('dashboards')
   }
-  async findById(id: string): Promise<IDashboard | null> {
+  async findById(id: ID): Promise<IDashboard | null> {
     try {
-      const response = await axiosServices.get<DashboardDTO>(
+      const response = await axiosClient().get<DashboardDTO>(
         `${this.baseUrl}/${id}`
       )
       return DashboardMapper.toDomain(response.data)
@@ -27,7 +27,7 @@ export class DashboardRepository implements IDashboardRepository {
 
   async findAll(): Promise<IDashboard[]> {
     try {
-      const response = await axiosServices.get<DashboardDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<DashboardDTO[]>(this.baseUrl)
       return response.data
         .map((dto: DashboardDTO) => DashboardMapper.toDomain(dto))
         .filter(
@@ -41,7 +41,7 @@ export class DashboardRepository implements IDashboardRepository {
   async create(dashboard: IDashboard): Promise<void> {
     try {
       const dto = DashboardMapper.toDTO(new Dashboard(dashboard))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -50,15 +50,15 @@ export class DashboardRepository implements IDashboardRepository {
   async update(dashboard: IDashboard): Promise<void> {
     try {
       const dto = DashboardMapper.toDTO(new Dashboard(dashboard))
-      await axiosServices.put(`${this.baseUrl}/${dashboard.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${dashboard.id}`, dto)
     } catch (error) {
       throw error
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

@@ -1,4 +1,3 @@
-// features/resource/presentation/pages/pageResources.ts
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { Columns } from '@/model/gui/column'
 import type { Property } from '@/model/property'
@@ -15,9 +14,6 @@ export class ResourcesPage extends PageBase {
   showModal: boolean
   table: {
     name: Columns
-    type: Columns
-    displayName: Columns
-    uris: Columns
     scopes: Columns
   }
 
@@ -30,11 +26,6 @@ export class ResourcesPage extends PageBase {
         id: 1,
         icon: EIcon.Edit,
         name: 'Edit',
-      },
-      {
-        id: 2,
-        icon: EIcon.Delete,
-        name: 'Delete',
       },
     ]
     this.showForm = false
@@ -54,10 +45,7 @@ export class ResourcesPage extends PageBase {
     const { t } = useI18n()
 
     return {
-      name: new Columns(t('resource.table.name'), 'name'),
-      type: new Columns(t('resource.table.type'), 'type'),
-      displayName: new Columns(t('resource.table.displayName'), 'displayName'),
-      uris: new Columns(t('resource.table.uris'), 'uris'),
+      name: new Columns(t('resource.table.name'), 'displayName'),
       scopes: new Columns(t('resource.table.scopes'), 'scopes'),
     }
   }

@@ -1,8 +1,16 @@
-import { EWidget } from "./EWidget"
+import {
+  ValidationMapper,
+  type IError,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
+import { EWidget } from './EWidget'
+import { WidgetValidator } from './widgetValidator'
+import type { IWidgetType } from '@/model/widget/widgetType'
+import type { ID } from '@/features/shared/domain/id'
 
-export interface IWidget {
-  id: string
-  dashboardID: string
+export interface IWidget extends IError {
+  id: ID
+  dashboardID: ID
   type: EWidget
   i: number
   x: number
@@ -22,14 +30,16 @@ export interface IWidgetData {
 }
 
 export interface IWidgetLinkData {
-  measure: string
+  measure: ID
   tag: string
   legend: string
 }
 
 export class Widget implements IWidget {
-  id: string = ''
-  dashboardID: string = ''
+  private static validator = new WidgetValidator()
+
+  id: ID = ''
+  dashboardID: ID = ''
   type: EWidget = EWidget.Boolean
   i: number = 0
   x: number = 0
@@ -64,7 +74,27 @@ export class Widget implements IWidget {
       options: props.data.options ?? {},
     }
   }
+  static validate(data: Partial<IWidget>): ValidationError<IWidget> {
+    return this.validator.validate(data)
+  }
 
+  static validateField<K extends keyof IWidget>(
+    field: K,
+    value: IWidget[K],
+    currentErrors: ValidationError<IWidget> | null = null
+  ): ValidationError<IWidget> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
+  }
+
+  set(selected: IWidgetType, dashboardID: string) {
+    this.dashboardID = dashboardID
+   
+  }
   toJSON(): IWidget {
     return {
       id: this.id,
@@ -88,9 +118,9 @@ export class Widget implements IWidget {
 }
 
 export interface IWidgetRepository {
-  findById(id: string): Promise<IWidget | null>
-  findAll(): Promise<IWidget[]>
-  create(widget: IWidget): Promise<void>
-  update(widget: IWidget): Promise<void>
-  delete(id: string): Promise<void>
+  findById(dashboardID: ID, id: ID): Promise<IWidget | null>
+  findAll(dashboardID: ID): Promise<IWidget[]>
+  create(dashboardID: ID, widget: IWidget): Promise<void>
+  update(dashboardID: ID, widget: IWidget): Promise<void>
+  delete(dashboardID: ID, id: ID): Promise<void>
 }

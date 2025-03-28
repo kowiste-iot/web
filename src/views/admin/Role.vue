@@ -29,7 +29,7 @@
           <PropertyDot
             v-if="!data.readonly"
             :data="page.properties"
-            :onClick="(prop:Property)=>propertySelected(prop,data)"
+            @click="(prop:Property)=>propertySelected(prop,data)"
           />
         </template>
       </Column>
@@ -47,7 +47,7 @@
       @click="() => (page.showForm = true)"
     />
   </div>
-  <Modal v-if="page.showForm">
+  <Modal v-if="page.showForm" @cancel="closeForm">
     <SideCard class="col-md-6">
       <RoleForm
         :data="page.selected"
@@ -60,9 +60,9 @@
   <ConfirmCard
     v-if="page.showModal"
     :action="EActionGUI.Danger"
-    :actionText="$t('action.delete')"
-    :onAction="deleteRole"
-    :onCancel="
+    :actionText="$t('actionGUI.delete')"
+    @action="deleteRole"
+    @cancel="
       () => {
         page.showModal = false
       }
@@ -76,7 +76,8 @@
 // imports
 import { computed, onMounted, reactive, watch } from 'vue'
 // stores import
-
+import { useRoleStore } from '@/features/role/stores/useRoleStore'
+import { useSessionStore } from '@/features/session/store/useSessionStore'
 // components import
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
@@ -89,13 +90,12 @@ import SideCard from '@/components/cards/SideCard.vue'
 import PropertyDot from '@/components/property/Property.vue'
 import ConfirmCard from '@/components/cards/ConfirmCard.vue'
 import type { Property } from '@/model/property'
-import Modal from '@/components/cards/Modal.vue'
+import Modal from '@/components/layout/Modal.vue'
 import { useBasePage } from '@/composable/useBasePage'
 import { RolesPage } from '@/features/role/presentation/pages/pageRoles'
 import { RoleService } from '@/features/role/application/roleService'
 import { RoleRepository } from '@/features/role/repository/roleRepository'
-import { useRoleStore } from '@/features/role/stores/useRoleStore'
-import { useUserStore } from '@/features/user/stores/useUserStore'
+
 import RoleForm from './form/RoleForm.vue'
 import type { IRole } from '@/features/role/domain/role'
 // other imports
@@ -108,14 +108,14 @@ const page = reactive(new RolesPage())
 const { notificationService } = useBasePage(page.title)
 const roleService = new RoleService(new RoleRepository(), notificationService)
 const roleStore = useRoleStore()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 
 // computed
 const roles = computed(() => {
   return roleStore.roles
 })
 const branch = computed(() => {
-  return userStore.getCurrentBranch
+  return sessionStore.getCurrentBranch
 })
 // methods
 function propertySelected(prop: Property, data: IRole) {

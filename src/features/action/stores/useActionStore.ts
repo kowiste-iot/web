@@ -4,15 +4,22 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IAction } from '../domain/action'
 import { ActionService } from '../application/actionService'
 import { ActionRepository } from '../repository/actionRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useActionStore = defineStore('actionStore', {
   state: () => ({
     actions: [] as IAction[],
     currentAction: null as IAction | null,
   }),
-
+  getters: {
+    getActionById: (state) => {
+      return (id: ID): IAction | undefined => {
+        return state.actions.find((action) => action.id === id)
+      }
+    },
+  },
   actions: {
-    async fetchAction(id: string) {
+    async fetchAction(id: ID) {
       const actionService = new ActionService(
         new ActionRepository(),
         new NotificationService(useNotificationStore())

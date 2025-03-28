@@ -1,19 +1,22 @@
-import type { ValidationError } from "@/features/shared/domain/baseValidator"
-import { MeasureValidator } from "./measureValidator"
+import { ValidationMapper, type ValidationError } from '@/features/shared/domain/baseValidator'
+import { MeasureValidator } from './measureValidator'
+import type { IAsset } from '@/features/asset/domain/asset'
+import type { IHasParent } from '@/features/shared/domain/hasParent'
+import type { ID } from '@/features/shared/domain/id'
 
-export interface IMeasure {
-  id: string
+export interface IMeasure extends IHasParent {
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 }
 
 export class Measure implements IMeasure {
   private static validator = new MeasureValidator()
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 
@@ -30,10 +33,17 @@ export class Measure implements IMeasure {
 
   static validateField<K extends keyof IMeasure>(
     field: K,
-    value: IMeasure[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IMeasure[K],
+    currentErrors: ValidationError<IMeasure> | null = null
+  ): ValidationError<IMeasure> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
+
   toJSON(): IMeasure {
     return {
       id: this.id,
@@ -44,9 +54,9 @@ export class Measure implements IMeasure {
   }
 }
 export interface IMeasureRepository {
-  findById(id: string): Promise<IMeasure | null>
-  findAll(): Promise<IMeasure[]>
+  findById(id: ID, assets: IAsset[]): Promise<IMeasure | null>
+  findAll(assets: IAsset[]): Promise<IMeasure[]>
   create(asset: IMeasure): Promise<void>
   update(asset: IMeasure): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

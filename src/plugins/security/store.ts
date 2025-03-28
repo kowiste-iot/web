@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import Keycloak from 'keycloak-js'
 import type { Role, ResourcePermission } from './types'
-import { type IUser, User } from '@/features/user/domain/user'
+import { type ISession, Session } from '@/features/session/domain/session'
 
 interface AuthState {
   keycloak?: Keycloak
@@ -47,13 +47,13 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    getUserInfo(): IUser {
+    getUserInfo(): ISession {
       const tokenParsed = this.keycloak?.tokenParsed
       if (tokenParsed == undefined) {
-        return {} as IUser
+        return {} as ISession
       }
 
-      const temp = new User({
+      const temp = new Session({
         id: tokenParsed.sub!,
         firstName: tokenParsed.given_name ?? '',
         lastName: tokenParsed.family_name ?? '',
@@ -83,7 +83,7 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     setKeycloak(keycloak: Keycloak) {
-      console.log('update  kc', keycloak.token?.slice(-5))
+      // console.log('update  kc', keycloak.token?.slice(-5))
       this.keycloak = keycloak
       this.token = keycloak.token
       this.isInitialized = true
@@ -131,11 +131,12 @@ export const useAuthStore = defineStore('auth', {
     //TODO: maybe remove this and use keycloak service
     async login(redirectUri?: string): Promise<void> {
       if (this.isAuthenticated) return
-
+      const windowsOrigin = window.location.origin
+      console.log('login store keycloak', windowsOrigin)
       if (this.keycloak) {
         try {
           await this.keycloak.login({
-            redirectUri: redirectUri ?? window.location.origin,
+            redirectUri: redirectUri ?? windowsOrigin,
           })
         } catch (error) {
           console.error('Login failed:', error)
@@ -146,8 +147,10 @@ export const useAuthStore = defineStore('auth', {
     //TODO: maybe remove this and use keycloak service
     async logout() {
       if (!this.isAuthenticated) return
+      const windowsOrigin = window.location.origin
+      console.log('logout store keycloak', windowsOrigin)
       await this.keycloak?.logout({
-        redirectUri: window.location.origin,
+        redirectUri: windowsOrigin,
       })
     },
 

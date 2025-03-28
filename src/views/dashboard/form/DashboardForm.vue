@@ -14,34 +14,28 @@
         class="col-md-8"
         :placeholder="$t('dashboard.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors?.getError('name')"
         v-model="form.name"
       />
     </div>
     <div class="row mb-3">
       <label class="col-md-4 pt-2">{{ $t('dashboard.form.parent') }} </label>
-      <DropDown
+      <MultiDropdown
         class="col-md-8"
-        optionValue="name"
-        optionLabel="name"
-        :placeholder="$t('dashboard.form.parentHolder')"
         :options="assets"
-        :error="errors['parent']"
-        v-model="form.parent"
-      >
-        <template #option="{ data }">
-          {{ data.name }}
-        </template>
-      </DropDown>
+        idField="id"
+        labelField="name"
+        :placeholder="$t('dashboard.form.parentHolder')"
+        :error="errors?.getError('parent')"
+        v-model="selectedParent"
+      />
     </div>
     <template #footer>
-      <Button
-        :color="edit ? EColor.Warning : EColor.Success"
-        @click="save()"
-        >{{ $t(edit ? 'action.update' : 'action.save') }}</Button
-      >
-      <Button :color="EColor.Secondary" outline @click="close()">{{
-        $t('action.cancel')
+      <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
+        $t(edit ? 'actionGUI.update' : 'actionGUI.save')
+      }}</Button>
+      <Button :color="EColor.Secondary" outline @click="emit('close')">{{
+        $t('actionGUI.cancel')
       }}</Button>
     </template>
   </InputCard>
@@ -57,18 +51,22 @@ import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
 import { EIcon } from '@/features/shared/enum/EIcon'
-import type { IDashboard } from '@/features/dashboard/domain/dashboard'
+import {
+  Dashboard,
+  type IDashboard,
+} from '@/features/dashboard/domain/dashboard'
 import { useBasePage } from '@/composable/useBasePage'
 import { DashboardService } from '@/features/dashboard/application/dashboardService'
 import { DashboardRepository } from '@/features/dashboard/repository/dashboardRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
-import Dashboard from '../Dashboard.vue'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
+import type { IAsset } from '@/features/asset/domain/asset'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import { useDashboardStore } from '@/features/dashboard/stores/useDashboardStore'
 
 // other imports
 // props
@@ -81,11 +79,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  close: {
-    type: Function,
-    default: function () {},
-  },
 })
+const emit = defineEmits<{
+  close: []
+}>()
 // data
 const form = reactive<IDashboard>({
   ...props.data,
@@ -93,7 +90,8 @@ const form = reactive<IDashboard>({
   parent: props.data?.parent ?? '',
   description: props.data?.description ?? '',
 })
-const errors = ref<ValidationError<IDashboard>>({})
+const errors = ref<ValidationError<IDashboard> | null>(new ValidationError())
+const selectedParent = ref({} as IAsset)
 
 // service
 const { notificationService } = useBasePage()
@@ -101,11 +99,29 @@ const dashboardService = new DashboardService(
   new DashboardRepository(),
   notificationService
 )
+const dashboardStore = useDashboardStore()
+
 // computed
 const assets = computed(() => {
   return useAssetStore().assets
 })
 
+// methods
+async function save() {
+  if (props.edit) {
+    errors.value = await dashboardService.updateDashboard(form)
+  } else {
+    errors.value = await dashboardService.createDashboard(form)
+  }
+  if (errors.value?.hasErrors()) return
+  emit('close')
+}
+// lifeCycle
+onMounted(() => {
+  if (props.data && props.edit) {
+    useAssetStore().fetchAssets()
+  }
+})
 // watchers
 watch(
   () => form,
@@ -116,22 +132,14 @@ watch(
     deep: true,
   }
 )
-// methods
-function save() {
-  if (props.edit) {
-    dashboardService.updateDashboard(form)
-  } else {
-    dashboardService.createDashboard(form)
+watch(
+  () => selectedParent.value,
+  () => {
+    if (selectedParent.value.id) {
+      form.parent = selectedParent.value.id
+    }
   }
-  props.close()
-}
-// lifeCycle
-onMounted(() => {
-  if (props.data && props.edit) {
-    useAssetStore().fetchAssets()
-  }
-})
-// watch
+)
 </script>
 
 <style scoped></style>

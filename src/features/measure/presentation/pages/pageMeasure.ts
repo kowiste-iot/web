@@ -16,6 +16,7 @@ export class MeasuresPage extends PageBase {
     id: Columns
     name: Columns
     asset: Columns
+    description: Columns
   }
 
   constructor() {
@@ -38,14 +39,32 @@ export class MeasuresPage extends PageBase {
     this.showModal = false
     this.table = this.createTable()
   }
-
+  reset() {
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
+    this.selected = undefined
+  }
+  propertySelected(id: number, data: IMeasure) {
+    this.selected = data
+    switch (id) {
+      case 1:
+        this.showForm = true
+        this.editForm = true
+        break
+      case 2:
+        this.showModal = true
+        break
+    }
+  }
   private createTable() {
     const { t } = useI18n()
 
     return {
       id: new Columns('ID', 'id'),
       name: new Columns(t('measure.table.name'), 'name'),
-      asset: new Columns(t('measure.table.parent'), 'parent'),
+      asset: new Columns(t('measure.table.parent'), 'parentName'),
+      description: new Columns(t('measure.table.description'), 'description'),
     }
   }
 }

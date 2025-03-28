@@ -1,46 +1,60 @@
-import { PageBase } from '@/features/shared/presentation/pages/pageBase'
+import { EIcon } from '@/features/shared/enum/EIcon'
 import { Columns } from '@/model/gui/column'
-import { Tab } from '@/model/gui/tab'
+import type { Property } from '@/model/property'
+import { useI18n } from 'vue-i18n'
+import { PageBase } from '@/features/shared/presentation/pages/pageBase'
+import { Path } from '@/model/path'
+import type { IAlert } from '../../domain/alert'
 
 export class AlertPage extends PageBase {
-  selected: number
-  tabs: Tab[]
+  properties: Property[]
+  selected?: IAlert
+  showForm: boolean
+  editForm: boolean
+  showModal: boolean
   table: {
-    id: Columns
-    type: Columns
+    name: Columns
+    asset: Columns
     enabled: Columns
-    updated: Columns
+    description: Columns
   }
 
   constructor() {
-    super('alert', [{ name: 'process', path: 'process' }])
+    const { t } = useI18n()
+    super(t('alert.title'), new Array<Path>())
 
-    this.selected = 1
-    this.tabs = [
-      new Tab(1, 'type', true),
-      new Tab(2, 'other'),
-      new Tab(3, 'more'),
+    this.properties = [
+      {
+        id: 1,
+        icon: EIcon.Edit,
+        name: 'Edit',
+      },
+      {
+        id: 2,
+        icon: EIcon.Delete,
+        name: 'Delete',
+      },
     ]
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
     this.table = this.createTable()
+  }
+  reset() {
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
+    this.selected = undefined
   }
 
   private createTable() {
+    const { t } = useI18n()
+
     return {
-      id: new Columns('ID', 'id'),
-      type: new Columns('Type', 'name'),
-      enabled: new Columns('Enabled', 'enabled'),
-      updated: new Columns('Updated', 'updatedDisplay'),
+      name: new Columns(t('alert.table.name'), 'name'),
+      asset: new Columns(t('alert.table.parent'), 'parentName'),
+      enabled: new Columns(t('alert.table.enabled'), 'enabled'),
+      description: new Columns(t('alert.table.description'), 'description'),
     }
-  }
-  changeTab(tabID: number) {
-    this.tabs.forEach((tab: Tab) => {
-      if (tab.id == tabID) {
-        tab.selected = true
-        this.selected = tab.id
-      } else tab.selected = false
-    })
-  }
-  columnsName(): Columns[] {
-    return Object.values(this.table)
   }
 }

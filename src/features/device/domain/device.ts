@@ -1,20 +1,22 @@
 // features/device/domain/device.ts
+import type { IHasParent } from '@/features/shared/domain/hasParent'
 import { DeviceValidator } from './deviceValidator'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationMapper, type ValidationError } from '@/features/shared/domain/baseValidator'
+import type { ID } from '@/features/shared/domain/id'
 
-export interface IDevice {
-  id: string
+export interface IDevice extends IHasParent {
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 }
 
 export class Device implements IDevice {
   private static validator = new DeviceValidator()
-  id: string
+  id: ID
   name: string
-  parent: string
+  parent: ID
   description?: string
   updatedAt?: Date
 
@@ -32,9 +34,15 @@ export class Device implements IDevice {
 
   static validateField<K extends keyof IDevice>(
     field: K,
-    value: IDevice[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IDevice[K],
+    currentErrors: ValidationError<IDevice> | null = null
+  ): ValidationError<IDevice> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IDevice {
@@ -48,9 +56,9 @@ export class Device implements IDevice {
 }
 
 export interface IDeviceRepository {
-  findById(id: string): Promise<IDevice | null>
+  findById(id: ID): Promise<IDevice | null>
   findAll(): Promise<IDevice[]>
   create(device: IDevice): Promise<void>
   update(device: IDevice): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

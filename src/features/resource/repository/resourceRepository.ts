@@ -1,5 +1,4 @@
-// features/resource/repository/resourceRepository.ts
-import axiosServices from '@/shared/http/axios-client'
+import axiosInstance, { axiosClient } from '@/utils/http/axios-client'
 import {
   Resource,
   type IResource,
@@ -8,18 +7,16 @@ import {
 import type { ResourceDTO } from '../dtos/resourceDTO'
 import { ResourceMapper } from '../dtos/resourceMappers'
 import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
-export class ResourceRepository
-  extends BaseRepository
-  implements IResourceRepository
-{
+export class ResourceRepository extends BaseRepository implements IResourceRepository {
   constructor() {
     super('resources')
   }
 
-  async findById(id: string): Promise<IResource | null> {
+  async findById(id: ID): Promise<IResource | null> {
     try {
-      const response = await axiosServices.get<ResourceDTO>(
+      const response = await axiosClient().get<ResourceDTO>(
         `${this.baseUrl}/${id}`
       )
       return ResourceMapper.toDomain(response.data)
@@ -30,7 +27,8 @@ export class ResourceRepository
 
   async findAll(): Promise<IResource[]> {
     try {
-      const response = await axiosServices.get<ResourceDTO[]>(this.baseUrl)
+      const response = await axiosClient().get<ResourceDTO[]>(this.baseUrl)
+
       return response.data
         .map((dto: ResourceDTO) => ResourceMapper.toDomain(dto))
         .filter(
@@ -44,7 +42,7 @@ export class ResourceRepository
   async create(data: IResource): Promise<void> {
     try {
       const dto = ResourceMapper.toDTO(new Resource(data))
-      await axiosServices.post(this.baseUrl, dto)
+      await axiosClient().post(this.baseUrl, dto)
     } catch (error) {
       throw error
     }
@@ -53,15 +51,15 @@ export class ResourceRepository
   async update(data: IResource): Promise<void> {
     try {
       const dto = ResourceMapper.toDTO(new Resource(data))
-      await axiosServices.put(`${this.baseUrl}/${data.id}`, dto)
+      await axiosClient().put(`${this.baseUrl}/${data.id}`, dto)
     } catch (error) {
       throw error
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: ID): Promise<void> {
     try {
-      await axiosServices.delete(`${this.baseUrl}/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       throw error
     }

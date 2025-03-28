@@ -22,12 +22,15 @@ export enum EIcon {
   Property = 'fa-ellipsis-vertical',
   Edit = 'fa-edit',
   Delete = 'fa-trash',
-  Add = 'fa-circle-plus',
+  AddCircle = 'fa-circle-plus',
+  Add = 'fa-plus',
+  Sub = 'fa-circle-minus',
   UnLock = 'fa-unlock',
   Lock = 'fa-lock',
   LogOut = 'fa-sign-out',
   Close = 'fa-rectangle-xmark',
   Next = 'fa-arrow-right',
+  Play = 'fa-play',
   Tenant = 'fa-chess-rook',
 
   //
@@ -55,6 +58,10 @@ export enum EIcon {
   Action = 'fa-person-running',
   Profile = 'fa-user-circle',
   Process = 'fa-diagram-predecessor',
+  WalkThrough = 'fa-shoe-prints',
+  Burger='fa-bars',
+  Report='fa-file-lines',
+
   //Face
   Smile = 'fa-face-smile',
   Meh = 'fa-face-meh',

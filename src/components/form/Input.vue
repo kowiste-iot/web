@@ -1,67 +1,92 @@
 <template>
-  <div class="position-relative">
-    <div class="d-flex p-1" :class="error ? 'invalid' : ''">
-      <label v-if="label" class="p-2">{{ label }}</label>
-      <FIcon v-if="icon" class="px-2 pt-2" :icon="icon" />
-      <input
-        class="flex-fill form-control"
-        :type="type"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        @keyup="internalChange"
-        @keyup.enter=""
-        v-model="model"
-      />
-    </div>
-    <div v-if="error" class="mt-0 invalid-feedback d-block">
+  <div class="input-general">
+    <input
+      class="in"
+      :type="type"
+      :placeholder="disabled ? '' : placeholder"
+      :disabled="disabled"
+      :required="!!error"
+      @keyup="(e: KeyboardEvent) => internalChange(e)"
+      @keyup.enter="() => $emit('enter')"
+      v-model="model"
+    />
+    <div v-if="error" class="error-text">
       {{ error }}
     </div>
+    <!-- Zero whitespace -->
+    <div v-else class="error-text">&#8203;</div>
   </div>
 </template>
 
 <script setup lang="ts">
-// imports
-import type { EIcon } from '@/features/shared/enum/EIcon'
 import { type InputTypeHTMLAttribute } from 'vue'
-// stores import
-// components import
-// model imports
-// other imports
-// props
+
 interface Props {
-  label?: string
-  icon?: EIcon
   type?: InputTypeHTMLAttribute
   placeholder?: string
   disabled?: boolean
-  onChange?: Function
-  onEnter?: Function
   error?: string
 }
+
 const props = withDefaults(defineProps<Props>(), {
-  label: '',
   type: 'text',
   placeholder: 'placeholder',
   disabled: false,
-  onChange: function () {},
-  onEnter: function () {},
 })
-
+const emit = defineEmits<{
+  change: [event: KeyboardEvent]
+  enter: []
+}>()
 const model = defineModel()
 
-// data
-// storage calls
-// computed
-// methods
 function internalChange(event: KeyboardEvent) {
   if (event.key === 'Enter') {
-    props.onEnter()
+    emit('enter')
     return
   }
-  props.onChange()
+  emit('change', event)
 }
-// lifeCycle
-// watch
 </script>
 
-<style scoped></style>
+<style>
+/* Inputs styles */
+.input-general {
+  position: relative;
+}
+.in {
+  padding: var(--size-100) var(--size-200);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-sm);
+  background-color: var(--layout-overlay);
+  color: var(--txt-dark);
+  transition: all 0.2s ease;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.in:hover:not(:disabled) {
+  border: var(--border-width) solid var(--color-brand-primary-default);
+  background-color: var(--elevation-surface-overlay-hovered);
+}
+
+.in:disabled {
+  background-color: var(--background-color-disabled);
+  cursor: not-allowed;
+}
+
+.in:focus {
+  outline: none;
+  border: var(--border-width) solid var(--color-brand-primary-default);
+}
+
+.in:invalid {
+  border: var(--border-width) solid var(--color-brand-danger-dark);
+  color: var(--color-brand-danger-dark);
+}
+
+/* Placeholder styling */
+.in::placeholder {
+  color: var(--text-color-subtle);
+}
+</style>

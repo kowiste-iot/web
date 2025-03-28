@@ -4,6 +4,7 @@ import { useNotificationStore } from '@/features/notification/stores/notificatio
 import type { IWidget } from '../domain/widget'
 import { WidgetService } from '../application/widgetService'
 import { WidgetRepository } from '../repository/widgetRepository'
+import type { ID } from '@/features/shared/domain/id'
 
 export const useWidgetStore = defineStore('widgetStore', {
   state: () => ({
@@ -12,19 +13,19 @@ export const useWidgetStore = defineStore('widgetStore', {
   }),
 
   actions: {
-    async fetchWidget(id: string) {
+    async fetchWidget(dashboardID: ID, id: ID) {
       const widgetService = new WidgetService(
         new WidgetRepository(),
         new NotificationService(useNotificationStore())
       )
-      this.currentWidget = await widgetService.getWidget(id)
+      this.currentWidget = await widgetService.getWidget(dashboardID, id)
     },
-    async fetchWidgets() {
+    async fetchWidgets(dashboardID: ID) {
       const widgetService = new WidgetService(
         new WidgetRepository(),
         new NotificationService(useNotificationStore())
       )
-      this.widgets = await widgetService.getWidgets()
+      this.widgets = await widgetService.getWidgets(dashboardID)
     },
   },
 })

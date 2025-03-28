@@ -6,7 +6,7 @@
           class="p-2 ml-1"
           :class="tab.selected ? `border-bottom border-${color} border-2` : ''"
           role="button"
-          @click="onChange(tab.id)"
+          @click="emit('change', tab.id)"
         >
           <slot :data="tab"></slot>
         </div>
@@ -25,14 +25,16 @@ const model = defineModel({ default: '' })
 interface Props {
   tabs?: Tab[] // No '?' since it's required
   color?: EColor
-  onChange?: Function
 }
 
 const props = withDefaults(defineProps<Props>(), {
   color: EColor.Primary,
   tabs: () => [],
-  onChange: function (id: number) {},
 })
+const emit = defineEmits<{
+  change: [id: number]
+}>()
+
 // data
 // storage calls
 // computed

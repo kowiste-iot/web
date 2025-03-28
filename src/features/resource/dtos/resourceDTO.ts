@@ -1,14 +1,8 @@
-// features/resource/dtos/resourceDTO.ts
+import type { IScope } from '@/features/scope/domain/scope'
+
 export interface ResourceDTO {
-  id?: string
+  id: string
   name: string
-  type?: string
-  uris?: string[]
-  scopes?: string[]
-  attributes?: Record<string, string[]>
-  display_name?: string
-  icon_uri?: string
+  displayName: string
+  roles: Record<string, IScope[]>
 }
-
-// features/resource/dtos/resourceMapper.ts
-

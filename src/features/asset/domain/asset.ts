@@ -1,8 +1,13 @@
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { AssetValidator } from './assetValidator'
+import type { IHasParent } from '@/features/shared/domain/hasParent'
+import type { ID } from '@/features/shared/domain/id'
 
-export interface IAsset {
-  id: string
+export interface IAsset extends IHasParent {
+  id: ID
   name: string
   parent?: string
   description?: string
@@ -11,9 +16,9 @@ export interface IAsset {
 
 export class Asset implements IAsset {
   private static validator = new AssetValidator()
-  id: string
+  id: ID
   name: string
-  parent?: string
+  parent?: ID
   description?: string
   updatedAt?: Date
 
@@ -30,9 +35,15 @@ export class Asset implements IAsset {
 
   static validateField<K extends keyof IAsset>(
     field: K,
-    value: IAsset[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IAsset[K],
+    currentErrors: ValidationError<IAsset> | null = null
+  ): ValidationError<IAsset> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IAsset {
@@ -45,9 +56,9 @@ export class Asset implements IAsset {
   }
 }
 export interface IAssetRepository {
-  findById(id: string): Promise<IAsset | null>
+  findById(id: ID): Promise<IAsset | null>
   findAll(): Promise<IAsset[]>
   create(asset: IAsset): Promise<void>
   update(asset: IAsset): Promise<void>
-  delete(id: string): Promise<void>
+  delete(id: ID): Promise<void>
 }

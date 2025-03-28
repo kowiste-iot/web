@@ -1,36 +1,7 @@
-import { z } from 'zod'
 import type { INotificationService } from '@/features/notification/application/notificationService'
-import { EValidation } from '@/features/shared/enum/EValidation'
-import type { IWidget, IWidgetData, IWidgetLinkData, IWidgetRepository } from '../domain/widget'
-import { EWidget } from '../domain/EWidget'
-
-const widgetLinkSchema = z.object({
-  measure: z.string(),
-  tag: z.string(),
-  legend: z.string(),
-})
-
-const widgetDataSchema = z.object({
-  label: z.string(),
-  showLabel: z.boolean(),
-  showEmotion: z.boolean(),
-  trueEmotion: z.boolean(),
-  link: z.array(widgetLinkSchema),
-  options: z.any(),
-})
-
-const widgetSchema = z.object({
-  dashboardID: z.string().uuid({
-    message: 'Dashboard ID must be a valid UUID',
-  }),
-  type: z.nativeEnum(EWidget),
-  i: z.number(),
-  x: z.number(),
-  y: z.number(),
-  w: z.number(),
-  h: z.number(),
-  data: widgetDataSchema,
-})
+import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
+import type { ID } from '@/features/shared/domain/id'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 
 export class WidgetService {
   constructor(
@@ -38,79 +9,93 @@ export class WidgetService {
     private readonly notificationService: INotificationService
   ) {}
 
-  async getWidget(id: string): Promise<IWidget | null> {
+  async getWidget(dashboardID: ID, id: ID): Promise<IWidget | null> {
     try {
-      const widget = await this.widgetRepository.findById(id)
+      const widget = await this.widgetRepository.findById(dashboardID, id)
       return widget
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch widget: ${error.message}`
-          : 'Failed to fetch widget'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IWidget>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to fetch widget: ' + errors.getError('gError')!
+      )
       return null
     }
   }
 
-  async getWidgets(): Promise<IWidget[]> {
+  async getWidgets(dashboardID: ID): Promise<IWidget[]> {
     try {
-      const widgets = await this.widgetRepository.findAll()
+      const widgets = await this.widgetRepository.findAll(dashboardID)
       return widgets
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to fetch widgets: ${error.message}`
-          : 'Failed to fetch widgets'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IWidget>(error)
+      if (!errors.hasErrors()) return []
+      this.notificationService.error(
+        'Fail to fetch widget: ' + errors.getError('gError')!
+      )
       return []
     }
   }
 
-  async createWidget(data: IWidget): Promise<boolean> {
+  async createWidget(
+    dashboardID: ID,
+    data: IWidget
+  ): Promise<ValidationError<IWidget> | null> {
     try {
-      const validated = widgetSchema.parse(data)
-      await this.widgetRepository.create(validated)
+      // const errors = Widget.validate(data)
+      // if (errors.hasErrors()) {
+      //   return errors
+      // } //TODO: put it back when implement
+      const widget = new Widget(data)
+      await this.widgetRepository.create(dashboardID, widget)
       this.notificationService.success('Widget created successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid widget data')
-      } else {
-        this.notificationService.error('Failed to create widget')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IWidget>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to create widget: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async updateWidget(data: IWidget): Promise<boolean> {
+  async updateWidget(
+    dashboardID: ID,
+    data: IWidget
+  ): Promise<ValidationError<IWidget> | null> {
     try {
-      const validated = widgetSchema.parse(data)
-      const existingWidget = await this.getWidget(data.id)
+      const errors = Widget.validate(data)
+      if (errors.hasErrors()) {
+        return errors
+      }
+      const existingWidget = await this.getWidget(dashboardID, data.id)
       if (!existingWidget) throw new Error('Widget not found')
 
-      await this.widgetRepository.update(data)
+      await this.widgetRepository.update(dashboardID, data)
       this.notificationService.success('Widget updated successfully')
-      return true
+      return null
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        this.notificationService.error('Invalid widget data')
-      } else {
-        this.notificationService.error('Failed to update widget')
-      }
-      return false
+      const errors = ValidationError.fromRequest<IWidget>(error)
+      if (!errors.hasErrors()) return null
+      this.notificationService.error(
+        'Fail to update widget: ' + errors.getError('gError')!
+      )
+      return errors
     }
   }
 
-  async deleteWidget(id: string): Promise<void> {
+  async deleteWidget(dashboardID: ID, id: ID): Promise<void> {
     try {
-      await this.widgetRepository.delete(id)
+      await this.widgetRepository.delete(dashboardID, id)
       this.notificationService.success('Widget deleted successfully')
     } catch (error) {
-      const msg =
-        error instanceof Error
-          ? `Failed to delete widget: ${error.message}`
-          : 'Failed to delete widget'
-      this.notificationService.error(msg)
+      const errors = ValidationError.fromRequest<IWidget>(error)
+      if (!errors.hasErrors()) return
+      this.notificationService.error(
+        'Fail to delete widget: ' + errors.getError('gError')!
+      )
+      return
     }
   }
 }

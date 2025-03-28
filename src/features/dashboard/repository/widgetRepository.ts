@@ -1,22 +1,33 @@
-import axiosServices  from '@/shared/http/axios-client'
+import { axiosClient } from '@/utils/http/axios-client'
 import { Widget, type IWidget, type IWidgetRepository } from '../domain/widget'
 import type { WidgetDTO } from '../dtos/widgetDTO'
 import { WidgetMapper } from '../dtos/widgetMappers'
+import { BaseRepository } from '@/features/shared/domain/baseRepository'
+import type { ID } from '@/features/shared/domain/id'
 
-
-export class WidgetRepository implements IWidgetRepository{
-  async findById(id: string): Promise<IWidget | null> {
+export class WidgetRepository
+  extends BaseRepository
+  implements IWidgetRepository
+{
+  constructor() {
+    super('dashboards')
+  }
+  async findById(dashboardID: ID, id: ID): Promise<IWidget | null> {
     try {
-      const response = await axiosServices.get<WidgetDTO>(`/widgets/${id}`)
+      const response = await axiosClient().get<WidgetDTO>(
+        `${this.baseUrl}/${dashboardID}/widgets/${id}`
+      )
       return WidgetMapper.toDomain(response.data)
     } catch (error) {
       throw error
     }
   }
 
-  async findAll(): Promise<IWidget[]> {
+  async findAll(dashboardID: ID): Promise<IWidget[]> {
     try {
-      const response = await axiosServices.get<WidgetDTO[]>('/widgets')
+      const response = await axiosClient().get<WidgetDTO[]>(
+        `${this.baseUrl}/${dashboardID}/widgets`
+      )
       return response.data
         .map((dto: WidgetDTO) => WidgetMapper.toDomain(dto))
         .filter((widget: IWidget): widget is IWidget => widget !== null)
@@ -25,27 +36,30 @@ export class WidgetRepository implements IWidgetRepository{
     }
   }
 
-  async create(widget: IWidget): Promise<void> {
+  async create(dashboardID: ID, widget: IWidget): Promise<void> {
     try {
       const dto = WidgetMapper.toDTO(new Widget(widget))
-      await axiosServices.post('/widgets', dto)
+      await axiosClient().post(`${this.baseUrl}/${dashboardID}/widgets`, dto)
     } catch (error) {
       throw error
     }
   }
 
-  async update(widget: IWidget): Promise<void> {
+  async update(dashboardID: ID, widget: IWidget): Promise<void> {
     try {
       const dto = WidgetMapper.toDTO(new Widget(widget))
-      await axiosServices.put(`/widgets/${widget.id}`, dto)
+      await axiosClient().put(
+        `${this.baseUrl}/${dashboardID}/widgets/${widget.id}`,
+        dto
+      )
     } catch (error) {
       throw error
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(dashboardID: ID, id: ID): Promise<void> {
     try {
-      await axiosServices.delete(`/widgets/${id}`)
+      await axiosClient().delete(`${this.baseUrl}/${dashboardID}/widgets/${id}`)
     } catch (error) {
       throw error
     }

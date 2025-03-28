@@ -4,12 +4,13 @@ import { EIcon } from '@/features/shared/enum/EIcon'
 export class MenuService {
   constructor() {}
   private getOrgPath(path: string): string {
-    return path 
+    return path
   }
 
   getMenuItems(): IMenu[] {
     return [
       {
+        id: 'sidemenu-dashboard',
         label: 'menu.dashboard',
         icon: EIcon.Dashboard,
         path: '/dashboard',
@@ -17,62 +18,100 @@ export class MenuService {
         requiresOrg: true,
       },
       {
+        id: 'sidemenu-asset',
         label: 'menu.asset',
         icon: EIcon.Asset,
         path: '/asset',
         isParent: true,
       },
       {
-        label: 'menu.measure',
-        icon: EIcon.Measure,
-        path: '/measure',
-        isParent: true,
-      },
-      {
-        label: 'menu.device',
-        icon: EIcon.Device,
-        path: '/device',
-        isParent: true,
-      },
-      {
-        label: 'menu.process.parent',
-        icon: EIcon.Process,
-        path: '/process',
+        id: 'sidemenu-admin',
+        label: 'Report',
+        icon: EIcon.Report,
+        path: '/test',
+        isHeader: true,
         isParent: true,
         subMenu: [
           {
-            label: 'menu.process.alert',
+            id: 'sidemenu-admin-user',
+            label: 'Alerts',
             icon: EIcon.Alert,
-            path: '/process/alert',
+            path: '/report/alert',
             isParent: false,
           },
           {
-            label: 'menu.process.action',
-            icon: EIcon.Action,
-            path: '/process/action',
+            id: 'sidemenu-admin-role',
+            label: 'Measure',
+            icon: EIcon.Measure,
+            path: '/report/measure',
             isParent: false,
           },
         ],
       },
       {
+        id: 'sidemenu-admin',
+        label: 'test',
+        icon: EIcon.Admin,
+        path: '/admin',
+        isParent: true,
+        subMenu: [
+          {
+            id: 'sidemenu-admin-user',
+            label: 'one',
+            icon: EIcon.User,
+            path: '/admin/user',
+            isParent: false,
+          },
+          {
+            id: 'sidemenu-admin-role',
+            label: 'two',
+            icon: EIcon.Role,
+            path: '/admin/role',
+            isParent: false,
+          },
+          {
+            id: 'sidemenu-admin-resource',
+            label: 'three',
+            icon: EIcon.Resource,
+            path: '/admin/resource',
+            isParent: false,
+          },
+        ],
+      },
+      {
+        id: 'sidemenu-process',
+        label: 'menu.process.parent',
+        icon: EIcon.Process,
+        path: '/process',
+        isParent: true,
+      },
+    ]
+  }
+  getMenuAdmin(): IMenu[] {
+    return [
+      {
+        id: 'sidemenu-admin',
         label: 'menu.admin.parent',
         icon: EIcon.Admin,
         path: '/admin',
         isParent: true,
         subMenu: [
           {
+            id: 'sidemenu-admin-user',
             label: 'menu.admin.user',
             icon: EIcon.User,
             path: '/admin/user',
             isParent: false,
           },
           {
-            label: 'menu.admin.rol',
+            id: 'sidemenu-admin-role',
+            label: 'menu.admin.role',
             icon: EIcon.Role,
-            path: '/admin/rol',
+            path: '/admin/role',
             isParent: false,
           },
           {
+            id: 'sidemenu-admin-resource',
             label: 'menu.admin.resource',
             icon: EIcon.Resource,
             path: '/admin/resource',
@@ -87,7 +126,10 @@ export class MenuService {
     const items = this.getMenuItems()
     return items.map((item) => this.processMenuItem(item))
   }
-
+  getProcessedAdmin(): IMenu[] {
+    const items = this.getMenuAdmin()
+    return items.map((item) => this.processMenuItem(item))
+  }
   private processMenuItem(item: IMenu): IMenu {
     const processed = { ...item }
 

@@ -11,7 +11,7 @@
             offColor="#00023D"
             :onIcon="EIcon.Light"
             :offIcon="EIcon.Dark"
-            :onChange="toggleTheme"
+            @change="toggleTheme"
           />
         </div>
       </div>
@@ -23,7 +23,7 @@
           optionLabel="name"
           :placeholder="$t('setting.languageHolder')"
           :options="languageOpt"
-          :onChange="changeLanguage"
+          @change="changeLanguage"
           v-model="currentLocale"
         >
           <template #option="{ data }">

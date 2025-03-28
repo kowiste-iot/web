@@ -1,38 +1,31 @@
-// features/resource/domain/resource.ts
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import {
+  ValidationMapper,
+  type IError,
+  type ValidationError,
+} from '@/features/shared/domain/baseValidator'
 import { ResourceValidator } from './resourceValidator'
+import type { IScope } from '@/features/scope/domain/scope'
+import type { ID } from '@/features/shared/domain/id'
 
-export interface IResource {
-  id?: string
+export interface IResource extends IError {
+  id: ID
   name: string
-  type?: string
-  uris?: string[]
-  scopes?: string[]
-  attributes?: Record<string, string[]>
-  displayName?: string
-  iconUri?: string
+  displayName: string
+  roles: Record<string, IScope[]>
 }
 
 export class Resource implements IResource {
   private static validator = new ResourceValidator()
-  id?: string
+  id: ID
   name: string
-  type?: string
-  uris?: string[]
-  scopes?: string[]
-  attributes?: Record<string, string[]>
-  displayName?: string
-  iconUri?: string
+  displayName: string
+  roles: Record<string, IScope[]>
 
   constructor(props: IResource) {
     this.id = props.id
     this.name = props.name
-    this.type = props.type
-    this.uris = props.uris
-    this.scopes = props.scopes
-    this.attributes = props.attributes
     this.displayName = props.displayName
-    this.iconUri = props.iconUri
+    this.roles = props.roles
   }
 
   static validate(data: Partial<IResource>): ValidationError<IResource> {
@@ -41,21 +34,23 @@ export class Resource implements IResource {
 
   static validateField<K extends keyof IResource>(
     field: K,
-    value: IResource[K]
-  ): string {
-    return this.validator.validateField(field, value)
+    value: IResource[K],
+    currentErrors: ValidationError<IResource> | null = null
+  ): ValidationError<IResource> {
+    return ValidationMapper.validateField(
+      this.validator,
+      field,
+      value,
+      currentErrors
+    )
   }
 
   toJSON(): IResource {
     return {
       id: this.id,
       name: this.name,
-      type: this.type,
-      uris: this.uris,
-      scopes: this.scopes,
-      attributes: this.attributes,
       displayName: this.displayName,
-      iconUri: this.iconUri,
+      roles: this.roles,
     }
   }
 }

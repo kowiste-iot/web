@@ -1,9 +1,10 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheckCircle, faSmile } from '@fortawesome/free-regular-svg-icons' // regular icon
+import { faCheckCircle, faSmile } from '@fortawesome/free-regular-svg-icons'; // regular icon
 import {
   fa1,
   faArrowLeft,
   faArrowRight,
+  faBars,
   faBell,
   faBuilding,
   faBuildingShield,
@@ -18,6 +19,7 @@ import {
   faCircleCheck,
   faCircleExclamation,
   faCircleInfo,
+  faCircleMinus,
   faCirclePlus,
   faCircleXmark,
   faDiagramPredecessor,
@@ -29,6 +31,7 @@ import {
   faFaceFrown,
   faFaceMeh,
   faFaceSmile,
+  faFileLines,
   faFont,
   faGaugeSimple,
   faGear,
@@ -41,8 +44,11 @@ import {
   faMoon,
   faPersonRunning,
   faPieChart,
+  faPlay,
+  faPlus,
   faRectangleXmark,
   faRuler,
+  faShoePrints,
   faSignOut,
   faSkull,
   faSun,
@@ -112,6 +118,12 @@ library.add(
   faBuildingShield,
   faArrowLeft,
   faArrowRight,
-  faChessRook
+  faChessRook,
+  faCircleMinus,
+  faShoePrints,
+  faPlay, 
+  faPlus,
+  faBars,
+  faFileLines
 )
 //check,x dont work

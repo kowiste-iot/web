@@ -1,44 +1,37 @@
 <template>
   <InputCard
-    class="h-100"
+    class="h-100 m-0"
     :headerText="$t(edit ? 'asset.form.titleUpdate' : 'asset.form.titleCreate')"
     :icon="edit ? EIcon.Edit : EIcon.Add"
     showHeader
     showFooter
   >
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.name') }} </label>
+    <Flex column>
+      <label>{{ $t('asset.form.name') }} </label>
       <Input
-        class="col-md-8"
         :placeholder="$t('asset.form.nameHolder')"
         type="text"
-        :error="errors['name']"
+        :error="errors?.getError('name')"
         v-model="form.name"
       />
-    </div>
-    <div class="row mb-3">
-      <label class="col-md-4 pt-2">{{ $t('asset.form.parent') }} </label>
-      <div class="col-md-8">
-        <DropDown
-          optionValue="name"
-          optionLabel="name"
-          :placeholder="$t('asset.form.parentHolder')"
-          :options="availableParents"
-          :error="errors['parent']"
-          v-model="selectedParent"
-        >
-          <template #option="{ data }">
-            {{ data.name }}
-          </template>
-        </DropDown>
-      </div>
-    </div>
+    </Flex>
+    <Flex column>
+      <label>{{ $t('asset.form.parent') }} </label>
+      <MultiDropdown
+        :options="availableParents"
+        idField="id"
+        labelField="name"
+        :placeholder="$t('asset.form.parentHolder')"
+        :error="errors?.getError('parent')"
+        v-model="selectedParent"
+      />
+    </Flex>
     <template #footer>
       <Button :color="edit ? EColor.Warning : EColor.Success" @click="save()">{{
-        $t(edit ? 'action.update' : 'action.save')
+        $t(edit ? 'actionGUI.update' : 'actionGUI.save')
       }}</Button>
-      <Button :color="EColor.Secondary" outline @click="close()">{{
-        $t('action.cancel')
+      <Button :color="EColor.Secondary" outline @click="emit('close')">{{
+        $t('actionGUI.cancel')
       }}</Button>
     </template>
   </InputCard>
@@ -46,13 +39,12 @@
 
 <script setup lang="ts">
 // imports
-import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
 import InputCard from '@/components/cards/Card.vue'
 import Input from '@/components/form/Input.vue'
-import DropDown from '@/components/form/DropDown.vue'
 
 // model imports
 import { EColor } from '@/features/shared/enum/EColor'
@@ -62,24 +54,23 @@ import { useBasePage } from '@/composable/useBasePage'
 import { AssetService } from '@/features/asset/application/assetService'
 import { AssetRepository } from '@/features/asset/repository/assetRepository'
 import { useAssetStore } from '@/features/asset/stores/useAssetStore'
-import type { ValidationError } from '@/features/shared/domain/baseValidator'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
+import MultiDropdown from '@/components/form/MultiDropdown.vue'
+import Flex from '@/components/layout/Flex.vue'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Object as PropType<IAsset>,
-    default: {},
-  },
-  edit: {
-    type: Boolean,
-    default: false,
-  },
-  close: {
-    type: Function,
-    default: function () {},
-  },
+interface Props {
+  data?: IAsset
+  edit: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  edit: false,
+  data: () => ({} as unknown as IAsset),
 })
+const emit = defineEmits<{
+  close: []
+}>()
 // data
 const form = reactive<IAsset>({
   ...props.data,
@@ -89,7 +80,7 @@ const form = reactive<IAsset>({
 })
 const assetStore = useAssetStore()
 const selectedParent = ref({} as IAsset)
-const errors = ref<ValidationError<IAsset>>({})
+const errors = ref<ValidationError<IAsset> | null>(new ValidationError())
 //service
 const { notificationService } = useBasePage()
 const assetService = new AssetService(
@@ -101,11 +92,33 @@ const assetService = new AssetService(
 const availableParents = computed(() => {
   if (props.edit) {
     // Filter out the current asset when editing
-    return assetStore.assets.filter(asset => asset.id !== props.data.id)
+    return assetStore.assets.filter((asset) => asset.id !== props.data.id)
   }
   return assetStore.assets
 })
-// watchers for real-time validation
+
+// methods
+async function save() {
+  if (props.edit) {
+    errors.value = await assetService.updateAsset(form)
+  } else {
+    errors.value = await assetService.createAsset(form)
+  }
+
+  if (errors.value?.hasErrors()) return
+  emit('close')
+}
+// lifeCycle
+onMounted(() => {
+  if (props.edit && props.data.parent) {
+    const parent = assetStore.getAssetById(props.data.parent)
+    if (parent) {
+      selectedParent.value = parent
+    }
+  }
+  assetStore.fetchAssets()
+})
+// watch
 watch(
   () => form,
   () => {
@@ -123,26 +136,6 @@ watch(
     }
   }
 )
-// methods
-async function save() {
-  if (props.edit) {
-    await assetService.updateAsset(form)
-  } else {
-    await assetService.createAsset(form)
-  }
-  props.close()
-}
-// lifeCycle
-onMounted(() => {
-  if (props.edit && props.data.parent) {
-    const parent = assetStore.getAssetById(props.data.parent)
-    if (parent) {
-      selectedParent.value = parent
-    }
-  }
-  assetStore.fetchAssets()
-})
-// watch
 </script>
 
 <style scoped></style>

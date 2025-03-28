@@ -1,7 +1,7 @@
 const adminRoutes = [
   {
-    path: '/admin/rol',
-    name: 'rol',
+    path: '/admin/role',
+    name: 'role',
     component: () => import('@/views/admin/Role.vue'),
   },
   {

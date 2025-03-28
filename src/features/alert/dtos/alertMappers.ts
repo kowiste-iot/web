@@ -9,6 +9,9 @@ export class AlertMapper extends BaseMapper {
       id: raw.id,
       name: raw.name,
       parent: raw.parent,
+      measures: raw.measures,
+      enabled: raw.enabled,
+      description: raw.description,
       updatedAt: raw.updated_at ? new Date(raw.updated_at) : undefined,
     })
   }
@@ -21,6 +24,8 @@ export class AlertMapper extends BaseMapper {
       id: json.id,
       name: json.name,
       parent: json.parent,
+      measures: json.measures,
+      enabled: json.enabled,
       description: json.description,
       updated_at: json.updatedAt?.toOrgTimezone(tZ).toISOString(),
     }
