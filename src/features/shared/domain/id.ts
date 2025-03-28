@@ -11,3 +11,4 @@ export function hasID(obj: unknown): obj is { id: ID } {
     typeof (obj as { id: ID }).id === 'string'
   )
 }
+
