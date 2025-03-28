@@ -93,7 +93,7 @@ export class Widget implements IWidget {
 
   set(selected: IWidgetType, dashboardID: string) {
     this.dashboardID = dashboardID
-    console.log('gt', selected)
+   
   }
   toJSON(): IWidget {
     return {

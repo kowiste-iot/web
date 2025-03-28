@@ -2,7 +2,6 @@
   <Card id="widget-form" showHeader showFooter>
     <template #header>
       {{ page.title }}
-
       <Tabs :tabs="page.tabs" @change="(id:number)=>page.changeTab(id)">
         <template #default="{ data }"> {{ data.name }}</template>
       </Tabs>
@@ -78,7 +77,7 @@
 
 <script setup lang="ts">
 // imports
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 // stores import
 import { useRoute } from 'vue-router'
 // components import
@@ -102,7 +101,10 @@ import { WidgetService } from '@/features/dashboard/application/widgetService'
 import { WidgetRepository } from '@/features/dashboard/repository/widgetRepository'
 import { WidgetFormPage } from '@/features/dashboard/presentation/pages/pageWidgetForm'
 import type { IWidgetType } from '@/model/widget/widgetType'
-import { Widget } from '@/features/dashboard/domain/widget'
+import {
+  type IWidget,
+  type IWidgetData,
+} from '@/features/dashboard/domain/widget'
 import { useMeasureStore } from '@/features/measure/stores/useMeasureStore'
 import Container from '@/components/layout/Container.vue'
 import Row from '@/components/layout/grid/Row.vue'
@@ -110,12 +112,15 @@ import Col from '@/components/layout/grid/Col.vue'
 import { EBreakpoint } from '@/components/layout/grid/model'
 import WidgetFormCard from '@/features/dashboard/presentation/components/WidgetFormCard.vue'
 import Card from '@/components/cards/Card.vue'
+import { ValidationError } from '@/features/shared/domain/baseValidator'
 // props
-const props = defineProps({
-  data: {
-    type: String,
-    default: '',
-  },
+interface Props {
+  data?: IWidget
+  edit: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  edit: false,
 })
 const emit = defineEmits<{
   close: []
@@ -123,7 +128,20 @@ const emit = defineEmits<{
 
 // data
 const page = reactive(new WidgetFormPage())
-let form = reactive(new Widget())
+
+const form = reactive<IWidget>({
+  ...props.data,
+  id: props.data?.id ?? '',
+  dashboardID: props.data?.dashboardID ?? '',
+  type: props.data?.type ?? EWidget.Boolean,
+  i: props.data?.i ?? 0,
+  x: props.data?.x ?? 0,
+  y: props.data?.y ?? 0,
+  w: props.data?.w ?? 4,
+  h: props.data?.h ?? 3,
+  data: props.data?.data ?? ({ options: {} } as IWidgetData),
+})
+const errors = ref<ValidationError<IWidget> | null>(new ValidationError())
 
 // service
 const { notificationService } = useBasePage()
@@ -142,13 +160,10 @@ function selectWidget(data: IWidgetType) {
   page.changeTab(2)
   page.selectedWidget = data
 }
-function save() {
-  form.set(page.selectedWidget, dashboardID)
-
-  const err = Widget.validate(form)
-  console.log('create w', err)
-  const ok = widgetService.createWidget(dashboardID, form)
-  if (!ok) return
+async function save() {
+  form.dashboardID = dashboardID
+  errors.value = await widgetService.createWidget(dashboardID, form)
+  if (errors.value?.hasErrors()) return
   emit('close')
 }
 // lifeCycle
@@ -156,6 +171,22 @@ onMounted(() => {
   measureStore.fetchMeasures()
 })
 // watch
+watch(
+  () => props.edit,
+  (edit) => {
+    console.log('hi')
+
+    //pass to true
+    if (edit) {
+      console.log('hi1')
+
+      const found = page.widgets.find((widget) => widget.id == props.data?.type)
+      if (!found) return
+      selectWidget(found)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped>

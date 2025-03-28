@@ -1,17 +1,19 @@
 import { EIcon } from '@/features/shared/enum/EIcon'
 import { PageBase } from '@/features/shared/presentation/pages/pageBase'
 import type { Property } from '@/model/property'
+import type { IWidget } from '../../domain/widget'
 
 export class DashboardPage extends PageBase {
-  selected: number
+  selected?: IWidget
   properties: Property[]
+  showForm: boolean
+  editForm: boolean
+  showModal: boolean
   refresh: boolean
-  show: boolean
   unlock: boolean
 
   constructor() {
     super('dashboard', [{ name: 'dashboards', path: 'dashboard' }])
-    this.selected = 1
     this.properties = [
       {
         id: 1,
@@ -24,8 +26,29 @@ export class DashboardPage extends PageBase {
         name: 'Delete',
       },
     ]
+    this.showForm = false
+    this.editForm = false
     this.refresh = true
-    this.show = false
+    this.showModal = false
     this.unlock = false
+  }
+  propertySelected(id: number, data: IWidget) {
+    this.selected = data
+    switch (id) {
+      case 1:
+        this.showForm = true
+        this.editForm = true
+        break
+      case 2:
+        this.showModal = true
+        break
+    }
+    console.log('selected', this)
+  }
+  reset() {
+    this.showForm = false
+    this.editForm = false
+    this.showModal = false
+    this.selected = undefined
   }
 }

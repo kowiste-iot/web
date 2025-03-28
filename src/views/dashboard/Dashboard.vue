@@ -19,24 +19,16 @@
         :i="item.i"
         :key="item.i"
         :minH="3"
-        :minW="6"
-        @resized="
-          () => {
-            console.log('save', item)
-          }
-        "
-        @moved="
-          () => {
-            console.log('save', item)
-          }
-        "
+        :minW="4"
+        @resized="updateLayout(item)"
+        @moved="updateLayout(item)"
       >
         <div class="border rounded h-100 position-relative bg-light">
           <PropertyDot
             v-if="page.unlock"
             class="position-absolute top-0 end-0"
             :data="page.properties"
-            @click="(id:Property)=>console.log('press',id)"
+            @click="(p:Property)=>page.propertySelected(p.id,item)"
           />
           <BoolWidget
             v-if="item.type == EWidget.Boolean"
@@ -78,7 +70,7 @@
       :icon="EIcon.Add"
       role="button"
       style="height: 1.5rem"
-      @click="() => (page.show = true)"
+      @click="() => (page.showForm = true)"
     />
     <FIcon
       class="mt-3"
@@ -90,11 +82,20 @@
     />
   </Flex>
 
-  <Modal v-if="page.show">
+  <Modal v-if="page.showForm">
     <SideCard :size="12">
-      <WidgetForm @close="() => (page.show = false)" />
+      <WidgetForm :data="page.selected" :edit="page.editForm" @close="closeForm" />
     </SideCard>
   </Modal>
+  <ConfirmCard
+    v-if="page.showModal"
+    :action="EActionGUI.Danger"
+    :actionText="$t('actionGUI.delete')"
+    @action="deleteItem"
+    @cancel="closeForm"
+  >
+    <div class="text-center">{{ $t('asset.delete') }}</div>
+  </ConfirmCard>
 </template>
 
 <script setup lang="ts">
@@ -124,6 +125,11 @@ import { useRoute } from 'vue-router'
 import Flex from '@/components/layout/Flex.vue'
 import Modal from '@/components/layout/Modal.vue'
 import type { Property } from '@/model/property'
+import type { IWidget } from '@/features/dashboard/domain/widget'
+import ConfirmCard from '@/components/cards/ConfirmCard.vue'
+import { EActionGUI } from '@/features/shared/domain/EActionGUI'
+import { WidgetService } from '@/features/dashboard/application/widgetService'
+import { WidgetRepository } from '@/features/dashboard/repository/widgetRepository'
 
 // other imports
 // props
@@ -135,15 +141,34 @@ const dashboardID = getParam(route.params.did)
 // service
 useBasePage(page.title, page.path)
 const widgetStore = useWidgetStore()
-
+const { notificationService } = useBasePage()
+const widgetService = new WidgetService(
+  new WidgetRepository(),
+  notificationService
+)
 // computed
 const widgets = computed(() => {
   return useWidgetStore().widgets
 })
 // methods
+
+function updateLayout(data: IWidget) {
+  console.log('change', data)
+}
+async function deleteItem() {
+  await widgetService.deleteWidget(dashboardID, page.selected!.id!)
+  closeForm()
+}
+function closeForm() {
+  refreshData()
+  page.reset()
+}
+async function refreshData() {
+  await widgetStore.fetchWidgets(dashboardID)
+}
 // lifeCycle
 onMounted(() => {
-  widgetStore.fetchWidgets(dashboardID)
+  refreshData()
 })
 // watch
 </script>

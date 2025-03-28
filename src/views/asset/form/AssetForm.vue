@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 // imports
-import { ref, reactive, computed, onMounted, type PropType, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 // components import
 import Button from '@/components/buttons/Button.vue'
@@ -60,15 +60,13 @@ import Flex from '@/components/layout/Flex.vue'
 
 // other imports
 // props
-const props = defineProps({
-  data: {
-    type: Object as PropType<IAsset>,
-    default: {},
-  },
-  edit: {
-    type: Boolean,
-    default: false,
-  },
+interface Props {
+  data?: IAsset
+  edit: boolean
+}
+const props = withDefaults(defineProps<Props>(), {
+  edit: false,
+  data: () => ({} as unknown as IAsset),
 })
 const emit = defineEmits<{
   close: []

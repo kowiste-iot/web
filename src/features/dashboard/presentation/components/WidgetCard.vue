@@ -1,10 +1,10 @@
 <template>
   <Card>
-    <Flex column>
-      <Flex :justify="EFlexJustify.Center">
+    <Flex column class="h-100">
+      <Flex :justify="EFlexJustify.Center" class="widget-card-layout">
         <slot></slot>
       </Flex>
-      <div v-if="data.showLabel || data.showEmotion" class="border-top">
+      <div v-if="data.showLabel || data.showEmotion" class="footer-layout">
         <Flex>
           <div v-if="data.showLabel" class="footer-text">{{ data.label }}</div>
           <FIcon
@@ -65,8 +65,14 @@ const props = defineProps<Props>()
 </script>
 
 <style scoped>
+.widget-card-layout {
+  flex: 1;
+}
+.footer-layout {
+  border-top: var(--border-width) solid var(--border-color);
+}
 .footer-icon {
-  padding-top: var(--size-100);
+  padding-top: var(--size-050);
 }
 .footer-text {
   flex: 1;

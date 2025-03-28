@@ -42,10 +42,10 @@ export class WidgetService {
     data: IWidget
   ): Promise<ValidationError<IWidget> | null> {
     try {
-      const errors = Widget.validate(data)
-      if (errors.hasErrors()) {
-        return errors
-      }
+      // const errors = Widget.validate(data)
+      // if (errors.hasErrors()) {
+      //   return errors
+      // } //TODO: put it back when implement
       const widget = new Widget(data)
       await this.widgetRepository.create(dashboardID, widget)
       this.notificationService.success('Widget created successfully')

@@ -169,15 +169,11 @@
   </Modal>
 
   <ConfirmCard
-    v-if="pageAsset.showModal"
+    v-if="pageAsset.showModal || pageMeasure.showModal || pageDevice.showModal"
     :action="EActionGUI.Danger"
     :actionText="$t('actionGUI.delete')"
-    @action="deleteAsset"
-    @cancel="
-      () => {
-        pageAsset.showModal = false
-      }
-    "
+    @action="deleteItem"
+    @cancel="closeForm"
   >
     <div class="text-center">{{ $t('asset.delete') }}</div>
   </ConfirmCard>
@@ -225,6 +221,10 @@ import { Page } from '@/features/shared/presentation/pages/pageBase'
 import { useI18n } from 'vue-i18n'
 import { EBreakpoint } from '@/components/layout/grid/model'
 import CardHeader from '@/components/cards/CardHeader.vue'
+import { MeasureService } from '@/features/measure/application/measureService'
+import { MeasureRepository } from '@/features/measure/repository/measureRepository'
+import { DeviceService } from '@/features/device/application/deviceService'
+import { DeviceRepository } from '@/features/device/repository/deviceRepository'
 // other imports
 // props
 
@@ -242,7 +242,18 @@ const assetService = new AssetService(
   notificationService
 )
 const assetStore = useAssetStore()
+
+const measureService = new MeasureService(
+  new MeasureRepository(),
+  notificationService,
+  assetStore
+)
 const measureStore = useMeasureStore()
+
+const deviceService = new DeviceService(
+  new DeviceRepository(),
+  notificationService
+)
 const deviceStore = useDeviceStore()
 
 const sessionStore = useSessionStore()
@@ -262,11 +273,16 @@ const devices = computed(() => {
 })
 // methods
 
-async function deleteAsset() {
-  await assetService.deleteAsset(pageAsset.selected!.id!)
-  pageAsset.selected = undefined
-  pageAsset.showModal = false
-  refreshData()
+async function deleteItem() {
+  if (pageAsset.showModal) {
+    await assetService.deleteAsset(pageAsset.selected!.id!)
+  } else if (pageMeasure.showModal) {
+    await measureService.deleteMeasure(pageMeasure.selected!.id!)
+  } else if (pageDevice.showModal) {
+    await deviceService.deleteDevice(pageDevice.selected!.id!)
+  }
+
+  closeForm()
 }
 function closeForm() {
   refreshData()
