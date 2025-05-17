@@ -1,0 +1,41 @@
+:root {
+  /* margin, padding */
+  --size-0: 0rem;
+  --size-010: 0.062rem;
+  --size-025: 0.125rem;
+  --size-050: 0.25rem;
+  --size-075: 0.375rem;
+  --size-100: 0.5rem;
+  --size-150: 0.75rem;
+  --size-200: 1rem;
+  --size-250: 1.25rem;
+  --size-300: 1.5rem;
+  --size-400: 2rem;
+  --size-500: 2.5rem;
+  --size-600: 3rem;
+  --size-800: 4rem;
+  --size-1000: 5rem;
+  --size-xl-01: 6rem;
+  --size-xl-02: 9rem;
+  --size-xl-03: 12rem;
+  --size-xl-04: 15rem;
+  --size-xl-05: 18rem;
+  --size-xl-06: 21rem;
+  --size-xl-07: 24rem;
+  --size-xl-08: 27rem;
+  --size-xl-09: 30rem;
+  --size-xl-10: 33rem;
+  --size-menu-close: 3.5rem;
+  --size-menu-open: 10rem;
+}
+
+.full-size {
+  height: 100%;
+  width: 100%;
+}
+.full-height {
+  height: 100%;
+}
+.full-width {
+  width: 100%;
+}

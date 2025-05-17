@@ -1,0 +1,50 @@
+@import url(./css/background.accent.css);
+@import url(./css/background.css);
+@import url(./css/border.css);
+@import url(./css/brand.css);
+@import url(./css/chart.css);
+@import url(./css/error.css);
+@import url(./css/icon.css);
+@import url(./css/layout.css);
+@import url(./css/other.css);
+@import url(./css/size.css);
+@import url(./css/text.css);
+@import url(./css/menu.css);
+
+html,
+body,
+#app {
+  height: 100%;
+}
+.forms {
+  z-index: 3000;
+}
+.over {
+  z-index: 50;
+}
+
+/* Animations */
+.slide-in {
+  z-index: 1050;
+  animation: slide-in 1s forwards;
+}
+
+@keyframes slide-in {
+  from {
+    right: -100%;
+  }
+  to {
+    right: 0;
+  }
+}
+
+
+.invalid {
+  border: 1px solid #ff000080;
+  border-radius: 0.6rem;
+}
+
+
+.group-form{
+  padding: var(--size-200) !important;
+}

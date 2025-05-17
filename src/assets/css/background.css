@@ -1,0 +1,66 @@
+:root {
+  /* background */
+  --background-color-disabled: #091e4208;
+
+
+
+
+
+  /* input */
+  --background-color-input: #ffffff;
+  --background-color-input-inverse: #282e33;
+  --background-color-input-hovered: #f7f8f9;
+  --background-color-input-pressed: #ffffff;
+
+  /* inverse */
+  --background-color-inverse-subtle: #00000029;
+  --background-color-inverse-subtle-hovered: #00000029;
+  --background-color-inverse-subtle-pressed: #00000052;
+
+  /* neutral */
+  --background-color-neutral: #091e420f;
+  --background-color-neutral-hovered: #091e4224;
+  --background-color-neutral-pressed: #091e424f;
+
+  /* neutral subtles */
+  --background-color-neutral-subtle: #ffffff00;
+  --background-color-neutral-subtle-hovered: #091e420f;
+  --background-color-neutral-subtle-pressed: #091e4224;
+
+  /* neutral bold */
+  --background-color-neutral-bold: #44546f;
+  --background-color-neutral-bold-hovered: #2c3e5d;
+  --background-color-neutral-bold-pressed: #172b4d;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* background */
+  --background-color-disabled: #03040442;
+
+  /* input */
+  --background-color-input: #22272b;
+  --background-color-input-inverse: #f7f8f9;;
+  --background-color-input-hovered: #282e33;
+  --background-color-input-pressed: #22272b;
+
+  /* inverse */
+  --background-color-inverse-subtle: #ffffff29;
+  --background-color-inverse-subtle-hovered: #ffffff3d;
+  --background-color-inverse-subtle-pressed: #ffffff52;
+
+  /* neutral */
+  --background-color-neutral: #a1bdd914;
+  --background-color-neutral-hovered: #a6c5e229;
+  --background-color-neutral-pressed: #bfdbf847;
+
+  /* neutral subtles */
+  --background-color-neutral-subtle: #ffffff00;
+  --background-color-neutral-subtle-hovered: #a1bdd914;
+  --background-color-neutral-subtle-pressed: #a6c5e229;
+
+  /* neutral bold */
+  --background-color-neutral-bold: #9fadbc;
+  --background-color-neutral-bold-hovered: #b6c2cf;
+  --background-color-neutral-bold-pressed: #c7d1db;
+}

@@ -1,0 +1,80 @@
+:root {
+  /* text */
+  --text-color: #091e42;
+  --text-color-subtle: #626f86;
+  --text-color-subtlest: #bdc5d1;
+  --text-color-light: #dcdcdc;
+  --text-color-dark: #091e42;
+
+  --text-color-button-dark: #091e42;
+  --text-color-button-light: #ffffee;
+  --text-color-button-disabled: var(--text-color-subtle);
+
+  --text-color-accent-lime: #4c6b1f;
+  --text-color-accent-lime-bolder: #37471f;
+
+  --text-color-accent-red: #ae2e24;
+  --text-color-accent-red-bolder: #5d1f1a;
+
+  --text-color-accent-orange: #a54800;
+  --text-color-accent-orange-bolder: #702e00;
+
+  --text-color-accent-yellow: #7f5f01;
+  --text-color-accent-yellow-bolder: #533f04;
+
+  --text-color-accent-green: #216e4e;
+  --text-color-accent-green-bolder: #164b35;
+
+  --text-color-accent-teal: #206a83;
+  --text-color-accent-teal-bolder: #164555;
+
+  --text-color-accent-blue: #0055cc;
+  --text-color-accent-blue-bolder: #09326c;
+
+  --text-color-accent-purple: #5e4db2;
+  --text-color-accent-purple-bolder: #352c63;
+
+  --text-color-accent-magenta: #943d73;
+  --text-color-accent-magenta-bolder: #50253f;
+
+  --text-color-accent-gray: #44546f;
+  --text-color-accent-gray-bolder: #091e42;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* text */
+  --text-color: #b6c2cf;
+  --text-color-subtle: #8c9bab;
+  --text-color-subtlest: #626e84;
+
+  --text-color-accent-lime: #b3df72;
+  --text-color-accent-lime-bolder: #d3f1a7;
+
+  --text-color-accent-red: #fd9891;
+  --text-color-accent-red-bolder: #ffd5d2;
+
+  --text-color-accent-orange: #fec195;
+  --text-color-accent-orange-bolder: #fedec8;
+
+  --text-color-accent-yellow: #f5cd47;
+  --text-color-accent-yellow-bolder: #f8e6a0;
+
+  --text-color-accent-green: #7ee2b8;
+  --text-color-accent-green-bolder: #baf3db;
+
+  --text-color-accent-teal: #9dd9ee;
+  --text-color-accent-teal-bolder: #c6edfb;
+
+  --text-color-accent-blue: #85b8ff;
+  --text-color-accent-blue-bolder: #cce0ff;
+
+  --text-color-accent-purple: #b8acf6;
+  --text-color-accent-purple-bolder: #dfd8fd;
+
+  --text-color-accent-magenta: #f797d2;
+  --text-color-accent-magenta-bolder: #fdd0ec;
+
+  --text-color-accent-gray: #9fadbc;
+  --text-color-accent-gray-bolder: #dee4ea;
+}

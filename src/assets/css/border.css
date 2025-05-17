@@ -1,0 +1,22 @@
+:root {
+  /* border size*/
+  --border-none: 0;
+  --border-sm: 0.25rem;
+  --border-md: 0.5rem;
+  --border-lg: 0.75rem;
+  --border-xl: 1rem;
+  --border-round: 10rem;
+
+  --border-width: 1px;
+  --border-width-wider: 2px;
+  --border-width-widest: 4px;
+  /* border */
+  --border-color: #091e4224;
+
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* border */
+  --border-color: #a6c5e229;
+}

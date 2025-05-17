@@ -1,0 +1,204 @@
+/* Light theme (default) */
+:root {
+  --chart-height: 30rem;
+  /* chart numerical */
+  --chart-color-categorical-1: #2898bd;
+  --chart-color-categorical-1-hover: #227d9b;
+
+  --chart-color-categorical-2: #5e4db2;
+  --chart-color-categorical-2-hover: #352c63;
+
+  --chart-color-categorical-3: #e56910;
+  --chart-color-categorical-3-hover: #c25100;
+
+  --chart-color-categorical-4: #943d73;
+  --chart-color-categorical-4-hover: #50253f;
+
+  --chart-color-categorical-5: #09326c;
+  --chart-color-categorical-5-hover: #1c2b41;
+
+  --chart-color-categorical-6: #8f7ee7;
+  --chart-color-categorical-6-hover: #8270db;
+
+  --chart-color-categorical-7: #50253f;
+  --chart-color-categorical-7-hover: #3d2232;
+
+  --chart-color-categorical-8: #a54800;
+  --chart-color-categorical-8-hover: #702e00;
+
+  /* colors */
+  --chart-color-neutral: #8590a2;
+  --chart-color-neutral-hovered: #758195;
+
+  --chart-color-lime-bold: #6a9a23;
+  --chart-color-lime-bold-hovered: #5b7f24;
+  --chart-color-lime-bolder: #5b7f24;
+  --chart-color-lime-bolder-hovered: #4c6b1f;
+  --chart-color-lime-boldest: #4c6b1f;
+  --chart-color-lime-boldest-hovered: #37471f;
+
+  --chart-color-red-bold: #f15b50;
+  --chart-color-red-bold-hovered: #e2483d;
+  --chart-color-red-bolder: #e2483d;
+  --chart-color-red-bolder-hovered: #c9372c;
+  --chart-color-red-boldest: #ae2e24;
+  --chart-color-red-boldest-hovered: #5d1f1a;
+
+  --chart-color-orange-bold: #e56910;
+  --chart-color-orange-bold-hovered: #c25100;
+  --chart-color-orange-bolder: #c25100;
+  --chart-color-orange-bolder-hovered: #a54800;
+  --chart-color-orange-boldest: #a54800;
+  --chart-color-orange-boldest-hovered: #702e00;
+
+  --chart-color-yellow-bold: #b38600;
+  --chart-color-yellow-bold-hovered: #946f00;
+  --chart-color-yellow-bolder: #946f00;
+  --chart-color-yellow-bolder-hovered: #7f5f01;
+  --chart-color-yellow-boldest: #7f5f01;
+  --chart-color-yellow-boldest-hovered: #533f04;
+
+  --chart-color-green-bold: #22a06b;
+  --chart-color-green-bold-hovered: #1f845a;
+  --chart-color-green-bolder: #1f845a;
+  --chart-color-green-bolder-hovered: #216e4e;
+  --chart-color-green-boldest: #216e4e;
+  --chart-color-green-boldest-hovered: #164b35;
+
+  --chart-color-teal-bold: #2898bd;
+  --chart-color-teal-bold-hovered: #227d9b;
+  --chart-color-teal-bolder: #227d9b;
+  --chart-color-teal-bolder-hovered: #206a83;
+  --chart-color-teal-boldest: #206a83;
+  --chart-color-teal-boldest-hovered: #164555;
+
+  --chart-color-blue-bold: #388bff;
+  --chart-color-blue-bold-hovered: #1d7afc;
+  --chart-color-blue-bolder: #1d7afc;
+  --chart-color-blue-bolder-hovered: #0c66e4;
+  --chart-color-blue-boldest: #0055cc;
+  --chart-color-blue-boldest-hovered: #09326c;
+
+  --chart-color-purple-bold: #8f7ee7;
+  --chart-color-purple-bold-hovered: #8270db;
+  --chart-color-purple-bolder: #8270db;
+  --chart-color-purple-bolder-hovered: #6e5dc6;
+  --chart-color-purple-boldest: #5e4db2;
+  --chart-color-purple-boldest-hovered: #352c63;
+
+  --chart-color-magenta-bold: #da62ac;
+  --chart-color-magenta-bold-hovered: #cd519d;
+  --chart-color-magenta-bolder: #cd519d;
+  --chart-color-magenta-bolder-hovered: #ae4787;
+  --chart-color-magenta-boldest: #943d73;
+  --chart-color-magenta-boldest-hovered: #50253f;
+
+  --chart-color-gray-bold: #8590a2;
+  --chart-color-gray-bold-hovered: #758195;
+  --chart-color-gray-bolder: #758195;
+  --chart-color-gray-bolder-hovered: #626f86;
+  --chart-color-gray-boldest: #44546f;
+  --chart-color-gray-boldest-hovered: #2c3e5d;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* chart numerical */
+  --chart-color-categorical-1: #2898bd;
+  --chart-color-categorical-1-hover: #42b2d7;
+
+  --chart-color-categorical-2: #b8acf6;
+  --chart-color-categorical-2-hover: #dfd8fd;
+
+  --chart-color-categorical-3: #e56910;
+  --chart-color-categorical-3-hover: #f38a3f;
+
+  --chart-color-categorical-4: #f797d2;
+  --chart-color-categorical-4-hover: #fdd0ec;
+
+  --chart-color-categorical-5: #cce0ff;
+  --chart-color-categorical-5-hover: #e9f2ff;
+
+  --chart-color-categorical-6: #8270db;
+  --chart-color-categorical-6-hover: #8f7ee7;
+
+  --chart-color-categorical-7: #fdd0ec;
+  --chart-color-categorical-7-hover: #ffecf8;
+
+  --chart-color-categorical-8: #fec195;
+  --chart-color-categorical-8-hover: #fedec8;
+
+  /* colors */
+  --chart-color-neutral: #738496;
+  --chart-color-neutral-hovered: #8c9bab;
+
+  --chart-color-lime-bold: #82b536;
+  --chart-color-lime-bold-hovered: #94c748;
+  --chart-color-lime-bolder: #94c748;
+  --chart-color-lime-bolder-hovered: #b3df72;
+  --chart-color-lime-boldest: #b3df72;
+  --chart-color-lime-boldest-hovered: #d3f1a7;
+
+  --chart-color-red-bold: #e2483d;
+  --chart-color-red-bold-hovered: #f15b50;
+  --chart-color-red-bolder: #f15b50;
+  --chart-color-red-bolder-hovered: #f87168;
+  --chart-color-red-boldest: #fd9891;
+  --chart-color-red-boldest-hovered: #ffd5d2;
+
+  --chart-color-orange-bold: #f38a3f;
+  --chart-color-orange-bold-hovered: #fea362;
+  --chart-color-orange-bolder: #fea362;
+  --chart-color-orange-bolder-hovered: #fec195;
+  --chart-color-orange-boldest: #fec195;
+  --chart-color-orange-boldest-hovered: #fedec8;
+
+  --chart-color-yellow-bold: #cf9f02;
+  --chart-color-yellow-bold-hovered: #e2b203;
+  --chart-color-yellow-bolder: #e2b203;
+  --chart-color-yellow-bolder-hovered: #f5cd47;
+  --chart-color-yellow-boldest: #f5cd47;
+  --chart-color-yellow-boldest-hovered: #f8e6a0;
+
+  --chart-color-green-bold: #2abb7f;
+  --chart-color-green-bold-hovered: #4bce97;
+  --chart-color-green-bolder: #4bce97;
+  --chart-color-green-bolder-hovered: #7ee2b8;
+  --chart-color-green-boldest: #7ee2b8;
+  --chart-color-green-boldest-hovered: #baf3db;
+
+  --chart-color-teal-bold: #42b2d7;
+  --chart-color-teal-bold-hovered: #6cc3e0;
+  --chart-color-teal-bolder: #6cc3e0;
+  --chart-color-teal-bolder-hovered: #9dd9ee;
+  --chart-color-teal-boldest: #9dd9ee;
+  --chart-color-teal-boldest-hovered: #c6edfb;
+
+  --chart-color-blue-bold: #1d7afc;
+  --chart-color-blue-bold-hovered: #388bff;
+  --chart-color-blue-bolder: #388bff;
+  --chart-color-blue-bolder-hovered: #579dff;
+  --chart-color-blue-boldest: #85b8ff;
+  --chart-color-blue-boldest-hovered: #cce0ff;
+
+  --chart-color-purple-bold: #8270db;
+  --chart-color-purple-bold-hovered: #8f7ee7;
+  --chart-color-purple-bolder: #8f7ee7;
+  --chart-color-purple-bolder-hovered: #9f8fef;
+  --chart-color-purple-boldest: #b8acf6;
+  --chart-color-purple-boldest-hovered: #dfd8fd;
+
+  --chart-color-magenta-bold: #cd519d;
+  --chart-color-magenta-bold-hovered: #da62ac;
+  --chart-color-magenta-bolder: #da62ac;
+  --chart-color-magenta-bolder-hovered: #e774bb;
+  --chart-color-magenta-boldest: #f797d2;
+  --chart-color-magenta-boldest-hovered: #fdd0ec;
+
+  --chart-color-gray-bold: #738496;
+  --chart-color-gray-bold-hovered: #8c9bab;
+  --chart-color-gray-bolder: #8c9bab;
+  --chart-color-gray-bolder-hovered: #9fadbc;
+  --chart-color-gray-boldest: #9fadbc;
+  --chart-color-gray-boldest-hovered: #b6c2cf;
+}

@@ -1,0 +1,37 @@
+:root {
+  /* icon */
+  --color-icon: #44546f;
+
+  --color-icon-accent-lime: #6a9a23;
+  --color-icon-accent-red: #c9372c;
+  --color-icon-accent-orange: #e56910;
+  --color-icon-accent-yellow: #b38600;
+  --color-icon-accent-green: #22a06b;
+  --color-icon-accent-teal: #2898bd;
+  --color-icon-accent-blue: #1d7afc;
+  --color-icon-accent-purple: #8270db;
+  --color-icon-accent-magenta: #cd519d;
+  --color-icon-accent-gray: #758195;
+  --color-icon-disabled: #091e424f;
+  --color-icon-inverse: #ffffff;
+  --color-icon-white: #ffffff;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* icon */
+  --color-icon: #9fadbc;
+
+  --color-icon-accent-lime: #82b536;
+  --color-icon-accent-red: #e2483d;
+  --color-icon-accent-orange: #f38a3f;
+  --color-icon-accent-yellow: #f5cd47;
+  --color-icon-accent-green: #2abb7f;
+  --color-icon-accent-teal: #42b2d7;
+  --color-icon-accent-blue: #388bff;
+  --color-icon-accent-purple: #8f7ee7;
+  --color-icon-accent-magenta: #da62ac;
+  --color-icon-accent-gray: #738496;
+  --color-icon-disabled: #bfdbf847;
+  --color-icon-inverse: #101214;
+}

@@ -1,0 +1,11 @@
+/* Light theme (default) */
+:root {
+  /* modal */
+  --modal-color: #5656567d;
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  /* modal */
+  --modal-color: #10121499;
+}

@@ -1,0 +1,281 @@
+{
+  "tenant": {
+    "inputName": "tenant name"
+  },
+  "actionGUI": {
+    "save": "Save",
+    "update": "Update",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "menu": {
+    "dashboard": "Dashboards",
+    "asset": "Assets",
+    "measure": "Measures",
+    "device": "Devices",
+    "process": {
+      "parent": "Process",
+      "alert": "Alert",
+      "action": "Action"
+    },
+    "admin": {
+      "parent": "Admin",
+      "user": "Users",
+      "role": "Roles",
+      "resource": "Resources"
+    }
+  },
+  "dashboard": {
+    "title": "dashboards",
+    "goto": "Go",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Dashboard",
+      "titleUpdate": "Update Dashboard",
+      "name": "Name",
+      "nameHolder": "dashboard name",
+      "parent": "Belong To",
+      "parentHolder": "dashboard belong to asset"
+    }
+  },
+  "asset": {
+    "title": "assets",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Asset",
+      "titleUpdate": "Update Asset",
+      "name": "Name",
+      "nameHolder": "asset name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
+  "alert": {
+    "title": "alerts",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to",
+      "enabled": "Enabled",
+      "description": "Description"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Alert",
+      "titleUpdate": "Update Alert",
+      "name": "Name",
+      "nameHolder": "alert name",
+      "parent": "Belong To",
+      "parentHolder": "alert belong to asset"
+    }
+  },
+  "action": {
+    "title": "actions",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to",
+      "enabled": "Enabled",
+      "description": "Description"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Action",
+      "titleUpdate": "Update Action",
+      "name": "Name",
+      "nameHolder": "action name",
+      "parent": "Belong To",
+      "parentHolder": "action belong to asset",
+      "description": "Description",
+      "descriptionHolder": "device description"
+    }
+  },
+  "user": {
+    "title": "users",
+    "table": {
+      "name": "Name",
+      "email": "Email"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create User",
+      "titleUpdate": "Update User",
+      "firstName": "First Name",
+      "firstNameHolder": "first Name",
+      "lastName": "Last Name",
+      "lastNameHolder": "last Name",
+      "email": "Email",
+      "emailHolder": "email",
+      "nameHolder": "user name"
+    }
+  },
+  "device": {
+    "title": "device",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to",
+      "description": "Description"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Device",
+      "titleUpdate": "Update Device",
+      "name": "Name",
+      "nameHolder": "device name",
+      "parent": "Belong To",
+      "parentHolder": "device belong to asset",
+      "description": "Description",
+      "descriptionHolder": "device description"
+    }
+  },
+  "measure": {
+    "title": "measure",
+    "table": {
+      "name": "Name",
+      "parent": "Belong to",
+      "description": "Description"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Measure",
+      "titleUpdate": "Update Measure",
+      "name": "Name",
+      "nameHolder": "measure name",
+      "parent": "Belong To",
+      "parentHolder": "measure belong to asset",
+      "description": "description"
+    }
+  },
+  "widget": {
+    "form": {
+      "title": "Select a widget",
+      "type": "type",
+      "options": "options",
+      "selected": "Selected widget:",
+      "common": {
+        "label": "Label",
+        "labelHolder": "Label to show in widget",
+        "showLabel": "Show label",
+        "emotion": "Emotion icon",
+        "measureValue": "Value of measure"
+      }
+    },
+    "bool": {
+      "title": "Boolean",
+      "description": "bool widget, true / false",
+      "form": {
+        "showText": "Show text",
+        "trueEmotion": "Emotion on true",
+        "textTrue": "True Text",
+        "textFalse": "False Text"
+      }
+    },
+    "number": {
+      "title": "Number",
+      "description": "number widget, max 2 decimal",
+      "form": {
+        "showDecimal": "Show decimal",
+        "showUnit": "Show unit",
+        "unit": "Unit",
+        "unitHolder": "Unit of the mesaure"
+      }
+    },
+    "gauge": {
+      "title": "Gauge",
+      "description": "gauge widget",
+      "form": {}
+    },
+    "line": {
+      "title": "Line Graph",
+      "description": "line graph widget",
+      "form": {
+        "measureHolder": "select a measure",
+        "tag": "Etiqueta",
+        "tagHolder": "tag in the measure",
+        "tagHolderBad": "select measure first",
+        "legend": "Legend",
+        "legendHolder": "legend for the measure",
+        "max": "Maximun",
+        "maxHolder": "maximun true emotion",
+        "min": "Minimun",
+        "minHolder": "minimun true emotion",
+        "showLegend": "Show Legend",
+        "fill": "Fill",
+        "color": "Color"
+      }
+    },
+    "bar": {
+      "title": "Bar Graph",
+      "description": "bar graph widget",
+      "form": {}
+    },
+    "pie": {
+      "title": "Pie Graph",
+      "description": "pie graph widget",
+      "form": {}
+    },
+    "text": {
+      "title": "Text",
+      "description": "text widget",
+      "form": {}
+    },
+    "table": {
+      "title": "Table",
+      "description": "table widget",
+      "form": {}
+    }
+  },
+  "resource": {
+    "title": "resources",
+    "table": {
+      "name": "Name",
+      "scopes": "Scopes"
+    },
+    "form": {
+      "role": "Roles",
+      "titleUpdate": "Update Resource",
+      "name": "Name",
+      "nameHolder": "resource name",
+      "parent": "Belong To",
+      "parentHolder": "asset belong to asset"
+    }
+  },
+  "process": {
+    "title": "process"
+  },
+  "admin": {},
+  "role": {
+    "title": "roles",
+    "table": {
+      "name": "Name",
+      "description": "Description"
+    },
+    "delete": "Are you sure you want to delete it",
+    "form": {
+      "titleCreate": "Create Role",
+      "name": "Name",
+      "nameHolder": "role name",
+      "description": "Description"
+    }
+  },
+  "profile": {},
+  "setting": {
+    "title": "User Settings",
+    "theme": "Light/Dark theme",
+    "language": "Language",
+    "languageHolder": "select a language"
+  },
+  "notification": {
+    "fixError": "Please fix form errors before saving"
+  },
+  "error": {
+    "page404": "page not found"
+  }
+}
